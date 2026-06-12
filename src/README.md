@@ -1,0 +1,83 @@
+# `src/` — the Experiment-1 engine (P0 kernel + P1 evaluator)
+
+`kernel.py` is the P0 stage of Mortal Semantic Chemistry: a **deterministic, replay-equivalent, fuel-gated chamber kernel** over the portable-facts IR (`../ir/schema.md`). It runs a **composing QA-strategy genome** — four rules whose products flow through a **live working state `X`**, so each stage feeds the next — as a mortal organism on the Experiment-1 causal-QA corpus.
+
+This directory now holds **two stages**: the P0 kernel (`kernel.py`) and the **P1 evaluator + clamps** (`evaluator.py`), which adds the layer P0 left out — scoring answers, minting typed fuel by clamp, and closing the metabolic loop.
+
+## Run
+
+```sh
+python3 src/kernel.py      # P0: deterministic fuel-gated chamber, replay check
+python3 src/evaluator.py   # P1: eq-17 scoring + clamp-switch + metabolic closure
+```
+
+`kernel.py` loads `corpus/expt1-causal-qa/expt1_data.metta` (data) + `corpus/expt1-causal-qa/genome_expt1.metta` (organism), runs the chamber to quiescence-or-death, prints the staged pipeline trace + per-question status, **asserts replay equivalence**, and writes the event log to `runs/run_log.metta`. `evaluator.py` imports the kernel's firing core and runs the P1 experiments (below), writing `runs/run_log_p1.metta`.
+
+## The composing pipeline (genome `GNM_qa`)
+
+Each rule reads from the live `X` (including earlier rules' products) and writes new products into it. `rule-priority` enforces the stage order deterministically; data dependencies reinforce it.
+
+```
+ R_qtype (0)   q-word              -> (q-intent Q intent)            question-type detect + paraphrase-collapse
+ R_align (1)   q-intent + edges    -> (alignment AL Q cls) + cites   causal-alignment (intent filters the class)
+ R_complete(2) alignment + roles   -> (role-fill AL Role Filler)     role-completion (enrich the cause)
+ R_project (3) alignment + roles   -> (candidate-answer Q A) + ...    answer-skeleton projection (final answer)
+```
+
+Maps to MSC Exp-1's expected ACS rules (§7.1). `paraphrase-collapse` is folded into `R_qtype` (it normalizes `why`/`what-made`/`how-come` → one intent). Still TODO: `compact-explanation-packer` (multi-hop mechanism compression — `R_align` currently cites the direct edge into the focus, not the full chain).
+
+## What it demonstrates (the P0 definition-of-done, `../ir/schema.md` §4)
+
+- **A composing strategy** — `q-intent → alignment → role-fill → candidate-answer` flows through `X`; this is the loop P2's ACS detection will look for.
+- **Fuel-gated firing** with a **typed** fuel vector (`F_O ≥ κ_R` componentwise).
+- **Append-only event log** (`event` / `event-spend` / `event-add`); the kernel's output re-ingests into PeTTa (all firings verified round-tripping).
+- **Deterministic selection ⇒ replay equivalence** (re-run + compared; PASS).
+- **Mortality** — the organism **starves mid-pipeline**: it answers 5 questions then runs out of fuel before projecting the last alignment.
+
+Observed run: **20 firings** → Q17/Q20(abstain)/Q23/Q3a/Q7a all answered (Q7a yields **both** dual answers — `intentional` *and* `physical-cause` with `Experiencer=maria` from role-completion), and **Q7b is aligned-but-unprojected (starved)**. The intent filter is visible: `what-for` (Q7b) produced only the intentional alignment; `why` (Q7a) produced both classes.
+
+## P1 — evaluator + clamps (`evaluator.py`)
+
+P0 only *produces* answers; it never mints fuel (hard prohibition #1). P1 adds the **evaluator**, which runs *outside* the firing loop and does the three things the soma may not do for itself:
+
+1. **Score** each `candidate-answer` against its gold skeleton(s) by a faithful subset of **MSC eq 17** (`Match − Unsupportedness − Redundancy`), with the **active clamp's** coefficients.
+2. **Mint** typed fuel by the clamp's class (`clamp-class` / `clamp-token`) — off-class answers earn nothing, fabrication is penalized, correct abstention is honoured.
+3. **Credit** that fuel back to the organism, so answering a question funds the next — turning the P0 feed-forward **chain** into a self-sustaining **mortal ACS**. The run is an epoch loop: `[chamber phase: fire_to_quiescence] → [evaluator: score+mint+credit] → repeat`, the two phases cleanly separated.
+
+What it demonstrates:
+
+- **The clamp-switch** (the headline). Same snapshot+seed+budget; swap `CL_antecedent` (rewards `physical-cause`) ↔ `CL_goal` (rewards `intentional`). The **per-class metabolic balance flips**: physical `+5`/intentional `−4` under antecedent, physical `−9`/intentional `+4` under goal. Both clamps answer all 6 questions, so *only the minting differs* — **reward alone selects which reasoning strategy pays for itself** (order-independent).
+- **eq-17 scoring is meaningful.** `Q3a` (the multi-hop mechanism) scores `Match=0.50` — the evaluator *measures* the known shortcut (R_align cites the direct edge, not the full chain → the missing `compact-explanation-packer`). `Q20` is `abstain-correct`; off-class answers score `0`.
+- **Metabolic closure.** At a constrained seed the organism starves on seed fuel alone (`1/6`); with feedback the fuel it *earns* funds the rest (`6/6`, +6 firings). The loop is closed. (Under `CL_goal` the first affordable answer is physical → unrewarded → it cannot bootstrap; viability is clamp-coupled. This cascade is order-sensitive — the balance result above is not.)
+- **Invariants:** minting is evaluator-only (no soma rule writes `answer-reward`/`reward-credit`); the full P1 run (chamber + evaluator) is **replay-equivalent** (asserted — identical event log + mints).
+
+New evaluator-output facts (`../ir/schema.md` §2.7): `answer-score`, `answer-reward`, `reward-credit`, `log-clamp`. The clamp `clamp-token` map now mints an **operational** token (`graph-match-token`) so minted fuel can re-fund firing.
+
+## P0 shortcuts
+
+| Shortcut | Status |
+|----------|--------|
+| Products applied to a **live `X`** so rules compose | **DONE** (was the first-slice gap) |
+| Rule logic is **kernel-resident** (`(rule-impl R kernel-resident)`), not portable `rule-lhs`/`rule-rhs` pattern-graphs | open — lift **before P3** (a genome must be data to mutate) |
+| Selection is **deterministic priority order** (arg-max over a trivial score) | open — seeded gate (`schema.md` §3 step 3, MSC eq 24) later |
+| Matching is **host-side Python** | open — move to MM2/MORK later (Goal-Guided §20.1 allows host-side at Stage 0) |
+| `R_align` cites the **direct** edge into focus, not the full multi-hop chain | open — `compact-explanation-packer` rule later |
+| No evaluator/clamp yet — the kernel only **produces** answers, never mints fuel | **DONE in P1** (`evaluator.py`); the *kernel* still never mints (hard prohibition #1) |
+
+## Files
+
+| File | What |
+|------|------|
+| `kernel.py` | the deterministic chamber kernel (parse IR → live-`X` fuel-gated loop → event log → replay check); exposes the firing core `fire_to_quiescence` |
+| `evaluator.py` | **P1** — eq-17 scorer + clamp-gated minting + the chamber↔evaluator epoch loop (clamp-switch + metabolic closure); imports the kernel |
+| `../corpus/expt1-causal-qa/genome_expt1.metta` | organism `O_qa`: quoted ruleset, typed fuel, four rule headers (portable facts) — lives with the Exp-1 data |
+| `../runs/run_log.metta` | **generated** by `kernel.py` — the P0 event log, as portable facts (re-ingestible by PeTTa) |
+| `../runs/run_log_p1.metta` | **generated** by `evaluator.py` — the P1 log: chamber firings + evaluator mints/credits |
+
+## Next steps (P1 done → P2)
+
+1. ~~**P1 — evaluator + clamps**~~ — **DONE** (`evaluator.py`): eq-17 scoring, clamp-gated minting, metabolic closure, clamp-switch, replay.
+2. **P2 — ACS detection + metabolic surplus + causal replay:** consume the P1 log (`event-*` + `reward-credit`/`answer-reward`) to *detect* the now-closed strategy loop as a mortal ACS, verify it runs a surplus, and replay-check causal accountability. This is where the per-class surplus becomes a certified ACS + heritability test.
+3. **Lift the rules to portable pattern-graphs** — removes the kernel-resident shortcut (prerequisite for P3 mutation). The evaluator's eq-17 terms stay as worker *code* (only the clamp config is data — see `../ir/schema.md` §2.8).
+4. **`compact-explanation-packer`** — multi-hop mechanism compression for `how` questions (would lift `Q3a` from `Match=0.50` toward `1.00`).
+5. **Move matching into MM2/MORK**, keeping the host-side selector; then port kernel + evaluator Python → PeTTa (the Python versions become the replay/mint oracle).
