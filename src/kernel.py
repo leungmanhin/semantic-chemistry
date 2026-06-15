@@ -97,7 +97,7 @@ def rule_align(W, org, costs):
     have    = {(t[2], t[3]) for t in q(W, "alignment", 3)}
     edges   = q(W, "sem-edge", 5)
     cite_cost = costs["R_align"]
-    abst_cost = {"graph-match-token": cite_cost.get("graph-match-token", 1)}
+    abst_cost = {"tau_graph_match": cite_cost.get("tau_graph_match", 1)}
     out = []
     for Q in sorted(intents):
         G, foc = source.get(Q), focus.get(Q)
@@ -180,26 +180,34 @@ def read_costs(W):
         costs.setdefault(r, {})[tk] = int(n)
     return costs
 
-def enumerate_candidates(W, org, costs):
-    """All rule candidates over the current X, in canonical (prio, rule, key) order."""
+def enumerate_candidates(W, org, costs, ablate=frozenset()):
+    """All rule candidates over the current X, in canonical (prio, rule, key) order.
+    `ablate` suppresses the named rules — the hook P2 paired-replay (do-influence)
+    and P3 genome expression use to run only a chosen subset. An ablated rule's
+    handler is skipped ENTIRELY (not just its output filtered), so a pruned genome
+    that lacks that rule's cost facts still runs cleanly. Handler ↔ rule name is
+    `rule_<x>` ↔ `R_<x>`."""
     cands = []
     for h in HANDLERS:
+        if ("R_" + h.__name__.split("_", 1)[1]) in ablate:
+            continue
         cands += h(W, org, costs)
     cands.sort(key=lambda c: (c["prio"], c["rule"], c["key"]))
     return cands
 
 # -------------------------------------------------------------- the chamber phase
-def fire_to_quiescence(W, fuel, costs, org, log, trace, seq, budget=None):
+def fire_to_quiescence(W, fuel, costs, org, log, trace, seq, budget=None, ablate=frozenset()):
     """Fire the fuel-gated pipeline over the LIVE X until no affordable candidate
     remains (quiescence / starvation) or the step budget is reached. Mutates W,
     fuel, log, trace in place; returns (next_seq, leftover_candidates).
 
-    This is the kernel's firing core — shared by the P0 single run (run_chamber)
-    and the P1 epoch loop (evaluator.run_mortal). Fuel MINTING is never done here
-    (schema.md §3, hard prohibition #1) — only the evaluator layer mints."""
+    This is the kernel's firing core — shared by the P0 single run (run_chamber),
+    the P1 epoch loop (evaluator.run_mortal), and P2 paired-replay (`ablate`). Fuel
+    MINTING is never done here (schema.md §3, hard prohibition #1) — only the
+    evaluator layer mints."""
     affordable = lambda c: all(fuel.get(t, 0) >= n for t, n in c.items())
     while budget is None or seq < budget:
-        pick = next((c for c in enumerate_candidates(W, org, costs)
+        pick = next((c for c in enumerate_candidates(W, org, costs, ablate)
                      if affordable(c["cost"])), None)
         if pick is None:
             break
@@ -213,7 +221,7 @@ def fire_to_quiescence(W, fuel, costs, org, log, trace, seq, budget=None):
             log.append(("event-add", LOG_ID, seq, p))
         trace.append((seq, pick))
         seq += 1
-    leftover = list(enumerate_candidates(W, org, costs))     # enabled-but-unaffordable?
+    leftover = list(enumerate_candidates(W, org, costs, ablate))   # enabled-but-unaffordable?
     return seq, leftover
 
 # --------------------------------------------------------------- the chamber run

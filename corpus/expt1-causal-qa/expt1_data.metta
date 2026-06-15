@@ -199,14 +199,14 @@
 !(add-atom &mork (clamp-coeff CL_antecedent match 1.0))
 !(add-atom &mork (clamp-coeff CL_antecedent unsupportedness 2.0))
 !(add-atom &mork (clamp-coeff CL_antecedent redundancy 1.0))
-!(add-atom &mork (clamp-token CL_antecedent skeleton-match graph-match-token))
-!(add-atom &mork (clamp-token CL_antecedent causal-citation causal-inference-token))
+!(add-atom &mork (clamp-token CL_antecedent skeleton-match tau_graph_match))
+!(add-atom &mork (clamp-token CL_antecedent causal-citation tau_causal))
 !(add-atom &mork (clamp-scope CL_antecedent CH_expt1))
 !(add-atom &mork (clamp CL_goal))
 !(add-atom &mork (clamp-class CL_goal intentional))
 !(add-atom &mork (clamp-coeff CL_goal match 1.0))
 !(add-atom &mork (clamp-coeff CL_goal unsupportedness 2.0))
-!(add-atom &mork (clamp-token CL_goal skeleton-match graph-match-token))
+!(add-atom &mork (clamp-token CL_goal skeleton-match tau_graph_match))
 !(add-atom &mork (clamp-scope CL_goal CH_expt1))
 
 ; ---------------------------------------------------------------------------

@@ -13,7 +13,7 @@ The facts below are the canonical IR. In the PeTTa executor they are loaded with
 - **Relation name first, grounded keys next, variables/values at the suffix** (MORK prefix-friendly schema discipline — keeps the trie prefix-shared and matches fast).
 - One fact = one tuple. Multi-valued attributes (a fuel vector, a rule's token costs) are **expanded into one fact per element**, never packed into a list — so they index and diff cleanly.
 - **IDs are opaque symbols** with a type prefix by convention: `G_*` graph, `N_*`/`n_*` node, `E_*`/`e_*` edge, `R*` rule, `O*` organism, `GNM*` genome, `RS*` ruleset, `CH_*` chamber, `W*` worker, `SNAP*` snapshot, `SEED*` seed, `LOG*` event log, `B*` binding. IDs are globally unique within a run.
-- **Token-type symbols** come from the open MSC alphabet (`graph-match-token`, `causal-inference-token`, `pln-deduction-token`, `dequote-token`, …). The set is extensible; domain clamps add more.
+- **Token-type symbols** follow the **TECAN typed alphabet** (TECAN §4.1 general + §8.4 semantic): `τ_graph_match`, `τ_causal`, `τ_pln_deduction`, `τ_compression`, `τ_paraphrase`, `τ_dequote`, … — written **ASCII** as `tau_graph_match`, `tau_causal`, … (literal `τ` avoided for MORK byte-safety). The set is extensible; domain clamps/chambers add more. (Exp-1 currently uses `tau_graph_match` + `tau_causal`.)
 - Truth values are two trailing reals `<strength> <confidence>` (PLN `stv`), each in `[0,1]`.
 
 ---
@@ -144,7 +144,7 @@ The Experiment-1 toy causal-QA chamber (MSC §7.1) adds a task layer on top of t
 | Fact | Meaning |
 |------|---------|
 | `(answer-score A term v)` | The eq-17 term breakdown the evaluator computed for `A`: `term ∈ {match, unsupportedness, redundancy, …}`, `v ∈ [0,1]`. Audit of *why* `A` was (or wasn't) rewarded under the active clamp. |
-| `(answer-reward A token n)` | Minted typed fuel credited to `A`'s organism — the eq-17 score mapped through the active clamp's `clamp-token` map (§2.8). The mint currency is an *operational* token (e.g. `graph-match-token`) so it can re-fund firing — this is what closes the metabolic loop. |
+| `(answer-reward A token n)` | Minted typed fuel credited to `A`'s organism — the eq-17 score mapped through the active clamp's `clamp-token` map (§2.8). The mint currency is an *operational* token (e.g. `tau_graph_match`) so it can re-fund firing — this is what closes the metabolic loop. |
 | `(reward-credit LOG epoch O token n)` | The organism-side credit event: at evaluation `epoch`, `n` of `token` was added to `O`'s fuel vector. The inverse of `event-spend`; lets a reader reconstruct the fuel economy across the chamber↔evaluator epoch loop. |
 | `(log-clamp LOG CL)` | Records which clamp `CL` was active for the run that produced `LOG` (the clamp-switch handle — pairs with `worker-clamp`, §2.8). |
 
@@ -163,6 +163,34 @@ The Experiment-1 toy causal-QA chamber (MSC §7.1) adds a task layer on top of t
 | `(clamp-token CL signal token)` | Score→typed-fuel mapping, e.g. `(clamp-token CL_a skeleton-match answer-reward-token)`. |
 | `(clamp-scope CL C)` | Chamber-local scoping (MSC: "clamping can also be local"). |
 | `(worker-clamp W CL)` | The active clamp for a run — the experimental switch. A paired clamp-switch run = same snapshot+seed+budget, different `worker-clamp`. |
+
+### 2.9 ACS detection + promotion (Experiment-1 layer; P2 output)
+
+P2 (`src/acs_detect.py`, = TECAN T3) certifies whether a rule loop is a **mortal semantic ACS** (the 5 conditions of MSC / TECAN eq 67) and promotes it only if it earns its keep. Outputs (written by the ACS-detector, not the soma):
+
+| Fact | Meaning |
+|------|---------|
+| `(acs A)` / `(acs-chamber A C)` | Declares detected ACS `A` in chamber `C`. |
+| `(acs-member A R)` | Rule `R` is a member of the ACS's (heritable) rule loop. One per rule. |
+| `(acs-closure A metabolic)` | The loop forms a closed cycle — `metabolic` records that the cycle closes via the evaluator's fuel minting (`E → fuel → rules`), **not** graph-structurally (the soma rules alone are a feed-forward DAG). |
+| `(acs-autocatalysis A via-evaluator-fuel)` | The motifs that re-enable members (the typed fuel) are produced by the evaluator. |
+| `(acs-surplus A CL token n)` | Metabolic surplus `E[minted]−E[spent]` for `token` under clamp `CL` (signed). Condition 3 holds iff positive componentwise. |
+| `(acs-do-influence A R n)` | Paired-replay ablation: the minted-reward drop when rule `R` is suppressed. `0` ⇒ an inert member (cost without reward → prune candidate). |
+| `(acs-heritable A GNM)` | The loop reifies as quoted genome `GNM`, copy-and-re-expressible. |
+| `(acs-promoted A CL bool)` | Promotion verdict under clamp `CL` (surplus>0 ∧ ablation-impact>0 ∧ closure ∧ autocatalysis ∧ heritability). The clamp-switch: the same loop is `true` under `CL_antecedent`, `false` under `CL_goal`. |
+
+### 2.10 Lineage + reproduction (Experiment-1 layer; P3 output)
+
+P3 (`src/evolve.py`, = TECAN T6) mutates / recombines the promoted ACS's quoted genome, selects by surplus under matched replay, and reproduces. Lineage outputs:
+
+| Fact | Meaning |
+|------|---------|
+| `(lineage L)` / `(lineage-founder L GNM)` | A lineage `L` rooted at founder genome `GNM`. |
+| `(genome-rule GNM R)` | Member rule `R` of genome `GNM` (the heritable ruleset; one per rule). |
+| `(genome-fitness GNM CL token n)` | Fitness of `GNM` under clamp `CL` = metabolic surplus for `token` (signed), under matched replay. |
+| `(birth GNM_child GNM_parent mutation)` | `GNM_child` was produced from `GNM_parent` by `mutation` (e.g. `prune-R_complete`). |
+| `(birth-cost GNM_child token n)` | Reproduction cost the parent paid from surplus — incl. the `tau_dequote` germ→soma dequotation (eq 27). |
+| `(lineage-improvement GNM_parent GNM_child token n)` | Signed fitness change child−parent under matched replay. Selection keeps `n>0`. |
 
 ---
 
@@ -212,8 +240,8 @@ A change is IR-legal only if it keeps all of these true:
 ## 6. What P0 deliberately leaves out (later stages)
 
 - **Evaluator-minted fuel + clamps** → P1 — **DONE** (`src/evaluator.py`): eq-17 scoring, clamp-gated typed-fuel minting (never soma-minted), and the chamber↔evaluator epoch loop that credits earned fuel back, closing the metabolic loop. The clamp-switch (`CL_antecedent` ↔ `CL_goal`) flips which strategy runs a surplus.
-- **ACS detection + metabolic surplus + causal replay** → P2 (consumes the event log + the new `reward-credit`/`answer-reward` facts).
-- **Genomes mutation/reproduction (`mutate_or_recombine`, lineage)** → P3. The `genome-of`/`quoted-ruleset` facts exist now so the IR is ready, but P0 never mutates them.
+- **ACS detection + metabolic surplus + causal replay** → P2 — **DONE** (`src/acs_detect.py`, = TECAN T3): builds the rule-motif graph from the log, certifies the 5-condition mortal ACS (closure is *metabolic* — the cycle closes only via the evaluator), computes surplus, runs paired-replay ablation (found `R_complete` inert), reifies the genome, and promotes (clamp-switch: promoted under `CL_antecedent`, rejected under `CL_goal`). Facts in §2.9.
+- **Genome mutation / reproduction** → P3 — **DONE** (`src/evolve.py`, = TECAN T6): mutates / recombines the quoted genome as data, expresses member rules via the kernel's `ablate` hook, scores offspring by surplus under matched replay, and reproduces (surplus-funded, token-gated dequotation). Selection rediscovered P2's inert `R_complete` (pruned it: `+4→+5`) and rejected loop-breaking mutations; recombination rescues complementary defective genomes; under `CL_goal` the founder can't afford to reproduce. Facts in §2.10.
 - **Multiple workers, reducers, ECAN epochs** → P4.
 - **MeTTa-IL executor** → later; the whole point of this schema is that it drops in by log-equivalence, not rewrite.
 

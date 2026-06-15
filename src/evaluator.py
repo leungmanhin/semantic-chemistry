@@ -45,7 +45,7 @@ from kernel import (REPO, DATA, GENOME, LOG_ID, q, fmt, parse_facts,
                     read_org, read_costs, fire_to_quiescence)
 
 # ---- P1 economy constants (the clamp's score->fuel calibration; tunable) -------
-# graph-match-token is the binding / closure currency: every rule spends it, and
+# tau_graph_match is the binding / closure currency: every rule spends it, and
 # the clamp mints it back on a well-scored, correctly-classed answer. causal-
 # inference-token is seeded non-binding (so it never confounds the gm economy);
 # the antecedent clamp additionally refunds it on causal citations.
@@ -56,13 +56,15 @@ from kernel import (REPO, DATA, GENOME, LOG_ID, q, fmt, parse_facts,
 #    surplus/deficit flip (the rigorous "reward selects strategy" signal).
 #  - CLOSURE_SEED is constrained so the organism starves on seed fuel alone; the
 #    fuel it MINTS by answering is what funds the rest — metabolic closure.
-BALANCE_SEED  = {"graph-match-token": 24, "causal-inference-token": 20}
-CLOSURE_SEED  = {"graph-match-token": 15, "causal-inference-token": 20}
+BALANCE_SEED  = {"tau_graph_match": 24, "tau_causal": 20}
+CLOSURE_SEED  = {"tau_graph_match": 15, "tau_causal": 20}
 SEED_FUEL     = BALANCE_SEED   # default
-SCALE         = 4     # match score 1.0  ->  4 graph-match-token minted
+SCALE         = 6     # match 1.0 -> 6 tau_graph_match minted; calibrated so the rewarded
+                      # strategy runs a POSITIVE metabolic surplus (minted>spent) — see P2
 MINT_FLOOR    = 0.0   # mint only when the eq-17 score strictly exceeds this
 ABSTAIN_SCALE = 0.75  # correct abstention mints (SCALE*ABSTAIN_SCALE) ~ its cost
-CI_REWARD     = 1     # causal-citation signal -> causal-inference-token refunded
+CI_REWARD     = 2     # causal-citation -> tau_causal refunded (>= R_align's per-answer spend
+                      # so the rewarded loop is componentwise self-sustaining)
 BUDGET        = 100   # deterministic step budget (schema.md §4)
 
 # ------------------------------------------------------------------ fact readers
@@ -177,7 +179,7 @@ def pick_class(pick):
     return "overhead"                            # R_qtype: pre-class question overhead
 
 # ----------------------------------------------------------------- the mortal run
-def run_mortal(data, genome, clamp_id, seed_fuel=None, feedback=True, budget=BUDGET):
+def run_mortal(data, genome, clamp_id, seed_fuel=None, feedback=True, budget=BUDGET, ablate=frozenset()):
     """Epoch loop: fire to quiescence/starvation, then the evaluator scores + mints
     + credits, then re-fire on the replenished fuel. With feedback=False no fuel is
     minted (the P0 baseline) — used to show closure does real work."""
@@ -190,7 +192,7 @@ def run_mortal(data, genome, clamp_id, seed_fuel=None, feedback=True, budget=BUD
     scored, seq, epoch = set(), 0, 0
 
     while seq < budget:
-        seq, _ = fire_to_quiescence(W, fuel, costs, org, log, trace, seq, budget)
+        seq, _ = fire_to_quiescence(W, fuel, costs, org, log, trace, seq, budget, ablate)
         ca  = {A: Q for _h, Q, A in q(W, "candidate-answer", 2)}
         new = sorted(A for A in ca if A not in scored)
         if not new:
@@ -234,7 +236,7 @@ def run_mortal(data, genome, clamp_id, seed_fuel=None, feedback=True, budget=BUD
                 answers=len(answ_q), total=len(total_q), fate=fate, clamp=clamp_id)
 
 # ------------------------------------------------------------------------- balance
-def class_balance(res, token="graph-match-token"):
+def class_balance(res, token="tau_graph_match"):
     classes = sorted(set(res["spend"]) | set(res["income"]))
     rows = []
     for c in classes:
@@ -256,7 +258,7 @@ def print_run(res):
         print(f"      {r['A']:<24} {r['kind']:<15} "
               f"M={t['match']:.2f} U={t['unsupportedness']:.2f} R={t['redundancy']:.2f}"
               f"  score={r['score']:+.2f}  mint:{mintstr}")
-    print("    per-class metabolism (graph-match-token):  income  spend  balance")
+    print("    per-class metabolism (tau_graph_match):  income  spend  balance")
     for c, i, s, b in class_balance(res):
         flag = "  <- SURPLUS" if b > 0 else ("  <- deficit" if b < 0 else "")
         print(f"      {c:<15} {i:>7} {s:>6} {b:>+8}{flag}")
