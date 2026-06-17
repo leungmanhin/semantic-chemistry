@@ -33,8 +33,9 @@ import re
 from pathlib import Path
 
 REPO   = Path(__file__).resolve().parent.parent
-DATA   = REPO / "corpus" / "expt1-causal-qa" / "expt1_data.metta"
-GENOME = REPO / "corpus" / "expt1-causal-qa" / "genome_expt1.metta"
+EXPT   = REPO / "experiments" / "expt1-causal-qa"
+DATA   = [EXPT / "molecules.metta", EXPT / "tasks.metta", EXPT / "configs.metta"]  # the IR, split
+GENOME = EXPT / "genome.metta"
 LOG_ID = "LOG_e1"
 
 EXPLANATORY = ("physical-cause", "intentional")        # concession is never an answer class
@@ -57,17 +58,26 @@ def _read(t, p):
     return t[p], p + 1
 
 def parse_facts(path):
+    """Read portable-fact files into flat tuples. Accepts a single path or a list
+    of paths (the IR is split across molecules/tasks/configs). Reads BARE facts
+    `(head …)` — the pure-data form — and tolerates the legacy `!(add-atom SPACE (…))`
+    wrapper, so it handles both the experiment IR and any older fixtures."""
+    if isinstance(path, (list, tuple)):
+        return [f for p in path for f in parse_facts(p)]
     facts = []
     for line in Path(path).read_text().splitlines():
         line = line.split(";", 1)[0].strip()
-        if not line.startswith("!"):
+        if line.startswith("!"):                       # tolerate a leading ! directive
+            line = line[1:].strip()
+        if not line.startswith("("):
             continue
-        toks = _tok(line[1:])
-        if not toks:
+        node, _ = _read(_tok(line), 0)
+        if not isinstance(node, list) or not node:
             continue
-        node, _ = _read(toks, 0)
-        if isinstance(node, list) and len(node) >= 3 and node[0] == "add-atom":
-            facts.append(tuple(node[2]))               # flat fact tuple
+        if node[0] == "add-atom" and len(node) >= 3:
+            facts.append(tuple(node[2]))               # !(add-atom SPACE (FACT))
+        else:
+            facts.append(tuple(node))                  # bare (FACT)
     return facts
 
 def q(W, head, arity):

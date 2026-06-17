@@ -28,51 +28,51 @@
 ; ============================================================================
 
 ; --- organism O_qa, in the Exp-1 chamber ---
-!(add-atom &mork (organism O_qa))
-!(add-atom &mork (organism-chamber O_qa CH_expt1))
-!(add-atom &mork (genome-of O_qa GNM_qa))
-!(add-atom &mork (quoted-ruleset GNM_qa RS_qa))
-!(add-atom &mork (ruleset-member RS_qa R_qtype))
-!(add-atom &mork (ruleset-member RS_qa R_align))
-!(add-atom &mork (ruleset-member RS_qa R_complete))
-!(add-atom &mork (ruleset-member RS_qa R_project))
+(organism O_qa)
+(organism-chamber O_qa CH_expt1)
+(genome-of O_qa GNM_qa)
+(quoted-ruleset GNM_qa RS_qa)
+(ruleset-member RS_qa R_qtype)
+(ruleset-member RS_qa R_align)
+(ruleset-member RS_qa R_complete)
+(ruleset-member RS_qa R_project)
 
 ; --- R_qtype: question-type detector + paraphrase-collapse ---
-!(add-atom &mork (sem-rule R_qtype))
-!(add-atom &mork (rule-context R_qtype causal-qa))
-!(add-atom &mork (rule-impl R_qtype kernel-resident))
-!(add-atom &mork (rule-priority R_qtype 0))
-!(add-atom &mork (rule-token-cost R_qtype tau_graph_match 1))
-!(add-atom &mork (chamber-hot-rule CH_expt1 R_qtype))
+(sem-rule R_qtype)
+(rule-context R_qtype causal-qa)
+(rule-impl R_qtype kernel-resident)
+(rule-priority R_qtype 0)
+(rule-token-cost R_qtype tau_graph_match 1)
+(chamber-hot-rule CH_expt1 R_qtype)
 
 ; --- R_align: causal-alignment (consumes q-intent; cites cost a causal token) ---
-!(add-atom &mork (sem-rule R_align))
-!(add-atom &mork (rule-context R_align causal-qa))
-!(add-atom &mork (rule-impl R_align kernel-resident))
-!(add-atom &mork (rule-priority R_align 1))
-!(add-atom &mork (rule-token-cost R_align tau_graph_match 1))
-!(add-atom &mork (rule-token-cost R_align tau_causal 1))
-!(add-atom &mork (chamber-hot-rule CH_expt1 R_align))
+(sem-rule R_align)
+(rule-context R_align causal-qa)
+(rule-impl R_align kernel-resident)
+(rule-priority R_align 1)
+(rule-token-cost R_align tau_graph_match 1)
+(rule-token-cost R_align tau_causal 1)
+(chamber-hot-rule CH_expt1 R_align)
 
 ; --- R_complete: role-completion ---
-!(add-atom &mork (sem-rule R_complete))
-!(add-atom &mork (rule-context R_complete causal-qa))
-!(add-atom &mork (rule-impl R_complete kernel-resident))
-!(add-atom &mork (rule-priority R_complete 2))
-!(add-atom &mork (rule-token-cost R_complete tau_graph_match 1))
-!(add-atom &mork (chamber-hot-rule CH_expt1 R_complete))
+(sem-rule R_complete)
+(rule-context R_complete causal-qa)
+(rule-impl R_complete kernel-resident)
+(rule-priority R_complete 2)
+(rule-token-cost R_complete tau_graph_match 1)
+(chamber-hot-rule CH_expt1 R_complete)
 
 ; --- R_project: answer-skeleton projection (final answer) ---
-!(add-atom &mork (sem-rule R_project))
-!(add-atom &mork (rule-context R_project causal-qa))
-!(add-atom &mork (rule-impl R_project kernel-resident))
-!(add-atom &mork (rule-priority R_project 3))
-!(add-atom &mork (rule-token-cost R_project tau_graph_match 1))
-!(add-atom &mork (chamber-hot-rule CH_expt1 R_project))
+(sem-rule R_project)
+(rule-context R_project causal-qa)
+(rule-impl R_project kernel-resident)
+(rule-priority R_project 3)
+(rule-token-cost R_project tau_graph_match 1)
+(chamber-hot-rule CH_expt1 R_project)
 
 ; --- typed fuel vector F_O (hand-seeded for P0; earning it is P1's evaluator) ---
 ;     Tuned so the pipeline runs most questions fully through all stages but
 ;     STARVES before projecting the last one — mortality mid-pipeline, and the
 ;     starvation is on tau_graph_match here (every stage needs it).
-!(add-atom &mork (fuel O_qa tau_graph_match 20))
-!(add-atom &mork (fuel O_qa tau_causal 6))
+(fuel O_qa tau_graph_match 20)
+(fuel O_qa tau_causal 6)

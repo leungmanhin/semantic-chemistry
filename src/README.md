@@ -13,7 +13,7 @@ python3 src/acs_detect.py  # P2: ACS detection + surplus + ablation + promotion
 python3 src/evolve.py      # P3: genome mutation/recombination + selection by surplus
 ```
 
-`kernel.py` loads `corpus/expt1-causal-qa/expt1_data.metta` (data) + `corpus/expt1-causal-qa/genome_expt1.metta` (organism), runs the chamber to quiescence-or-death, prints the staged pipeline trace + per-question status, **asserts replay equivalence**, and writes the event log to `runs/run_log.metta`. `evaluator.py` imports the kernel's firing core and runs the P1 experiments (below), writing `runs/run_log_p1.metta`. `acs_detect.py` consumes those runs to certify + promote the ACS, writing `runs/acs_p2.metta`.
+`kernel.py` loads `experiments/expt1-causal-qa/{molecules,tasks,configs}.metta` (the split IR) + `experiments/expt1-causal-qa/genome.metta` (organism), runs the chamber to quiescence-or-death, prints the staged pipeline trace + per-question status, **asserts replay equivalence**, and writes the event log to `runs/run_log.metta`. `evaluator.py` imports the kernel's firing core and runs the P1 experiments (below), writing `runs/run_log_p1.metta`. `acs_detect.py` consumes those runs to certify + promote the ACS, writing `runs/acs_p2.metta`.
 
 ## The composing pipeline (genome `GNM_qa`)
 
@@ -97,7 +97,8 @@ P3 shortcut (flagged): a genome is expressed by ablating its non-member rules (u
 | `evaluator.py` | **P1** — eq-17 scorer + clamp-gated minting + the chamber↔evaluator epoch loop (clamp-switch + metabolic closure); imports the kernel |
 | `acs_detect.py` | **P2** — ACS detection: rule-motif graph + SCC, 5-condition certification, paired-replay ablation, heritability, promotion; imports kernel + evaluator |
 | `evolve.py` | **P3** — genome mutation/recombination + surplus-selection + reproduction (lineage); imports kernel + evaluator + acs_detect |
-| `../corpus/expt1-causal-qa/genome_expt1.metta` | organism `O_qa`: quoted ruleset, typed fuel, four rule headers (portable facts) — lives with the Exp-1 data |
+| `equivalence.py` | end-to-end **Python≡PeTTa** log-equivalence capstone (eq-30): diffs P0 firings + P1 mints vs the `petta/dump_*` outputs |
+| `../experiments/expt1-causal-qa/` | the Exp-1 **data** (pure facts): `molecules`/`tasks`/`configs` (the split IR) + `genome.metta` (organism `O_qa`) + `corpus.txt` (raw texts) |
 | `../runs/run_log.metta` | **generated** by `kernel.py` — the P0 event log, as portable facts (re-ingestible by PeTTa) |
 | `../runs/run_log_p1.metta` | **generated** by `evaluator.py` — the P1 log: chamber firings + evaluator mints/credits |
 | `../runs/acs_p2.metta` | **generated** by `acs_detect.py` — the detected ACS + surplus / do-influence / promotion verdicts |

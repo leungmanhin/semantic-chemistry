@@ -4,7 +4,7 @@
 
 This is the single most load-bearing artifact of the implementation. Per Mortal Semantic Chemistry §6.1 (hard prohibition #3), **all durable state lives in these portable S-expression facts** — never in PeTTa-private mutable predicates. PeTTa is the *first executor*; MeTTa-IL is a *later executor of the very same facts*. **Compliance test:** a future MeTTa-IL backend must read exactly these facts and produce an equivalent event log.
 
-The facts below are the canonical IR. In the PeTTa executor they are loaded with `(add-atom &mork <fact>)` (see `../corpus/expt1-causal-qa/expt1_data.metta`); `&mork` is the executor's hot-pool *view* of the facts, not a private source of truth. A different backend may store them differently, but the fact *shapes* are fixed.
+The facts below are the canonical IR. They are stored as **bare portable S-expressions** (no `add-atom` wrapper); the PeTTa executor loads them into a space via `import!` (which adds bare top-level S-exprs to `&self`) — see `../experiments/expt1-causal-qa/` (`molecules`/`tasks`/`configs`/`genome` + `load.metta`). A space (`&self`, a worker `(new-space)`, or `&mork`) is the executor's hot-pool *view* of the facts, not a private source of truth. A different backend may store them differently, but the fact *shapes* are fixed.
 
 ---
 
@@ -108,7 +108,7 @@ The event log is an **ordered** sequence of firing records, indexed by an intege
 
 ### 2.7 QA tasks + gold skeletons (Experiment-1 layer; additive)
 
-The Experiment-1 toy causal-QA chamber (MSC §7.1) adds a task layer on top of the core. A **task** wraps one source vignette graph and carries one or more **questions** (paraphrase variants are separate questions on the same task). Gold answers are **class-tagged skeletons** — the `Y*_q` targets of MSC eq 17 — enabling the clamp-switch experiment (see `corpus/expt1-causal-qa/README.md`).
+The Experiment-1 toy causal-QA chamber (MSC §7.1) adds a task layer on top of the core. A **task** wraps one source vignette graph and carries one or more **questions** (paraphrase variants are separate questions on the same task). Gold answers are **class-tagged skeletons** — the `Y*_q` targets of MSC eq 17 — enabling the clamp-switch experiment (see `experiments/expt1-causal-qa/README.md`).
 
 | Fact | Meaning |
 |------|---------|
@@ -251,8 +251,8 @@ A change is IR-legal only if it keeps all of these true:
 
 - `schema.md` — this spec (authoritative).
 - **Worked examples** (load + round-trip in PeTTa) — the Experiment-1 fixtures:
-  - `../corpus/expt1-causal-qa/expt1_data.metta` — data: 5 vignettes as semantic graphs + QA tasks + gold skeletons + edge-clusters + both clamps + chamber/worker.
-  - `../corpus/expt1-causal-qa/genome_expt1.metta` — the organism `O_qa`: quoted ruleset + typed fuel + rule headers (§2.2–2.3).
+  - `../experiments/expt1-causal-qa/{molecules,tasks,configs}.metta` — the IR (5 vignettes): semantic graphs · QA tasks + gold skeletons · domain mappings (edge-cluster/intent-map) + clamps + chamber/worker. Loaded together by `load.metta`.
+  - `../experiments/expt1-causal-qa/genome.metta` — the organism `O_qa`: ruleset membership + typed fuel + rule headers (§2.2–2.3).
 - **Reference engine** over these facts: `../src/` (`kernel.py` = P0 fuel-gated loop; `evaluator.py` = P1 scoring/minting). Generated event logs land in `../runs/`.
 
-See the corpus these rules come from: `corpus/fiction-world-v0/` (world_rules R1–R5 = Cycle A).
+See the corpus these rules come from: `experiments/fiction-world-v0/` (world_rules R1–R5 = Cycle A).
