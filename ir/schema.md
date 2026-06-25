@@ -50,6 +50,14 @@ A rule is the fuel-aware form `C ^ G1 ^ HasFuel(O,R) ==> G2 ^ ConsumeFuel(O,R) ^
 | `(rule-tv R intensional-implication s c)` | The rule's PLN intensional-implication strength `s_C(G1,G2)` + confidence. |
 | `(rule-token-cost R token-type n)` | One component of the cost vector `κ_R` — firing consumes `n` of `token-type`. **One fact per token type**; absent type ⇒ cost 0. |
 
+> **Realized executable rule body — `crule` (D3, 2026-06-19).** The `rule-lhs`/`rule-rhs` rows above are the *sketch* (a rule as a pair of sem-graphs). The executable rules of Exp-1 are richer than graph-rewrite — they join across **non-graph** fact types, guard on existence/negation, and **aggregate** many matches into one product — so the realized, backend-neutral form is a single atom:
+> `(crule R KEY CLAUSES GUARDS COST PRODS)` (defined + interpreted in `petta/kernel_defs.metta`).
+> - **CLAUSES** — the conjunctive match (`C ^ G1`): a list of `(at SPACE PAT)` literals (`SPACE ∈ {self, ws}`; bare `PAT` = `at self`). Subsumes `rule-lhs`.
+> - **GUARDS** — `(exists SUB)` / `(absent SUB)` existence & negation-as-failure checks (the part a bare sem-graph LHS can't express).
+> - **PRODS** — the products (`G2`): literal facts and/or `(collect SUB SUBPRODS)` (emit SUBPRODS once per match of SUB — aggregation). Subsumes `rule-rhs`.
+> - **KEY** — the unique firing key template; **COST** — the inline `κ_R` (today this duplicates `rule-token-cost`; reconciling the two — and the `gm`/`ci` ↔ `tau_*` token names — is a pending cleanup).
+> `KEY`/`GUARDS`/`PRODS` are **templates over the variables `CLAUSES` binds**. The whole rule is **one atom** because variable co-reference (the same `$q` in a clause and in `PRODS`) only holds within a single stored atom — the backend renames variables consistently per-atom. `rule-context`/`rule-tv` remain separate annotations on `R`. The interpreter runs in **two phases** (capture an inert ground binding, then guard + build) to avoid `collapse`/`findall` freeing non-ground shared variables — see the header comment in `kernel_defs.metta`. **Compliance:** a future MeTTa-IL backend reads these same `crule` facts. *(P0/P1 status: all five Exp-1 rules are `crule` data in `experiments/expt1-causal-qa/rules.metta`; the legacy `rule-lhs`/`rule-rhs` rows are retained for the eventual pure-sem-graph rules a parser may emit.)*
+
 ### 2.3 Organisms (the mortal units)
 
 `O = (@R, X, F, C, L)` (MSC §4.1). The genome `@R` is the *quoted* ruleset (heritable, inert); the soma is the running process the kernel drives.
@@ -72,6 +80,8 @@ A rule is the fuel-aware form `C ^ G1 ^ HasFuel(O,R) ==> G2 ^ ConsumeFuel(O,R) ^
 | `(chamber-hot-rule C R)` | Rule `R` is in this chamber's **hot pool** (eligible to fire here this epoch). |
 | `(chamber-graph C G)` | Semantic graph `G` is part of the chamber's working state `X`. Membership changes as events add/remove products. |
 | `(chamber-life-history C strategy)` | `strategy ∈ {r-like, K-like, …}` on the life-history simplex (MSC §4.6). Aelmere ⇒ `r-like`. |
+
+> **Known IR evolution — `chamber-hot-rule` → typed attention + computed gate (deferred to D3).** `(chamber-hot-rule C R)` is a **P0 boolean placeholder**: a degenerate collapse of "attention above the hot threshold," hand-asserted because Exp-1 has one chamber and no attention dynamics (the context and attention filters are inert here — only fuel gates firing). Intended end-state, in two parts: (1) **stored *typed-attention* state** per worker — a mutable, per-worker fact shaped like `(fuel …)` (decays / pays rent), and **typed** per TECAN (scalar ECAN STI → typed, causally-priced attention), e.g. `(attention R token-type v)`; (2) the **computed gate** `Gate_C(R,O,X)` already specified at §2.6 (`event-gate`) and §3 step 3 (MSC eq 24) as the actual fire decision. So `chamber-hot-rule` does **not** become a stored scalar STI — it *dissolves into evaluating the gate* over rule facts (`rule-tv`, attention, fuel, ACS-membership), the way `afford` is computed over `fuel` facts. Implement when **D3** lands (the gate needs `rule-tv`/`rule-lhs` as data) **and** a multi-chamber experiment (Exp 2) can exercise it; doing it sooner yields an inert, untested placeholder.
 
 ### 2.5 Workers + replay handles
 

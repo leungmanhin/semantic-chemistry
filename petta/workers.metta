@@ -20,8 +20,11 @@
 ; Run:  sh ../PeTTa/run.sh petta/workers.metta < /dev/null \
 ;          2>&1 | grep should     # ten ✅
 ; ===========================================================================
-!(import! &self "petta/causal_qa_rules.metta")
-!(import! &self "experiments/expt1-causal-qa/load.metta")
+!(import! &self "petta/kernel_defs.metta")
+!(import! &self "experiments/expt1-causal-qa/molecules.metta")
+!(import! &self "experiments/expt1-causal-qa/tasks.metta")
+!(import! &self "experiments/expt1-causal-qa/configs.metta")
+!(import! &self "experiments/expt1-causal-qa/rules.metta")
 
 ; --- worker W_full: its own mutable space + a generous fuel snapshot ---------
 !(bind! &ws_full (new-space))
@@ -31,7 +34,7 @@
 !(add-atom &self (worker-space W_full &ws_full))
 !(add-atom &self (worker-snapshot W_full SNAP_full))
 !(add-atom &self (snapshot-fuel SNAP_full gm 20))
-!(add-atom &self (snapshot-fuel SNAP_full ci 6))
+!(add-atom &self (snapshot-fuel SNAP_full ci 7))
 
 ; --- worker W_lean: its own space + a lean fuel snapshot (starves early) -----
 !(bind! &ws_lean (new-space))
@@ -51,7 +54,7 @@
 (= (dispatch $w) (let $k (match &self (worker-kind $w $kind) $kind) (if (== $k context-chamber) (run-cc $w) (if (== $k reducer) (run-reduce $w) unknown-kind))))
 
 ; context-chamber worker: own space, fuel from snapshot, run kernel on $ws, summarise to &self
-(= (run-cc $w) (let $ws (match &self (worker-space $w $sp) $sp) (let $snap (match &self (worker-snapshot $w $s) $s) (let $z1 (add-all $ws (collapse (match &self (snapshot-fuel $snap $t $n) (fuel $t $n)))) (let $z2 (run $ws) (emit-summary $w $ws))))))
+(= (run-cc $w) (let $ws (match &self (worker-space $w $sp) $sp) (let $snap (match &self (worker-snapshot $w $s) $s) (let $z1 (add-all $ws (collapse (match &self (snapshot-fuel $snap $t $n) (fuel $t $n)))) (let $z2 (run-rules $ws) (emit-summary $w $ws))))))
 
 ; summary facts (the §6.4 worker output) go to &self, keyed by worker; the LOG stays in $ws
 (= (emit-summary $w $ws) (let $f (foldall + (match $ws (event $s $r $k) 1) 0) (let $z1 (add-atom &self (worker-summary $w firings $f)) (let $a (foldall + (match $ws (candidate-answer $q $an) 1) 0) (let $z2 (add-atom &self (worker-summary $w answers $a)) (let $g (fuelof $ws gm) (add-atom &self (worker-summary $w fuel-gm $g))))))))

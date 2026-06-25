@@ -2,23 +2,26 @@
 ; P4.3 (ii) — acs-scan + replay WORKERS: the P2 ACS-detection port (TECAN T3).
 ; ---------------------------------------------------------------------------
 ; The P2 mortal-ACS certification (src/acs_detect.py) as worker kinds over the
-; separate-space machinery. Three findings reproduced, all 14 tests vs the Python:
+; separate-space machinery. Three findings reproduced, all 14 tests (canonical per-match form):
 ;  * REPLAY/ABLATION (cond 4): suppress one rule in its own space, generous fuel;
 ;    R_qtype/R_align/R_project are load-bearing (answers collapse), R_complete is
-;    INERT (7->7, 0 reward impact) — the same dead-weight rule P3 prunes.
+;    INERT (6->6, 0 reward impact) — the same dead-weight rule P3 prunes.
 ;  * CLOSURE (cond 1+2): reachability on the rule-motif graph — a closed metabolic
 ;    cycle exists with the evaluator's E->fuel edge (cycle-through gm = True) but
 ;    NOT among the soma rules alone (False) => closure is METABOLIC, not structural.
 ;  * SURPLUS (cond 3) + PROMOTION: income (eq-17 mint by clamp class) - spend
-;    (firings) = +4 under CL_antecedent vs -5 under CL_goal; the SAME loop is
+;    (firings) = +5 under CL_antecedent vs -4 under CL_goal; the SAME loop is
 ;    PROMOTED under one clamp and REJECTED under the other (clamp-switch at the
 ;    ACS level). Ablation/SCC are exactly what the worker isolation (D6) enables.
 ;
 ; Run:  sh ../PeTTa/run.sh petta/acs_scan.metta < /dev/null \
 ;          2>&1 | grep should   # fourteen ✅
 ; ===========================================================================
-!(import! &self "petta/causal_qa_rules.metta")
-!(import! &self "experiments/expt1-causal-qa/load.metta")
+!(import! &self "petta/kernel_defs.metta")
+!(import! &self "experiments/expt1-causal-qa/molecules.metta")
+!(import! &self "experiments/expt1-causal-qa/tasks.metta")
+!(import! &self "experiments/expt1-causal-qa/configs.metta")
+!(import! &self "experiments/expt1-causal-qa/rules.metta")
 !(import! &self "petta/evaluator_defs.metta")  ; covered/anssize/skelsize/would-mint/gm-income/gm-spend/count-answers
 
 ; ===========================================================================
@@ -26,21 +29,21 @@
 ; one rule (a do-intervention) in its own space, generous fuel so the effect is
 ; STRUCTURAL not starvation; measure answers lost.
 ; ===========================================================================
-(= (walk-unless $ws $rule $cands $seq $skip) (if (== $rule $skip) $seq (walk $ws $rule $cands $seq)))
-(= (run-ablate $ws $skip) (let $s0 (walk-unless $ws R_qtype (msort (qt-cands)) 0 $skip) (let $s1 (walk-unless $ws R_align (msort (al-cands $ws)) $s0 $skip) (let $s2 (walk-unless $ws R_abstain (msort (abstain-cands $ws)) $s1 $skip) (let $s3 (walk-unless $ws R_complete (msort (complete-cands $ws)) $s2 $skip) (walk-unless $ws R_project (msort (project-cands $ws)) $s3 $skip))))))
-; (count-answers from evaluator_defs)
-(= (ablate-answers $skip $sp) (let $z1 (add-atom $sp (fuel gm 30)) (let $z2 (add-atom $sp (fuel ci 30)) (let $z3 (run-ablate $sp $skip) (count-answers $sp)))))
+; ablation = run the canonical genome on $ws but SKIP the named rule (the generic run-ablate
+; from kernel_defs walks sorted-rules, skipping any in the list); generous fuel so the effect
+; is STRUCTURAL, not starvation. `none` skips nothing (the baseline). (count-answers from evaluator_defs.)
+(= (ablate-answers $skip $sp) (let $z1 (add-atom $sp (fuel gm 30)) (let $z2 (add-atom $sp (fuel ci 30)) (let $z3 (run-ablate $sp (cons-atom $skip ())) (count-answers $sp)))))
 
 !(bind! &ab_base (new-space))
 !(bind! &ab_qt (new-space))
 !(bind! &ab_al (new-space))
 !(bind! &ab_cp (new-space))
 !(bind! &ab_pj (new-space))
-; ablation impact (vs base 7): R_complete is INERT (0 loss) -> the prune candidate
-!(test (ablate-answers none &ab_base) 7)        ; baseline: all answers
+; ablation impact (vs base 6): R_complete is INERT (0 loss) -> the prune candidate
+!(test (ablate-answers none &ab_base) 6)        ; baseline: all answers
 !(test (ablate-answers R_qtype &ab_qt) 0)       ; load-bearing (no typing -> nothing)
-!(test (ablate-answers R_align &ab_al) 1)       ; load-bearing (only the natural abstain survives)
-!(test (ablate-answers R_complete &ab_cp) 7)    ; INERT: costs fuel, 0 reward impact (prune candidate)
+!(test (ablate-answers R_align &ab_al) 0)       ; load-bearing (no alignment -> no answers)
+!(test (ablate-answers R_complete &ab_cp) 6)    ; INERT: costs fuel, 0 reward impact (prune candidate)
 !(test (ablate-answers R_project &ab_pj) 0)     ; load-bearing (no projection -> no answers)
 
 ; ===========================================================================
@@ -76,9 +79,9 @@
 
 !(test (gm-income &ab_base physical-cause) 25)  ; CL_antecedent mints on physical-cause + abstain
 !(test (gm-income &ab_base intentional) 16)     ; CL_goal mints on intentional + abstain
-!(test (gm-spend &ab_base) 21)                  ; firings (each spends 1 gm)
-!(test (gm-surplus &ab_base physical-cause) 4)  ; CL_antecedent: +4 SURPLUS (self-sustaining)
-!(test (gm-surplus &ab_base intentional) -5)    ; CL_goal: -5 DEFICIT (sign flips with the clamp)
+!(test (gm-spend &ab_base) 20)                  ; firings (each spends 1 gm)
+!(test (gm-surplus &ab_base physical-cause) 5)  ; CL_antecedent: +5 SURPLUS (self-sustaining)
+!(test (gm-surplus &ab_base intentional) -4)    ; CL_goal: -4 DEFICIT (sign flips with the clamp)
 
 ; promotion: closure AND surplus>0 AND ablation-impact>0 (impact = base - ablate R_qtype)
 (= (impact) (- (count-answers &ab_base) (count-answers &ab_qt)))

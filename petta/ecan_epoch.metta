@@ -18,10 +18,13 @@
 ; answers. ON > OFF == "minting funds further computation" (cf. src/evaluator.py).
 ;
 ; Run:  sh ../PeTTa/run.sh petta/ecan_epoch.metta < /dev/null \
-;          2>&1 | grep should   # six ✅ (OFF: 1 answer, starved gm=0 | ON: 7 answers, surplus gm=19)
+;          2>&1 | grep should   # six ✅ (OFF: 1 answer, starved gm=0 | ON: 6 answers, surplus gm=16)
 ; ===========================================================================
-!(import! &self "petta/causal_qa_rules.metta")
-!(import! &self "experiments/expt1-causal-qa/load.metta")
+!(import! &self "petta/kernel_defs.metta")
+!(import! &self "experiments/expt1-causal-qa/molecules.metta")
+!(import! &self "experiments/expt1-causal-qa/tasks.metta")
+!(import! &self "experiments/expt1-causal-qa/configs.metta")
+!(import! &self "experiments/expt1-causal-qa/rules.metta")
 !(import! &self "petta/evaluator_defs.metta")  ; covered/anssize/skelsize/would-mint/gm-income/gm-spend/count-answers
 
 ; --- the eq-17 Match mint under the CL_antecedent clamp = would-mint at physical-cause
@@ -39,13 +42,13 @@
 ; (count-answers from evaluator_defs)
 
 ; --- THE EPOCH LOOP: run -> score+mint+credit new -> re-run while progress + fuel
-(= (epoch $ws) (let $seq0 (count-events $ws) (let $z (run-from $ws $seq0) (let $new (unscored $ws) (let $cr (credit-all $ws $new) (if (== $new ()) done (if (> $cr 0) (epoch $ws) done)))))))
+(= (epoch $ws) (let $seq0 (count-events $ws) (let $z (run-rules-from $ws $seq0) (let $new (unscored $ws) (let $cr (credit-all $ws $new) (if (== $new ()) done (if (> $cr 0) (epoch $ws) done)))))))
 
 ; --- feedback OFF: one pass, no minting (P0 baseline at the constrained seed) ---
 !(bind! &ws_off (new-space))
 !(add-atom &ws_off (fuel gm 15))
 !(add-atom &ws_off (fuel ci 20))
-!(run &ws_off)
+!(run-rules &ws_off)
 !(test (count-answers &ws_off) 1)     ; OFF: starves at the constrained seed -> 1 answer only
 !(test (count-events &ws_off) 15)     ; spent all 15 gm
 !(test (fuelof &ws_off gm) 0)         ; ...and died (no minting to replenish)
@@ -55,6 +58,6 @@
 !(add-atom &ws_on (fuel gm 15))
 !(add-atom &ws_on (fuel ci 20))
 !(epoch &ws_on)
-!(test (count-answers &ws_on) 7)      ; ON: the epoch loop reaches ALL answers (incl. Q7b, which P0 starved)
-!(test (count-events &ws_on) 21)      ; +6 firings the seed alone could not afford
-!(test (fuelof &ws_on gm) 19)         ; ...ending in metabolic SURPLUS (minted >> spent) = self-sustaining
+!(test (count-answers &ws_on) 6)      ; ON: the epoch loop reaches all 6 answers (incl. Q7b, which the constrained seed starved)
+!(test (count-events &ws_on) 20)      ; +5 firings the seed alone could not afford
+!(test (fuelof &ws_on gm) 16)         ; ...ending in metabolic SURPLUS (21 minted, 20 spent, seed 15) = self-sustaining

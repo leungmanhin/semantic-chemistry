@@ -25,6 +25,21 @@
 ; P0 SHORTCUT (flagged): each rule's match/produce logic is kernel-resident
 ; ((rule-impl R kernel-resident)), NOT yet a portable rule-lhs/rule-rhs pattern
 ; graph. Lift before P3 (a genome must be data to mutate).
+;
+; P0 COLLAPSED SIGNALS (flagged): two facts below hand-set a value that the
+; ultimate vision COMPUTES from several sources — collapsed for this single-
+; chamber, replay-deterministic experiment:
+;   (rule-priority R n)    — a STATIC total firing order, standing in for the
+;       emergent order from {data-dependency readiness + ECAN STI scheduling +
+;       the gate Gate_C(R,O,X), MSC eq 24}. The PARTIAL order is already forced
+;       by data-dependency (R_align needs R_qtype's q-intent), so the integer
+;       only adds the deterministic *batched* total order P0 replay wants.
+;   (chamber-hot-rule C R) — a BOOLEAN collapse of "attention above the hot
+;       threshold" (all 4 rules hand-marked hot; no STI dynamics). End-state =
+;       typed-attention state + the computed gate; see ir/schema.md §2.4.
+; Both un-collapse with D3 + the gate (+ a multi-chamber experiment to exercise
+; them). rule-token-cost is NOT collapsed (it is the real kappa_R, eq 10) but is
+; not yet read by the PeTTa proposers (they hardcode the cost) — another D3 item.
 ; ============================================================================
 
 ; --- organism O_qa, in the Exp-1 chamber ---

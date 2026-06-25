@@ -28,6 +28,12 @@
 (intent-allows explain-prevention physical-cause)
 (explanatory physical-cause)
 (explanatory intentional)
+; role relations (non-causal participant edges) — the POSITIVE complement of edge-cluster,
+; so role-completion (D9 R_complete) matches them without a negation (see [[design-decisions]] D9).
+(role-relation Agent)
+(role-relation Experiencer)
+(role-relation Theme)
+(role-relation Destination)
 
 ; --- (2) run configuration -----------------------------------------------------
 (chamber CH_expt1)
