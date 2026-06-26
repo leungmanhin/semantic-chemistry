@@ -1,6 +1,6 @@
 # Experiment 1 — Toy Causal-QA Corpus
 
-The **first build target** for Mortal Semantic Chemistry (MSC §7.1): short everyday-causal texts + why/how questions with gold answer-skeletons. This corpus anchors stages **P0 → P2**, ahead of the larger Aelmere fiction corpus (`../fiction-world-v0/`, = Experiment 2).
+The **first build target** for Mortal Semantic Chemistry (MSC §7.1): short everyday-causal texts + why/how questions with gold answer-skeletons. This corpus anchors stages **P0 → P2**, ahead of the larger fiction corpus (Experiment 2).
 
 ## Why this corpus is small (~24 vignettes, ~58 sentences)
 
@@ -8,7 +8,7 @@ Deliberate. MSC's §10.2 "1k–10k sentences" guidance is for the fiction-world 
 
 ## What's in a vignette
 
-A 2–4 sentence text + a hand-authored **Neo-Davidsonian** semantic graph (events reified, roles as edges, explanatory edges on top) + one or more questions, each with **class-tagged gold skeletons**. Hand-authored graphs keep it **parser-independent** (the LLM parser, scoping Q2, is still open; when it lands we remap the internal vocabulary — the fact *shapes* are stable).
+A 2–4 sentence text + a hand-authored **Neo-Davidsonian** semantic graph (events reified, roles as edges, explanatory edges on top) + one or more questions, each with **class-tagged gold skeletons**. Hand-authored graphs keep it **parser-independent** for now.
 
 ## Explanatory-edge vocabulary (8 edges, 3 clusters)
 
@@ -33,11 +33,11 @@ Texts carry **both** an antecedent and (for agent actions) a goal, so an ambiguo
 
 Same corpus + chamber, **swap the clamp → a different surviving strategy-ACS**. That is the purest demonstration of the core thesis (reward selects strategy), reachable at P1/P2 with no reproduction (P3) needed. Single-class questions score under their matching clamp and are **abstain-gold under the other**; concessive `Despite` and the negative vignettes are traps that the unsupported-bridge / redundancy taxes police.
 
-> **Clamp representation caveat:** MSC specifies clamps *functionally* (eq 17 + typed-token output + chamber-locality) but gives **no IR data shape**. Our `(clamp …)` facts (`../../ir/schema.md` §2.8) are an interim design choice, to reconcile with the referenced-but-missing doc [3] ("Portable worker IR…") if obtained.
+> **Clamp representation caveat:** MSC specifies clamps *functionally* (eq 17 + typed-token output + chamber-locality) but gives **no IR data shape**. Our `(clamp …)` facts (`../../ir/schema.md` §2.8) are an interim design choice.
 
 ## Files
 
-This directory is **data only** — pure portable facts (no `!(add-atom …)` wrapper; loaded by `import!` on the PeTTa side, by `parse_facts` on the Python side). The *logic* (engine + causal-QA rule proposers + evaluator) lives in `../../petta/` (`kernel_defs.metta`, `causal_qa_rules.metta`, `evaluator_defs.metta`).
+This directory is **data only** — pure portable facts loaded by `import!`. The *logic* (the generic engine + the converter + the run + the evaluator) lives in `../../petta/` (`kernel_defs.metta`, `evaluator_defs.metta`); the rules themselves are canonical per-match IR data **here** (`rules.metta`).
 
 | File | What |
 |------|------|
@@ -45,7 +45,7 @@ This directory is **data only** — pure portable facts (no `!(add-atom …)` wr
 | `molecules.metta` | pure-fact IR: the 5 encoded semantic graphs (the parsed-text molecules) |
 | `tasks.metta` | pure-fact IR: the **QA benchmark** — questions + gold answer-skeletons (the 5) |
 | `configs.metta` | pure-fact IR: causal-QA **domain mappings** (edge-cluster, intent-map, …) + the Exp-1 **run config** (clamps, chamber, worker, seed) |
-| `genome.metta` | pure-fact IR: the organism `O_qa` — ruleset membership, per-rule token-costs, seed fuel |
+| `rules.metta` | pure-fact IR: **the genome** — the four causal-QA rules as canonical per-match `rule-lhs`/`rule-rhs` IR with `(var Name)` markers |
 | `load.metta` | the **data loader** — imports molecules + tasks + configs into `&self` (PeTTa side) |
 | `README.md` | this file (+ the hand-authored-graph **Appendix** below) |
 
@@ -57,7 +57,7 @@ The Exp-1 chamber is **K-like** on the life-history simplex (MSC §4.6: "stable 
 
 ## What's where (logic vs data)
 
-- **The organism's genome metadata** — `genome.metta` here (ruleset membership, per-rule token-costs, seed fuel). It declares the rules but flags them `kernel-resident`: the **rule logic** itself (the proposers `question-type-detector` / `causal-alignment` / `role-completion` / `paraphrase-collapse` / `answer-skeleton-projection`; the `compact-explanation-packer` is still TODO) lives in `../../petta/causal_qa_rules.metta`, not here. (Lifting that logic into portable `rule-lhs`/`rule-rhs` data is design-decision D3, deferred.)
+- **The genome** — `rules.metta` here: the four causal-QA rules (`R_qtype` question-type-detector + paraphrase-collapse, `R_align` causal-alignment, `R_complete` role-completion, `R_project` answer-skeleton-projection) as **canonical per-match `rule-lhs`/`rule-rhs` IR** with `(var Name)` markers (the lifting is complete; the `compact-explanation-packer` is still TODO; **abstain is the evaluator's job**, not a rule). Tokens use `gm`/`ci` (the PeTTa short symbols for `tau_graph_match`/`tau_causal`; see `../../ir/schema.md` §1).
 - **The engine + evaluator code** — `../../petta/kernel_defs.metta` (P0 engine) + `../../petta/evaluator_defs.metta` (P1 eq-17 scoring). This dir is the *data* they operate on.
 
 ## Notation legend (for the Appendix graphs)

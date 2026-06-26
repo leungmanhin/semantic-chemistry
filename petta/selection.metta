@@ -1,9 +1,9 @@
 ; ===========================================================================
-; P4.3 (iii) — selection-epoch WORKER: the P3 lineage port (TECAN T6).
+; P4.3 (iii) — selection-epoch WORKER: the P3 lineage (TECAN T6).
 ; ---------------------------------------------------------------------------
-; The last P4.3 worker kind. EXPRESS a genome = run the kernel with only its
+; A P4.3 worker kind. EXPRESS a genome = run the kernel with only its
 ; soma rules active (run-ablate skipping the non-members); abstain is the
-; evaluator.s job now, in the genome's OWN space (generous fuel, so
+; evaluator's job, in the genome's OWN space (generous fuel, so
 ; fitness is structural). FITNESS = metabolic surplus (income - spend). The P3
 ; lineage (9 tests):
 ;  * founder {qtype,align,complete,project} surplus +5; pruning the INERT
@@ -13,16 +13,13 @@
 ;  * recombination of two answer-incapable genomes (one missing R_project, one
 ;    missing R_qtype) -> the union genome is viable again (6 answers).
 ; Per-genome expression in isolated spaces is exactly what the worker isolation
-; (D6) + run-ablate (acs_scan) enable.
+; + run-ablate (acs_scan) enable.
 ;
 ; Run:  sh ../PeTTa/run.sh petta/selection.metta < /dev/null \
 ;          2>&1 | grep should   # nine ✅
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")
-!(import! &self "experiments/expt1-causal-qa/molecules.metta")
-!(import! &self "experiments/expt1-causal-qa/tasks.metta")
-!(import! &self "experiments/expt1-causal-qa/configs.metta")
-!(import! &self "experiments/expt1-causal-qa/rules.metta")
+!(import! &self "experiments/expt1-causal-qa/load.metta")
 !(import! &self "petta/evaluator_defs.metta")  ; covered/anssize/skelsize/would-mint/gm-income/gm-spend/count-answers
 
 ; --- genome = list of soma rules present; EXPRESS it = run the kernel with only

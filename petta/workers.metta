@@ -1,13 +1,13 @@
 ; ===========================================================================
 ; P4.2 — WORKER ECOLOGY: separate-space-per-worker isolation + a reducer
-;        (TECAN T5). Builds on P4.1's §6.4 contract + dispatcher.
+;        (TECAN T5). Uses the §6.4 worker contract + dispatcher.
 ; ---------------------------------------------------------------------------
 ; Isolation approach (chosen on the spaces_behavior.metta battle-test): each
 ; context-chamber worker gets its OWN mutable space (`(new-space)`, registered
 ; as `(worker-space W &ws)`); the read-only IR stays SHARED in &self. The kernel
 ; body (kernel_defs.metta) is parameterized by $ws, so a worker reads IR from
 ; &self and reads/writes its fuel/products/events in its own space — no leakage,
-; no per-worker IR copy (cross-space join, spike Q7). A `reducer` worker then
+; no per-worker IR copy (cross-space join). A `reducer` worker then
 ; merges the per-worker summaries (§6.2 reducer layer; §6.4 deterministic merge).
 ;
 ; Demonstrated with TWO context-chamber workers over the same shared IR but
@@ -21,10 +21,7 @@
 ;          2>&1 | grep should     # ten ✅
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")
-!(import! &self "experiments/expt1-causal-qa/molecules.metta")
-!(import! &self "experiments/expt1-causal-qa/tasks.metta")
-!(import! &self "experiments/expt1-causal-qa/configs.metta")
-!(import! &self "experiments/expt1-causal-qa/rules.metta")
+!(import! &self "experiments/expt1-causal-qa/load.metta")
 
 ; --- worker W_full: its own mutable space + a generous fuel snapshot ---------
 !(bind! &ws_full (new-space))

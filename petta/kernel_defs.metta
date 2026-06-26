@@ -3,16 +3,18 @@
 ; ---------------------------------------------------------------------------
 ; The reusable firing mechanism, with NO domain logic and NO facts: a typed-fuel
 ; ledger, componentwise affordability, gated fire (+ event log), fire-once-ever,
-; and the per-rule `walk`. The causal-QA rule PROPOSERS live in causal_qa_rules.metta;
-; the experiment's DATA lives in experiments/<expt>/load.metta. A different
-; experiment reuses THIS engine and brings its own rule module + data.
+; and the per-rule `walk`; the **canonical-IR converter** (rule-lhs/rule-rhs + (var Name)
+; -> a runnable form, via runtime var-minting) + the generic data-driven `run-rules` /
+; `run-ablate`. The rules + the experiment's DATA are canonical facts in experiments/<expt>/
+; (rules.metta = the genome; molecules/tasks/configs). A different experiment reuses THIS
+; engine and brings its own rules + data.
 ;
 ; The engine is parameterized by a WORKER SPACE $ws (separate-space-per-worker
-; isolation, chosen on the spaces_behavior.metta battle-test / design-decisions D6):
+; isolation, chosen on the spaces_behavior.metta battle-test):
 ;   * read-only IR + domain mappings live in &self (loaded by the experiment loader);
 ;   * mutable per-worker state (fuel, products, events) lives in $ws.
-; Proposers JOIN &self-IR with $ws-state by nested match across the two spaces.
-; The P0 demo passes $ws = &self (IR + state both in &self) and is unchanged.
+; Rules join &self-IR with $ws-state by nested match across the two spaces (converter + rule-cands).
+; The P0 demo passes $ws = &self (IR + state both in &self).
 ;
 ; A candidate is `(cand KEY COST PRODS)`: KEY = unique firing key, COST = a list
 ; of `(token n)` typed-fuel costs, PRODS = a list of product facts. `walk` fires
@@ -24,9 +26,9 @@
 (= (debit $ws $t $k) (let $n (fuelof $ws $t) (let $z (remove-atom $ws (fuel $t $n)) (let $m (- $n $k) (add-atom $ws (fuel $t $m))))))
 (= (afford $ws $cost) (case $cost ((() True) ($ne (let ($t $n) (car-atom $cost) (if (>= (fuelof $ws $t) $n) (afford $ws (cdr-atom $cost)) False))))))
 (= (debit-all $ws $cost) (case $cost ((() done) ($ne (let ($t $n) (car-atom $cost) (let $z (debit $ws $t $n) (debit-all $ws (cdr-atom $cost))))))))
-; set-semantics add (D9): add a product only if not already present — the doc's X ⊕ θ(G2)
+; set-semantics add: add a product only if not already present — the doc's X ⊕ θ(G2)
 ; is set-union, so per-match firing that re-emits a shared head (e.g. one alignment per cited
-; edge) doesn't duplicate it. No-op for the old aggregating rules (their products are unique).
+; edge) doesn't duplicate it.
 (= (present? $ws $a) (case (collapse (match $ws $a $a)) ((() False) ($x True))))
 (= (add-all $ws $ps) (case $ps ((() done) ($ne (let $h (car-atom $ps) (let $z (if (present? $ws $h) done (add-atom $ws $h)) (add-all $ws (cdr-atom $ps))))))))
 (= (fire $ws $rule $key $cost $prods $seq) (let $a (add-all $ws $prods) (let $b (debit-all $ws $cost) (add-atom $ws (event $seq $rule $key)))))
@@ -37,31 +39,22 @@
 ; generic list util used by the proposers
 (= (filter-out $x $l) (case $l ((() ()) ($ne (let $h (car-atom $l) (if (== $h $x) (filter-out $x (cdr-atom $l)) (cons-atom $h (filter-out $x (cdr-atom $l)))))))))
 
-; --- D3: the generic RULE-AS-DATA interpreter (lifts hand-written proposers to data)
-; A rule body is ONE atom `(crule R KEY CLAUSES GUARDS COST PRODS)`:
-;   CLAUSES  positive join literals — each `(at SPACE PAT)` (SPACE ∈ {self,ws}) or bare
-;            PAT (= `at self`). Their nested `match` binds the rule's variables. (Verified:
-;            a clause pulled from the stored atom binds against the space AND co-refers
-;            with the same variables in KEY/GUARDS/PRODS — that is what makes this data-driven.)
-;   GUARDS   list of `(exists SUB)` / `(absent SUB)` — existence / negation-as-failure checks.
-;   COST     typed-fuel cost list (componentwise, as the engine's `afford` expects).
-;   PRODS    product templates — each a literal fact, or `(collect SUB SUBPRODS)` which
-;            emits SUBPRODS once per match of SUB (aggregation: one candidate bundling many).
-; KEY / GUARDS / PRODS are templates over the variables CLAUSES binds. The crule is read
-; from &self (the IR/genome); $ws is the worker space (run products + the `at ws` reads).
-;
-; TWO PHASES — because Prolog `collapse`/findall COPIES its template and frees any
-; non-ground shared variable, so an aggregation or guard that runs while the join vars are
-; still logic variables silently matches *everything* (a real bug found building this):
-;   phase 1  `clause-join` folds nested `match` over CLAUSES and yields, per binding, an
-;            INERT `(hit KEY GUARDS COST PRODS)`. An inert term gets its variables fully
-;            ground-substituted (it is data, not reduced), so KEY/GUARDS/PRODS come out CONSTANTS.
-;   phase 2  over those ground values: check GUARDS, then build PRODS (expanding collects).
-;            Every `collapse` now sees only constants — no variable capture, no leak.
-; (let-force the resolved space + head clause; match/cons/collapse don't reduce their args.)
+; --- the generic RULE-AS-DATA interpreter ----------------------------------
+; A rule's runnable form is one atom `(crule R KEY CLAUSES COST PRODS)` (the converter below
+; builds it from the canonical rule-lhs/rule-rhs IR): CLAUSES = a conjunctive join, each
+; `(at SPACE PAT)` (SPACE ∈ {self,ws}) or bare PAT (= `at self`); KEY/PRODS = templates over
+; the variables CLAUSES binds. `clause-join` folds nested `match` over CLAUSES and yields, per
+; binding, the (variable-bound) `(cand KEY COST PRODS)` — reproducing a hand-written proposer's
+; nested match, driven by data. (Verified: a clause pulled from the stored atom binds against the
+; space AND co-refers with the same vars in KEY/PRODS.) **Per-match** (MSC §4.3): one candidate per
+; LHS match θ, with PRODS = θ(G2). Rules carry NO negation or aggregation — those live in the data
+; (positive vocab, e.g. `role-relation`) / the evaluator (abstain + set-based scoring). So a
+; single pass suffices.
+; (`concat-lists` is a generic list util — also used by the converter; let-force the resolved
+; space + head clause, since `match` doesn't reduce its pattern arg.)
+(= (concat-lists $a $b) (case $a ((() $b) ($ne (cons-atom (car-atom $a) (concat-lists (cdr-atom $a) $b))))))
 (= (resolve-space self $ws) &self)
 (= (resolve-space ws   $ws) $ws)
-; phase 1: the positive conjunctive join (binds vars), threading $out untouched to the base.
 (= (clause-join $ws $lits $out)
    (case $lits
      ((() $out)
@@ -71,32 +64,12 @@
                  (((at $sp $pat) (let $space (resolve-space $sp $ws)
                                    (match $space $pat (clause-join $ws $rest $out))))
                   ($bare         (match &self $bare (clause-join $ws $rest $out)))))))))))
-; phase 2a: guards, evaluated over the ground captured values (collapse sees only constants).
-(= (sub-empty? $ws $sub) (case (collapse (clause-join $ws $sub yes)) ((() True) ($any False))))
-(= (guard-ok? $ws (exists $sub)) (if (sub-empty? $ws $sub) False True))
-(= (guard-ok? $ws (absent $sub)) (sub-empty? $ws $sub))
-(= (guards-pass? $ws $guards)
-   (case $guards ((() True)
-      ($ne (let $g (car-atom $guards) (if (guard-ok? $ws $g) (guards-pass? $ws (cdr-atom $guards)) False))))))
-; phase 2b: build the product list, expanding each (collect SUB SUBPRODS) into all its matches.
-(= (concat-lists $a $b) (case $a ((() $b) ($ne (cons-atom (car-atom $a) (concat-lists (cdr-atom $a) $b))))))
-(= (expand-prod $ws $h)
-   (case $h (((collect $sub $subprods) (collapse (clause-join $ws $sub (superpose $subprods))))
-             ($lit (cons-atom $lit ())))))
-(= (build-prods $ws $prods)
-   (case $prods ((() ())
-      ($ne (let $hh (car-atom $prods) (concat-lists (expand-prod $ws $hh) (build-prods $ws (cdr-atom $prods))))))))
-; the proposer: phase 1 (inert ground capture) then phase 2 (guards + build) -> (cand …) | skip.
 (= (rule-cands $ws $rule)
-   (let (hit $k $guards $cost $prods)
-        (match &self (crule $rule $key $clauses $guards0 $cost0 $prods0)
-           (clause-join $ws $clauses (hit $key $guards0 $cost0 $prods0)))
-        (if (guards-pass? $ws $guards)
-            (let $built (build-prods $ws $prods) (cand $k $cost $built))
-            skip)))
+   (match &self (crule $rule $key $clauses $cost $prods)
+     (clause-join $ws $clauses (cand $key $cost $prods))))
 
 ; ===========================================================================
-; D9: CANONICAL-IR RULES + CONVERTER + GENERIC RUN (the "lifted" source-of-truth form)
+; CANONICAL-IR RULES + CONVERTER + GENERIC RUN (the "lifted" source-of-truth form)
 ; ---------------------------------------------------------------------------
 ; A rule's SOURCE OF TRUTH is the backend-neutral canonical IR (separate facts):
 ;   (rule-lhs R (clause …))   clauses = `(at SPACE PAT)` / bare PAT, with `(var Name)` vars
@@ -119,13 +92,13 @@
 (= (cost-of $R) (collapse (match &self (rule-token-cost $R $tok $n) ($tok $n))))
 ; convert ONE rule's canonical IR -> a runnable (crule …) added to &self (idempotent). KEY =
 ; the (instantiated) product list — unique per match, so per-edge firings stay distinct.
-(= (crule-present? $R) (case (collapse (match &self (crule $R $k $c $g $co $p) yes)) ((() False) ($x True))))
+(= (crule-present? $R) (case (collapse (match &self (crule $R $k $c $co $p) yes)) ((() False) ($x True))))
 (= (convert-rule $R)
    (if (crule-present? $R) done
        (match &self (rule-lhs $R $lhs) (match &self (rule-rhs $R $rhs)
          (let (both $clauses $prods) (to-vars (both $lhs $rhs))
            (let $cost (cost-of $R)
-             (let $z (add-atom &self (crule $R $prods $clauses () $cost $prods)) done)))))))
+             (let $z (add-atom &self (crule $R $prods $clauses $cost $prods)) done)))))))
 (= (express) (express-rules (collapse (match &self (rule-lhs $R $lhs) $R))))
 (= (express-rules $l) (if (== $l ()) done (let $z (convert-rule (car-atom $l)) (express-rules (cdr-atom $l)))))
 ; generic data-driven run: express the genome, then walk rules in rule-priority order.

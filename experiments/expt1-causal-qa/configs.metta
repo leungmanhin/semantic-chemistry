@@ -1,8 +1,7 @@
 ; Experiment 1 — CONFIGS, pure portable facts. Two sections:
 ;  (1) causal-QA DOMAIN MAPPINGS — edge clusters + q-word intent map. Family knowledge
-;      (reusable across causal-QA experiments); the PeTTa proposers read these as facts,
-;      Python uses its own constants + reads edge-cluster. Factor to a shared file when a
-;      second causal-QA experiment appears.
+;      (reusable across causal-QA experiments), read as facts by the rules + evaluator.
+;      Factor to a shared file when a second causal-QA experiment appears.
 ;  (2) RUN CONFIG — Exp-1 instance: clamps, chamber, worker, snapshot, seed.
 
 ; --- (1) domain mappings -------------------------------------------------------
@@ -29,7 +28,7 @@
 (explanatory physical-cause)
 (explanatory intentional)
 ; role relations (non-causal participant edges) — the POSITIVE complement of edge-cluster,
-; so role-completion (D9 R_complete) matches them without a negation (see [[design-decisions]] D9).
+; so role-completion (R_complete) matches them without a negation.
 (role-relation Agent)
 (role-relation Experiencer)
 (role-relation Theme)
@@ -46,15 +45,15 @@
 (clamp-coeff CL_antecedent match 1.0)
 (clamp-coeff CL_antecedent unsupportedness 2.0)
 (clamp-coeff CL_antecedent redundancy 1.0)
-(clamp-token CL_antecedent skeleton-match tau_graph_match)
-(clamp-token CL_antecedent causal-citation tau_causal)
+(clamp-token CL_antecedent skeleton-match gm)
+(clamp-token CL_antecedent causal-citation ci)
 (clamp-scope CL_antecedent CH_expt1)
 
 (clamp CL_goal)
 (clamp-class CL_goal intentional)
 (clamp-coeff CL_goal match 1.0)
 (clamp-coeff CL_goal unsupportedness 2.0)
-(clamp-token CL_goal skeleton-match tau_graph_match)
+(clamp-token CL_goal skeleton-match gm)
 (clamp-scope CL_goal CH_expt1)
 (chamber-graph CH_expt1 V7g)
 (chamber-graph CH_expt1 V3g)

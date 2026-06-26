@@ -1,8 +1,8 @@
 ; ===========================================================================
-; P4.3 (ii) — acs-scan + replay WORKERS: the P2 ACS-detection port (TECAN T3).
+; P4.3 (ii) — acs-scan + replay WORKERS: the P2 ACS-detection (TECAN T3).
 ; ---------------------------------------------------------------------------
-; The P2 mortal-ACS certification (src/acs_detect.py) as worker kinds over the
-; separate-space machinery. Three findings reproduced, all 14 tests (canonical per-match form):
+; The P2 mortal-ACS certification (= TECAN T3) as worker kinds over the
+; separate-space machinery. Three findings, all 14 tests (canonical per-match form):
 ;  * REPLAY/ABLATION (cond 4): suppress one rule in its own space, generous fuel;
 ;    R_qtype/R_align/R_project are load-bearing (answers collapse), R_complete is
 ;    INERT (6->6, 0 reward impact) — the same dead-weight rule P3 prunes.
@@ -12,16 +12,13 @@
 ;  * SURPLUS (cond 3) + PROMOTION: income (eq-17 mint by clamp class) - spend
 ;    (firings) = +5 under CL_antecedent vs -4 under CL_goal; the SAME loop is
 ;    PROMOTED under one clamp and REJECTED under the other (clamp-switch at the
-;    ACS level). Ablation/SCC are exactly what the worker isolation (D6) enables.
+;    ACS level). Ablation/SCC are exactly what the worker isolation enables.
 ;
 ; Run:  sh ../PeTTa/run.sh petta/acs_scan.metta < /dev/null \
 ;          2>&1 | grep should   # fourteen ✅
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")
-!(import! &self "experiments/expt1-causal-qa/molecules.metta")
-!(import! &self "experiments/expt1-causal-qa/tasks.metta")
-!(import! &self "experiments/expt1-causal-qa/configs.metta")
-!(import! &self "experiments/expt1-causal-qa/rules.metta")
+!(import! &self "experiments/expt1-causal-qa/load.metta")
 !(import! &self "petta/evaluator_defs.metta")  ; covered/anssize/skelsize/would-mint/gm-income/gm-spend/count-answers
 
 ; ===========================================================================

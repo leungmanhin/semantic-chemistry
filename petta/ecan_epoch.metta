@@ -1,7 +1,7 @@
 ; ===========================================================================
 ; P4.3 (i) — ecan-epoch WORKER: the P1 metabolic-closure loop (TECAN T2 loop).
 ; ---------------------------------------------------------------------------
-; The first multi-run worker kind. An epoch = [chamber phase: run the kernel to
+; A multi-run worker kind. An epoch = [chamber phase: run the kernel to
 ; quiescence/starvation on $ws] -> [evaluator phase: score the NEW answers by
 ; eq-17 Match, mint typed fuel by the active clamp, CREDIT it back into $ws's
 ; fuel ledger] -> repeat while there is progress AND fresh fuel. This is what
@@ -15,16 +15,13 @@
 ;
 ; Demonstration (constrained CLOSURE seed gm=15): feedback OFF (one pass, no mint)
 ; starves; feedback ON (the epoch loop) earns fuel by answering and reaches more
-; answers. ON > OFF == "minting funds further computation" (cf. src/evaluator.py).
+; answers. ON > OFF == "minting funds further computation".
 ;
 ; Run:  sh ../PeTTa/run.sh petta/ecan_epoch.metta < /dev/null \
 ;          2>&1 | grep should   # six ✅ (OFF: 1 answer, starved gm=0 | ON: 6 answers, surplus gm=16)
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")
-!(import! &self "experiments/expt1-causal-qa/molecules.metta")
-!(import! &self "experiments/expt1-causal-qa/tasks.metta")
-!(import! &self "experiments/expt1-causal-qa/configs.metta")
-!(import! &self "experiments/expt1-causal-qa/rules.metta")
+!(import! &self "experiments/expt1-causal-qa/load.metta")
 !(import! &self "petta/evaluator_defs.metta")  ; covered/anssize/skelsize/would-mint/gm-income/gm-spend/count-answers
 
 ; --- the eq-17 Match mint under the CL_antecedent clamp = would-mint at physical-cause

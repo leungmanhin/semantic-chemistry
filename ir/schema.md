@@ -13,7 +13,7 @@ The facts below are the canonical IR. They are stored as **bare portable S-expre
 - **Relation name first, grounded keys next, variables/values at the suffix** (MORK prefix-friendly schema discipline — keeps the trie prefix-shared and matches fast).
 - One fact = one tuple. Multi-valued attributes (a fuel vector, a rule's token costs) are **expanded into one fact per element**, never packed into a list — so they index and diff cleanly.
 - **IDs are opaque symbols** with a type prefix by convention: `G_*` graph, `N_*`/`n_*` node, `E_*`/`e_*` edge, `R*` rule, `O*` organism, `GNM*` genome, `RS*` ruleset, `CH_*` chamber, `W*` worker, `SNAP*` snapshot, `SEED*` seed, `LOG*` event log, `B*` binding. IDs are globally unique within a run.
-- **Token-type symbols** follow the **TECAN typed alphabet** (TECAN §4.1 general + §8.4 semantic): `τ_graph_match`, `τ_causal`, `τ_pln_deduction`, `τ_compression`, `τ_paraphrase`, `τ_dequote`, … — written **ASCII** as `tau_graph_match`, `tau_causal`, … (literal `τ` avoided for MORK byte-safety). The set is extensible; domain clamps/chambers add more. (Exp-1 currently uses `tau_graph_match` + `tau_causal`.)
+- **Token-type symbols** follow the **TECAN typed alphabet** (TECAN §4.1 general + §8.4 semantic): `τ_graph_match`, `τ_causal`, `τ_pln_deduction`, `τ_compression`, `τ_paraphrase`, `τ_dequote`, … — written **ASCII** as `tau_graph_match`, `tau_causal`, … (literal `τ` avoided for MORK byte-safety). The set is extensible; domain clamps/chambers add more. (Exp-1 uses `tau_graph_match` + `tau_causal`; the **PeTTa executor abbreviates them to `gm` / `ci`** in its fact files + engine — a documented 1:1 alias, with `tau_*` the canonical name. A backend may use either, since the engine is generic over the token symbol.)
 - Truth values are two trailing reals `<strength> <confidence>` (PLN `stv`), each in `[0,1]`.
 
 ---
@@ -44,19 +44,13 @@ A rule is the fuel-aware form `C ^ G1 ^ HasFuel(O,R) ==> G2 ^ ConsumeFuel(O,R) ^
 | Fact | Meaning |
 |------|---------|
 | `(sem-rule R)` | Declares rule `R`. |
-| `(rule-lhs R Glhs)` | LHS pattern graph (the reactant to match, `G1`). |
-| `(rule-rhs R Grhs)` | RHS product graph (`G2`) — added on firing. Shares `node-var` names with the LHS. |
+| `(rule-lhs R (clauses…))` | The match `C ^ G1`: a list of `(at SPACE PAT)` clauses (bare `PAT` = `at self`) with `(var Name)` variable markers. (Per-match; see the note below.) |
+| `(rule-rhs R (prods…))` | The products `G2`: a list of product templates over the LHS variables — one firing per LHS match θ adds `θ(G2)` (set-union). |
 | `(rule-context R C)` | Context/chamber tag the rule is licensed to fire in (the `C` of `C ^ G1`). A rule may list ≥1. |
 | `(rule-tv R intensional-implication s c)` | The rule's PLN intensional-implication strength `s_C(G1,G2)` + confidence. |
 | `(rule-token-cost R token-type n)` | One component of the cost vector `κ_R` — firing consumes `n` of `token-type`. **One fact per token type**; absent type ⇒ cost 0. |
 
-> **Realized executable rule body — `crule` (D3, 2026-06-19).** The `rule-lhs`/`rule-rhs` rows above are the *sketch* (a rule as a pair of sem-graphs). The executable rules of Exp-1 are richer than graph-rewrite — they join across **non-graph** fact types, guard on existence/negation, and **aggregate** many matches into one product — so the realized, backend-neutral form is a single atom:
-> `(crule R KEY CLAUSES GUARDS COST PRODS)` (defined + interpreted in `petta/kernel_defs.metta`).
-> - **CLAUSES** — the conjunctive match (`C ^ G1`): a list of `(at SPACE PAT)` literals (`SPACE ∈ {self, ws}`; bare `PAT` = `at self`). Subsumes `rule-lhs`.
-> - **GUARDS** — `(exists SUB)` / `(absent SUB)` existence & negation-as-failure checks (the part a bare sem-graph LHS can't express).
-> - **PRODS** — the products (`G2`): literal facts and/or `(collect SUB SUBPRODS)` (emit SUBPRODS once per match of SUB — aggregation). Subsumes `rule-rhs`.
-> - **KEY** — the unique firing key template; **COST** — the inline `κ_R` (today this duplicates `rule-token-cost`; reconciling the two — and the `gm`/`ci` ↔ `tau_*` token names — is a pending cleanup).
-> `KEY`/`GUARDS`/`PRODS` are **templates over the variables `CLAUSES` binds**. The whole rule is **one atom** because variable co-reference (the same `$q` in a clause and in `PRODS`) only holds within a single stored atom — the backend renames variables consistently per-atom. `rule-context`/`rule-tv` remain separate annotations on `R`. The interpreter runs in **two phases** (capture an inert ground binding, then guard + build) to avoid `collapse`/`findall` freeing non-ground shared variables — see the header comment in `kernel_defs.metta`. **Compliance:** a future MeTTa-IL backend reads these same `crule` facts. *(P0/P1 status: all five Exp-1 rules are `crule` data in `experiments/expt1-causal-qa/rules.metta`; the legacy `rule-lhs`/`rule-rhs` rows are retained for the eventual pure-sem-graph rules a parser may emit.)*
+> **Realized rule form — canonical `rule-lhs`/`rule-rhs`, per-match (2026-06-25).** The rules ARE the `rule-lhs`/`rule-rhs` facts above, stored in **per-match `C ^ G1 ==> G2`** form (MSC §4.3 eq 12–16: one firing per match θ, `X' = X ⊕ θ(G2)` set-union). The shapes are richer than a single sem-graph: a clause is `(at SPACE PAT)` (`SPACE ∈ {self, ws}`; bare `PAT` = `at self`) and a variable is the inline data marker `(var Name)` (the analog of `node-var`). So `(rule-lhs R (clauses…))` is the conjunctive match (`C ^ G1`) and `(rule-rhs R (prods…))` is the products (`G2`). The engine (`petta/kernel_defs.metta`) holds a **converter** that, at genome-expression time, mints co-referent PeTTa match-vars from the `(var Name)` markers and assembles each rule into a one-atom **runnable** view `(crule R KEY CLAUSES COST PRODS)` — an engine-internal compiled form, NOT the source of truth (it is one atom there only because per-atom variable co-reference requires it). What is deliberately **not** in a rule: **negation** is precomputed as positive vocabulary (e.g. `role-relation`, the non-causal complement) or handled by the evaluator (**abstain is no soma rule** — the alignment rule simply doesn't match, and the evaluator scores the absence); **aggregation** lives in the evaluator's set-based scoring (cites accumulate as separate facts), not in the rule. `rule-context`/`rule-priority`/`rule-token-cost`/`rule-tv` are separate annotations on `R`. **Compliance:** a future MeTTa-IL backend reads these same `rule-lhs`/`rule-rhs` facts. *(Status: the four Exp-1 rules — `R_qtype`/`R_align`/`R_complete`/`R_project` — are canonical IR in `experiments/expt1-causal-qa/rules.metta`; the `compact-explanation-packer` is still TODO.)*
 
 ### 2.3 Organisms (the mortal units)
 
@@ -81,7 +75,7 @@ A rule is the fuel-aware form `C ^ G1 ^ HasFuel(O,R) ==> G2 ^ ConsumeFuel(O,R) ^
 | `(chamber-graph C G)` | Semantic graph `G` is part of the chamber's working state `X`. Membership changes as events add/remove products. |
 | `(chamber-life-history C strategy)` | `strategy ∈ {r-like, K-like, …}` on the life-history simplex (MSC §4.6). Aelmere ⇒ `r-like`. |
 
-> **Known IR evolution — `chamber-hot-rule` → typed attention + computed gate (deferred to D3).** `(chamber-hot-rule C R)` is a **P0 boolean placeholder**: a degenerate collapse of "attention above the hot threshold," hand-asserted because Exp-1 has one chamber and no attention dynamics (the context and attention filters are inert here — only fuel gates firing). Intended end-state, in two parts: (1) **stored *typed-attention* state** per worker — a mutable, per-worker fact shaped like `(fuel …)` (decays / pays rent), and **typed** per TECAN (scalar ECAN STI → typed, causally-priced attention), e.g. `(attention R token-type v)`; (2) the **computed gate** `Gate_C(R,O,X)` already specified at §2.6 (`event-gate`) and §3 step 3 (MSC eq 24) as the actual fire decision. So `chamber-hot-rule` does **not** become a stored scalar STI — it *dissolves into evaluating the gate* over rule facts (`rule-tv`, attention, fuel, ACS-membership), the way `afford` is computed over `fuel` facts. Implement when **D3** lands (the gate needs `rule-tv`/`rule-lhs` as data) **and** a multi-chamber experiment (Exp 2) can exercise it; doing it sooner yields an inert, untested placeholder.
+> **Known IR evolution — `chamber-hot-rule` → typed attention + computed gate (deferred).** `(chamber-hot-rule C R)` is a **P0 boolean placeholder**: a degenerate collapse of "attention above the hot threshold," hand-asserted because Exp-1 has one chamber and no attention dynamics (the context and attention filters are inert here — only fuel gates firing). Intended end-state, in two parts: (1) **stored *typed-attention* state** per worker — a mutable, per-worker fact shaped like `(fuel …)` (decays / pays rent), and **typed** per TECAN (scalar ECAN STI → typed, causally-priced attention), e.g. `(attention R token-type v)`; (2) the **computed gate** `Gate_C(R,O,X)` already specified at §2.6 (`event-gate`) and §3 step 3 (MSC eq 24) as the actual fire decision. So `chamber-hot-rule` does **not** become a stored scalar STI — it *dissolves into evaluating the gate* over rule facts (`rule-tv`, attention, fuel, ACS-membership), the way `afford` is computed over `fuel` facts. Implement when a multi-chamber experiment (Exp 2) can exercise it — the gate reads `rule-tv`/`rule-lhs` as data (now available); doing it sooner yields an inert, untested placeholder.
 
 ### 2.5 Workers + replay handles
 
@@ -176,7 +170,7 @@ The Experiment-1 toy causal-QA chamber (MSC §7.1) adds a task layer on top of t
 
 ### 2.9 ACS detection + promotion (Experiment-1 layer; P2 output)
 
-P2 (`src/acs_detect.py`, = TECAN T3) certifies whether a rule loop is a **mortal semantic ACS** (the 5 conditions of MSC / TECAN eq 67) and promotes it only if it earns its keep. Outputs (written by the ACS-detector, not the soma):
+P2 (`petta/acs_scan.metta`, = TECAN T3) certifies whether a rule loop is a **mortal semantic ACS** (the 5 conditions of MSC / TECAN eq 67) and promotes it only if it earns its keep. Outputs (written by the ACS-detector, not the soma):
 
 | Fact | Meaning |
 |------|---------|
@@ -191,7 +185,7 @@ P2 (`src/acs_detect.py`, = TECAN T3) certifies whether a rule loop is a **mortal
 
 ### 2.10 Lineage + reproduction (Experiment-1 layer; P3 output)
 
-P3 (`src/evolve.py`, = TECAN T6) mutates / recombines the promoted ACS's quoted genome, selects by surplus under matched replay, and reproduces. Lineage outputs:
+P3 (`petta/selection.metta`, = TECAN T6) mutates / recombines the promoted ACS's quoted genome, selects by surplus under matched replay, and reproduces. Lineage outputs:
 
 | Fact | Meaning |
 |------|---------|
@@ -247,11 +241,11 @@ A change is IR-legal only if it keeps all of these true:
 
 ---
 
-## 6. What P0 deliberately leaves out (later stages)
+## 6. Beyond the P0 kernel (later stages)
 
-- **Evaluator-minted fuel + clamps** → P1 — **DONE** (`src/evaluator.py`): eq-17 scoring, clamp-gated typed-fuel minting (never soma-minted), and the chamber↔evaluator epoch loop that credits earned fuel back, closing the metabolic loop. The clamp-switch (`CL_antecedent` ↔ `CL_goal`) flips which strategy runs a surplus.
-- **ACS detection + metabolic surplus + causal replay** → P2 — **DONE** (`src/acs_detect.py`, = TECAN T3): builds the rule-motif graph from the log, certifies the 5-condition mortal ACS (closure is *metabolic* — the cycle closes only via the evaluator), computes surplus, runs paired-replay ablation (found `R_complete` inert), reifies the genome, and promotes (clamp-switch: promoted under `CL_antecedent`, rejected under `CL_goal`). Facts in §2.9.
-- **Genome mutation / reproduction** → P3 — **DONE** (`src/evolve.py`, = TECAN T6): mutates / recombines the quoted genome as data, expresses member rules via the kernel's `ablate` hook, scores offspring by surplus under matched replay, and reproduces (surplus-funded, token-gated dequotation). Selection rediscovered P2's inert `R_complete` (pruned it: `+4→+5`) and rejected loop-breaking mutations; recombination rescues complementary defective genomes; under `CL_goal` the founder can't afford to reproduce. Facts in §2.10.
+- **Evaluator-minted fuel + clamps** → P1 (`petta/evaluator.metta`): eq-17 scoring, clamp-gated typed-fuel minting (never soma-minted), and the chamber↔evaluator epoch loop that credits earned fuel back, closing the metabolic loop. The clamp-switch (`CL_antecedent` ↔ `CL_goal`) flips which strategy runs a surplus.
+- **ACS detection + metabolic surplus + causal replay** → P2 (`petta/acs_scan.metta`, = TECAN T3): builds the rule-motif graph from the log, certifies the 5-condition mortal ACS (closure is *metabolic* — the cycle closes only via the evaluator), computes surplus, runs paired-replay ablation (which marks inert members such as `R_complete`), reifies the genome, and promotes (clamp-switch: promoted under `CL_antecedent`, rejected under `CL_goal`). Facts in §2.9.
+- **Genome mutation / reproduction** → P3 (`petta/selection.metta`, = TECAN T6): mutates / recombines the quoted genome as data, expresses member rules via `run-ablate` by membership, scores offspring by surplus under matched replay, and reproduces (surplus-funded, token-gated dequotation). Selection prunes inert members (e.g. `R_complete`, surplus `+5→+6`) and rejects loop-breaking mutations; recombination rescues complementary defective genomes; under `CL_goal` the founder cannot afford to reproduce. Facts in §2.10.
 - **Multiple workers, reducers, ECAN epochs** → P4.
 - **MeTTa-IL executor** → later; the whole point of this schema is that it drops in by log-equivalence, not rewrite.
 
@@ -262,7 +256,7 @@ A change is IR-legal only if it keeps all of these true:
 - `schema.md` — this spec (authoritative).
 - **Worked examples** (load + round-trip in PeTTa) — the Experiment-1 fixtures:
   - `../experiments/expt1-causal-qa/{molecules,tasks,configs}.metta` — the IR (5 vignettes): semantic graphs · QA tasks + gold skeletons · domain mappings (edge-cluster/intent-map) + clamps + chamber/worker. Loaded together by `load.metta`.
-  - `../experiments/expt1-causal-qa/genome.metta` — the organism `O_qa`: ruleset membership + typed fuel + rule headers (§2.2–2.3).
-- **Reference engine** over these facts: `../src/` (`kernel.py` = P0 fuel-gated loop; `evaluator.py` = P1 scoring/minting). Generated event logs land in `../runs/`.
+  - `../experiments/expt1-causal-qa/rules.metta` — the genome: the four causal-QA rules as canonical per-match `rule-lhs`/`rule-rhs` IR with `(var Name)` markers (§2.2).
+- **Reference engine** over these facts: `../petta/` — `kernel_defs.metta` (the generic engine + the converter + `run-rules`/`run-ablate`) and `evaluator_defs.metta` (eq-17 scoring); driven by the per-stage demos `kernel.metta` (P0) · `evaluator.metta` (P1) · `acs_scan.metta` (P2) · `selection.metta` (P3) · `workers.metta`/`ecan_epoch.metta`/`backend_render.metta` (P4).
 
 See the corpus these rules come from: `experiments/fiction-world-v0/` (world_rules R1–R5 = Cycle A).

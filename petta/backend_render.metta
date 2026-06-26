@@ -12,16 +12,13 @@
 ;       not wall-clock; backend provenance recorded; §6.4 contract honoured);
 ;   (c) drives the PeTTa backend to exactly the log it specifies (IR -> backend -> log).
 ; We have only the PeTTa executor today, so the metta-il side is the rendered SPEC,
-; not a run (the Python prototype that the eq-30 check rode on has been retired).
+; not a run.
 ;
 ; Run:  sh ../PeTTa/run.sh petta/backend_render.metta < /dev/null \
 ;          2>&1 | grep should   # six ✅
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")
-!(import! &self "experiments/expt1-causal-qa/molecules.metta")
-!(import! &self "experiments/expt1-causal-qa/tasks.metta")
-!(import! &self "experiments/expt1-causal-qa/configs.metta")
-!(import! &self "experiments/expt1-causal-qa/rules.metta")
+!(import! &self "experiments/expt1-causal-qa/load.metta")
 
 ; --- one snapshot, two workers — IDENTICAL IR except the backend tag ------------
 !(bind! &ws_p (new-space))
@@ -55,4 +52,4 @@
 ; --- (c) drive the PeTTa backend FROM the IR -> the log the IR specifies ---------
 (= (seed-from-snapshot $w $ws) (let $snap (match &self (worker-snapshot $w $s) $s) (add-all $ws (collapse (match &self (snapshot-fuel $snap $t $n) (fuel $t $n))))))
 (= (run-petta $w) (let $ws (match &self (worker-space $w $sp) $sp) (let $z (seed-from-snapshot $w $ws) (let $r (run-rules $ws) (foldall + (match $ws (event $s $rule $k) 1) 0)))))
-!(test (run-petta W_p) 19)   ; the PeTTa executor reproduces the canonical P0 mortal log (19 firings) from the portable IR
+!(test (run-petta W_p) 19)   ; the PeTTa executor produces the canonical P0 mortal log (19 firings) from the portable IR

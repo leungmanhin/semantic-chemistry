@@ -1,5 +1,5 @@
 ; ===========================================================================
-; THE UNIFIED MORTAL KERNEL in PeTTa — P0 demo, CANONICAL per-match form (D9).
+; THE UNIFIED MORTAL KERNEL in PeTTa — P0 demo, CANONICAL per-match form.
 ; ---------------------------------------------------------------------------
 ; The whole P0 kernel: the generic ENGINE (kernel_defs) drives the causal-QA genome
 ; EXPRESSED from its CANONICAL IR (rules.metta: rule-lhs/rule-rhs + (var Name),
@@ -7,20 +7,16 @@
 ; crules via the converter) then walks the rules in rule-priority order, fuel-gating each
 ; firing (MSC §4.3 eq 12-16: one firing per match θ, X' = X ⊕ θ(G2) set-union).
 ;
-; Seeded gm 19 / ci 7 it reproduces P0 MORTALITY: 19 firings, 5 answers, and **Q7b STARVES**
+; Seeded gm 19 / ci 7 it shows P0 MORTALITY: 19 firings, 5 answers, and **Q7b STARVES**
 ; (aligned but unprojected — gm exhausts at the last projection). Per-match details: R_align
 ; fires once PER EDGE (7 cites; Q23 cites k1 AND k2 separately); abstain is NO soma rule (Q20
 ; produces nothing — the alignment rule simply doesn't match its focus); set-add dedups the
-; shared alignment head. (vs the old aggregating form: same Q7b-starves signature, re-baselined
-; firing economy — docs are the reference, not the retired Python prototype.)
+; shared alignment head.
 ;
 ; Run:  sh ../PeTTa/run.sh petta/kernel.metta < /dev/null 2>&1 | grep should     # ten ✅
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")
-!(import! &self "experiments/expt1-causal-qa/molecules.metta")
-!(import! &self "experiments/expt1-causal-qa/tasks.metta")
-!(import! &self "experiments/expt1-causal-qa/configs.metta")
-!(import! &self "experiments/expt1-causal-qa/rules.metta")
+!(import! &self "experiments/expt1-causal-qa/load.metta")
 
 ; gm 19 (6 qtype + 7 align + 1 complete + 5 project, then starves) / ci 7 (7 align edges)
 !(add-atom &self (fuel gm 19))

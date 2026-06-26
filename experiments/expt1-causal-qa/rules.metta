@@ -1,16 +1,14 @@
-; Experiment 1 — RULES in the CANONICAL per-match `C ^ G1 ==> G2` IR (D9). The genome's
+; Experiment 1 — RULES in the CANONICAL per-match `C ^ G1 ==> G2` IR. The genome's
 ; source of truth: separate `rule-lhs`/`rule-rhs` facts with `(var Name)` markers (named
 ; variables AS DATA), backend-neutral. The engine's converter (petta/kernel_defs.metta:
 ; express / convert-rule / to-vars) mints co-referent PeTTa match-vars and assembles each
 ; rule into the runnable `(crule …)` at genome-expression time. Rules fire PER-MATCH θ
 ; (MSC §4.3 eq 12–16): one firing per LHS match, `X' = X ⊕ θ(G2)` (set-union).
 ;
-; This is THE genome now (the D9 swap is complete): the old D3 `crule` form, the
-; causal_qa_rules proposers, and the Python prototype are all gone; every petta/ module
-; runs these rules via the engine's converter + generic run. Tokens: gm = tau_graph_match,
-; ci = tau_causal. (See [[design-decisions]] D9.)
+; Every petta/ module runs these rules via the engine's converter + generic run.
+; Tokens: gm = tau_graph_match, ci = tau_causal.
 ;
-; vs the old form: abstain is NOT a rule (it's the alignment rule simply not matching +
+; Design notes: abstain is NOT a rule (it's the alignment rule simply not matching +
 ; the evaluator scoring the absence); align fires PER EDGE (no aggregation, no exists-guard
 ; — no edge ⇒ no match ⇒ no fire); complete's "rel is not causal" is the POSITIVE
 ; `(role-relation …)` vocabulary (configs.metta), not a negation.
