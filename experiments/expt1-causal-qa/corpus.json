@@ -1,0 +1,264 @@
+[
+  {
+    "id": "V1",
+    "statements": [
+      "Heavy rain fell all night.",
+      "By morning the low road was flooded."
+    ],
+    "questions": [
+      "Why was the low road flooded?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V2",
+    "statements": [
+      "An early frost settled over the garden.",
+      "The tomato plants blackened and died."
+    ],
+    "questions": [
+      "Why did the tomato plants die?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V3",
+    "statements": [
+      "The power went out during the storm.",
+      "The fridge stopped running, and by morning the food had spoiled."
+    ],
+    "questions": [
+      "How did the food end up spoiled?",
+      "Why did the food spoil?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V4",
+    "statements": [
+      "The waiter knocked the glass off the edge.",
+      "It hit the tiles and shattered."
+    ],
+    "questions": [
+      "What made the glass shatter?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V5",
+    "statements": [
+      "Snow piled up for days on the old barn.",
+      "The roof finally collapsed under the weight."
+    ],
+    "questions": [
+      "Why did the barn roof collapse?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V6",
+    "statements": [
+      "A long drought dried the hills.",
+      "The reservoir fell to a record low, so the town brought in water restrictions."
+    ],
+    "questions": [
+      "How did the town end up with water restrictions?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V7",
+    "statements": [
+      "Maria was out of milk.",
+      "She drove to the store to buy a carton."
+    ],
+    "questions": [
+      "Why did Maria drive to the store?",
+      "What did Maria drive to the store for?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V8",
+    "statements": [
+      "Tom's phone battery was dead.",
+      "He walked to a café to charge it."
+    ],
+    "questions": [
+      "Why did Tom walk to a café?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V9",
+    "statements": [
+      "Lena was cold.",
+      "She got up and closed the window to warm the room."
+    ],
+    "questions": [
+      "Why did Lena close the window?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V10",
+    "statements": [
+      "Sam was hungry after the run.",
+      "He made a sandwich to eat before work."
+    ],
+    "questions": [
+      "Why did Sam make a sandwich?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V11",
+    "statements": [
+      "Priya's basil was wilting on the sill.",
+      "She watered it to bring it back."
+    ],
+    "questions": [
+      "Why did Priya water the basil?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V12",
+    "statements": [
+      "Raj missed the morning bus.",
+      "He called a taxi to get to work on time."
+    ],
+    "questions": [
+      "Why did Raj call a taxi?",
+      "What did Raj call a taxi for?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V13",
+    "statements": [
+      "Nadia's laptop screen was cracked.",
+      "She took it to the repair shop to have it fixed."
+    ],
+    "questions": [
+      "Why did Nadia take her laptop to the repair shop?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V14",
+    "statements": [
+      "Omar thought it would rain later, so he took an umbrella when he left."
+    ],
+    "questions": [
+      "Why did Omar take an umbrella?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V15",
+    "statements": [
+      "Ella wanted to surprise her sister.",
+      "She baked a cake before the party."
+    ],
+    "questions": [
+      "Why did Ella bake a cake?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V16",
+    "statements": [
+      "The hikers believed the rope bridge was unsafe, so they took the long path around."
+    ],
+    "questions": [
+      "Why did the hikers take the long path?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V17",
+    "statements": [
+      "A fire started in the kitchen, but the sprinklers switched on, and it never spread to the rest of the house."
+    ],
+    "questions": [
+      "Why didn't the fire spread to the rest of the house?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V18",
+    "statements": [
+      "A hard frost was forecast, but the gardener covered the seedlings overnight, and they did not freeze."
+    ],
+    "questions": [
+      "Why didn't the seedlings freeze?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V19",
+    "statements": [
+      "Despite the heavy rain, the match went ahead, because the pitch drained well."
+    ],
+    "questions": [
+      "Why did the match go ahead despite the rain?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V20",
+    "statements": [
+      "The streetlights came on at dusk.",
+      "Maria drove to the store."
+    ],
+    "questions": [
+      "Why did Maria drive to the store?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V21",
+    "statements": [
+      "A black cat crossed the road in the morning.",
+      "That afternoon, Dan's car broke down."
+    ],
+    "questions": [
+      "Why did Dan's car break down?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V22",
+    "statements": [
+      "The clock struck noon.",
+      "The dog began to bark."
+    ],
+    "questions": [
+      "Why did the dog start barking?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V23",
+    "statements": [
+      "The cake came out dense.",
+      "The baker had used too little baking powder, and had overmixed the batter."
+    ],
+    "questions": [
+      "Why was the cake dense?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V24",
+    "statements": [
+      "The river flooded the valley.",
+      "Heavy rain had fallen for days, and the dam's gates had been left open."
+    ],
+    "questions": [
+      "Why did the river flood the valley?"
+    ],
+    "additional_info": []
+  }
+]
