@@ -16,8 +16,7 @@
           ($z3 (run-ablate $sp (cons-atom $skip ()))))
      (count-answers $sp)))
 
-; --- generic list / graph utils ---
-(= (member-of $x $l) (case $l ((() False) ($ne (if (== (car-atom $l) $x) True (member-of $x (cdr-atom $l)))))))
+; --- generic list / graph utils (list membership is kernel's `in-list?`) ---
 (= (app $a $b) (case $a ((() $b) ($ne (cons-atom (car-atom $a) (app (cdr-atom $a) $b))))))
 (= (len $l) (if (== $l ()) 0 (+ 1 (len (cdr-atom $l)))))
 
@@ -40,7 +39,7 @@
           ($ne (let $h (car-atom $frontier)
                     (if (== $h $goal)
                         True
-                        (if (member-of $h $seen)
+                        (if (in-list? $h $seen)
                             (any-reaches $g (cdr-atom $frontier) $goal $seen)
                             (any-reaches $g (app (succs $g $h) (cdr-atom $frontier)) $goal (cons-atom $h $seen)))))))))
 

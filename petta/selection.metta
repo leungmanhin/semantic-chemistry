@@ -6,9 +6,6 @@
 ; tests/selection_test.metta.
 ; ===========================================================================
 
-; generic list util: is $x a member of list $l?
-(= (member-of $x $l) (case $l ((() False) ($ne (if (== (car-atom $l) $x) True (member-of $x (cdr-atom $l)))))))
-
 ; all rules in the loaded genome (generic: every rule with a rule-lhs)
 (= (all-rules) (collapse (match &self (rule-lhs $R $lhs) $R)))
 
@@ -17,7 +14,7 @@
    (case $rules
          ((() ())
           ($ne (let $r (car-atom $rules)
-                    (if (member-of $r $g)
+                    (if (in-list? $r $g)
                         (non-members (cdr-atom $rules) $g)
                         (cons-atom $r (non-members (cdr-atom $rules) $g))))))))
 
@@ -38,7 +35,7 @@
    (case $b
          ((() $a)
           ($ne (let $h (car-atom $b)
-                    (if (member-of $h $a)
+                    (if (in-list? $h $a)
                         (union-genome $a (cdr-atom $b))
                         (union-genome (cons-atom $h $a) (cdr-atom $b))))))))
 

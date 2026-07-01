@@ -31,10 +31,10 @@
 !(test (len (fired-rules)) 4)                              ; all four rules fired
 !(test (reaches? &g_full R_project gm) True)              ; product -> candidate-answer -> E -> gm
 !(test (reaches? &g_full R_complete gm) False)            ; role-fill consumed by nothing -> dead-weight
-!(test (member-of R_qtype (acs-members &g_full (fired-rules))) True)
-!(test (member-of R_align (acs-members &g_full (fired-rules))) True)
-!(test (member-of R_project (acs-members &g_full (fired-rules))) True)
-!(test (member-of R_complete (acs-members &g_full (fired-rules))) False)
+!(test (in-list? R_qtype (acs-members &g_full (fired-rules))) True)
+!(test (in-list? R_align (acs-members &g_full (fired-rules))) True)
+!(test (in-list? R_project (acs-members &g_full (fired-rules))) True)
+!(test (in-list? R_complete (acs-members &g_full (fired-rules))) False)
 !(test (len (acs-members &g_full (fired-rules))) 3)       ; the ACS = {qtype, align, project}
 ; --- CLOSURE: metabolic, not structural (cycle only with the evaluator edge) ---
 !(test (cycle-through &g_full gm) True)                   ; rules + evaluator: closed cycle

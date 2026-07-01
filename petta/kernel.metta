@@ -74,7 +74,8 @@
             (car-atom $os))))
 
 ; the organism whose genome quotes ruleset $rs
-(= (owner-of-ruleset $rs) (match &self (quoted-ruleset $gnm $rs) (match &self (genome-of $o $gnm) $o)))
+(= (owner-of-ruleset $rs)
+   (match &self (quoted-ruleset $gnm $rs) (match &self (genome-of $o $gnm) $o)))
 
 ; the organism that fires rule $R — via ruleset membership, falling back to the sole organism
 (= (rule-organism $R)
@@ -89,10 +90,16 @@
 (= (attn-threshold) 1)
 
 ; every value in the list $vs is >= $thr (vacuously True on the empty list)
-(= (all-ge $vs $thr) (case $vs ((() True) ($ne (if (>= (car-atom $vs) $thr) (all-ge (cdr-atom $vs) $thr) False)))))
+(= (all-ge $vs $thr)
+   (case $vs
+         ((() True)
+          ($ne (if (>= (car-atom $vs) $thr)
+                   (all-ge (cdr-atom $vs) $thr)
+                   False)))))
 
 ; does rule $R clear the attention threshold? (vacuously True when it has no attention fact)
-(= (attn-ok? $R) (all-ge (collapse (match &self (attention $R $tok $v) $v)) (attn-threshold)))
+(= (attn-ok? $R)
+   (all-ge (collapse (match &self (attention $R $tok $v) $v)) (attn-threshold)))
 
 ; --- the computed GATE `Gate_C(R,O,X)` (MSC eq 24 / schema §3 step 3): the single
 ; fire-decision for a candidate, folding context eligibility + affordability + attention.
@@ -130,7 +137,8 @@
 
 ; fire-once-EVER: a (rule,key) that already has an event is skipped (idempotent re-run,
 ; so an epoch can re-enter the chamber after crediting fuel without redoing work).
-(= (fired? $ws $rule $key) (case (collapse (match $ws (event $s $rule $key) yes)) ((() False) ($any True))))
+(= (fired? $ws $rule $key)
+   (case (collapse (match $ws (event $s $rule $key) yes)) ((() False) ($any True))))
 
 ; walk a rule's candidate list for organism $O: skip already-fired candidates; fire the next
 ; iff the gate passes (then continue at seq+1); a shut gate halts this rule (cold / unaffordable
@@ -148,7 +156,10 @@
                             $seq)))))))
 
 ; generic list util: drop every occurrence of $x from list $l
-(= (filter-out $x $l) (case $l ((() ()) ($ne (let $h (car-atom $l) (if (== $h $x) (filter-out $x (cdr-atom $l)) (cons-atom $h (filter-out $x (cdr-atom $l)))))))))
+(= (filter-out $x $l)
+   (case $l
+         ((() ())
+          ($ne (let $h (car-atom $l) (if (== $h $x) (filter-out $x (cdr-atom $l)) (cons-atom $h (filter-out $x (cdr-atom $l)))))))))
 
 ; --- the generic RULE-AS-DATA interpreter ----------------------------------
 ; A rule's runnable form is one atom `(crule R KEY CLAUSES COST PRODS)` (the converter below
@@ -163,7 +174,9 @@
 ; single pass suffices.
 
 ; generic list util: append list $b onto list $a
-(= (concat-lists $a $b) (case $a ((() $b) ($ne (cons-atom (car-atom $a) (concat-lists (cdr-atom $a) $b))))))
+(= (concat-lists $a $b)
+   (case $a ((() $b)
+             ($ne (cons-atom (car-atom $a) (concat-lists (cdr-atom $a) $b))))))
 
 ; map a clause's SPACE tag (self / ws) to the actual space to match against
 (= (resolve-space self $ws) &self)
@@ -176,14 +189,14 @@
       ($ne (let* (($h (car-atom $lits))
                   ($rest (cdr-atom $lits)))
              (case $h
-               (((at $sp $pat) (let $space (resolve-space $sp $ws)
-                                 (match $space $pat (clause-join $ws $rest $out))))
-                ($bare         (match &self $bare (clause-join $ws $rest $out))))))))))
+               (((at $sp $pat)
+                     (let $space (resolve-space $sp $ws)
+                          (match $space $pat (clause-join $ws $rest $out))))
+                ($bare (match &self $bare (clause-join $ws $rest $out))))))))))
 
 ; enumerate rule $rule's candidates: pull its crule, join the clauses -> a (cand …) per match
 (= (rule-cands $ws $rule)
-   (match &self (crule $rule $key $clauses $cost $prods)
-     (clause-join $ws $clauses (cand $key $cost $prods))))
+   (match &self (crule $rule $key $clauses $cost $prods) (clause-join $ws $clauses (cand $key $cost $prods))))
 
 ; ===========================================================================
 ; CANONICAL-IR RULES + CONVERTER + GENERIC RUN (the "lifted" source-of-truth form)

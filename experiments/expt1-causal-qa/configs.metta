@@ -84,6 +84,9 @@
 (worker-output-log W_expt1 LOG_e1)
 (worker-clamp W_expt1 CL_antecedent)
 (snapshot SNAP_e1 CH_expt1)
+; the snapshot's fuel endowment — what a worker launched from it starts with
+(snapshot-fuel SNAP_e1 gm 30)
+(snapshot-fuel SNAP_e1 ci 10)
 (seed SEED_e1 7)
 (event-log LOG_e1)
 (log-chamber LOG_e1 CH_expt1)
