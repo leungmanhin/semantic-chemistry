@@ -19,8 +19,8 @@
 !(import! &self "petta/evaluator.metta")
 
 ; run the canonical genome to fixpoint (ample fuel -> all answers produced)
-!(add-atom &self (fuel gm 100))
-!(add-atom &self (fuel ci 100))
+!(add-atom &self (fuel O_qa gm 100))
+!(add-atom &self (fuel O_qa ci 100))
 !(run-rules &self)
 
 ; --- clamp-switch: the income an answer set earns under each clamp class ---------
@@ -30,5 +30,5 @@
 !(test (would-mint &self Q7a physical-cause physical-cause) 6)   ; exact cite match -> 6
 !(test (would-mint &self Q3a physical-cause physical-cause) 3)   ; multi-cite skeleton, 1 covered -> Match 0.5 -> 3
 !(test (would-mint &self Q23 physical-cause physical-cause) 6)   ; both cites covered (2/2)
-; --- abstain handled by the EVALUATOR (Q20 gold-abstain, soma produced no answer) ---
+; --- abstain handled by the EVALUATOR (Q20's graph-ideal is empty, soma produced no answer) ---
 !(test (abstain-income &self) 4)

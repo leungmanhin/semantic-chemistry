@@ -1,5 +1,5 @@
 ; ===========================================================================
-; P4.4 — BACKEND-RENDERING test: the worker IR is backend-neutral (MSC §11, §6.1;
+; BACKEND-RENDERING test: the worker IR is backend-neutral (MSC §11, §6.1;
 ;        schema §5 checklist; eq-30 log-equivalence). Closes P4.
 ; ---------------------------------------------------------------------------
 ; The worker IR is plain portable facts — (worker …)/(worker-kind …)/(worker-
@@ -50,6 +50,6 @@
 !(test (match &self (worker-backend W_il $b) $b) metta-il)
 
 ; --- (c) drive the PeTTa backend FROM the IR -> the log the IR specifies ---------
-(= (seed-from-snapshot $w $ws) (let $snap (match &self (worker-snapshot $w $s) $s) (add-all $ws (collapse (match &self (snapshot-fuel $snap $t $n) (fuel $t $n))))))
+(= (seed-from-snapshot $w $ws) (let $snap (match &self (worker-snapshot $w $s) $s) (let $O (the-organism) (add-all $ws (collapse (match &self (snapshot-fuel $snap $t $n) (fuel $O $t $n)))))))
 (= (run-petta $w) (let $ws (match &self (worker-space $w $sp) $sp) (let $z (seed-from-snapshot $w $ws) (let $r (run-rules $ws) (foldall + (match $ws (event $s $rule $k) 1) 0)))))
 !(test (run-petta W_p) 19)   ; the PeTTa executor produces the canonical P0 mortal log (19 firings) from the portable IR

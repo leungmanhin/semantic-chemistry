@@ -48,7 +48,7 @@ This directory is **data only** — pure portable facts loaded by `import!`. The
 | `corpus.json` | the 24 vignette texts + questions as structured JSON (`id` / `statements` / `questions` / `additional_info`) — the **input tier** (surface-marked parse target, parser-loadable) |
 | `molecules.metta` | pure-fact IR: the 5 parser-derived semantic graphs (parsed from `corpus.json`, adapted per `../../ir/parser_adapter.md`) |
 | `tasks.metta` | pure-fact IR: the **QA benchmark** — questions only (the 5); no gold answer content, the evaluator derives the target from the graph |
-| `configs.metta` | pure-fact IR: causal-QA **domain mappings** (edge-cluster, intent-map, …) + the Exp-1 **run config** (clamps, chamber, worker, seed) |
+| `configs.metta` | pure-fact IR: causal-QA **domain mappings** (edge-cluster, intent-map, …) + the Exp-1 **run config** (organism `O_qa` owning the genome, clamps, chamber, worker, seed) |
 | `rules.metta` | pure-fact IR: **the genome** — the four causal-QA rules as canonical per-match `rule-lhs`/`rule-rhs` IR with `(var Name)` markers |
 | `load.metta` | the **data loader** — imports molecules + tasks + configs + rules into `&self` (PeTTa side) |
 | `README.md` | this file (+ the hand-authored-graph **Appendix** below) |
@@ -61,7 +61,7 @@ The Exp-1 chamber is **K-like** on the life-history simplex (MSC §4.6: "stable 
 
 ## What's where (logic vs data)
 
-- **The genome** — `rules.metta` here: the four causal-QA rules (`R_qtype` question-type-detector + paraphrase-collapse, `R_align` causal-alignment, `R_complete` role-completion, `R_project` answer-projection) as **canonical per-match `rule-lhs`/`rule-rhs` IR** with `(var Name)` markers (the lifting is complete; the `compact-explanation-packer` is still TODO; **abstain is the evaluator's job**, not a rule). Tokens use `gm`/`ci` (the PeTTa short symbols for `tau_graph_match`/`tau_causal`; see `../../ir/schema.md` §1).
+- **The genome** — `rules.metta` here: the four causal-QA rules (`R_qtype` question-type-detector + paraphrase-collapse, `R_align` causal-alignment, `R_complete` role-completion, `R_project` answer-projection) as **canonical per-match `rule-lhs`/`rule-rhs` IR** with `(var Name)` markers (**abstain is the evaluator's job**, not a rule). Tokens use `gm`/`ci` (the PeTTa short symbols for `tau_graph_match`/`tau_causal`; see `../../ir/schema.md` §1).
 - **The engine + evaluator code** — `../../petta/kernel.metta` (P0 engine) + `../../petta/evaluator.metta` (eq-17 scoring, target derived from the graph). This dir is the *data* they operate on.
 
 ## Notation legend (for the Appendix graphs)

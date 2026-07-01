@@ -15,8 +15,8 @@
 !(import! &self "petta/evaluator.metta")
 
 ; a healthy chamber: ample fuel, so every reachable answer is produced (no starvation)
-!(add-atom &self (fuel gm 100))
-!(add-atom &self (fuel ci 100))
+!(add-atom &self (fuel O_qa gm 100))
+!(add-atom &self (fuel O_qa ci 100))
 !(run-rules &self)
 
 ; report for question $q: q-word, candidate answers, cited edges (rel + source), participants

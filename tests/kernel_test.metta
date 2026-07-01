@@ -1,5 +1,5 @@
 ; ===========================================================================
-; THE UNIFIED MORTAL KERNEL in PeTTa — P0 demo, CANONICAL per-match form.
+; THE MORTAL KERNEL in PeTTa — P0 demo, CANONICAL per-match form.
 ; ---------------------------------------------------------------------------
 ; The whole P0 kernel: the generic ENGINE (kernel) drives the causal-QA genome
 ; EXPRESSED from its CANONICAL IR (rules.metta: rule-lhs/rule-rhs + (var Name),
@@ -19,8 +19,8 @@
 !(import! &self "experiments/expt1-causal-qa/load.metta")
 
 ; gm 27 (6 qtype + 7 align + 9 complete + 5 project, then starves) / ci 7 (7 align edges)
-!(add-atom &self (fuel gm 27))
-!(add-atom &self (fuel ci 7))
+!(add-atom &self (fuel O_qa gm 27))
+!(add-atom &self (fuel O_qa ci 7))
 !(run-rules &self)
 
 !(test (foldall + (match &self (q-intent $q $i) 1) 0) 6)              ; all 6 questions typed
@@ -32,4 +32,4 @@
 !(test (foldall + (match &self (event $s $r $k) 1) 0) 27)            ; 27 firings (gm-starved at last projection)
 !(test (foldall + (match &self (candidate-answer $q $a) 1) 0) 5)    ; 5 answers (Q7b STARVED)
 !(test (foldall + (match &self (candidate-answer Q7b $a) 1) 0) 0)   ; Q7b aligned-but-unprojected (mortality)
-!(test (fuelof &self gm) 0)                                          ; gm exhausted (death)
+!(test (fuelof &self O_qa gm) 0)                                     ; gm exhausted (death) — O_qa's purse

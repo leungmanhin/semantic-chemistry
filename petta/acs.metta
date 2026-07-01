@@ -9,7 +9,7 @@
 
 ; --- ablation: run the genome on $ws skipping one rule; count answers (generous fuel,
 ;     so the effect is STRUCTURAL not starvation). `none` skips nothing (baseline). ---
-(= (ablate-answers $skip $sp) (let $z1 (add-atom $sp (fuel gm 30)) (let $z2 (add-atom $sp (fuel ci 30)) (let $z3 (run-ablate $sp (cons-atom $skip ())) (count-answers $sp)))))
+(= (ablate-answers $skip $sp) (let $O (the-organism) (let $z1 (add-atom $sp (fuel $O gm 30)) (let $z2 (add-atom $sp (fuel $O ci 30)) (let $z3 (run-ablate $sp (cons-atom $skip ())) (count-answers $sp))))))
 
 ; --- generic list / graph utils ---
 (= (member-of $x $l) (case $l ((() False) ($ne (if (== (car-atom $l) $x) True (member-of $x (cdr-atom $l)))))))

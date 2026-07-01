@@ -1,5 +1,5 @@
 ; ===========================================================================
-; P4.3 (iii) — selection-epoch: the P3 lineage (TECAN T6).
+; selection-epoch: the P3 lineage (TECAN T6).
 ; ---------------------------------------------------------------------------
 ; Uses the reusable P3 operators in petta/selection.metta (express a genome by running
 ; only its member rules; prune / recombine; surplus-based `fitter`). Fitness = metabolic

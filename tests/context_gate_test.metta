@@ -29,8 +29,8 @@
 !(add-atom &self (rule-lhs R_ctxbad ((qa-question (var T) (var Q)))))
 !(add-atom &self (rule-rhs R_ctxbad ((ctxbad-fired (var Q)))))
 
-!(add-atom &self (fuel gm 100))
-!(add-atom &self (fuel ci 100))
+!(add-atom &self (fuel O_qa gm 100))
+!(add-atom &self (fuel O_qa ci 100))
 !(run-rules &self)
 
 ; the gate predicate directly

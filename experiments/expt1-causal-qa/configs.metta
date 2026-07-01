@@ -41,6 +41,18 @@
 (chamber-context CH_expt1 everyday)
 (chamber-life-history CH_expt1 K-like)
 
+; --- organism (schema §2.3): Exp-1 runs the whole genome as ONE mortal organism O_qa.
+; Its genome GNM_qa quotes the ruleset RS_qa (the 4 causal-QA rules); the engine resolves
+; each rule -> O_qa (rule-organism) so O_qa's typed purse `(fuel O_qa …)` pays for firing.
+(organism O_qa)
+(organism-chamber O_qa CH_expt1)
+(genome-of O_qa GNM_qa)
+(quoted-ruleset GNM_qa RS_qa)
+(ruleset-member RS_qa R_qtype)
+(ruleset-member RS_qa R_align)
+(ruleset-member RS_qa R_complete)
+(ruleset-member RS_qa R_project)
+
 (clamp CL_antecedent)
 (clamp-class CL_antecedent physical-cause)
 (clamp-coeff CL_antecedent match 1.0)

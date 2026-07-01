@@ -1,8 +1,9 @@
 ; ===========================================================================
 ; KERNEL DEFS — the generic mortal-kernel ENGINE, facts-free, $ws-parameterized.
 ; ---------------------------------------------------------------------------
-; The reusable firing mechanism, with NO domain logic and NO facts: a typed-fuel
-; ledger, componentwise affordability, gated fire (+ event log), fire-once-ever,
+; The reusable firing mechanism, with NO domain logic and NO facts: a PER-ORGANISM typed-fuel
+; ledger (`fuel O tok n`, schema §2.3), componentwise affordability, a computed GATE
+; (context + afford + attention, MSC eq 24) driving fire (+ event log), fire-once-ever,
 ; and the per-rule `walk`; the **canonical-IR converter** (rule-lhs/rule-rhs + (var Name)
 ; -> a runnable form, via runtime var-minting) + the generic data-driven `run-rules` /
 ; `run-ablate`. The rules + the experiment's DATA are canonical facts in experiments/<expt>/
@@ -21,32 +22,69 @@
 ; each affordable, not-yet-fired candidate (debiting fuel, logging an event).
 ; ===========================================================================
 
-; --- the generic engine, on the worker space $ws (fuel ledger + gated fire + loop)
-(= (fuelof $ws $t)
-   (match $ws (fuel $t $n) $n))
+; --- the generic engine, on the worker space $ws (per-organism fuel ledger + gate + loop)
+; Fuel is a PER-ORGANISM typed purse `(fuel O tok n)` (schema §2.3): afford/debit read and
+; write the *firing organism's own* purse; the organism of a candidate is resolved per rule
+; by `rule-organism`. Exp-1 has one organism (the whole genome), so a single purse serves it.
+(= (fuelof $ws $O $t)
+   (match $ws (fuel $O $t $n) $n))
 
-(= (debit $ws $t $k)
-   (let $n (fuelof $ws $t)
-        (let $z (remove-atom $ws (fuel $t $n))
+(= (debit $ws $O $t $k)
+   (let $n (fuelof $ws $O $t)
+        (let $z (remove-atom $ws (fuel $O $t $n))
              (let $m (- $n $k)
-                  (add-atom $ws (fuel $t $m))))))
+                  (add-atom $ws (fuel $O $t $m))))))
 
-(= (afford $ws $cost)
+(= (afford $ws $O $cost)
    (case $cost
          ((() True)
           ($ne (let ($t $n)
                     (car-atom $cost)
-                    (if (>= (fuelof $ws $t) $n)
-                        (afford $ws (cdr-atom $cost))
+                    (if (>= (fuelof $ws $O $t) $n)
+                        (afford $ws $O (cdr-atom $cost))
                         False))))))
 
-(= (debit-all $ws $cost)
+(= (debit-all $ws $O $cost)
    (case $cost
          ((() done)
           ($ne (let ($t $n)
                     (car-atom $cost)
-                    (let $z (debit $ws $t $n)
-                         (debit-all $ws (cdr-atom $cost))))))))
+                    (let $z (debit $ws $O $t $n)
+                         (debit-all $ws $O (cdr-atom $cost))))))))
+
+; --- ORGANISM resolution (schema §2.3): which mortal organism fires a rule, and so
+; whose purse pays. A rule maps to its organism via ruleset membership
+; (ruleset-member RS R · quoted-ruleset GNM RS · genome-of O GNM); a rule in no ruleset
+; (e.g. a synthetic test rule) falls back to the sole declared organism. Single-organism
+; Exp-1: every rule -> O_qa. `the-organism` is the generic single-organism accessor used
+; by single-purse accounting (emit-summary, credit, tests).
+(= (organisms) (collapse (match &self (organism $o) $o)))
+(= (the-organism) (let $os (organisms) (if (== $os ()) O_none (car-atom $os))))
+(= (owner-of-ruleset $rs) (match &self (quoted-ruleset $gnm $rs) (match &self (genome-of $o $gnm) $o)))
+(= (rule-organism $R)
+   (let $os (collapse (match &self (ruleset-member $rs $R) (owner-of-ruleset $rs)))
+        (if (== $os ()) (the-organism) (car-atom $os))))
+
+; --- typed ATTENTION state (schema §2.4) + the attention gate. `(attention R tok v)` is a
+; hand-set, rule-level attention level (the TECAN-typed analogue of ECAN STI). A rule with
+; no attention fact passes vacuously; a rule that declares attention passes iff every
+; declared level is >= the threshold. Attention dynamics (decay/rent/spread) are not
+; modelled here, so on Exp-1 (no attention facts) `attn-ok?` always holds.
+(= (attn-threshold) 1)
+(= (all-ge $vs $thr) (case $vs ((() True) ($ne (if (>= (car-atom $vs) $thr) (all-ge (cdr-atom $vs) $thr) False)))))
+(= (attn-ok? $R) (all-ge (collapse (match &self (attention $R $tok $v) $v)) (attn-threshold)))
+
+; --- the computed GATE `Gate_C(R,O,X)` (MSC eq 24 / schema §3 step 3): the single
+; fire-decision for a candidate, folding context eligibility + affordability + attention.
+; Additional eq-24 factors (do-influence / novelty / −redundancy / +FuelMargin / +ACSBoost)
+; are not modelled here. On Exp-1 it reduces to `afford` (context pre-filtered by
+; sorted-rules, attention vacuous).
+(= (gate? $ws $O $R $cost)
+   (if (rule-eligible? $R)
+       (if (afford $ws $O $cost)
+           (attn-ok? $R)
+           False)
+       False))
 
 ; set-semantics add: add a product only if not already present — the doc's X ⊕ θ(G2)
 ; is set-union, so per-match firing that re-emits a shared head (e.g. one alignment per cited
@@ -59,11 +97,14 @@
          ((() done)
           ($ne (let $h (car-atom $ps) (let $z (if (present? $ws $h) done (add-atom $ws $h)) (add-all $ws (cdr-atom $ps))))))))
 
-(= (fire $ws $rule $key $cost $prods $seq) (let $a (add-all $ws $prods) (let $b (debit-all $ws $cost) (add-atom $ws (event $seq $rule $key)))))
+(= (fire $ws $O $rule $key $cost $prods $seq) (let $a (add-all $ws $prods) (let $b (debit-all $ws $O $cost) (add-atom $ws (event $seq $rule $key)))))
 ; fire-once-EVER: a (rule,key) that already has an event is skipped (idempotent re-run,
 ; so an epoch can re-enter the chamber after crediting fuel without redoing work).
 (= (fired? $ws $rule $key) (case (collapse (match $ws (event $s $rule $key) yes)) ((() False) ($any True))))
-(= (walk $ws $rule $cands $seq) (case $cands ((() $seq) ($ne (let (cand $key $cost $prods) (car-atom $cands) (if (fired? $ws $rule $key) (walk $ws $rule (cdr-atom $cands) $seq) (if (afford $ws $cost) (let $z (fire $ws $rule $key $cost $prods $seq) (walk $ws $rule (cdr-atom $cands) (+ $seq 1))) $seq)))))))
+; walk the rule's candidates for organism $O: skip already-fired, else fire iff the GATE
+; passes (context+afford+attention), debiting $O's purse. Gate-False halts this rule (cold
+; / unaffordable — later same-cost candidates would fail too).
+(= (walk $ws $O $rule $cands $seq) (case $cands ((() $seq) ($ne (let (cand $key $cost $prods) (car-atom $cands) (if (fired? $ws $rule $key) (walk $ws $O $rule (cdr-atom $cands) $seq) (if (gate? $ws $O $rule $cost) (let $z (fire $ws $O $rule $key $cost $prods $seq) (walk $ws $O $rule (cdr-atom $cands) (+ $seq 1))) $seq)))))))
 ; generic list util used by the proposers
 (= (filter-out $x $l) (case $l ((() ()) ($ne (let $h (car-atom $l) (if (== $h $x) (filter-out $x (cdr-atom $l)) (cons-atom $h (filter-out $x (cdr-atom $l)))))))))
 
@@ -141,7 +182,7 @@
 (= (any-active? $cs) (case $cs ((() False) ($ne (if (ctx-active? (car-atom $cs)) True (any-active? (cdr-atom $cs)))))))
 (= (rule-eligible? $R) (let $cs (rule-contexts $R) (if (== $cs ()) True (any-active? $cs))))
 (= (sorted-rules) (map-snd (msort (filter-out skip (collapse (match &self (rule-priority $R $n) (if (rule-eligible? $R) ($n $R) skip)))))))
-(= (walk-rules $ws $rules $seq) (case $rules ((() $seq) ($ne (let $r (car-atom $rules) (let $seq2 (walk $ws $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq) (walk-rules $ws (cdr-atom $rules) $seq2)))))))
+(= (walk-rules $ws $rules $seq) (case $rules ((() $seq) ($ne (let $r (car-atom $rules) (let $O (rule-organism $r) (let $seq2 (walk $ws $O $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq) (walk-rules $ws (cdr-atom $rules) $seq2))))))))
 (= (run-rules-from $ws $seq0) (walk-rules $ws (sorted-rules) $seq0))
 (= (run-rules $ws) (let $z (express) (run-rules-from $ws 0)))
 ; generic ABLATION run (P2 paired-replay / P3 genome-by-membership): run-rules but SKIP every
@@ -152,6 +193,7 @@
      ($ne (let $r (car-atom $rules)
             (if (in-list? $r $skip)
                 (walk-rules-skip $ws (cdr-atom $rules) $seq $skip)
-                (let $seq2 (walk $ws $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq)
-                  (walk-rules-skip $ws (cdr-atom $rules) $seq2 $skip))))))))
+                (let $O (rule-organism $r)
+                  (let $seq2 (walk $ws $O $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq)
+                    (walk-rules-skip $ws (cdr-atom $rules) $seq2 $skip)))))))))
 (= (run-ablate $ws $skip) (let $z (express) (walk-rules-skip $ws (sorted-rules) 0 $skip)))

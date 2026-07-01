@@ -1,5 +1,5 @@
 ; ===========================================================================
-; P4.2 — WORKER ECOLOGY: separate-space-per-worker isolation + a reducer (TECAN T5).
+; WORKER ECOLOGY: separate-space-per-worker isolation + a reducer (TECAN T5).
 ; ---------------------------------------------------------------------------
 ; Uses the §6.4 worker contract + dispatcher from petta/workers.metta. Each context-
 ; chamber worker gets its OWN mutable space (`(worker-space W &ws)`); the read-only IR

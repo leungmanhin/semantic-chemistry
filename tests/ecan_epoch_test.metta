@@ -1,5 +1,5 @@
 ; ===========================================================================
-; P4.3 (i) — ecan-epoch: the P1 metabolic-closure loop (TECAN T2 loop).
+; ecan-epoch: the P1 metabolic-closure loop (TECAN T2 loop).
 ; ---------------------------------------------------------------------------
 ; Uses the epoch loop in petta/ecan.metta: run the chamber to quiescence, score the NEW
 ; answers (eq-17), mint typed fuel by the active clamp, credit it back, re-run while there
@@ -21,18 +21,18 @@
 
 ; --- feedback OFF: one pass, no minting (P0 baseline at the constrained seed) ---
 !(bind! &ws_off (new-space))
-!(add-atom &ws_off (fuel gm 23))
-!(add-atom &ws_off (fuel ci 20))
+!(add-atom &ws_off (fuel O_qa gm 23))
+!(add-atom &ws_off (fuel O_qa ci 20))
 !(run-rules &ws_off)
 !(test (count-answers &ws_off) 1)     ; OFF: starves at the constrained seed -> 1 answer only
 !(test (count-events &ws_off) 23)     ; spent all 23 gm
-!(test (fuelof &ws_off gm) 0)         ; ...and died (no minting to replenish)
+!(test (fuelof &ws_off O_qa gm) 0)    ; ...and died (no minting to replenish)
 
 ; --- feedback ON: the epoch loop credits minted fuel back (metabolic closure) ---
 !(bind! &ws_on (new-space))
-!(add-atom &ws_on (fuel gm 23))
-!(add-atom &ws_on (fuel ci 20))
+!(add-atom &ws_on (fuel O_qa gm 23))
+!(add-atom &ws_on (fuel O_qa ci 20))
 !(epoch &ws_on)
 !(test (count-answers &ws_on) 6)      ; ON: the epoch loop reaches all 6 answers (incl. Q7b, which the seed starved)
 !(test (count-events &ws_on) 28)      ; +5 firings the seed alone could not afford
-!(test (fuelof &ws_on gm) 16)         ; ...ending in metabolic SURPLUS (21 minted, 28 spent, seed 23) = self-sustaining
+!(test (fuelof &ws_on O_qa gm) 16)    ; ...ending in metabolic SURPLUS (21 minted, 28 spent, seed 23) = self-sustaining

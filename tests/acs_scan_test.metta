@@ -1,5 +1,5 @@
 ; ===========================================================================
-; P4.3 (ii) — acs-scan + replay: the P2 ACS certification (TECAN T3).
+; acs-scan + replay: the P2 ACS certification (TECAN T3).
 ; ---------------------------------------------------------------------------
 ; Certify a HAND-GIVEN candidate (the whole genome) via the reusable ACS logic in
 ; petta/acs.metta. Three findings, 16 tests (canonical per-match form):

@@ -17,7 +17,7 @@
 ; print each firing as a re-loadable bare (event Seq Rule Key) fact, one per line
 (= (print-log $l) (if (== $l ()) done (let ($s $r $k) (car-atom $l) (let $z (println! (event $s $r $k)) (print-log (cdr-atom $l))))))
 
-!(add-atom &self (fuel gm 100))
-!(add-atom &self (fuel ci 100))
+!(add-atom &self (fuel O_qa gm 100))
+!(add-atom &self (fuel O_qa ci 100))
 !(run-rules &self)
 !(print-log (log-events &self))

@@ -9,8 +9,9 @@
 ; ===========================================================================
 ; the eq-17 mint under the CL_antecedent clamp = would-mint at physical-cause
 (= (gm-mint $ws $q $cls) (would-mint $ws $q $cls physical-cause))
-; credit minted gm back to the fuel ledger (evaluator-side, NOT a soma firing)
-(= (credit-gm $ws $m) (let $n (fuelof $ws gm) (let $z (remove-atom $ws (fuel gm $n)) (let $tot (+ $n $m) (add-atom $ws (fuel gm $tot))))))
+; credit minted gm back to the fuel ledger (evaluator-side, NOT a soma firing) — into the
+; earning organism's purse (single-organism Exp-1: the-organism = O_qa)
+(= (credit-gm $ws $m) (let $O (the-organism) (let $n (fuelof $ws $O gm) (let $z (remove-atom $ws (fuel $O gm $n)) (let $tot (+ $n $m) (add-atom $ws (fuel $O gm $tot)))))))
 ; the unscored candidate-answers (as (ans Q CLS)); score-credit-mark each once
 (= (unscored $ws) (filter-out skip (collapse (match $ws (candidate-answer $q (a $q $cls)) (case (collapse (match $ws (scored (a $q $cls)) yes)) ((() (ans $q $cls)) ($any skip)))))))
 (= (credit-one $ws $q $cls) (let $m (gm-mint $ws $q $cls) (let $z1 (add-atom $ws (scored (a $q $cls))) (let $z2 (credit-gm $ws $m) $m))))

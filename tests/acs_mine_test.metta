@@ -15,8 +15,8 @@
 !(import! &self "petta/evaluator.metta")
 !(import! &self "petta/acs.metta")   ; fired-rules · build-graph · reaches? · acs-members · acs-spend/surplus
 
-!(add-atom &self (fuel gm 100))
-!(add-atom &self (fuel ci 100))
+!(add-atom &self (fuel O_qa gm 100))
+!(add-atom &self (fuel O_qa ci 100))
 !(run-rules &self)
 
 ; build the graph FROM the log: &g_full has the evaluator's closing edge; &g_soma does not

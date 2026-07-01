@@ -15,7 +15,8 @@
 (= (prune $r $l) (case $l ((() ()) ($ne (let $h (car-atom $l) (if (== $h $r) (prune $r (cdr-atom $l)) (cons-atom $h (prune $r (cdr-atom $l)))))))))
 (= (union-genome $a $b) (case $b ((() $a) ($ne (let $h (car-atom $b) (if (member-of $h $a) (union-genome $a (cdr-atom $b)) (union-genome (cons-atom $h $a) (cdr-atom $b))))))))
 ; express a genome in its OWN space (generous fuel -> structural fitness), return surplus / answers
-(= (express-surplus $g $sp) (let $z1 (add-atom $sp (fuel gm 40)) (let $z2 (add-atom $sp (fuel ci 40)) (let $z3 (run-genome $sp $g) (- (gm-income $sp physical-cause) (gm-spend $sp))))))
-(= (express-answers $g $sp) (let $z1 (add-atom $sp (fuel gm 40)) (let $z2 (add-atom $sp (fuel ci 40)) (let $z3 (run-genome $sp $g) (count-answers $sp)))))
+; (seed the organism's typed purse; single-organism Exp-1: the-organism = O_qa)
+(= (express-surplus $g $sp) (let $O (the-organism) (let $z1 (add-atom $sp (fuel $O gm 40)) (let $z2 (add-atom $sp (fuel $O ci 40)) (let $z3 (run-genome $sp $g) (- (gm-income $sp physical-cause) (gm-spend $sp)))))))
+(= (express-answers $g $sp) (let $O (the-organism) (let $z1 (add-atom $sp (fuel $O gm 40)) (let $z2 (add-atom $sp (fuel $O ci 40)) (let $z3 (run-genome $sp $g) (count-answers $sp))))))
 ; SELECTION: the higher-surplus of two genomes (each expressed in its own space)
 (= (fitter $ga $gb $sa $sb) (if (> (express-surplus $gb $sb) (express-surplus $ga $sa)) $gb $ga))

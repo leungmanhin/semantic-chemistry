@@ -1,5 +1,5 @@
 ; ===========================================================================
-; MULTI-SPACE BEHAVIOR — battle-test + regression guard for the P4.2 worker-
+; MULTI-SPACE BEHAVIOR — battle-test + regression guard for the worker-
 ; isolation design (namespacing-by-W  vs  separate-space-per-worker).
 ; ---------------------------------------------------------------------------
 ; Probed once with println! (throwaway), then frozen here as !(test) with the
