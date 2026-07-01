@@ -6,12 +6,12 @@
 
 ; --- (1) domain mappings -------------------------------------------------------
 (edge-cluster CauseOf physical-cause)
-(edge-cluster Triggers physical-cause)
-(edge-cluster Enables physical-cause)
-(edge-cluster Contributes physical-cause)
-(edge-cluster Prevents physical-cause)
+(edge-cluster Trigger physical-cause)
+(edge-cluster Enable physical-cause)
+(edge-cluster Contribute physical-cause)
+(edge-cluster Prevent physical-cause)
 (edge-cluster Despite concession)
-(edge-cluster Motivates intentional)
+(edge-cluster Motivate intentional)
 (edge-cluster Reason intentional)
 (intent-map why explain)
 (intent-map what-made explain)
@@ -33,6 +33,7 @@
 (role-relation Experiencer)
 (role-relation Theme)
 (role-relation Destination)
+(role-relation Patient)
 
 ; --- (2) run configuration -----------------------------------------------------
 (chamber CH_expt1)

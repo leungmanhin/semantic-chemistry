@@ -13,7 +13,7 @@
 ; $ws-parameterized eq-17 Match from evaluator.metta (here crediting gm directly,
 ; not via the tau_* ledger). Clamp = CL_antecedent (rewards physical-cause + abstain).
 ;
-; Demonstration (constrained CLOSURE seed gm=15): feedback OFF (one pass, no mint)
+; Demonstration (constrained CLOSURE seed gm=23): feedback OFF (one pass, no mint)
 ; starves; feedback ON (the epoch loop) earns fuel by answering and reaches more
 ; answers. ON > OFF == "minting funds further computation".
 ;
@@ -43,18 +43,18 @@
 
 ; --- feedback OFF: one pass, no minting (P0 baseline at the constrained seed) ---
 !(bind! &ws_off (new-space))
-!(add-atom &ws_off (fuel gm 15))
+!(add-atom &ws_off (fuel gm 23))
 !(add-atom &ws_off (fuel ci 20))
 !(run-rules &ws_off)
 !(test (count-answers &ws_off) 1)     ; OFF: starves at the constrained seed -> 1 answer only
-!(test (count-events &ws_off) 15)     ; spent all 15 gm
+!(test (count-events &ws_off) 23)     ; spent all 23 gm
 !(test (fuelof &ws_off gm) 0)         ; ...and died (no minting to replenish)
 
 ; --- feedback ON: the epoch loop credits minted fuel back (metabolic closure) ---
 !(bind! &ws_on (new-space))
-!(add-atom &ws_on (fuel gm 15))
+!(add-atom &ws_on (fuel gm 23))
 !(add-atom &ws_on (fuel ci 20))
 !(epoch &ws_on)
 !(test (count-answers &ws_on) 6)      ; ON: the epoch loop reaches all 6 answers (incl. Q7b, which the constrained seed starved)
-!(test (count-events &ws_on) 20)      ; +5 firings the seed alone could not afford
-!(test (fuelof &ws_on gm) 16)         ; ...ending in metabolic SURPLUS (21 minted, 20 spent, seed 15) = self-sustaining
+!(test (count-events &ws_on) 28)      ; +5 firings the seed alone could not afford
+!(test (fuelof &ws_on gm) 16)         ; ...ending in metabolic SURPLUS (21 minted, 28 spent, seed 23) = self-sustaining

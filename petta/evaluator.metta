@@ -1,15 +1,16 @@
 ; ===========================================================================
-; P1 EVALUATOR in PeTTa — eq-17 scoring + clamp-switch (CANONICAL per-match form).
+; P1 EVALUATOR in PeTTa — eq-17 scoring + clamp-switch (intrinsic, graph-derived).
 ; ---------------------------------------------------------------------------
 ; The evaluator layer runs OUTSIDE the firing loop (MSC §4.4): score each candidate-
-; answer against its gold skeleton by a faithful subset of eq-17 (Match here), and mint
+; answer against a target derived from the GRAPH (no gold answer content), then mint
 ; typed fuel by the active clamp's class. This standalone demo runs the canonical genome
 ; to fixpoint (ample fuel), then scores via the shared evaluator_defs.
 ;
-; Numerics: Match = covered^2/(skel*ans), mint = floor(6*Match). Q3a Match 0.5 -> 3;
-; Q23 exact (2/2) -> 6. CLAMP-SWITCH: gm-income flips 25 (physical) <-> 16 (intentional).
-; ABSTAIN is the EVALUATOR's job: Q20 produces no answer, so abstain-income mints 4 for
-; the gold-abstain question the soma left unanswered.
+; eq-17: Match = covered/idealsize (recall vs the intent-aware graph ideal) - Unsupportedness
+; - Redundancy; mint = floor(6*M). Q3a Match 0.5 -> 3 (the transitive CauseOf closure is the
+; ideal); Q23 exact (2/2) -> 6. CLAMP-SWITCH: gm-income flips 25 (physical) <-> 16 (intentional).
+; ABSTAIN is the EVALUATOR's job: Q20 produces no answer and its graph-ideal is empty, so
+; abstain-income mints 4.
 ;
 ; Run:  sh ../PeTTa/run.sh petta/evaluator.metta < /dev/null 2>&1 | grep should   # six ✅
 ; ===========================================================================

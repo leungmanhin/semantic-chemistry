@@ -2,20 +2,20 @@
 ; P4.3 (ii) — acs-scan + replay WORKERS: the P2 ACS-detection (TECAN T3).
 ; ---------------------------------------------------------------------------
 ; The P2 mortal-ACS certification (= TECAN T3) as worker kinds over the
-; separate-space machinery. Three findings, all 14 tests (canonical per-match form):
+; separate-space machinery. Three findings, all 16 tests (canonical per-match form):
 ;  * REPLAY/ABLATION (cond 4): suppress one rule in its own space, generous fuel;
 ;    R_qtype/R_align/R_project are load-bearing (answers collapse), R_complete is
 ;    INERT (6->6, 0 reward impact) — the same dead-weight rule P3 prunes.
 ;  * CLOSURE (cond 1+2): reachability on the rule-motif graph — a closed metabolic
 ;    cycle exists with the evaluator's E->fuel edge (cycle-through gm = True) but
 ;    NOT among the soma rules alone (False) => closure is METABOLIC, not structural.
-;  * SURPLUS (cond 3) + PROMOTION: income (eq-17 mint by clamp class) - spend
-;    (firings) = +5 under CL_antecedent vs -4 under CL_goal; the SAME loop is
-;    PROMOTED under one clamp and REJECTED under the other (clamp-switch at the
-;    ACS level). Ablation/SCC are exactly what the worker isolation enables.
+;  * SURPLUS (cond 3) + PROMOTION: the FULL genome runs a DEFICIT (income 25 < spend 28,
+;    the inert R_complete's 9 firings are dead weight). The autocatalytic CORE (R_complete
+;    pruned) spends only 19, so income - spend = +6 under CL_antecedent vs -3 under CL_goal;
+;    the SAME core is PROMOTED under one clamp and REJECTED under the other (clamp-switch).
 ;
 ; Run:  sh ../PeTTa/run.sh petta/acs_scan.metta < /dev/null \
-;          2>&1 | grep should   # fourteen ✅
+;          2>&1 | grep should   # sixteen ✅
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")
@@ -68,21 +68,25 @@
 !(test (cycle-through &acs_soma gm) False)      ; soma rules ALONE: feed-forward DAG (no cycle)
 
 ; ===========================================================================
-; SURPLUS (cond 3) + PROMOTION: income (eq-17 mint by clamp class) - spend
-; (firings), on the generous baseline run. Sign flips with the clamp.
+; SURPLUS (cond 3) + PROMOTION: income (eq-17 mint by clamp class) - spend (firings).
+; The FULL genome carries inert R_complete (9 firings) -> spend > income -> DEFICIT;
+; the autocatalytic CORE (R_complete pruned, certified inert above) is self-sustaining,
+; and its surplus sign flips with the clamp -> promote one class, reject the other.
 ; ===========================================================================
 ; (covered/anssize/skelsize/would-mint/gm-income/gm-spend from evaluator_defs)
 (= (gm-surplus $ws $cc) (- (gm-income $ws $cc) (gm-spend $ws)))
 
 !(test (gm-income &ab_base physical-cause) 25)  ; CL_antecedent mints on physical-cause + abstain
 !(test (gm-income &ab_base intentional) 16)     ; CL_goal mints on intentional + abstain
-!(test (gm-spend &ab_base) 20)                  ; firings (each spends 1 gm)
-!(test (gm-surplus &ab_base physical-cause) 5)  ; CL_antecedent: +5 SURPLUS (self-sustaining)
-!(test (gm-surplus &ab_base intentional) -4)    ; CL_goal: -4 DEFICIT (sign flips with the clamp)
+!(test (gm-spend &ab_base) 28)                  ; FULL genome firings (each spends 1 gm)
+!(test (gm-surplus &ab_base physical-cause) -3) ; FULL genome: DEFICIT (inert R_complete's dead weight)
+!(test (gm-spend &ab_cp) 19)                    ; CORE firings (R_complete pruned, certified inert above)
+!(test (gm-surplus &ab_cp physical-cause) 6)    ; CORE under CL_antecedent: +6 SURPLUS (self-sustaining)
+!(test (gm-surplus &ab_cp intentional) -3)      ; CORE under CL_goal: -3 DEFICIT (sign flips with the clamp)
 
-; promotion: closure AND surplus>0 AND ablation-impact>0 (impact = base - ablate R_qtype)
+; promotion: closure AND core-surplus>0 AND ablation-impact>0 (impact = base - ablate R_qtype)
 (= (impact) (- (count-answers &ab_base) (count-answers &ab_qt)))
 (= (all3 $a $b $c) (if $a (if $b (if $c True False) False) False))
-(= (promoted? $cc) (all3 (cycle-through &acs_full gm) (> (gm-surplus &ab_base $cc) 0) (> (impact) 0)))
-!(test (promoted? physical-cause) True)         ; closure + surplus>0 + ablation-impact>0 -> PROMOTED
-!(test (promoted? intentional) False)           ; same loop, negative surplus -> REJECTED (clamp-switch)
+(= (promoted? $cc) (all3 (cycle-through &acs_full gm) (> (gm-surplus &ab_cp $cc) 0) (> (impact) 0)))
+!(test (promoted? physical-cause) True)         ; closure + core-surplus>0 + impact>0 -> PROMOTED
+!(test (promoted? intentional) False)           ; same core, negative surplus -> REJECTED (clamp-switch)

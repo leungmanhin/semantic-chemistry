@@ -12,7 +12,7 @@
 ;
 ; Demonstrated with TWO context-chamber workers over the same shared IR but
 ; different fuel snapshots -> different mortal trajectories, fully isolated:
-;   W_full (gm 20) -> the full P0 run: 20 firings, 6 answers, Q7b starves
+;   W_full (gm 28) -> the full run: 28 firings, all 6 answers
 ;   W_lean (gm  8) -> starves early: 8 firings, 0 answers (dies before projecting)
 ; then W_reduce sums firings/answers across both. Each worker's event log lives
 ; only in its own space; neither sees the other's products.
@@ -30,7 +30,7 @@
 !(add-atom &self (worker-backend W_full petta))
 !(add-atom &self (worker-space W_full &ws_full))
 !(add-atom &self (worker-snapshot W_full SNAP_full))
-!(add-atom &self (snapshot-fuel SNAP_full gm 20))
+!(add-atom &self (snapshot-fuel SNAP_full gm 28))
 !(add-atom &self (snapshot-fuel SNAP_full ci 7))
 
 ; --- worker W_lean: its own space + a lean fuel snapshot (starves early) -----
@@ -64,13 +64,13 @@
 !(dispatch W_reduce)
 
 ; --- verify: two ISOLATED mortal trajectories + a correct reduced merge -------
-!(test (match &self (worker-summary W_full firings $f) $f) 20)     ; full run = 20 firings
+!(test (match &self (worker-summary W_full firings $f) $f) 28)     ; full run = 28 firings
 !(test (match &self (worker-summary W_full answers $a) $a) 6)      ; 6 answers
 !(test (match &self (worker-summary W_lean firings $f) $f) 8)      ; lean starves at 8 firings
 !(test (match &self (worker-summary W_lean answers $a) $a) 0)      ; ...before projecting any answer
-!(test (foldall + (match &ws_full (event $s $r $k) 1) 0) 20)       ; W_full's log lives in its OWN space
+!(test (foldall + (match &ws_full (event $s $r $k) 1) 0) 28)       ; W_full's log lives in its OWN space
 !(test (foldall + (match &ws_lean (event $s $r $k) 1) 0) 8)        ; W_lean's log lives in ITS own space
 !(test (foldall + (match &ws_lean (candidate-answer $q $a) 1) 0) 0) ; no leak: W_full's 6 answers not in W_lean
 !(test (foldall + (match &ws_full (candidate-answer $q $a) 1) 0) 6) ; W_full's answers isolated in W_full
-!(test (match &self (reduced total-firings $n) $n) 28)             ; reducer merged: 20 + 8
+!(test (match &self (reduced total-firings $n) $n) 36)             ; reducer merged: 28 + 8
 !(test (match &self (reduced total-answers $n) $n) 6)              ; merged answers: 6 + 0

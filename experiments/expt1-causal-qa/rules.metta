@@ -11,7 +11,8 @@
 ; Design notes: abstain is NOT a rule (it's the alignment rule simply not matching +
 ; the evaluator scoring the absence); align fires PER EDGE (no aggregation, no exists-guard
 ; — no edge ⇒ no match ⇒ no fire); complete's "rel is not causal" is the POSITIVE
-; `(role-relation …)` vocabulary (configs.metta), not a negation.
+; `(role-relation …)` vocabulary (configs.metta), not a negation. An explanatory edge is a
+; binary relation `(Rel Src Foc)` with the relation as head; `(node-graph G N)` scopes a node.
 
 ; --- R_qtype: question-type detector + paraphrase-collapse (a clean join) ---------
 (rule-context    R_qtype causal-qa)
@@ -29,23 +30,23 @@
                    (at self (intent-allows (var I) (var Cls)))
                    (at self (question-focus (var Q) (var Foc)))
                    (at self (question-source (var Q) (var G)))
-                   (at self (sem-edge (var G) (var E) (var Rel) (var Src) (var Foc)))
+                   (at self (node-graph (var G) (var Foc)))
+                   (at self ((var Rel) (var Src) (var Foc)))
                    (at self (edge-cluster (var Rel) (var Cls)))))
 (rule-rhs R_align ((alignment (var Q) (var Cls))
-                   (cites (var Q) (var Cls) (var G) (var E))
-                   (prov  (var Q) (var Cls) (var G) (var Src))))
+                   (cites (var Q) (var Cls) (var Rel) (var Src) (var Foc))
+                   (prov  (var Q) (var Cls) (var Src))))
 
 ; --- R_complete: role-completion (cause's non-causal participants; POSITIVE role-relation) -
 (rule-context    R_complete causal-qa)
 (rule-priority   R_complete 2)
 (rule-token-cost R_complete gm 1)
-(rule-lhs R_complete ((at ws (cites (var Q) (var Cls) (var G) (var E)))
-                      (at self (sem-edge (var G) (var E) (var Rel) (var Cause) (var Foc)))
-                      (at self (sem-edge (var G) (var E2) (var Rel2) (var Cause) (var Filler)))
+(rule-lhs R_complete ((at ws (cites (var Q) (var Cls) (var Rel) (var Cause) (var Foc)))
+                      (at self ((var Rel2) (var Cause) (var Filler)))
                       (at self (role-relation (var Rel2)))))
 (rule-rhs R_complete ((role-fill (var Q) (var Cls) (var Rel2) (var Filler))))
 
-; --- R_project: answer-skeleton projection (one candidate-answer per alignment) -----
+; --- R_project: answer projection (one candidate-answer per alignment) -----
 (rule-context    R_project causal-qa)
 (rule-priority   R_project 3)
 (rule-token-cost R_project gm 1)

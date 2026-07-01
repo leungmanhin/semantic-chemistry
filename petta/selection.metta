@@ -6,10 +6,11 @@
 ; evaluator's job, in the genome's OWN space (generous fuel, so
 ; fitness is structural). FITNESS = metabolic surplus (income - spend). The P3
 ; lineage (9 tests):
-;  * founder {qtype,align,complete,project} surplus +5; pruning the INERT
-;    R_complete -> +6 (the unique fitter) => selection rediscovers the dead-weight
-;    rule and the lineage steps GNM_qa(+5) -> GNM_g1(+6). Pruning any load-bearing
-;    rule collapses surplus (R_qtype 0, R_align -2, R_project -10).
+;  * founder {qtype,align,complete,project} surplus -3 (R_complete's 9 inert firings
+;    sink it into DEFICIT); pruning R_complete -> +6 (the unique fitter, the only viable
+;    genome) => selection rediscovers the dead-weight rule and the lineage steps
+;    GNM_qa(-3) -> GNM_g1(+6). Pruning any load-bearing rule collapses surplus
+;    (R_qtype 0, R_align -2, R_project -18).
 ;  * recombination of two answer-incapable genomes (one missing R_project, one
 ;    missing R_qtype) -> the union genome is viable again (6 answers).
 ; Per-genome expression in isolated spaces is exactly what the worker isolation
@@ -53,11 +54,11 @@
 !(bind! &g_noAlign (new-space))
 !(bind! &g_noProject (new-space))
 ; fitness landscape: surplus of the founder vs each single-rule prune
-!(test (express-surplus (founder) &g_found) 5)                         ; founder (4 rules): +4
-!(test (express-surplus (prune R_complete (founder)) &g_noComplete) 6) ; prune the INERT R_complete: +5 (fitter!)
+!(test (express-surplus (founder) &g_found) -3)                        ; founder (4 rules): -3 (inert R_complete -> deficit)
+!(test (express-surplus (prune R_complete (founder)) &g_noComplete) 6) ; prune the INERT R_complete: +6 (fitter, the only viable genome)
 !(test (express-surplus (prune R_qtype (founder)) &g_noQtype) 0)       ; load-bearing: collapses to 0
 !(test (express-surplus (prune R_align (founder)) &g_noAlign) -2)      ; load-bearing: deficit
-!(test (express-surplus (prune R_project (founder)) &g_noProject) -10) ; load-bearing: deep deficit
+!(test (express-surplus (prune R_project (founder)) &g_noProject) -18) ; load-bearing: deep deficit
 
 ; SELECTION rediscovers pruning R_complete -> the evolved genome GNM_g1 (lineage +4 -> +5)
 !(bind! &sel_a (new-space))

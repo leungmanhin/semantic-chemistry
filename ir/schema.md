@@ -22,20 +22,16 @@ The facts below are the canonical IR. They are stored as **bare portable S-expre
 
 ### 2.1 Semantic graphs (the "molecules")
 
-A semantic graph is a set of typed nodes and labelled edges. Rule LHS/RHS patterns are *also* semantic graphs, distinguished only by carrying `node-var` markers.
+A semantic graph is a set of typed nodes and binary relations, in the parser's generic shape: a node is scoped to its graph and typed by `Member`; roles and explanatory links are binary relations with the relation as head.
 
 | Fact | Meaning |
 |------|---------|
-| `(sem-graph G)` | Declares graph `G`. |
-| `(sem-node G N)` | Node `N` belongs to graph `G`. |
-| `(node-type G N Type)` | Node `N` has semantic type `Type` (a concept symbol, e.g. `SilkenThreads`, `Boil`). A node may have ≥1 type facts. |
-| `(node-var G N vname)` | Node `N` is a **pattern variable** named `vname` (rule-local). Only appears in rule LHS/RHS graphs. A matcher binds `vname` to a concrete node. |
-| `(sem-edge G E Rel Nsrc Ndst)` | Edge `E` in `G`: relation `Rel` from `Nsrc` to `Ndst` (e.g. `Theme`, `Instrument`, `CauseOf`). |
-| `(edge-tv G E s c)` | PLN truth value on edge `E` (optional). |
-| `(edge-causal G E kind)` | Causal-coding label, `kind ∈ {causal-forward, correlational}` (FUSE-NF Stage 6 output; optional in P0). |
-| `(node-modal G N m)` | Modality marker: `m ∈ {intended, prevented}`. `intended` = a goal/purpose state or event not (yet) realized in the text (the source of a `Motivates` edge); `prevented` = an event that did *not* occur because something blocked it (the target of a `Prevents` edge). Unmarked nodes are realized/actual. |
+| `(node-graph G N)` | Node `N` belongs to graph `G`. Scopes the node; node ids are **globally unique** across graphs, so an id-less edge stays unambiguous. |
+| `(Member N lemma)` | Node `N`'s type/class — a lowercase lemma (e.g. `drive`, `out_of_milk`). A node may carry ≥1. |
+| `(Rel Nsrc Ndst)` | A **binary relation**, relation as head — both **role** edges (`Agent`, `Patient`, `Experiencer`, `Theme`, `Destination`) and **explanatory** edges (`CauseOf`, `Trigger`, `Enable`, `Contribute`, `Prevent`, `Motivate`, `Reason`, `Despite`). An edge has no id; it is identified by its `(Rel Src Dst)` triple. |
+| `(node-modal N m)` | Modality marker: `m ∈ {intended, prevented}`. `intended` = a goal/purpose state or event not (yet) realized in the text (the source of a `Motivate` edge); `prevented` = an event that did *not* occur because something blocked it (the target of a `Prevent` edge). Unmarked nodes are realized/actual. |
 
-> **Stability note (Q2):** the *internal* node/edge vocabulary (`Boil`, `Theme`, Neo-Davidsonian event reification, …) is **illustrative pending the LLM parser** — it will be pinned when the parser's output style is known. The *fact shapes* in this table (`sem-graph`/`sem-node`/`node-type`/`node-var`/`sem-edge`) are **stable** regardless of the parser.
+> **Stability note (Q2):** the *internal* node/relation vocabulary (`drive`, `Theme`, Neo-Davidsonian event reification, …) tracks the LLM parser's output style. The *fact shapes* — graph scoping via `node-graph`, typing via `Member`, and binary `(Rel Src Dst)` relations — are the **backend-neutral** contract any executor reads; no PeTTaChainer-specific convention (e.g. per-atom STV) is load-bearing in the kernel.
 
 ### 2.2 Rules (the "reactions")
 
@@ -50,7 +46,7 @@ A rule is the fuel-aware form `C ^ G1 ^ HasFuel(O,R) ==> G2 ^ ConsumeFuel(O,R) ^
 | `(rule-tv R intensional-implication s c)` | The rule's PLN intensional-implication strength `s_C(G1,G2)` + confidence. |
 | `(rule-token-cost R token-type n)` | One component of the cost vector `κ_R` — firing consumes `n` of `token-type`. **One fact per token type**; absent type ⇒ cost 0. |
 
-> **Realized rule form — canonical `rule-lhs`/`rule-rhs`, per-match (2026-06-25).** The rules ARE the `rule-lhs`/`rule-rhs` facts above, stored in **per-match `C ^ G1 ==> G2`** form (MSC §4.3 eq 12–16: one firing per match θ, `X' = X ⊕ θ(G2)` set-union). The shapes are richer than a single sem-graph: a clause is `(at SPACE PAT)` (`SPACE ∈ {self, ws}`; bare `PAT` = `at self`) and a variable is the inline data marker `(var Name)` (the analog of `node-var`). So `(rule-lhs R (clauses…))` is the conjunctive match (`C ^ G1`) and `(rule-rhs R (prods…))` is the products (`G2`). The engine (`petta/kernel_defs.metta`) holds a **converter** that, at genome-expression time, mints co-referent PeTTa match-vars from the `(var Name)` markers and assembles each rule into a one-atom **runnable** view `(crule R KEY CLAUSES COST PRODS)` — an engine-internal compiled form, NOT the source of truth (it is one atom there only because per-atom variable co-reference requires it). What is deliberately **not** in a rule: **negation** is precomputed as positive vocabulary (e.g. `role-relation`, the non-causal complement) or handled by the evaluator (**abstain is no soma rule** — the alignment rule simply doesn't match, and the evaluator scores the absence); **aggregation** lives in the evaluator's set-based scoring (cites accumulate as separate facts), not in the rule. `rule-context`/`rule-priority`/`rule-token-cost`/`rule-tv` are separate annotations on `R`. **Compliance:** a future MeTTa-IL backend reads these same `rule-lhs`/`rule-rhs` facts. *(Status: the four Exp-1 rules — `R_qtype`/`R_align`/`R_complete`/`R_project` — are canonical IR in `experiments/expt1-causal-qa/rules.metta`; the `compact-explanation-packer` is still TODO.)*
+> **Realized rule form — canonical `rule-lhs`/`rule-rhs`, per-match (2026-06-25).** The rules ARE the `rule-lhs`/`rule-rhs` facts above, stored in **per-match `C ^ G1 ==> G2`** form (MSC §4.3 eq 12–16: one firing per match θ, `X' = X ⊕ θ(G2)` set-union). The shapes are richer than a bare node/edge pattern: a clause is `(at SPACE PAT)` (`SPACE ∈ {self, ws}`; bare `PAT` = `at self`) and a variable is the inline data marker `(var Name)`. So `(rule-lhs R (clauses…))` is the conjunctive match (`C ^ G1`) and `(rule-rhs R (prods…))` is the products (`G2`). The engine (`petta/kernel_defs.metta`) holds a **converter** that, at genome-expression time, mints co-referent PeTTa match-vars from the `(var Name)` markers and assembles each rule into a one-atom **runnable** view `(crule R KEY CLAUSES COST PRODS)` — an engine-internal compiled form, NOT the source of truth (it is one atom there only because per-atom variable co-reference requires it). What is deliberately **not** in a rule: **negation** is precomputed as positive vocabulary (e.g. `role-relation`, the non-causal complement) or handled by the evaluator (**abstain is no soma rule** — the alignment rule simply doesn't match, and the evaluator scores the absence); **aggregation** lives in the evaluator's set-based scoring (cites accumulate as separate facts), not in the rule. `rule-context`/`rule-priority`/`rule-token-cost`/`rule-tv` are separate annotations on `R`. **Compliance:** a future MeTTa-IL backend reads these same `rule-lhs`/`rule-rhs` facts. *(Status: the four Exp-1 rules — `R_qtype`/`R_align`/`R_complete`/`R_project` — are canonical IR in `experiments/expt1-causal-qa/rules.metta`; the `compact-explanation-packer` is still TODO.)*
 
 ### 2.3 Organisms (the mortal units)
 
@@ -110,9 +106,9 @@ The event log is an **ordered** sequence of firing records, indexed by an intege
 | `(event-del LOG seq fact)` | A graph fact removed from `X` (if the rule deletes). |
 | `(event-gate LOG seq gate draw)` | Audit record: the gate value `Gate_C(R,O,X)` and the PRNG draw `U` at this step. Lets a replay *verify* (not just reproduce) determinism. |
 
-### 2.7 QA tasks + gold skeletons (Experiment-1 layer; additive)
+### 2.7 QA tasks (Experiment-1 layer; additive)
 
-The Experiment-1 toy causal-QA chamber (MSC §7.1) adds a task layer on top of the core. A **task** wraps one source vignette graph and carries one or more **questions** (paraphrase variants are separate questions on the same task). Gold answers are **class-tagged skeletons** — the `Y*_q` targets of MSC eq 17 — enabling the clamp-switch experiment (see `experiments/expt1-causal-qa/README.md`).
+The Experiment-1 toy causal-QA chamber (MSC §7.1) adds a task layer on top of the core. A **task** wraps one source vignette graph and carries one or more **questions** (paraphrase variants are separate questions on the same task). The evaluator scores answers against a **graph-derived** target `Y*_q` (MSC eq 17) — the explanatory edges of the allowed class on causal paths into the question-focus — so **no gold answer content is stored**. The clamp-switch arises when the focus carries edges of more than one class (a physical `CauseOf` and an intentional `Motivate`); the active clamp selects which class earns fuel.
 
 | Fact | Meaning |
 |------|---------|
@@ -123,15 +119,7 @@ The Experiment-1 toy causal-QA chamber (MSC §7.1) adds a task layer on top of t
 | `(question-focus Q N)` | The event node being asked about. *(P0/P1 simplification: focus is given. Resolving focus from a parsed question-graph becomes organism work when the LLM parser lands.)* |
 | `(question-source Q G)` | Denormalized copy of `qa-source` (single-pattern-match convenience). |
 
-**Gold skeletons** (evaluator-side; soma rules must not match on `skeleton-*` facts — enforced at P1 by space separation or fact-tag discipline):
-
-| Fact | Meaning |
-|------|---------|
-| `(answer-skeleton Q SK)` | Skeleton `SK` is a gold answer for `Q`. A question may carry **two** (one per class) — that is an *ambiguous dual* question, the clamp-switch material. |
-| `(skeleton-class SK cls)` | `cls ∈ {physical-cause, intentional}`. **Omitted for abstain skeletons** (abstaining is correct under every clamp). |
-| `(skeleton-cites SK G E)` | Explanatory edge(s) a correct answer must cite. ≥1 per positive skeleton; multi-cause/mechanism skeletons list several. |
-| `(skeleton-provenance SK G N)` | Source node(s) the answer must trace back to (the provenance clamp). ≥1. |
-| `(skeleton-abstain SK)` | Gold = decline to answer (no text-supported edge). No cites/provenance/class. |
+**No gold skeletons.** The target `Y*_q` is derived from the molecule graph by the evaluator (`petta/evaluator_defs.metta`), intent-aware: direct edges of the allowed class into the focus for `why`/`why-not`/`what-for`, the transitive `CauseOf` closure for `how`. Abstain is graph-derived too — a typed, unanswered question whose ideal is empty (no groundable explanatory edge into the focus) is a correct abstention. So the QA layer stores only the questions above; correctness is scored against the graph, not hand-authored gold.
 
 **Runtime candidate answers** (chamber output → evaluator input — written by the soma):
 
@@ -160,7 +148,7 @@ The Experiment-1 toy causal-QA chamber (MSC §7.1) adds a task layer on top of t
 
 | Fact | Meaning |
 |------|---------|
-| `(edge-cluster Rel cls)` | Vocabulary-level: assigns explanatory relation `Rel` to an answer-class. Exp-1 set: `CauseOf/Triggers/Enables/Contributes/Prevents → physical-cause`; `Motivates/Reason → intentional`; `Despite → concession` (never an answer class — concessive edges are trap material). |
+| `(edge-cluster Rel cls)` | Vocabulary-level: assigns explanatory relation `Rel` to an answer-class. Exp-1 set: `CauseOf/Trigger/Enable/Contribute/Prevent → physical-cause`; `Motivate/Reason → intentional`; `Despite → concession` (never an answer class — concessive edges are trap material). |
 | `(clamp CL)` | Declares clamp `CL`. |
 | `(clamp-class CL cls)` | The answer-class this clamp rewards (selects which skeleton `Y*_q` the Match term scores against). The clamp-switch experiment = swap `physical-cause` ↔ `intentional`. |
 | `(clamp-coeff CL term w)` | eq-17 coefficient, e.g. `(clamp-coeff CL_a match 1.0)`, `(clamp-coeff CL_a unsupportedness 2.0)`. One fact per term. |
@@ -255,7 +243,7 @@ A change is IR-legal only if it keeps all of these true:
 
 - `schema.md` — this spec (authoritative).
 - **Worked examples** (load + round-trip in PeTTa) — the Experiment-1 fixtures:
-  - `../experiments/expt1-causal-qa/{molecules,tasks,configs}.metta` — the IR (5 vignettes): semantic graphs · QA tasks + gold skeletons · domain mappings (edge-cluster/intent-map) + clamps + chamber/worker. Loaded together by `load.metta`.
+  - `../experiments/expt1-causal-qa/{molecules,tasks,configs}.metta` — the IR (5 vignettes): semantic graphs · QA tasks (questions only; the evaluator derives the target from the graph) · domain mappings (edge-cluster/intent-map) + clamps + chamber/worker. Loaded together by `load.metta`.
   - `../experiments/expt1-causal-qa/rules.metta` — the genome: the four causal-QA rules as canonical per-match `rule-lhs`/`rule-rhs` IR with `(var Name)` markers (§2.2).
 - **Reference engine** over these facts: `../petta/` — `kernel_defs.metta` (the generic engine + the converter + `run-rules`/`run-ablate`) and `evaluator_defs.metta` (eq-17 scoring); driven by the per-stage demos `kernel.metta` (P0) · `evaluator.metta` (P1) · `acs_scan.metta` (P2) · `selection.metta` (P3) · `workers.metta`/`ecan_epoch.metta`/`backend_render.metta` (P4).
 

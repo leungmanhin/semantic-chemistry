@@ -22,9 +22,24 @@
 ; ===========================================================================
 
 ; --- the generic engine, on the worker space $ws (fuel ledger + gated fire + loop)
-(= (fuelof $ws $t) (match $ws (fuel $t $n) $n))
-(= (debit $ws $t $k) (let $n (fuelof $ws $t) (let $z (remove-atom $ws (fuel $t $n)) (let $m (- $n $k) (add-atom $ws (fuel $t $m))))))
-(= (afford $ws $cost) (case $cost ((() True) ($ne (let ($t $n) (car-atom $cost) (if (>= (fuelof $ws $t) $n) (afford $ws (cdr-atom $cost)) False))))))
+(= (fuelof $ws $t)
+   (match $ws (fuel $t $n) $n))
+
+(= (debit $ws $t $k)
+   (let $n (fuelof $ws $t)
+        (let $z (remove-atom $ws (fuel $t $n))
+             (let $m (- $n $k)
+                  (add-atom $ws (fuel $t $m))))))
+
+(= (afford $ws $cost)
+   (case $cost (
+          (() True)
+          ($ne (let ($t $n)
+                    (car-atom $cost)
+                    (if (>= (fuelof $ws $t) $n)
+                        (afford $ws (cdr-atom $cost))
+                        False))))))
+
 (= (debit-all $ws $cost) (case $cost ((() done) ($ne (let ($t $n) (car-atom $cost) (let $z (debit $ws $t $n) (debit-all $ws (cdr-atom $cost))))))))
 ; set-semantics add: add a product only if not already present — the doc's X ⊕ θ(G2)
 ; is set-union, so per-match firing that re-emits a shared head (e.g. one alignment per cited
@@ -75,7 +90,7 @@
 ;   (rule-lhs R (clause …))   clauses = `(at SPACE PAT)` / bare PAT, with `(var Name)` vars
 ;   (rule-rhs R (prod …))     product templates (per-MATCH: one firing per LHS match θ)
 ;   (rule-token-cost R tok n) · (rule-priority R n) · (rule-context R C)
-; `(var Name)` is a named variable AS DATA (schema §2.1 node-var, inline) — portable, and
+; `(var Name)` is a named variable AS DATA (an inline marker) — portable, and
 ; the CONVERTER mints a co-referent PeTTa match-var per distinct Name (verified: a runtime
 ; `(fresh-var)` is a real, distinct, unifiable variable). lhs+rhs are converted TOGETHER so
 ; their shared Names co-refer; the result is assembled into the one-atom `(crule …)` the
