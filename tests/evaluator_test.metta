@@ -4,7 +4,7 @@
 ; The evaluator layer runs OUTSIDE the firing loop (MSC §4.4): score each candidate-
 ; answer against a target derived from the GRAPH (no gold answer content), then mint
 ; typed fuel by the active clamp's class. This standalone demo runs the canonical genome
-; to fixpoint (ample fuel), then scores via the shared evaluator_defs.
+; to fixpoint (ample fuel), then scores via the shared evaluator.
 ;
 ; eq-17: Match = covered/idealsize (recall vs the intent-aware graph ideal) - Unsupportedness
 ; - Redundancy; mint = floor(6*M). Q3a Match 0.5 -> 3 (the transitive CauseOf closure is the
@@ -12,11 +12,11 @@
 ; ABSTAIN is the EVALUATOR's job: Q20 produces no answer and its graph-ideal is empty, so
 ; abstain-income mints 4.
 ;
-; Run:  sh ../PeTTa/run.sh tests/evaluator.metta < /dev/null 2>&1 | grep should   # six ✅
+; Run:  sh ../PeTTa/run.sh tests/evaluator_test.metta < /dev/null 2>&1 | grep should   # six ✅
 ; ===========================================================================
-!(import! &self "petta/kernel_defs.metta")
+!(import! &self "petta/kernel.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")
-!(import! &self "petta/evaluator_defs.metta")
+!(import! &self "petta/evaluator.metta")
 
 ; run the canonical genome to fixpoint (ample fuel -> all answers produced)
 !(add-atom &self (fuel gm 100))

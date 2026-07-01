@@ -9,7 +9,7 @@
 ;
 ; Run (produces a file):  sh petta/dump_log.sh [output_path]
 ; ===========================================================================
-!(import! &self "petta/kernel_defs.metta")
+!(import! &self "petta/kernel.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")
 
 ; the event log of a space, sorted by firing sequence (Seq is the first tuple element)

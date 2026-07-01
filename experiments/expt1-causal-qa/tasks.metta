@@ -1,5 +1,5 @@
 ; Experiment 1 — TASKS (the QA benchmark): questions only. No gold answer content is
-; stored — the evaluator (petta/evaluator_defs.metta) derives the ideal answer Y*_q from
+; stored — the evaluator (petta/evaluator.metta) derives the ideal answer Y*_q from
 ; the molecule graph (intent-aware), so correctness is scored against the graph, not gold.
 
 (qa-task T7)

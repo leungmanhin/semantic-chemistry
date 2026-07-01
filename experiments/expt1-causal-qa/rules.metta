@@ -1,6 +1,6 @@
 ; Experiment 1 — RULES in the CANONICAL per-match `C ^ G1 ==> G2` IR. The genome's
 ; source of truth: separate `rule-lhs`/`rule-rhs` facts with `(var Name)` markers (named
-; variables AS DATA), backend-neutral. The engine's converter (petta/kernel_defs.metta:
+; variables AS DATA), backend-neutral. The engine's converter (petta/kernel.metta:
 ; express / convert-rule / to-vars) mints co-referent PeTTa match-vars and assembles each
 ; rule into the runnable `(crule …)` at genome-expression time. Rules fire PER-MATCH θ
 ; (MSC §4.3 eq 12–16): one firing per LHS match, `X' = X ⊕ θ(G2)` (set-union).

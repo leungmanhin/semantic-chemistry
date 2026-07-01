@@ -41,7 +41,7 @@ Same corpus + chamber, **swap the clamp → a different surviving strategy-ACS**
 
 ## Files
 
-This directory is **data only** — pure portable facts loaded by `import!`. The *logic* (the generic engine + the converter + the run + the evaluator) lives in `../../petta/` (`kernel_defs.metta`, `evaluator_defs.metta`); the rules themselves are canonical per-match IR data **here** (`rules.metta`).
+This directory is **data only** — pure portable facts loaded by `import!`. The *logic* (the generic engine + the converter + the run + the evaluator) lives in `../../petta/` (`kernel.metta`, `evaluator.metta`); the rules themselves are canonical per-match IR data **here** (`rules.metta`).
 
 | File | What |
 |------|------|
@@ -62,7 +62,7 @@ The Exp-1 chamber is **K-like** on the life-history simplex (MSC §4.6: "stable 
 ## What's where (logic vs data)
 
 - **The genome** — `rules.metta` here: the four causal-QA rules (`R_qtype` question-type-detector + paraphrase-collapse, `R_align` causal-alignment, `R_complete` role-completion, `R_project` answer-projection) as **canonical per-match `rule-lhs`/`rule-rhs` IR** with `(var Name)` markers (the lifting is complete; the `compact-explanation-packer` is still TODO; **abstain is the evaluator's job**, not a rule). Tokens use `gm`/`ci` (the PeTTa short symbols for `tau_graph_match`/`tau_causal`; see `../../ir/schema.md` §1).
-- **The engine + evaluator code** — `../../petta/kernel_defs.metta` (P0 engine) + `../../petta/evaluator_defs.metta` (eq-17 scoring, target derived from the graph). This dir is the *data* they operate on.
+- **The engine + evaluator code** — `../../petta/kernel.metta` (P0 engine) + `../../petta/evaluator.metta` (eq-17 scoring, target derived from the graph). This dir is the *data* they operate on.
 
 ## Notation legend (for the Appendix graphs)
 

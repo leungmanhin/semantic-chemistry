@@ -1,7 +1,7 @@
 ; ===========================================================================
 ; THE UNIFIED MORTAL KERNEL in PeTTa — P0 demo, CANONICAL per-match form.
 ; ---------------------------------------------------------------------------
-; The whole P0 kernel: the generic ENGINE (kernel_defs) drives the causal-QA genome
+; The whole P0 kernel: the generic ENGINE (kernel) drives the causal-QA genome
 ; EXPRESSED from its CANONICAL IR (rules.metta: rule-lhs/rule-rhs + (var Name),
 ; per-match `C ^ G1 ==> G2`). `run-rules` expresses the genome (canonical IR -> runnable
 ; crules via the converter) then walks the rules in rule-priority order, fuel-gating each
@@ -13,9 +13,9 @@
 ; is NO soma rule (Q20 produces nothing — the alignment rule simply doesn't match its focus);
 ; set-add dedups the shared alignment head; role-completion fills each cause's participants.
 ;
-; Run:  sh ../PeTTa/run.sh tests/kernel.metta < /dev/null 2>&1 | grep should     # ten ✅
+; Run:  sh ../PeTTa/run.sh tests/kernel_test.metta < /dev/null 2>&1 | grep should     # ten ✅
 ; ===========================================================================
-!(import! &self "petta/kernel_defs.metta")
+!(import! &self "petta/kernel.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")
 
 ; gm 27 (6 qtype + 7 align + 9 complete + 5 project, then starves) / ci 7 (7 align edges)
