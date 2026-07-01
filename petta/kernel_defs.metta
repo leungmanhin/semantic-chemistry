@@ -32,20 +32,33 @@
                   (add-atom $ws (fuel $t $m))))))
 
 (= (afford $ws $cost)
-   (case $cost (
-          (() True)
+   (case $cost
+         ((() True)
           ($ne (let ($t $n)
                     (car-atom $cost)
                     (if (>= (fuelof $ws $t) $n)
                         (afford $ws (cdr-atom $cost))
                         False))))))
 
-(= (debit-all $ws $cost) (case $cost ((() done) ($ne (let ($t $n) (car-atom $cost) (let $z (debit $ws $t $n) (debit-all $ws (cdr-atom $cost))))))))
+(= (debit-all $ws $cost)
+   (case $cost
+         ((() done)
+          ($ne (let ($t $n)
+                    (car-atom $cost)
+                    (let $z (debit $ws $t $n)
+                         (debit-all $ws (cdr-atom $cost))))))))
+
 ; set-semantics add: add a product only if not already present — the doc's X ⊕ θ(G2)
 ; is set-union, so per-match firing that re-emits a shared head (e.g. one alignment per cited
 ; edge) doesn't duplicate it.
-(= (present? $ws $a) (case (collapse (match $ws $a $a)) ((() False) ($x True))))
-(= (add-all $ws $ps) (case $ps ((() done) ($ne (let $h (car-atom $ps) (let $z (if (present? $ws $h) done (add-atom $ws $h)) (add-all $ws (cdr-atom $ps))))))))
+(= (present? $ws $a)
+   (case (collapse (match $ws $a $a)) ((() False) ($x True))))
+
+(= (add-all $ws $ps)
+   (case $ps
+         ((() done)
+          ($ne (let $h (car-atom $ps) (let $z (if (present? $ws $h) done (add-atom $ws $h)) (add-all $ws (cdr-atom $ps))))))))
+
 (= (fire $ws $rule $key $cost $prods $seq) (let $a (add-all $ws $prods) (let $b (debit-all $ws $cost) (add-atom $ws (event $seq $rule $key)))))
 ; fire-once-EVER: a (rule,key) that already has an event is skipped (idempotent re-run,
 ; so an epoch can re-enter the chamber after crediting fuel without redoing work).
@@ -118,7 +131,16 @@
 (= (express-rules $l) (if (== $l ()) done (let $z (convert-rule (car-atom $l)) (express-rules (cdr-atom $l)))))
 ; generic data-driven run: express the genome, then walk rules in rule-priority order.
 (= (map-snd $l) (if (== $l ()) () (let ($n $r) (car-atom $l) (cons-atom $r (map-snd (cdr-atom $l))))))
-(= (sorted-rules) (map-snd (msort (collapse (match &self (rule-priority $R $n) ($n $R))))))
+; --- context gate (MSC §3 step 1): a rule is eligible in the chamber iff its rule-context
+; is among the chamber's chamber-context facts (context-subsumption). A rule with NO
+; rule-context is unconstrained (always eligible). Single-context Exp-1 admits every rule
+; (overkill, correct); a rule whose context is declared by no chamber is rejected. Only
+; ELIGIBLE rules reach the priority walk (fuel then gates each firing).
+(= (ctx-active? $c) (case (collapse (match &self (chamber-context $ch $c) yes)) ((() False) ($x True))))
+(= (rule-contexts $R) (collapse (match &self (rule-context $R $c) $c)))
+(= (any-active? $cs) (case $cs ((() False) ($ne (if (ctx-active? (car-atom $cs)) True (any-active? (cdr-atom $cs)))))))
+(= (rule-eligible? $R) (let $cs (rule-contexts $R) (if (== $cs ()) True (any-active? $cs))))
+(= (sorted-rules) (map-snd (msort (filter-out skip (collapse (match &self (rule-priority $R $n) (if (rule-eligible? $R) ($n $R) skip)))))))
 (= (walk-rules $ws $rules $seq) (case $rules ((() $seq) ($ne (let $r (car-atom $rules) (let $seq2 (walk $ws $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq) (walk-rules $ws (cdr-atom $rules) $seq2)))))))
 (= (run-rules-from $ws $seq0) (walk-rules $ws (sorted-rules) $seq0))
 (= (run-rules $ws) (let $z (express) (run-rules-from $ws 0)))
