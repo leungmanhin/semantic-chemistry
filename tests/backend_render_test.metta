@@ -39,7 +39,7 @@
 ; --- (a) render the BACKEND-NEUTRAL call spec from the IR (the backend tag is NOT
 ;         part of the logical spec — only provenance) ----------------------------
 (= (snapshot-fuel-of $snap) (collapse (match &self (snapshot-fuel $snap $t $n) (fuel $t $n))))
-(= (render-spec $w) (let $snap (match &self (worker-snapshot $w $s) $s) (let $steps (match &self (worker-budget-steps $w $n) $n) (chamber-run $snap (snapshot-fuel-of $snap) $steps))))
+(= (render-spec $w) (let* (($snap (match &self (worker-snapshot $w $s) $s)) ($steps (match &self (worker-budget-steps $w $n) $n))) (chamber-run $snap (snapshot-fuel-of $snap) $steps)))
 !(test (== (render-spec W_p) (render-spec W_il)) True)   ; SAME IR -> SAME logical spec under either backend (eq-30)
 
 ; --- (b) §5 backend-neutrality checklist ----------------------------------------
@@ -50,6 +50,6 @@
 !(test (match &self (worker-backend W_il $b) $b) metta-il)
 
 ; --- (c) drive the PeTTa backend FROM the IR -> the log the IR specifies ---------
-(= (seed-from-snapshot $w $ws) (let $snap (match &self (worker-snapshot $w $s) $s) (let $O (the-organism) (add-all $ws (collapse (match &self (snapshot-fuel $snap $t $n) (fuel $O $t $n)))))))
-(= (run-petta $w) (let $ws (match &self (worker-space $w $sp) $sp) (let $z (seed-from-snapshot $w $ws) (let $r (run-rules $ws) (foldall + (match $ws (event $s $rule $k) 1) 0)))))
+(= (seed-from-snapshot $w $ws) (let* (($snap (match &self (worker-snapshot $w $s) $s)) ($O (the-organism))) (add-all $ws (collapse (match &self (snapshot-fuel $snap $t $n) (fuel $O $t $n))))))
+(= (run-petta $w) (let* (($ws (match &self (worker-space $w $sp) $sp)) ($z (seed-from-snapshot $w $ws)) ($r (run-rules $ws))) (foldall + (match $ws (event $s $rule $k) 1) 0)))
 !(test (run-petta W_p) 19)   ; the PeTTa executor produces the canonical P0 mortal log (19 firings) from the portable IR

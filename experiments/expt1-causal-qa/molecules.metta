@@ -6,6 +6,7 @@
 ; ids are globally unique.
 
 ; --- V7 (out-of-milk): antecedent cause + goal (the clamp-switch dual) ---
+; Maria was out of milk, so she drove to the store to buy a carton.
 (node-graph V7g v7_oom)
 (Member v7_oom out_of_milk)
 (node-graph V7g v7_maria)
@@ -28,6 +29,7 @@
 (Motivate v7_buy v7_drive)
 
 ; --- V3 (power-spoil): two-hop mechanism chain (action events + Patient participants) ---
+; The power went out during the storm, so the fridge stopped running, and as a result the food had spoiled by morning.
 (node-graph V3g v3_goout)
 (Member v3_goout go_out)
 (node-graph V3g v3_power)
@@ -47,6 +49,7 @@
 (CauseOf v3_stop v3_spoil)
 
 ; --- V17 (sprinklers): prevention (negated spread bundle -> node-modal prevented) ---
+; A fire started in the kitchen, but the sprinklers switched on and stopped it from spreading to the rest of the house.
 (node-graph V17g v17_start)
 (Member v17_start start)
 (node-graph V17g v17_fire)
@@ -67,6 +70,7 @@
 (Prevent v17_sprinklers v17_spread)
 
 ; --- V20 (streetlights): abstain (no explanatory edge into the focus drive) ---
+; The streetlights came on at dusk. Maria drove to the store.
 (node-graph V20g v20_streetlights)
 (Member v20_streetlights streetlight)
 (node-graph V20g v20_comeon)
@@ -82,6 +86,7 @@
 (Destination v20_drive v20_store)
 
 ; --- V23 (dense-cake): multi-cause (two CauseOf into dense) ---
+; The cake came out dense, because the baker had used too little baking powder and had overmixed the batter.
 (node-graph V23g v23_dense)
 (Member v23_dense dense)
 (node-graph V23g v23_cake)

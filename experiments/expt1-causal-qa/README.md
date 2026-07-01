@@ -41,7 +41,7 @@ Same corpus + chamber, **swap the clamp → a different surviving strategy-ACS**
 
 ## Files
 
-This directory is **data only** — pure portable facts loaded by `import!`. The *logic* (the generic engine + the converter + the run + the evaluator) lives in `../../petta/` (`kernel.metta`, `evaluator.metta`); the rules themselves are canonical per-match IR data **here** (`rules.metta`).
+This directory is **data only** — pure portable facts loaded by `import!`. The *logic* (the generic engine + the converter + the run + the evaluator) lives in `../../petta/`; the rules themselves are canonical per-match IR data **here** (`rules.metta`).
 
 | File | What |
 |------|------|

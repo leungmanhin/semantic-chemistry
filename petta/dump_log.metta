@@ -14,8 +14,14 @@
 
 ; the event log of a space, sorted by firing sequence (Seq is the first tuple element)
 (= (log-events $ws) (msort (collapse (match $ws (event $s $r $k) ($s $r $k)))))
+
 ; print each firing as a re-loadable bare (event Seq Rule Key) fact, one per line
-(= (print-log $l) (if (== $l ()) done (let ($s $r $k) (car-atom $l) (let $z (println! (event $s $r $k)) (print-log (cdr-atom $l))))))
+(= (print-log $l)
+   (if (== $l ())
+       done
+       (let* ((($s $r $k) (car-atom $l))
+              ($z (println! (event $s $r $k))))
+         (print-log (cdr-atom $l)))))
 
 !(add-atom &self (fuel O_qa gm 100))
 !(add-atom &self (fuel O_qa ci 100))

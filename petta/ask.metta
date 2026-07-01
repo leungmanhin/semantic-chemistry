@@ -21,11 +21,11 @@
 
 ; report for question $q: q-word, candidate answers, cited edges (rel + source), participants
 (= (report $q)
-   (let $w (collapse (match &self (q-word $q $x) $x))
-   (let $cands (collapse (match &self (candidate-answer $q $a) $a))
-   (let $cites (collapse (match &self (cites $q $c $rel $src $f) (cite $rel $src)))
-   (let $fills (collapse (match &self (role-fill $q $c2 $r $fl) (role $r $fl)))
-   (println! (ans-for $q word $w answers $cands because $cites participants $fills)))))))
+   (let* (($w (collapse (match &self (q-word $q $x) $x)))
+          ($cands (collapse (match &self (candidate-answer $q $a) $a)))
+          ($cites (collapse (match &self (cites $q $c $rel $src $f) (cite $rel $src))))
+          ($fills (collapse (match &self (role-fill $q $c2 $r $fl) (role $r $fl)))))
+     (println! (ans-for $q word $w answers $cands because $cites participants $fills))))
 
 !(report Q7a)
 !(report Q7b)

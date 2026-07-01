@@ -24,14 +24,14 @@
 ; typed fuel as a fact — seed only 4 (for 6 questions) so it STARVES
 !(add-atom &self (fuel gm 4))
 (= (fuelof $tok) (match &self (fuel $tok $n) $n))
-(= (debit $tok $k) (let $n (fuelof $tok) (let $z (remove-atom &self (fuel $tok $n)) (let $m (- $n $k) (add-atom &self (fuel $tok $m))))))
+(= (debit $tok $k) (let* (($n (fuelof $tok)) ($z (remove-atom &self (fuel $tok $n))) ($m (- $n $k))) (add-atom &self (fuel $tok $m))))
 
 ; R_qtype candidates (canonical-sorted) ; fire one = add product + debit + log event
 (= (qtype-cands) (collapse (match &self (qa-question $t $q) (match &self (q-word $q $w) (match &self (intent-map $w $i) (qt $q $i))))))
-(= (fire-qt $q $i $seq) (let $a (add-atom &self (q-intent $q $i)) (let $b (debit gm 1) (add-atom &self (event $seq R_qtype $q)))))
+(= (fire-qt $q $i $seq) (let* (($a (add-atom &self (q-intent $q $i))) ($b (debit gm 1))) (add-atom &self (event $seq R_qtype $q))))
 
 ; the fuel-gated loop: walk candidates; fire each while affordable; STARVE when not
-(= (walk $list $seq) (case $list ((() $seq) ($ne (if (>= (fuelof gm) 1) (let (qt $q $i) (car-atom $list) (let $z (fire-qt $q $i $seq) (walk (cdr-atom $list) (+ $seq 1)))) $seq)))))
+(= (walk $list $seq) (case $list ((() $seq) ($ne (if (>= (fuelof gm) 1) (let* (((qt $q $i) (car-atom $list)) ($z (fire-qt $q $i $seq))) (walk (cdr-atom $list) (+ $seq 1))) $seq)))))
 !(walk (msort (qtype-cands)) 0)
 
 ; --- verify the mortal behaviour: starvation (mortal death) -----------------

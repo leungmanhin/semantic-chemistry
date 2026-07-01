@@ -7,15 +7,54 @@
 ; engine (kernel.metta) + evaluator (evaluator.metta) are loaded by the consumer.
 ; Exercised by tests/ecan_epoch_test.metta.
 ; ===========================================================================
-; the eq-17 mint under the CL_antecedent clamp = would-mint at physical-cause
+
+; the eq-17 mint for answer ($q,$cls) under the active clamp (CL_antecedent = physical-cause)
 (= (gm-mint $ws $q $cls) (would-mint $ws $q $cls physical-cause))
-; credit minted gm back to the fuel ledger (evaluator-side, NOT a soma firing) — into the
-; earning organism's purse (single-organism Exp-1: the-organism = O_qa)
-(= (credit-gm $ws $m) (let $O (the-organism) (let $n (fuelof $ws $O gm) (let $z (remove-atom $ws (fuel $O gm $n)) (let $tot (+ $n $m) (add-atom $ws (fuel $O gm $tot)))))))
-; the unscored candidate-answers (as (ans Q CLS)); score-credit-mark each once
-(= (unscored $ws) (filter-out skip (collapse (match $ws (candidate-answer $q (a $q $cls)) (case (collapse (match $ws (scored (a $q $cls)) yes)) ((() (ans $q $cls)) ($any skip)))))))
-(= (credit-one $ws $q $cls) (let $m (gm-mint $ws $q $cls) (let $z1 (add-atom $ws (scored (a $q $cls))) (let $z2 (credit-gm $ws $m) $m))))
-(= (credit-all $ws $as) (case $as ((() 0) ($ne (let (ans $q $cls) (car-atom $as) (let $m (credit-one $ws $q $cls) (+ $m (credit-all $ws (cdr-atom $as)))))))))
+
+; credit $m minted gm back to the earning organism's purse (evaluator-side, NOT a soma
+; firing; single-organism Exp-1: the-organism = O_qa)
+(= (credit-gm $ws $m)
+   (let* (($O (the-organism))
+          ($n (fuelof $ws $O gm))
+          ($z (remove-atom $ws (fuel $O gm $n)))
+          ($tot (+ $n $m)))
+     (add-atom $ws (fuel $O gm $tot))))
+
+; the not-yet-scored candidate answers, as (ans Q CLS) (already-scored ones drop out as skip)
+(= (unscored $ws)
+   (filter-out skip
+               (collapse (match $ws (candidate-answer $q (ans $q $cls))
+                                (case (collapse (match $ws (scored (ans $q $cls)) yes))
+                                      ((() (ans $q $cls))
+                                       ($any skip)))))))
+
+; score one answer: mint its gm, mark it scored, credit the fuel; return the minted amount
+(= (credit-one $ws $q $cls)
+   (let* (($m (gm-mint $ws $q $cls))
+          ($z1 (add-atom $ws (scored (ans $q $cls))))
+          ($z2 (credit-gm $ws $m)))
+     $m))
+
+; score every answer in $as, returning the total minted
+(= (credit-all $ws $as)
+   (case $as
+         ((() 0)
+          ($ne (let* (((ans $q $cls) (car-atom $as))
+                      ($m (credit-one $ws $q $cls)))
+                 (+ $m (credit-all $ws (cdr-atom $as))))))))
+
+; how many firings the run has logged so far
 (= (count-events $ws) (foldall + (match $ws (event $s $r $k) 1) 0))
-; THE EPOCH LOOP: run -> score+mint+credit new -> re-run while progress + fuel
-(= (epoch $ws) (let $seq0 (count-events $ws) (let $z (run-rules-from $ws $seq0) (let $new (unscored $ws) (let $cr (credit-all $ws $new) (if (== $new ()) done (if (> $cr 0) (epoch $ws) done)))))))
+
+; THE EPOCH LOOP: run -> score+mint+credit the new answers -> re-run while there is
+; progress (new answers) and the minting paid off (credited > 0)
+(= (epoch $ws)
+   (let* (($seq0 (count-events $ws))
+          ($z (run-rules-from $ws $seq0))
+          ($new (unscored $ws))
+          ($cr (credit-all $ws $new)))
+     (if (== $new ())
+         done
+         (if (> $cr 0)
+             (epoch $ws)
+             done))))
