@@ -16,7 +16,7 @@
 ; `run-rules` (kernel_defs.metta). This file isolates the bare fuel-gated mechanism
 ; on a single rule (R_qtype), for clarity / as a regression guard on the primitive.
 ;
-; Run:  sh ../PeTTa/run.sh petta/engine.metta < /dev/null \
+; Run:  sh ../PeTTa/run.sh tests/engine.metta < /dev/null \
 ;          2>&1 | grep should     # three ✅
 ; ===========================================================================
 !(import! &self "experiments/expt1-causal-qa/load.metta")

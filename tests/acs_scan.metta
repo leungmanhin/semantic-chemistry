@@ -14,7 +14,7 @@
 ;    pruned) spends only 19, so income - spend = +6 under CL_antecedent vs -3 under CL_goal;
 ;    the SAME core is PROMOTED under one clamp and REJECTED under the other (clamp-switch).
 ;
-; Run:  sh ../PeTTa/run.sh petta/acs_scan.metta < /dev/null \
+; Run:  sh ../PeTTa/run.sh tests/acs_scan.metta < /dev/null \
 ;          2>&1 | grep should   # sixteen ✅
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")

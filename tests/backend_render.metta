@@ -14,7 +14,7 @@
 ; We have only the PeTTa executor today, so the metta-il side is the rendered SPEC,
 ; not a run.
 ;
-; Run:  sh ../PeTTa/run.sh petta/backend_render.metta < /dev/null \
+; Run:  sh ../PeTTa/run.sh tests/backend_render.metta < /dev/null \
 ;          2>&1 | grep should   # six ✅
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")

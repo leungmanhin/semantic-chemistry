@@ -13,7 +13,7 @@
 ; Together with Q3 (space handles are storable in facts) this de-risks the
 ; separate-space-per-worker approach completely. (See memory: petta-findings.)
 ;
-; Run: sh ../PeTTa/run.sh petta/spaces_behavior.metta < /dev/null \
+; Run: sh ../PeTTa/run.sh tests/spaces_behavior.metta < /dev/null \
 ;         2>&1 | grep should     # eleven ✅
 ; ===========================================================================
 

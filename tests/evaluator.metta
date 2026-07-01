@@ -12,7 +12,7 @@
 ; ABSTAIN is the EVALUATOR's job: Q20 produces no answer and its graph-ideal is empty, so
 ; abstain-income mints 4.
 ;
-; Run:  sh ../PeTTa/run.sh petta/evaluator.metta < /dev/null 2>&1 | grep should   # six ✅
+; Run:  sh ../PeTTa/run.sh tests/evaluator.metta < /dev/null 2>&1 | grep should   # six ✅
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")

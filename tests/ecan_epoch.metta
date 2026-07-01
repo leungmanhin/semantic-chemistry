@@ -17,7 +17,7 @@
 ; starves; feedback ON (the epoch loop) earns fuel by answering and reaches more
 ; answers. ON > OFF == "minting funds further computation".
 ;
-; Run:  sh ../PeTTa/run.sh petta/ecan_epoch.metta < /dev/null \
+; Run:  sh ../PeTTa/run.sh tests/ecan_epoch.metta < /dev/null \
 ;          2>&1 | grep should   # six ✅ (OFF: 1 answer, starved gm=0 | ON: 6 answers, surplus gm=16)
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")

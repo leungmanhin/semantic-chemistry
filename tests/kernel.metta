@@ -13,7 +13,7 @@
 ; is NO soma rule (Q20 produces nothing — the alignment rule simply doesn't match its focus);
 ; set-add dedups the shared alignment head; role-completion fills each cause's participants.
 ;
-; Run:  sh ../PeTTa/run.sh petta/kernel.metta < /dev/null 2>&1 | grep should     # ten ✅
+; Run:  sh ../PeTTa/run.sh tests/kernel.metta < /dev/null 2>&1 | grep should     # ten ✅
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")

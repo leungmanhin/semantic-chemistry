@@ -16,7 +16,7 @@
 ; Per-genome expression in isolated spaces is exactly what the worker isolation
 ; + run-ablate (acs_scan) enable.
 ;
-; Run:  sh ../PeTTa/run.sh petta/selection.metta < /dev/null \
+; Run:  sh ../PeTTa/run.sh tests/selection.metta < /dev/null \
 ;          2>&1 | grep should   # nine ✅
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")

@@ -17,7 +17,7 @@
 ; then W_reduce sums firings/answers across both. Each worker's event log lives
 ; only in its own space; neither sees the other's products.
 ;
-; Run:  sh ../PeTTa/run.sh petta/workers.metta < /dev/null \
+; Run:  sh ../PeTTa/run.sh tests/workers.metta < /dev/null \
 ;          2>&1 | grep should     # ten ✅
 ; ===========================================================================
 !(import! &self "petta/kernel_defs.metta")
