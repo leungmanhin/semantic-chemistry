@@ -7,7 +7,7 @@
 ; acs,selection}):
 ;   STAGE-0  the chamber       — the molecule graph, the question, organism, clamp
 ;   STAGE-1  P0 reaction        — the genome fires (fuel-gated) -> candidate answers
-;   STAGE-2  P4 worker contract — the same reaction launched as an isolated worker
+;   STAGE-2  P4 worker contract — the reaction as an isolated worker; persists its output log
 ;   STAGE-3  P1 evaluation      — eq-17 scoring + clamp-gated fuel minting (clamp-switch)
 ;   STAGE-4  P1 metabolic loop  — minting feeds back (epoch): OFF starves, ON self-sustains
 ;   STAGE-5  P2 ACS detection   — mine the reaction graph; the autocatalytic set; surplus
@@ -60,14 +60,14 @@
 !(run-rules &self)
 !(println! (chamber-totals firings (count-events &self) answers (count-answers &self)))
 !(report &self Q7a)
-!(report &self Q7b)
-!(report &self Q3a)
-!(report &self Q17)
-!(report &self Q20)
-!(report &self Q23)
+;; !(report &self Q7b)
+;; !(report &self Q3a)
+;; !(report &self Q17)
+;; !(report &self Q20)
+;; !(report &self Q23)
 
 ; ===========================================================================
-!(println! (STAGE-2 --- P4-WORKER-CONTRACT launch-W_expt1-in-its-own-space ---))
+!(println! (STAGE-2 --- P4-WORKER-CONTRACT run-W_expt1-own-space-persist-its-output-log ---))
 !(bind! &ws_worker (new-space))
 !(add-atom &self (worker-space W_expt1 &ws_worker))
 !(dispatch W_expt1)
@@ -76,6 +76,7 @@
              answers (match &self (worker-summary W_expt1 answers $a) $a)
              gm-left (match &self (worker-summary W_expt1 fuel-gm $g) $g)))
 !(println! (worker-produced-Q7a (collapse (match &ws_worker (candidate-answer Q7a $a) $a))))
+!(println! (worker-output-log-written-to (log-path (match &self (worker-output-log W_expt1 $l) $l))))
 
 ; ===========================================================================
 !(println! (STAGE-3 --- P1-EVALUATION eq17-minting-and-the-clamp-switch ---))

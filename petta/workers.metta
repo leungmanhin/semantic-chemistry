@@ -1,10 +1,12 @@
 ; ===========================================================================
 ; WORKERS — the §6.4 worker contract: a dispatcher routing by worker-kind to a
 ; context-chamber body (own space, fuel from its snapshot, run the kernel on that space,
-; summarise to &self) or a reducer (deterministic merge of the per-worker summaries).
-; Facts-free; assumes the engine (kernel.metta) is loaded by the consumer. Exercised by
-; tests/workers_test.metta.
+; persist its output log, summarise to &self) or a reducer (deterministic merge of the
+; per-worker summaries). Facts-free; assumes the engine (kernel.metta) is loaded by the
+; consumer. Imports persist.metta itself (for the output-log write), so a consumer that
+; imports workers must NOT import persist again. Exercised by tests/workers_test.metta.
 ; ===========================================================================
+!(import! &self "petta/persist.metta")
 
 ; route a worker to its kind's body
 (= (dispatch $w)
@@ -16,16 +18,30 @@
                 unknown-kind))))
 
 ; context-chamber worker: own space, fuel from snapshot INTO the worker organism's purse,
-; run kernel on $ws, summarise to &self (single-organism Exp-1: the-organism = O_qa)
+; run kernel on $ws, persist its output log (if declared), summarise to &self
+; (single-organism Exp-1: the-organism = O_qa)
 (= (run-cc $w)
    (let* (($ws (match &self (worker-space $w $sp) $sp))
           ($snap (match &self (worker-snapshot $w $s) $s))
           ($O (the-organism))
           ($z1 (add-all $ws (collapse (match &self (snapshot-fuel $snap $t $n) (fuel $O $t $n)))))
-          ($z2 (run-rules $ws)))
+          ($z2 (run-rules $ws))
+          ($z3 (persist-log $w $ws)))
      (emit-summary $w $ws)))
 
-; the §6.4 worker output goes to &self, keyed by worker (firings / answers / gm left); the LOG stays in $ws
+; the file path for a log id: runs/<log-id>.metta
+(= (log-path $logid)
+   (py-call (operator.add (py-call (operator.add "runs/" (repr $logid))) ".metta")))
+
+; persist the worker's ordered event log (§6.4 output) to runs/<log-id>.metta, iff it
+; declares a worker-output-log destination; otherwise a no-op (logless workers stay hermetic)
+(= (persist-log $w $ws)
+   (let $ids (collapse (match &self (worker-output-log $w $logid) $logid))
+        (if (== $ids ())
+            no-output-log
+            (write-facts (log-path (car-atom $ids)) (log-facts $ws)))))
+
+; the §6.4 worker summary goes to &self, keyed by worker (firings / answers / gm left)
 (= (emit-summary $w $ws)
    (let* (($f (foldall + (match $ws (event $s $r $k) 1) 0))
           ($z1 (add-atom &self (worker-summary $w firings $f)))

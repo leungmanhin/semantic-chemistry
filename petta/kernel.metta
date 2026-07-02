@@ -140,6 +140,9 @@
 (= (fired? $ws $rule $key)
    (case (collapse (match $ws (event $s $rule $key) yes)) ((() False) ($any True))))
 
+; the event log of a space as (event …) facts, ordered by firing sequence
+(= (log-facts $ws) (msort (collapse (match $ws (event $s $r $k) (event $s $r $k)))))
+
 ; walk a rule's candidate list for organism $O: skip already-fired candidates; fire the next
 ; iff the gate passes (then continue at seq+1); a shut gate halts this rule (cold / unaffordable
 ; — later same-cost candidates would fail too), returning $seq.
@@ -308,7 +311,7 @@
                  (walk-rules $ws (cdr-atom $rules) $seq2))))))
 
 ; run from a given seq (used by the epoch loop to re-enter after crediting fuel)
-(= (run-rules-from $ws $seq0) (walk-rules $ws (sorted-rules) $seq0))
+(= (run-rules-from $ws $seq) (walk-rules $ws (sorted-rules) $seq))
 
 ; the full run: express the genome, then walk the rules from seq 0
 (= (run-rules $ws) (let $z (express) (run-rules-from $ws 0)))
