@@ -17,7 +17,11 @@
 ; Run:  sh ../PeTTa/run.sh tests/backend_render_test.metta < /dev/null \
 ;          2>&1 | grep should   # six ✅
 ; ===========================================================================
-!(import! &self "petta/kernel.metta")
+!(import! &self "petta/util.metta")
+!(import! &self "petta/fuel.metta")
+!(import! &self "petta/compiler.metta")
+!(import! &self "petta/gate.metta")
+!(import! &self "petta/reaction.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")
 
 ; --- one snapshot, two workers — IDENTICAL IR except the backend tag ------------

@@ -1,5 +1,5 @@
 ; ===========================================================================
-; CONTEXT-GATE TEST — the generic rule-context gate (kernel: rule-eligible?).
+; CONTEXT-GATE TEST — the generic rule-context gate (gate: rule-eligible?).
 ; ---------------------------------------------------------------------------
 ; Two SYNTHETIC rules (defined HERE, not in experiments/rules.metta), with identical
 ; LHS (match every qa-question) but different rule-context: R_ctxok's context is a
@@ -12,7 +12,11 @@
 ;
 ; Run:  sh ../PeTTa/run.sh tests/context_gate_test.metta < /dev/null 2>&1 | grep should  # six ✅
 ; ===========================================================================
-!(import! &self "petta/kernel.metta")
+!(import! &self "petta/util.metta")
+!(import! &self "petta/fuel.metta")
+!(import! &self "petta/compiler.metta")
+!(import! &self "petta/gate.metta")
+!(import! &self "petta/reaction.metta")
 !(import! &self "experiments/expt1-causal-qa/tasks.metta")
 !(import! &self "experiments/expt1-causal-qa/configs.metta")
 

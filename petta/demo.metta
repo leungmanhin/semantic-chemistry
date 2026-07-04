@@ -3,7 +3,7 @@
 ; ---------------------------------------------------------------------------
 ; Answers the Exp-1 causal questions (V7 "Why did Maria drive?" is the running
 ; example) and, around that, drives EVERY stage prototyped so far — one banner
-; per stage, each calling the REAL module (petta/{kernel,evaluator,workers,ecan,
+; per stage, each calling the REAL module (petta/{reaction,evaluator,workers,ecan,
 ; acs,selection}):
 ;   STAGE-0  the chamber       — the molecule graph, the question, organism, clamp
 ;   STAGE-1  P0 reaction        — the genome fires (fuel-gated) -> candidate answers
@@ -18,12 +18,19 @@
 ;   (`| grep STAGE` alone gives just the eight stage banners)
 ; ===========================================================================
 !(import! &self "experiments/expt1-causal-qa/load.metta")
-!(import! &self "petta/kernel.metta")
+!(import! &self "petta/util.metta")
+!(import! &self "petta/fuel.metta")
+!(import! &self "petta/compiler.metta")
+!(import! &self "petta/gate.metta")
+!(import! &self "petta/reaction.metta")
 !(import! &self "petta/evaluator.metta")
-!(import! &self "petta/workers.metta")
+!(import! &self "petta/persist.metta")
+!(import! &self "petta/chamber.metta")
+!(import! &self "petta/reducer.metta")
 !(import! &self "petta/ecan.metta")
 !(import! &self "petta/acs.metta")
 !(import! &self "petta/selection.metta")
+!(import! &self "petta/workers.metta")
 
 ; --- helpers -----------------------------------------------------------------
 ; a per-question report over space $ws: the q-word (IR) + the products the run wrote
@@ -112,7 +119,7 @@
 !(println! (ACS-members (acs-members &g (fired-rules))))
 !(println! (reaches-fuel R_project (reaches? &g R_project gm) R_complete (reaches? &g R_complete gm)))
 !(println! (metabolic-closure cycle-through-gm (cycle-through &g gm)))
-!(println! (ACS-economy spend (acs-spend &g) surplus-physical (acs-surplus &g physical-cause)))
+!(println! (ACS-economy spend (acs-spend &g) surplus-physical (acs-surplus-of &g physical-cause)))
 ; paired-replay ablation: drop R_complete -> same answers (it is inert / dead-weight)
 !(bind! &ab_base (new-space))
 !(bind! &ab_noComplete (new-space))

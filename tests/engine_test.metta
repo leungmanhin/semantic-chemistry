@@ -13,7 +13,7 @@
 ;
 ; The unified loop over ALL the rules — re-enumerate candidates, walk them in
 ; (priority, rule, key) order, fuel-gate + fire, recurse — IS the engine's generic
-; `run-rules` (kernel.metta). This file isolates the bare fuel-gated mechanism
+; `run-rules` (reaction.metta). This file isolates the bare fuel-gated mechanism
 ; on a single rule (R_qtype), for clarity / as a regression guard on the primitive.
 ;
 ; Run:  sh ../PeTTa/run.sh tests/engine_test.metta < /dev/null \

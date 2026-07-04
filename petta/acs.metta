@@ -1,7 +1,7 @@
 ; ===========================================================================
 ; ACS — reusable P2 ACS logic: ablation, graph reachability, surplus, and the
 ; log-miner (derive the reaction graph from the event log + rule IR, then discover the
-; ACS = the rules on a metabolic cycle). Facts-free; assumes the engine (kernel.metta)
+; ACS = the rules on a metabolic cycle). Facts-free; assumes the engine (reaction)
 ; and evaluator (evaluator.metta) are loaded by the consumer. Exercised by
 ; tests/acs_scan_test.metta (certify a hand-given candidate) and
 ; tests/acs_mine_test.metta (discover it from the log).
@@ -15,10 +15,6 @@
           ($z2 (add-atom $sp (fuel $O ci 30)))
           ($z3 (run-ablate $sp (cons-atom $skip ()))))
      (count-answers $sp)))
-
-; --- generic list / graph utils (list membership is kernel's `in-list?`) ---
-(= (app $a $b) (case $a ((() $b) ($ne (cons-atom (car-atom $a) (app (cdr-atom $a) $b))))))
-(= (len $l) (if (== $l ()) 0 (+ 1 (len (cdr-atom $l)))))
 
 ; add every edge in $es to the graph space $g
 (= (add-edges $g $es)
@@ -41,7 +37,7 @@
                         True
                         (if (in-list? $h $seen)
                             (any-reaches $g (cdr-atom $frontier) $goal $seen)
-                            (any-reaches $g (app (succs $g $h) (cdr-atom $frontier)) $goal (cons-atom $h $seen)))))))))
+                            (any-reaches $g (concat-lists (succs $g $h) (cdr-atom $frontier)) $goal (cons-atom $h $seen)))))))))
 
 ; is $to reachable from $from? / does $node sit on a cycle?
 (= (reaches? $g $from $to) (any-reaches $g (succs $g $from) $to ()))
@@ -115,4 +111,43 @@
 
 ; the ACS's total spend (firings of its members) and its surplus (income - spend)
 (= (acs-spend $g) (sum-firings (acs-members $g (fired-rules))))
-(= (acs-surplus $g $cc) (- (gm-income &self $cc) (acs-spend $g)))
+(= (acs-surplus-of $g $cc) (- (gm-income &self $cc) (acs-spend $g)))
+
+; ===========================================================================
+; ACS-SCAN WORKER (worker-kind acs-scan) + the §2.9 verdict facts it emits. Assumes
+; persist is loaded (persist-facts) — the verdicts follow the D11 worker-output pattern.
+; ===========================================================================
+
+; the (acs-member A R) fact for each rule in $rules
+(= (member-facts $A $rules)
+   (if (== $rules ()) ()
+       (cons-atom (acs-member $A (car-atom $rules)) (member-facts $A (cdr-atom $rules)))))
+
+; the answer-class a clamp rewards
+(= (clamp-class-of $cl) (match &self (clamp-class $cl $c) $c))
+
+; the ACS verdict facts (schema §2.9) for ACS $A on reaction-graph $g under clamp-class $cc:
+; one acs-member per cycle rule + metabolic closure + signed gm surplus + the promotion verdict
+(= (acs-verdict-facts $A $g $cc)
+   (let* (($members (acs-members $g (fired-rules)))
+          ($surplus (acs-surplus-of $g $cc))
+          ($promoted (> $surplus 0)))
+     (concat-lists (member-facts $A $members)
+       (cons-atom (acs-closure $A metabolic)
+         (cons-atom (acs-surplus $A $cc gm $surplus)
+           (cons-atom (acs-promoted $A $cc $promoted) ()))))))
+
+; acs-scan worker body: mine the reaction graph from the event log into its own space
+; (closed by the evaluator's candidate-answer -> E -> gm minting edge), compute the ACS
+; verdict facts, assert them to &self, persist them (if declared), and summarise
+(= (run-acs $w)
+   (let* (($ws (match &self (worker-space $w $sp) $sp))
+          ($A (match &self (worker-acs $w $a) $a))
+          ($cc (clamp-class-of (match &self (worker-clamp $w $c) $c)))
+          ($z1 (build-graph $ws (fired-rules)))
+          ($z2 (add-atom $ws (medge candidate-answer E)))
+          ($z3 (add-atom $ws (medge E gm)))
+          ($verdicts (acs-verdict-facts $A $ws $cc))
+          ($z4 (add-all &self $verdicts))
+          ($z5 (persist-facts $w $verdicts)))
+     (add-atom &self (worker-summary $w acs $A))))

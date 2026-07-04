@@ -15,7 +15,11 @@
 ;
 ; Run:  sh ../PeTTa/run.sh tests/tecan_shell_test.metta < /dev/null 2>&1 | grep should  # 14 ✅
 ; ===========================================================================
-!(import! &self "petta/kernel.metta")
+!(import! &self "petta/util.metta")
+!(import! &self "petta/fuel.metta")
+!(import! &self "petta/compiler.metta")
+!(import! &self "petta/gate.metta")
+!(import! &self "petta/reaction.metta")
 
 ; --- two synthetic organisms, each a genome quoting a one-rule ruleset -----------
 !(add-atom &self (organism O_a))

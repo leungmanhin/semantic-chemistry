@@ -18,7 +18,11 @@
 ; Run:  sh ../PeTTa/run.sh tests/acs_scan_test.metta < /dev/null \
 ;          2>&1 | grep should   # sixteen ✅
 ; ===========================================================================
-!(import! &self "petta/kernel.metta")
+!(import! &self "petta/util.metta")
+!(import! &self "petta/fuel.metta")
+!(import! &self "petta/compiler.metta")
+!(import! &self "petta/gate.metta")
+!(import! &self "petta/reaction.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")
 !(import! &self "petta/evaluator.metta")
 !(import! &self "petta/acs.metta")   ; ablate-answers · reachability · gm-surplus · all3

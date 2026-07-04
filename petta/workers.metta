@@ -1,58 +1,18 @@
 ; ===========================================================================
-; WORKERS — the §6.4 worker contract: a dispatcher routing by worker-kind to a
-; context-chamber body (own space, fuel from its snapshot, run the kernel on that space,
-; persist its output log, summarise to &self) or a reducer (deterministic merge of the
-; per-worker summaries). Facts-free; assumes the engine (kernel.metta) is loaded by the
-; consumer. Imports persist.metta itself (for the output-log write), so a consumer that
-; imports workers must NOT import persist again. Exercised by tests/workers_test.metta.
+; WORKERS — the §6.4 worker DISPATCHER: route a worker to its kind's body. The
+; bodies live in their own modules (chamber · reducer · …) and the shared envelope
+; helpers in persist; this module is the switchboard only. Assumes the body modules
+; are loaded by the consumer. Facts-free. Exercised by tests/workers_test.metta.
 ; ===========================================================================
-!(import! &self "petta/persist.metta")
 
-; route a worker to its kind's body
+; route a worker to its kind's body (each body lives in its own module — the consumer
+; loads the body modules for the kinds it will dispatch)
 (= (dispatch $w)
    (let $k (match &self (worker-kind $w $kind) $kind)
-        (if (== $k context-chamber)
-            (run-cc $w)
-            (if (== $k reducer)
-                (run-reduce $w)
-                unknown-kind))))
-
-; context-chamber worker: own space, fuel from snapshot INTO the worker organism's purse,
-; run kernel on $ws, persist its output log (if declared), summarise to &self
-; (single-organism Exp-1: the-organism = O_qa)
-(= (run-cc $w)
-   (let* (($ws (match &self (worker-space $w $sp) $sp))
-          ($snap (match &self (worker-snapshot $w $s) $s))
-          ($O (the-organism))
-          ($z1 (add-all $ws (collapse (match &self (snapshot-fuel $snap $t $n) (fuel $O $t $n)))))
-          ($z2 (run-rules $ws))
-          ($z3 (persist-log $w $ws)))
-     (emit-summary $w $ws)))
-
-; the file path for a log id: runs/<log-id>.metta
-(= (log-path $logid)
-   (py-call (operator.add (py-call (operator.add "runs/" (repr $logid))) ".metta")))
-
-; persist the worker's ordered event log (§6.4 output) to runs/<log-id>.metta, iff it
-; declares a worker-output-log destination; otherwise a no-op (logless workers stay hermetic)
-(= (persist-log $w $ws)
-   (let $ids (collapse (match &self (worker-output-log $w $logid) $logid))
-        (if (== $ids ())
-            no-output-log
-            (write-facts (log-path (car-atom $ids)) (log-facts $ws)))))
-
-; the §6.4 worker summary goes to &self, keyed by worker (firings / answers / gm left)
-(= (emit-summary $w $ws)
-   (let* (($f (foldall + (match $ws (event $s $r $k) 1) 0))
-          ($z1 (add-atom &self (worker-summary $w firings $f)))
-          ($a (foldall + (match $ws (candidate-answer $q $an) 1) 0))
-          ($z2 (add-atom &self (worker-summary $w answers $a)))
-          ($g (fuelof $ws (the-organism) gm)))
-     (add-atom &self (worker-summary $w fuel-gm $g))))
-
-; reducer: deterministic merge of the per-worker summaries across all workers
-(= (run-reduce $w)
-   (let* (($tf (foldall + (match &self (worker-summary $cw firings $n) $n) 0))
-          ($z1 (add-atom &self (reduced total-firings $tf)))
-          ($ta (foldall + (match &self (worker-summary $cw2 answers $m) $m) 0)))
-     (add-atom &self (reduced total-answers $ta))))
+        (case $k
+              ((context-chamber (run-cc $w))
+               (reducer         (run-reduce $w))
+               (acs-scan        (run-acs $w))
+               (ecan-epoch      (run-epoch $w))
+               (reproduction    (run-select $w))
+               ($other          unknown-kind)))))

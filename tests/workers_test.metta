@@ -3,7 +3,7 @@
 ; ---------------------------------------------------------------------------
 ; Uses the §6.4 worker contract + dispatcher from petta/workers.metta. Each context-
 ; chamber worker gets its OWN mutable space (`(worker-space W &ws)`); the read-only IR
-; stays SHARED in &self; the engine (kernel.metta) is $ws-parameterized, so a worker
+; stays SHARED in &self; the engine (reaction.metta) is $ws-parameterized, so a worker
 ; reads IR from &self and reads/writes its fuel/products/events in its own space — no
 ; leakage, no per-worker IR copy. A `reducer` merges the per-worker summaries.
 ;
@@ -16,9 +16,16 @@
 ; Run:  sh ../PeTTa/run.sh tests/workers_test.metta < /dev/null \
 ;          2>&1 | grep should     # ten ✅
 ; ===========================================================================
-!(import! &self "petta/kernel.metta")
+!(import! &self "petta/util.metta")
+!(import! &self "petta/fuel.metta")
+!(import! &self "petta/compiler.metta")
+!(import! &self "petta/gate.metta")
+!(import! &self "petta/reaction.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")
-!(import! &self "petta/workers.metta")   ; dispatch · run-cc · emit-summary · run-reduce
+!(import! &self "petta/persist.metta")
+!(import! &self "petta/chamber.metta")
+!(import! &self "petta/reducer.metta")
+!(import! &self "petta/workers.metta")
 
 ; --- worker W_full: its own mutable space + a generous fuel snapshot ---------
 !(bind! &ws_full (new-space))

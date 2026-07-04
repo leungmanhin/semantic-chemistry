@@ -50,7 +50,7 @@
 !(test (cfoo &wa) 3)
 !(test (cfoo &wb) 1)
 
-; Q5 remove-atom via a param space (the kernel debits fuel this way)
+; Q5 remove-atom via a param space (the engine debits fuel this way)
 !(add-atom &wa (fuel gm 5))
 (= (rmit $s $a) (remove-atom $s $a))
 !(rmit &wa (fuel gm 5))

@@ -5,7 +5,7 @@
 ; answers (eq-17), mint typed fuel by the active clamp, credit it back, re-run while there
 ; is progress + fuel. This turns the P0 feed-forward chain into a self-sustaining mortal
 ; ACS — the fuel an answer mints funds the next question (metabolic closure, §4.5 cond 1).
-; Relies on the re-run-safe kernel (fire-once walk + run-from). Clamp = CL_antecedent.
+; Relies on the re-run-safe engine (fire-once walk + run-from). Clamp = CL_antecedent.
 ;
 ; Demonstration (constrained CLOSURE seed gm=23): feedback OFF (one pass, no mint) starves;
 ; feedback ON (the epoch loop) earns fuel by answering and reaches more. ON > OFF ==
@@ -14,7 +14,11 @@
 ; Run:  sh ../PeTTa/run.sh tests/ecan_epoch_test.metta < /dev/null \
 ;          2>&1 | grep should   # six ✅ (OFF: 1 answer, starved gm=0 | ON: 6 answers, surplus gm=16)
 ; ===========================================================================
-!(import! &self "petta/kernel.metta")
+!(import! &self "petta/util.metta")
+!(import! &self "petta/fuel.metta")
+!(import! &self "petta/compiler.metta")
+!(import! &self "petta/gate.metta")
+!(import! &self "petta/reaction.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")
 !(import! &self "petta/evaluator.metta")
 !(import! &self "petta/ecan.metta")   ; epoch · credit-all · unscored · gm-mint · count-events

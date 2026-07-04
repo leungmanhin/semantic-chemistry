@@ -3,8 +3,8 @@
 ; NEW answers (eq-17 Match), mint typed fuel by the active clamp, credit it back to the
 ; fuel ledger, and re-run while there is progress + fuel. This turns the P0 feed-forward
 ; chain into a self-sustaining mortal ACS (the fuel an answer mints funds the next).
-; Relies on the re-run-safe kernel (fire-once walk + run-from). Facts-free; assumes the
-; engine (kernel.metta) + evaluator (evaluator.metta) are loaded by the consumer.
+; Relies on the re-run-safe engine (fire-once walk + run-from). Facts-free; assumes the
+; engine (reaction) + evaluator (evaluator.metta) are loaded by the consumer.
 ; Exercised by tests/ecan_epoch_test.metta.
 ; ===========================================================================
 
@@ -58,3 +58,19 @@
          (if (> $cr 0)
              (epoch $ws)
              done))))
+
+; ===========================================================================
+; ECAN-EPOCH WORKER (worker-kind ecan-epoch): a chamber run with metabolic feedback.
+; Assumes persist is loaded (persist-log / emit-summary).
+; ===========================================================================
+
+; ecan-epoch worker body: own space, snapshot fuel into the organism's purse, run the
+; epoch loop (mint feeds back), persist its output log (if declared), summarise to &self
+(= (run-epoch $w)
+   (let* (($ws (match &self (worker-space $w $sp) $sp))
+          ($snap (match &self (worker-snapshot $w $s) $s))
+          ($O (the-organism))
+          ($z1 (add-all $ws (collapse (match &self (snapshot-fuel $snap $t $n) (fuel $O $t $n)))))
+          ($z2 (epoch $ws))
+          ($z3 (persist-log $w $ws)))
+     (emit-summary $w $ws)))

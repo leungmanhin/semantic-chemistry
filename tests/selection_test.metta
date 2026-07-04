@@ -15,7 +15,11 @@
 ; Run:  sh ../PeTTa/run.sh tests/selection_test.metta < /dev/null \
 ;          2>&1 | grep should   # nine ✅
 ; ===========================================================================
-!(import! &self "petta/kernel.metta")
+!(import! &self "petta/util.metta")
+!(import! &self "petta/fuel.metta")
+!(import! &self "petta/compiler.metta")
+!(import! &self "petta/gate.metta")
+!(import! &self "petta/reaction.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")
 !(import! &self "petta/evaluator.metta")
 !(import! &self "petta/selection.metta")   ; run-genome · prune · union-genome · express-surplus · fitter

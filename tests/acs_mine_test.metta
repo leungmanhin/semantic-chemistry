@@ -10,7 +10,11 @@
 ;
 ; Run:  sh ../PeTTa/run.sh tests/acs_mine_test.metta < /dev/null 2>&1 | grep should  # twelve ✅
 ; ===========================================================================
-!(import! &self "petta/kernel.metta")
+!(import! &self "petta/util.metta")
+!(import! &self "petta/fuel.metta")
+!(import! &self "petta/compiler.metta")
+!(import! &self "petta/gate.metta")
+!(import! &self "petta/reaction.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")
 !(import! &self "petta/evaluator.metta")
 !(import! &self "petta/acs.metta")   ; fired-rules · build-graph · reaches? · acs-members · acs-spend/surplus
@@ -41,4 +45,4 @@
 !(test (cycle-through &g_soma gm) False)                  ; soma alone: feed-forward DAG
 ; --- CONFIRMATION: the discovered ACS runs a surplus ---
 !(test (acs-spend &g_full) 19)                            ; member firings (6 qtype + 7 align + 6 project)
-!(test (acs-surplus &g_full physical-cause) 6)            ; income 25 - spend 19 = +6 (self-sustaining)
+!(test (acs-surplus-of &g_full physical-cause) 6)            ; income 25 - spend 19 = +6 (self-sustaining)
