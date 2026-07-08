@@ -57,7 +57,7 @@
 !(println! (STAGE-0 --- THE-CHAMBER ---))
 !(println! (question Q7a why "Why did Maria drive to the store?" focus v7_drive source V7g))
 !(println! (explanatory-edges-into-focus (expl-edges-into v7_drive)))
-!(println! (organism (the-organism) genome (all-rules)))
+!(println! (organisms (organisms) genome (all-rules)))
 !(println! (active-clamp CL_antecedent rewards-class (match &self (clamp-class CL_antecedent $c) $c)))
 
 ; ===========================================================================
@@ -81,32 +81,32 @@
 !(println! (worker W_expt1
              firings (match &self (worker-summary W_expt1 firings $f) $f)
              answers (match &self (worker-summary W_expt1 answers $a) $a)
-             gm-left (match &self (worker-summary W_expt1 fuel-gm $g) $g)))
+             gm-left (match &self (worker-summary W_expt1 fuel O_qa gm $g) $g)))
 !(println! (worker-produced-Q7a (collapse (match &ws_worker (candidate-answer Q7a $a) $a))))
 !(println! (worker-output-log-written-to (log-path (match &self (worker-output-log W_expt1 $l) $l))))
 
 ; ===========================================================================
 !(println! (STAGE-3 --- P1-EVALUATION eq17-minting-and-the-clamp-switch ---))
 !(println! (Q7a-mint-under-antecedent-clamp
-             physical (would-mint &self Q7a physical-cause physical-cause)
-             intentional (would-mint &self Q7a intentional physical-cause)))
+             physical (would-mint &self Q7a physical-cause CL_antecedent)
+             intentional (would-mint &self Q7a intentional CL_antecedent)))
 !(println! (chamber-gm-income
-             clamp-antecedent-physical (gm-income &self physical-cause)
-             clamp-goal-intentional (gm-income &self intentional)
-             abstain (abstain-income &self)))
+             clamp-antecedent-physical (gm-income &self CL_antecedent)
+             clamp-goal-intentional (gm-income &self CL_goal)
+             abstain (abstain-income &self CL_antecedent)))
 
 ; ===========================================================================
 !(println! (STAGE-4 --- P1-METABOLIC-CLOSURE the-epoch-loop-pays-its-own-way ---))
 !(bind! &ws_off (new-space))
 !(add-atom &ws_off (fuel O_qa gm 23))
 !(add-atom &ws_off (fuel O_qa ci 20))
-!(run-rules &ws_off)
-!(println! (feedback-OFF answers (count-answers &ws_off) firings (count-events &ws_off) gm-left (fuelof &ws_off O_qa gm)))
+!(run-chamber &ws_off CH_expt1)
+!(println! (feedback-OFF answers (count-answers &ws_off) firings (count-events &ws_off) gm-left (fuel-of &ws_off O_qa gm)))
 !(bind! &ws_on (new-space))
 !(add-atom &ws_on (fuel O_qa gm 23))
 !(add-atom &ws_on (fuel O_qa ci 20))
-!(epoch &ws_on)
-!(println! (feedback-ON answers (count-answers &ws_on) firings (count-events &ws_on) gm-left (fuelof &ws_on O_qa gm)))
+!(epoch &ws_on CH_expt1 CL_antecedent)
+!(println! (feedback-ON answers (count-answers &ws_on) firings (count-events &ws_on) gm-left (fuel-of &ws_on O_qa gm)))
 
 ; ===========================================================================
 !(println! (STAGE-5 --- P2-ACS-DETECTION mine-the-reaction-graph-from-the-log ---))
@@ -119,7 +119,7 @@
 !(println! (ACS-members (acs-members &g (fired-rules))))
 !(println! (reaches-fuel R_project (reaches? &g R_project gm) R_complete (reaches? &g R_complete gm)))
 !(println! (metabolic-closure cycle-through-gm (cycle-through &g gm)))
-!(println! (ACS-economy spend (acs-spend &g) surplus-physical (acs-surplus-of &g physical-cause)))
+!(println! (ACS-economy spend (acs-spend &g) surplus-antecedent (acs-surplus-of &g CL_antecedent)))
 ; paired-replay ablation: drop R_complete -> same answers (it is inert / dead-weight)
 !(bind! &ab_base (new-space))
 !(bind! &ab_noComplete (new-space))
@@ -129,11 +129,11 @@
 !(println! (STAGE-6 --- P3-SELECTION fitness-is-surplus ---))
 !(bind! &g_found (new-space))
 !(bind! &g_lean (new-space))
-!(println! (founder-genome (founder) surplus (express-surplus (founder) &g_found)))
-!(println! (pruned-genome (prune R_complete (founder)) surplus (express-surplus (prune R_complete (founder)) &g_lean)))
+!(println! (founder-genome (founder) surplus (express-surplus (founder) &g_found CL_antecedent)))
+!(println! (pruned-genome (prune R_complete (founder)) surplus (express-surplus (prune R_complete (founder)) &g_lean CL_antecedent)))
 !(bind! &sa (new-space))
 !(bind! &sb (new-space))
-!(println! (selection-picks (fitter (founder) (prune R_complete (founder)) &sa &sb)))
+!(println! (selection-picks (fitter (founder) (prune R_complete (founder)) &sa &sb CL_antecedent)))
 
 ; ===========================================================================
 !(println! (DONE --- full-P0-to-P3-pipeline-on-Exp-1 ---))

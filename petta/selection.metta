@@ -1,13 +1,13 @@
 ; ===========================================================================
 ; SELECTION — reusable P3 lineage operators: EXPRESS a genome (run only its member
 ; rules, `run-ablate` skipping the non-members), mutation (prune / recombine), and
-; surplus-based selection (`fitter`). Facts-free; assumes the engine (reaction) +
-; evaluator (evaluator.metta) are loaded by the consumer. Exercised by
-; tests/selection_test.metta.
+; surplus-based selection (`fitter`). Assumes the engine (reaction) +
+; evaluator (evaluator.metta) are loaded by the consumer.
 ; ===========================================================================
 
 ; all rules in the loaded genome (generic: every rule with a rule-lhs)
-(= (all-rules) (collapse (match &self (rule-lhs $R $lhs) $R)))
+(= (all-rules)
+   (collapse (match &self (rule-lhs $R $lhs) $R)))
 
 ; the rules in $rules NOT in genome $g (what run-ablate must skip to express $g)
 (= (non-members $rules $g)
@@ -19,7 +19,8 @@
                         (cons-atom $r (non-members (cdr-atom $rules) $g))))))))
 
 ; EXPRESS a genome = run ONLY its members (run-ablate skipping the non-members)
-(= (run-genome $ws $g) (run-ablate $ws (non-members (all-rules) $g)))
+(= (run-genome $ws $g)
+   (run-ablate $ws (non-members (all-rules) $g)))
 
 ; mutation: drop rule $r from genome list $l
 (= (prune $r $l)
@@ -39,24 +40,21 @@
                         (union-genome $a (cdr-atom $b))
                         (union-genome (cons-atom $h $a) (cdr-atom $b))))))))
 
-; express a genome in its OWN space (generous fuel -> structural fitness), return surplus / answers
-; (seed the organism's typed purse; single-organism Exp-1: the-organism = O_qa)
-(= (express-surplus $g $sp)
-   (let* (($O (the-organism))
-          ($z1 (add-atom $sp (fuel $O gm 40)))
-          ($z2 (add-atom $sp (fuel $O ci 40)))
+; express a genome in its OWN space (generous per-organism fuel -> structural fitness),
+; return its surplus under clamp $cl / its answer count
+(= (express-surplus $g $sp $cl)
+   (let* (($z0 (seed-assay $sp (organisms) 40))
           ($z3 (run-genome $sp $g)))
-     (- (gm-income $sp physical-cause) (gm-spend $sp))))
+     (- (gm-income $sp $cl) (gm-spend $sp))))
 
 (= (express-answers $g $sp)
-   (let* (($O (the-organism))
-          ($z1 (add-atom $sp (fuel $O gm 40)))
-          ($z2 (add-atom $sp (fuel $O ci 40)))
+   (let* (($z0 (seed-assay $sp (organisms) 40))
           ($z3 (run-genome $sp $g)))
      (count-answers $sp)))
 
-; SELECTION: the higher-surplus of two genomes (each expressed in its own space)
-(= (fitter $ga $gb $sa $sb) (if (> (express-surplus $gb $sb) (express-surplus $ga $sa)) $gb $ga))
+; SELECTION: the higher-surplus of two genomes under clamp $cl (each expressed in its own space)
+(= (fitter $ga $gb $sa $sb $cl)
+   (if (> (express-surplus $gb $sb $cl) (express-surplus $ga $sa $cl)) $gb $ga))
 
 ; ===========================================================================
 ; REPRODUCTION WORKER (worker-kind reproduction) + the §2.10 lineage verdict facts.
@@ -81,13 +79,13 @@
    (let* ((($lin $pid $cid) (match &self (worker-lineage $w $l $p $ch) ($l $p $ch)))
           ($prune-rule (match &self (worker-mutation $w $m) $m))
           ($cl (match &self (worker-clamp $w $c) $c))
-          ($cc (match &self (clamp-class $cl $x) $x))
+          ($cc (clamp-class-of $cl))
           ($ps (match &self (worker-space-parent $w $sp) $sp))
           ($cs (match &self (worker-space-child $w $sc) $sc))
           ($parent (all-rules))
           ($child (prune $prune-rule $parent))
-          ($pfit (express-surplus $parent $ps))
-          ($cfit (express-surplus $child $cs))
+          ($pfit (express-surplus $parent $ps $cl))
+          ($cfit (express-surplus $child $cs $cl))
           ($verdicts (lineage-verdict-facts $lin $pid $cid $prune-rule $cc $pfit $cfit))
           ($z1 (add-all &self $verdicts))
           ($z2 (persist-facts $w $verdicts)))

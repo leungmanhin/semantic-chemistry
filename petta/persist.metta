@@ -4,7 +4,7 @@
 ; ordered event log + summary facts. `repr` renders each atom to a re-loadable
 ; S-expression; the product is a bare-fact .metta file that `import!` reads back.
 ; Assumes fuel + reaction are loaded (emit-summary reads the purse; persist-log
-; reads the event log). Facts-free.
+; reads the event log).
 ; ===========================================================================
 
 ; --- the write primitive: a list of atoms -> a re-loadable .metta file ---
@@ -24,7 +24,8 @@
      $path))
 
 ; write $atoms to $path as re-loadable bare facts; returns $path
-(= (write-facts $path $atoms) (spit $path (facts->text $atoms)))
+(= (write-facts $path $atoms)
+   (spit $path (facts->text $atoms)))
 
 ; --- the §6.4 worker-output envelope (used by every worker body) ---
 
@@ -50,11 +51,22 @@
             no-output-facts
             (write-facts (log-path (car-atom $ids)) $facts))))
 
-; the §6.4 worker summary goes to &self, keyed by worker (firings / answers / gm left)
+; the §6.4 worker summary goes to &self, keyed by worker: total firings / answers, plus
+; each organism's leftover purse per token (one organism may starve while another survives)
 (= (emit-summary $w $ws)
    (let* (($f (foldall + (match $ws (event $s $r $k) 1) 0))
           ($z1 (add-atom &self (worker-summary $w firings $f)))
           ($a (foldall + (match $ws (candidate-answer $q $an) 1) 0))
-          ($z2 (add-atom &self (worker-summary $w answers $a)))
-          ($g (fuelof $ws (the-organism) gm)))
-     (add-atom &self (worker-summary $w fuel-gm $g))))
+          ($z2 (add-atom &self (worker-summary $w answers $a))))
+     (emit-fuel-left $w $ws)))
+
+; emit one (worker-summary $w fuel $O $t $g) per organism-token purse left in $ws
+(= (emit-fuel-left $w $ws)
+   (emit-purses $w (collapse (match $ws (fuel $O $t $g) ($O $t $g)))))
+
+(= (emit-purses $w $ps)
+   (if (== $ps ())
+       done
+       (let* ((($O $t $g) (car-atom $ps))
+              ($z (add-atom &self (worker-summary $w fuel $O $t $g))))
+         (emit-purses $w (cdr-atom $ps)))))

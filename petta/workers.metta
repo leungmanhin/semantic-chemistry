@@ -2,7 +2,7 @@
 ; WORKERS — the §6.4 worker DISPATCHER: route a worker to its kind's body. The
 ; bodies live in their own modules (chamber · reducer · …) and the shared envelope
 ; helpers in persist; this module is the switchboard only. Assumes the body modules
-; are loaded by the consumer. Facts-free. Exercised by tests/workers_test.metta.
+; are loaded by the consumer.
 ; ===========================================================================
 
 ; route a worker to its kind's body (each body lives in its own module — the consumer

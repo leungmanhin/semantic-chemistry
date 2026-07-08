@@ -35,7 +35,7 @@ Texts carry **both** an antecedent and (for agent actions) a goal, so an ambiguo
 - under `clamp-antecedent` → the antecedent-extraction strategy earns surplus and survives; the goal strategy starves;
 - under `clamp-goal` → the reverse.
 
-Same corpus + chamber, **swap the clamp → a different surviving strategy-ACS**. That is the purest demonstration of the core thesis (reward selects strategy), reachable at P1/P2 with no reproduction (P3) needed. A single-class question (only one allowed-class edge into its focus) earns only under its matching clamp and correctly **abstains** under the other (its graph-ideal is empty there); concessive `Despite` (off-class) and the co-occurrence-only negative vignettes are traps that earn nothing — the unsupported-bridge / redundancy taxes police fabricated or off-target cites.
+Same corpus + chamber, **swap the clamp → a different surviving strategy-ACS**. That is the purest demonstration of the core thesis (reward selects strategy), reachable at P1/P2 with no reproduction (P3) needed. A single-class question (only one allowed-class edge into its focus) earns only under its matching clamp and correctly **abstains** under the other (its graph-ideal is empty there); concessive `Despite` (off-class) and the co-occurrence-only negative vignettes are traps: a fabricated or off-class cite grounds no on-ideal edge (so it earns no Match), and a focus whose graph-ideal is empty correctly **abstains**. (Minting is currently **Match-only**)
 
 > **Clamp representation caveat:** MSC specifies clamps *functionally* (eq 17 + typed-token output + chamber-locality) but gives **no IR data shape**. Our `(clamp …)` facts (`../../ir/schema.md` §2.8) are an interim design choice.
 
@@ -85,7 +85,7 @@ The Exp-1 chamber is **K-like** on the life-history simplex (MSC §4.6: "stable 
 | why-not `Prevent` (`·prevented`) | V17, V18 |
 | concession `Despite` (trap) | V19 |
 | unsupported-bridge → abstain | V20, V21, V22 |
-| multi-cause `Contribute` (redundancy) | V23, V24 |
+| multi-cause `Contribute` (coverage — both required) | V23, V24 |
 
 24 vignettes · ~58 sentences · 5 negatives (21%). All 8 edges + both `node-modal` values exercised. **5 are encoded as IR** (V3, V7, V17, V20, V23 → `molecules.metta` / `tasks.metta`); the other **19 are below**.
 

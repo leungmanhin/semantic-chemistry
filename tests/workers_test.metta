@@ -31,21 +31,23 @@
 !(bind! &ws_full (new-space))
 !(add-atom &self (worker W_full))
 !(add-atom &self (worker-kind W_full context-chamber))
+!(add-atom &self (worker-chamber W_full CH_expt1))
 !(add-atom &self (worker-backend W_full petta))
 !(add-atom &self (worker-space W_full &ws_full))
 !(add-atom &self (worker-snapshot W_full SNAP_full))
-!(add-atom &self (snapshot-fuel SNAP_full gm 28))
-!(add-atom &self (snapshot-fuel SNAP_full ci 7))
+!(add-atom &self (snapshot-fuel SNAP_full O_qa gm 28))
+!(add-atom &self (snapshot-fuel SNAP_full O_qa ci 7))
 
 ; --- worker W_lean: its own space + a lean fuel snapshot (starves early) -----
 !(bind! &ws_lean (new-space))
 !(add-atom &self (worker W_lean))
 !(add-atom &self (worker-kind W_lean context-chamber))
+!(add-atom &self (worker-chamber W_lean CH_expt1))
 !(add-atom &self (worker-backend W_lean petta))
 !(add-atom &self (worker-space W_lean &ws_lean))
 !(add-atom &self (worker-snapshot W_lean SNAP_lean))
-!(add-atom &self (snapshot-fuel SNAP_lean gm 8))
-!(add-atom &self (snapshot-fuel SNAP_lean ci 6))
+!(add-atom &self (snapshot-fuel SNAP_lean O_qa gm 8))
+!(add-atom &self (snapshot-fuel SNAP_lean O_qa ci 6))
 
 ; --- worker W_reduce: a reducer (merges the per-worker summaries) -------------
 !(add-atom &self (worker W_reduce))
@@ -66,3 +68,8 @@
 !(test (foldall + (match &ws_full (candidate-answer $q $a) 1) 0) 6) ; W_full's answers isolated in W_full
 !(test (match &self (reduced total-firings $n) $n) 36)             ; reducer merged: 28 + 8
 !(test (match &self (reduced total-answers $n) $n) 6)              ; merged answers: 6 + 0
+
+; --- re-dispatching the reducer REPLACES the reduced facts (re-run-safe, no stacking) --
+!(dispatch W_reduce)
+!(test (foldall + (match &self (reduced total-firings $n) 1) 0) 1) ; still exactly ONE fact per key
+!(test (match &self (reduced total-firings $n) $n) 36)             ; same merged value

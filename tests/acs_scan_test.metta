@@ -51,16 +51,16 @@
 !(test (cycle-through &acs_soma gm) False)       ; soma rules ALONE: feed-forward DAG (no cycle)
 
 ; --- SURPLUS (cond 3): full genome DEFICIT vs certified CORE surplus (sign flips with clamp)
-!(test (gm-income &ab_base physical-cause) 25)   ; CL_antecedent mints on physical-cause + abstain
-!(test (gm-income &ab_base intentional) 16)      ; CL_goal mints on intentional + abstain
+!(test (gm-income &ab_base CL_antecedent) 25)    ; CL_antecedent mints on physical-cause + abstain
+!(test (gm-income &ab_base CL_goal) 16)          ; CL_goal mints on intentional + abstain
 !(test (gm-spend &ab_base) 28)                   ; FULL genome firings
-!(test (gm-surplus &ab_base physical-cause) -3)  ; FULL genome: DEFICIT (inert R_complete's dead weight)
+!(test (gm-surplus &ab_base CL_antecedent) -3)   ; FULL genome: DEFICIT (inert R_complete's dead weight)
 !(test (gm-spend &ab_cp) 19)                     ; CORE firings (R_complete pruned, certified inert above)
-!(test (gm-surplus &ab_cp physical-cause) 6)     ; CORE under CL_antecedent: +6 SURPLUS
-!(test (gm-surplus &ab_cp intentional) -3)       ; CORE under CL_goal: -3 DEFICIT (clamp-switch)
+!(test (gm-surplus &ab_cp CL_antecedent) 6)      ; CORE under CL_antecedent: +6 SURPLUS
+!(test (gm-surplus &ab_cp CL_goal) -3)           ; CORE under CL_goal: -3 DEFICIT (clamp-switch)
 
 ; --- PROMOTION: closure AND core-surplus>0 AND ablation-impact>0 (impact = base - ablate R_qtype)
 (= (impact) (- (count-answers &ab_base) (count-answers &ab_qt)))
-(= (promoted? $cc) (all3 (cycle-through &acs_full gm) (> (gm-surplus &ab_cp $cc) 0) (> (impact) 0)))
-!(test (promoted? physical-cause) True)          ; closure + core-surplus>0 + impact>0 -> PROMOTED
-!(test (promoted? intentional) False)            ; same core, negative surplus -> REJECTED (clamp-switch)
+(= (promoted? $cl) (all3 (cycle-through &acs_full gm) (> (gm-surplus &ab_cp $cl) 0) (> (impact) 0)))
+!(test (promoted? CL_antecedent) True)           ; closure + core-surplus>0 + impact>0 -> PROMOTED
+!(test (promoted? CL_goal) False)                ; same core, negative surplus -> REJECTED (clamp-switch)

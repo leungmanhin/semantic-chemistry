@@ -47,17 +47,19 @@
 !(bind! &ws_epoch (new-space))
 !(add-atom &self (worker W_epoch))
 !(add-atom &self (worker-kind W_epoch ecan-epoch))
+!(add-atom &self (worker-chamber W_epoch CH_expt1))
 !(add-atom &self (worker-space W_epoch &ws_epoch))
 !(add-atom &self (worker-snapshot W_epoch SNAP_epoch))
 !(add-atom &self (worker-clamp W_epoch CL_antecedent))
 !(add-atom &self (worker-output-log W_epoch LOG_epoch))
-!(add-atom &self (snapshot-fuel SNAP_epoch gm 23))
-!(add-atom &self (snapshot-fuel SNAP_epoch ci 20))
+!(add-atom &self (snapshot-fuel SNAP_epoch O_qa gm 23))
+!(add-atom &self (snapshot-fuel SNAP_epoch O_qa ci 20))
 !(dispatch W_epoch)
 
 !(test (match &self (worker-summary W_epoch answers $a) $a) 6)          ; feedback completes 6/6
 !(test (match &self (worker-summary W_epoch firings $f) $f) 28)         ; 28 firings
-!(test (match &self (worker-summary W_epoch fuel-gm $g) $g) 16)         ; ends alive with 16 gm
+!(test (match &self (worker-summary W_epoch fuel O_qa gm $g) $g) 16)    ; ends alive with 16 gm
+!(test (match &self (worker-summary W_epoch fuel O_qa ci $g) $g) 13)    ; ...and 13 ci (7 R_align firings off the 20 seed) — every token's purse is reported
 
 ; --- reproduction worker: one lineage step, emit + persist the §2.10 verdict facts ---
 !(add-atom &self (worker W_repro))

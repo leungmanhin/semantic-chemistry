@@ -36,4 +36,4 @@
 !(test (foldall + (match &self (event $s $r $k) 1) 0) 27)            ; 27 firings (gm-starved at last projection)
 !(test (foldall + (match &self (candidate-answer $q $a) 1) 0) 5)    ; 5 answers (Q7b STARVED)
 !(test (foldall + (match &self (candidate-answer Q7b $a) 1) 0) 0)   ; Q7b aligned-but-unprojected (mortality)
-!(test (fuelof &self O_qa gm) 0)                                     ; gm exhausted (death) — O_qa's purse
+!(test (fuel-of &self O_qa gm) 0)                                     ; gm exhausted (death) — O_qa's purse

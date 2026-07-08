@@ -1,8 +1,8 @@
 ; ===========================================================================
 ; REACTION — the firing ENGINE, $ws-parameterized: set-union product add, the
 ; fire step (+ event log), fire-once-ever, the per-rule `walk`, and the generic
-; data-driven run (`run-rules`) / ablation run (`run-ablate`). No domain logic and
-; no facts. Every stage runs its genome through this engine. Assumes util, fuel,
+; raw run (`run-rules`) / chamber run (`run-chamber`) / ablation run (`run-ablate`).
+; Every stage runs its genome through this engine. Assumes util, fuel,
 ; compiler, and gate are loaded.
 ; ---------------------------------------------------------------------------
 ; Parameterized by a WORKER SPACE $ws (separate-space-per-worker isolation):
@@ -14,9 +14,9 @@
 ; --- set-semantics add: the doc's X ⊕ θ(G2) is set-union, so per-match firing that
 ; re-emits a shared head (e.g. one alignment per cited edge) doesn't duplicate it.
 
-; is fact $a already present in $ws?
-(= (present? $ws $a)
-   (case (collapse (match $ws $a $a)) ((() False) ($x True))))
+; is fact $f already present in $ws?
+(= (present? $ws $f)
+   (case (collapse (match $ws $f $f)) ((() False) ($x True))))
 
 ; add each product in $ps to $ws, skipping any already present (set-union)
 (= (add-all $ws $ps)
@@ -46,8 +46,7 @@
 (= (walk $ws $O $rule $cands $seq)
    (case $cands
          ((() $seq)
-          ($ne (let (cand $key $cost $prods)
-                    (car-atom $cands)
+          ($ne (let (cand $key $cost $prods) (car-atom $cands)
                     (if (fired? $ws $rule $key)
                         (walk $ws $O $rule (cdr-atom $cands) $seq)
                         (if (gate? $ws $O $rule $cost)
@@ -64,24 +63,42 @@
                       ($seq2 (walk $ws $O $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq)))
                  (walk-rules $ws (cdr-atom $rules) $seq2))))))
 
-; run from a given seq (used by the epoch loop to re-enter after crediting fuel)
-(= (run-rules-from $ws $seq) (walk-rules $ws (sorted-rules) $seq))
+; run from a given seq (raw: ALL rules, no context filter)
+(= (run-rules-from $ws $seq)
+   (walk-rules $ws (all-sorted-rules) $seq))
 
-; the full run: express the genome, then walk the rules from seq 0
-(= (run-rules $ws) (let $z (express) (run-rules-from $ws 0)))
+; the raw run: express the genome, then walk ALL rules from seq 0 (no context admission)
+(= (run-rules $ws)
+   (let $z (express)
+        (run-rules-from $ws 0)))
+
+; a chamber run from a given seq (only $ch's admitted rules; used by the epoch loop to
+; re-enter after crediting fuel)
+(= (run-chamber-from $ws $ch $seq)
+   (walk-rules $ws (chamber-rules $ch) $seq))
+
+; a CHAMBER run: express the genome, then walk only chamber $ch's admitted rules (MSC §3
+; step 1 context admission) — the contextual run a context-chamber worker performs
+(= (run-chamber $ws $ch)
+   (let $z (express)
+        (run-chamber-from $ws $ch 0)))
 
 ; --- generic ABLATION run (P2 paired-replay / P3 genome-by-membership): run-rules but SKIP
 ; every rule in the $skip list. acs ablates one rule; selection skips the non-member rules.
 
 ; like walk-rules but skip any rule in $skip
 (= (walk-rules-skip $ws $rules $seq $skip)
-   (case $rules ((() $seq)
-     ($ne (let $r (car-atom $rules)
-            (if (in-list? $r $skip)
-                (walk-rules-skip $ws (cdr-atom $rules) $seq $skip)
-                (let* (($O (rule-organism $r))
-                       ($seq2 (walk $ws $O $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq)))
-                  (walk-rules-skip $ws (cdr-atom $rules) $seq2 $skip))))))))
+   (case $rules
+         ((() $seq)
+          ($ne (let $r (car-atom $rules)
+                    (if (in-list? $r $skip)
+                        (walk-rules-skip $ws (cdr-atom $rules) $seq $skip)
+                        (let* (($O (rule-organism $r))
+                               ($seq2 (walk $ws $O $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq)))
+                          (walk-rules-skip $ws (cdr-atom $rules) $seq2 $skip))))))))
 
-; the full ablation run: express the genome, then walk skipping $skip
-(= (run-ablate $ws $skip) (let $z (express) (walk-rules-skip $ws (sorted-rules) 0 $skip)))
+; the full ablation run: express the genome, then walk ALL rules skipping $skip (raw,
+; no context filter — the structural assay runs the given genome)
+(= (run-ablate $ws $skip)
+   (let $z (express)
+        (walk-rules-skip $ws (all-sorted-rules) 0 $skip)))

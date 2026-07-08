@@ -25,6 +25,13 @@
 (intent-allows explain-goal intentional)
 (intent-allows explain-mechanism physical-cause)
 (intent-allows explain-prevention physical-cause)
+; intent scope: a chain-scoped intent's ideal is the backward chain closure into the
+; focus; intents with no intent-scope fact default to direct edges into the focus
+(intent-scope explain-mechanism chain)
+; the relations mechanism chains are made of — the chain closure follows only these
+; (in this vocabulary causal chains are CauseOf links; the other physical-cause
+; relations are single-hop contributors, not chain links)
+(chain-relation CauseOf)
 (explanatory physical-cause)
 (explanatory intentional)
 ; role relations (non-causal participant edges) — the POSITIVE complement of edge-cluster,
@@ -56,8 +63,8 @@
 (clamp CL_antecedent)
 (clamp-class CL_antecedent physical-cause)
 (clamp-coeff CL_antecedent match 1.0)
-(clamp-coeff CL_antecedent unsupportedness 2.0)
-(clamp-coeff CL_antecedent redundancy 1.0)
+(clamp-mint-scale CL_antecedent 6)
+(clamp-abstain-reward CL_antecedent 4)
 (clamp-token CL_antecedent skeleton-match gm)
 (clamp-token CL_antecedent causal-citation ci)
 (clamp-scope CL_antecedent CH_expt1)
@@ -65,7 +72,8 @@
 (clamp CL_goal)
 (clamp-class CL_goal intentional)
 (clamp-coeff CL_goal match 1.0)
-(clamp-coeff CL_goal unsupportedness 2.0)
+(clamp-mint-scale CL_goal 6)
+(clamp-abstain-reward CL_goal 4)
 (clamp-token CL_goal skeleton-match gm)
 (clamp-scope CL_goal CH_expt1)
 (chamber-graph CH_expt1 V7g)
@@ -84,9 +92,9 @@
 (worker-output-log W_expt1 LOG_e1)
 (worker-clamp W_expt1 CL_antecedent)
 (snapshot SNAP_e1 CH_expt1)
-; the snapshot's fuel endowment — what a worker launched from it starts with
-(snapshot-fuel SNAP_e1 gm 30)
-(snapshot-fuel SNAP_e1 ci 10)
+; the snapshot's per-organism fuel endowment — the purses a worker restores at launch
+(snapshot-fuel SNAP_e1 O_qa gm 30)
+(snapshot-fuel SNAP_e1 O_qa ci 10)
 (seed SEED_e1 7)
 (event-log LOG_e1)
 (log-chamber LOG_e1 CH_expt1)

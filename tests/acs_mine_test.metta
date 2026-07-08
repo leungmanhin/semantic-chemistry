@@ -45,4 +45,4 @@
 !(test (cycle-through &g_soma gm) False)                  ; soma alone: feed-forward DAG
 ; --- CONFIRMATION: the discovered ACS runs a surplus ---
 !(test (acs-spend &g_full) 19)                            ; member firings (6 qtype + 7 align + 6 project)
-!(test (acs-surplus-of &g_full physical-cause) 6)            ; income 25 - spend 19 = +6 (self-sustaining)
+!(test (acs-surplus-of &g_full CL_antecedent) 6)             ; income 25 - spend 19 = +6 (self-sustaining)

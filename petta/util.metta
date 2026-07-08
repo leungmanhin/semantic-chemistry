@@ -1,14 +1,14 @@
 ; ===========================================================================
-; UTIL — generic list/term helpers, no domain logic and no facts. Loaded first
-; by every consumer; the other petta/ modules build on these.
+; UTIL — generic list/term helpers. Loaded first by every consumer;
+; the other petta/ modules build on these.
 ; ===========================================================================
 
 ; every value in the list $vs is >= $thr (vacuously True on the empty list)
-(= (all-ge $vs $thr)
+(= (all-at-least? $vs $thr)
    (case $vs
          ((() True)
           ($ne (if (>= (car-atom $vs) $thr)
-                   (all-ge (cdr-atom $vs) $thr)
+                   (all-at-least? (cdr-atom $vs) $thr)
                    False)))))
 
 ; drop every occurrence of $x from list $l

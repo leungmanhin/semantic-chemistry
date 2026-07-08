@@ -33,16 +33,16 @@
 !(bind! &g_noQtype (new-space))
 !(bind! &g_noAlign (new-space))
 !(bind! &g_noProject (new-space))
-!(test (express-surplus (founder) &g_found) -3)                        ; founder (4 rules): -3 (inert R_complete -> deficit)
-!(test (express-surplus (prune R_complete (founder)) &g_noComplete) 6) ; prune the INERT R_complete: +6 (fitter, the only viable genome)
-!(test (express-surplus (prune R_qtype (founder)) &g_noQtype) 0)       ; load-bearing: collapses to 0
-!(test (express-surplus (prune R_align (founder)) &g_noAlign) -2)      ; load-bearing: deficit
-!(test (express-surplus (prune R_project (founder)) &g_noProject) -18) ; load-bearing: deep deficit
+!(test (express-surplus (founder) &g_found CL_antecedent) -3)                        ; founder (4 rules): -3 (inert R_complete -> deficit)
+!(test (express-surplus (prune R_complete (founder)) &g_noComplete CL_antecedent) 6) ; prune the INERT R_complete: +6 (fitter, the only viable genome)
+!(test (express-surplus (prune R_qtype (founder)) &g_noQtype CL_antecedent) 0)       ; load-bearing: collapses to 0
+!(test (express-surplus (prune R_align (founder)) &g_noAlign CL_antecedent) -2)      ; load-bearing: deficit
+!(test (express-surplus (prune R_project (founder)) &g_noProject CL_antecedent) -18) ; load-bearing: deep deficit
 
 ; SELECTION rediscovers pruning R_complete -> the evolved genome GNM_g1 (lineage -3 -> +6)
 !(bind! &sel_a (new-space))
 !(bind! &sel_b (new-space))
-!(test (fitter (founder) (prune R_complete (founder)) &sel_a &sel_b) (R_qtype R_align R_project))
+!(test (fitter (founder) (prune R_complete (founder)) &sel_a &sel_b CL_antecedent) (R_qtype R_align R_project))
 
 ; --- recombination rescues two answer-incapable genomes (each missing a load-bearing rule) --
 !(bind! &g_recomb (new-space))

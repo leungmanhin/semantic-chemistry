@@ -1,5 +1,5 @@
 ; ===========================================================================
-; CONTEXT-GATE TEST — the generic rule-context gate (gate: rule-eligible?).
+; CONTEXT-GATE TEST — the generic rule-context gate (gate: rule-eligible-in?).
 ; ---------------------------------------------------------------------------
 ; Two SYNTHETIC rules (defined HERE, not in experiments/rules.metta), with identical
 ; LHS (match every qa-question) but different rule-context: R_ctxok's context is a
@@ -32,16 +32,19 @@
 !(add-atom &self (rule-token-cost R_ctxbad gm 1))
 !(add-atom &self (rule-lhs R_ctxbad ((qa-question (var T) (var Q)))))
 !(add-atom &self (rule-rhs R_ctxbad ((ctxbad-fired (var Q)))))
+; both synthetic rules belong to O_qa's ruleset, so rule-organism resolves them to O_qa
+!(add-atom &self (ruleset-member RS_qa R_ctxok))
+!(add-atom &self (ruleset-member RS_qa R_ctxbad))
 
 !(add-atom &self (fuel O_qa gm 100))
 !(add-atom &self (fuel O_qa ci 100))
-!(run-rules &self)
+!(run-chamber &self CH_expt1)
 
-; the gate predicate directly
-!(test (ctx-active? causal-qa) True)         ; causal-qa is some chamber's context
-!(test (ctx-active? offtopic) False)         ; offtopic is declared by no chamber
-!(test (rule-eligible? R_ctxok) True)        ; -> admitted
-!(test (rule-eligible? R_ctxbad) False)      ; -> rejected
+; the gate predicate directly (scoped to chamber CH_expt1)
+!(test (ctx-active-in? CH_expt1 causal-qa) True)     ; causal-qa IS a context of CH_expt1
+!(test (ctx-active-in? CH_expt1 offtopic) False)     ; offtopic is not a context of CH_expt1
+!(test (rule-eligible-in? CH_expt1 R_ctxok) True)    ; -> admitted to CH_expt1
+!(test (rule-eligible-in? CH_expt1 R_ctxbad) False)  ; -> rejected from CH_expt1
 ; the gate's EFFECT on firing (accept vs reject branch)
 !(test (foldall + (match &self (ctxok-fired $q) 1) 0) 6)   ; ACCEPT: eligible rule fires, once per qa-question
 !(test (foldall + (match &self (ctxbad-fired $q) 1) 0) 0)  ; REJECT: gated rule never fires
