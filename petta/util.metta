@@ -33,3 +33,20 @@
 
 ; keep the second element of each (a b) pair in a list
 (= (map-snd $l) (if (== $l ()) () (let ($n $r) (car-atom $l) (cons-atom $r (map-snd (cdr-atom $l))))))
+
+; the elements of list $a that also appear in list $b (intersection, in $a's order)
+(= (intersect $a $b)
+   (case $a
+         ((() ())
+          ($ne (let $h (car-atom $a)
+                    (if (in-list? $h $b)
+                        (cons-atom $h (intersect (cdr-atom $a) $b))
+                        (intersect (cdr-atom $a) $b)))))))
+
+; does any element of list $a appear in list $b?
+(= (any-in-list? $a $b)
+   (case $a ((() False) ($ne (if (in-list? (car-atom $a) $b) True (any-in-list? (cdr-atom $a) $b))))))
+
+; is $id a DERIVED edge-id? The parser mints ATOMIC ids (Symbol); the genome mints compound
+; provenance ids like (norm e) / (trans e1 e2) (Expression), so a compound id marks a product.
+(= (derived-id? $id) (== (get-metatype $id) Expression))

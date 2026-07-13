@@ -1,39 +1,66 @@
 ; ===========================================================================
-; P1 EVALUATOR in PeTTa — eq-17 scoring + clamp-switch (intrinsic, graph-derived).
+; EVALUATOR TEST — achievement-typed minting on the solve pipeline (V3).
 ; ---------------------------------------------------------------------------
-; The evaluator layer runs OUTSIDE the firing loop (MSC §4.4): score each candidate-
-; answer against a target derived from the GRAPH (no gold answer content), then mint
-; typed fuel by the active clamp's class. This standalone demo runs the canonical genome
-; to fixpoint (ample fuel), then scores via the shared evaluator.
+; Match is BINARY per grounding — every solution mints (per-solution piece-rate).
+; A grounding's achievements (skeleton-match always; transitive-explanation when the
+; cited derivation is a chain, depth >= 2 read structurally off the provenance ids)
+; are converted to typed fuel by the clamp's (clamp-mint CL achievement tok n) facts,
+; credited to the organism whose rule derived the cited edge (producer looked up in
+; the event log). The clamp-switch is TYPED: sm income is EQUAL under both clamps;
+; tr income is 0 (CL_shallow) vs 2 (CL_deep) — R_trans costs tr, so only CL_deep
+; makes the chaining strategy metabolically self-sustaining.
 ;
-; eq-17: Match = covered/idealsize (recall vs the intent-aware graph ideal) - Unsupportedness
-; - Redundancy; mint = floor(mint-scale*M). Q3a Match 0.5 -> 3 (the chain closure over the
-; declared chain-relations is the ideal); Q23 exact (2/2) -> 6. CLAMP-SWITCH: gm-income
-; flips 25 (CL_antecedent) <-> 16 (CL_goal).
-; ABSTAIN is the EVALUATOR's job: Q20 produces no answer and its graph-ideal is empty, so
-; abstain-income mints 4.
-;
-; Run:  sh ../PeTTa/run.sh tests/evaluator_test.metta < /dev/null 2>&1 | grep should   # six ✅
+; Run:  sh ../PeTTa/run.sh tests/evaluator_test.metta < /dev/null 2>&1 | grep should  # nineteen ✅
 ; ===========================================================================
 !(import! &self "petta/util.metta")
 !(import! &self "petta/fuel.metta")
 !(import! &self "petta/compiler.metta")
 !(import! &self "petta/gate.metta")
 !(import! &self "petta/reaction.metta")
-!(import! &self "experiments/expt1-causal-qa/load.metta")
+!(import! &self "petta/grounder.metta")
 !(import! &self "petta/evaluator.metta")
+!(import! &self "experiments/expt1-causal-qa/load.metta")
 
-; run the canonical genome to fixpoint (ample fuel -> all answers produced)
-!(add-atom &self (fuel O_qa gm 100))
-!(add-atom &self (fuel O_qa ci 100))
+; --- the reaction: seed each organism's purse, run the genome (all firings fuel-gated).
+; O_base owns R_so/R_result (cost sm); O_chain owns R_trans (costs sm + tr).
+!(add-atom &self (fuel O_base sm 10))
+!(add-atom &self (fuel O_chain sm 10))
+!(add-atom &self (fuel O_chain tr 5))
 !(run-rules &self)
 
-; --- clamp-switch: the income the SAME answer set earns under each clamp ---------
-!(test (gm-income &self CL_antecedent) 25)    ; the antecedent clamp rewards physical-cause
-!(test (gm-income &self CL_goal) 16)          ; swap the clamp -> the intentional strategy is rewarded
-; --- eq-17 Match per answer (mint = floor(mint-scale*Match)) --------------------
-!(test (would-mint &self Q7a physical-cause CL_antecedent) 6)   ; exact cite match -> 6
-!(test (would-mint &self Q3a physical-cause CL_antecedent) 3)   ; multi-cite skeleton, 1 covered -> Match 0.5 -> 3
-!(test (would-mint &self Q23 physical-cause CL_antecedent) 6)   ; both cites covered (2/2)
-; --- abstain handled by the EVALUATOR (Q20's graph-ideal is empty, soma produced no answer) ---
-!(test (abstain-income &self CL_antecedent) 4)
+!(test (foldall + (match &self (event $c $s $r $k) 1) 0) 3)              ; R_so + R_result + R_trans
+!(test (fuel-of &self O_base sm) 8)                                   ; O_base: R_so + R_result @ sm 1
+!(test (fuel-of &self O_chain sm) 9)                                  ; O_chain: R_trans @ sm 1
+!(test (fuel-of &self O_chain tr) 4)                                  ; only R_trans costs tr
+!(test (foldall + (match &self (sem-edge V3g $e ReasonFor $x $y) 1) 0) 3)  ; 2 normalized + 1 chained
+
+; --- depth is read structurally off the provenance ids ---------------------------
+!(test (id-depth (norm v3_conn2)) 1)
+!(test (id-depth (trans (norm v3_conn1) (norm v3_conn2))) 2)
+!(test (msort (depths-of (collapse (ground-skeleton &self V3_q1_as1)))) (1 2))
+
+; --- achievements -> typed income under each clamp --------------------------------
+!(test (question-income &self V3_q1 CL_shallow sm) 4)   ; 2 groundings x skeleton-match @ sm 2
+!(test (question-income &self V3_q1 CL_shallow tr) 0)   ; the chain earns NOTHING extra
+!(test (question-income &self V3_q1 CL_deep tr) 2)      ; the chain grounding = transitive-explanation @ tr 2
+
+; chamber income (V3's sole question) — sm EQUAL under both clamps; the switch is the TOKEN TYPE
+!(test (chamber-income &self CL_shallow sm) 4)
+!(test (chamber-income &self CL_deep sm) 4)
+!(test (chamber-income &self CL_shallow tr) 0)
+!(test (chamber-income &self CL_deep tr) 2)
+
+; --- provenance-based crediting: each grounding credits the organism whose rule DERIVED
+; its cited answer edge — the proximate answer -> R_result -> O_base, the root -> R_trans -> O_chain
+!(test (producer-of &self (sem-edge V3g (trans (norm v3_conn1) (norm v3_conn2)) ReasonFor sk_go_out_1 sk_spoil_1)) R_trans)
+!(test (rule-organism R_result) O_base)
+!(test (rule-organism R_trans) O_chain)
+; the two groundings credit the two organisms respectively
+!(test (msort (dedup (collapse (let $s (superpose (collapse (ground-skeleton &self V3_q1_as1))) (solution-earner &self $s))))) (O_base O_chain))
+
+; credit the why-question under the deep clamp: proximate sm 2 -> O_base; root sm 2 + tr 2
+; -> O_chain; 6 tokens minted in total
+!(test (credit-question &self V3_q1 CL_deep) 6)
+!(test (fuel-of &self O_base sm) 10)              ; 10 seeded - 2 spent + 2 minted (proximate)
+!(test (fuel-of &self O_chain sm) 11)             ; 10 seeded - 1 spent + 2 minted (root)
+!(test (fuel-of &self O_chain tr) 6)              ;  5 seeded - 1 spent + 2 minted (root)

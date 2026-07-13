@@ -26,7 +26,7 @@ The clusters double as the answer-classes a **clamp** selects (see below).
 
 ## Question types (pass 1)
 
-`antecedent-why`, `how-mechanism` (multi-hop chains), `goal-why`, `belief-why`, `why-not`, `concession-why`. Surface form lives in `q-word` (`why`/`what-made`/`how`/`how-come`/`why-not`/`what-for`/`trying-to-do`) — the corpus does **not** pre-supply a question *type*; classifying it is the organism's *question-type-detector* + *paraphrase-collapse* work.
+`antecedent-why`, `how-mechanism` (multi-hop chains), `goal-why`, `belief-why`, `why-not`, `concession-why`. The parser maps each question to a variable-bearing **answer-skeleton** whose sought relation is the normal form `ReasonFor` (why/how) or `PurposeOf` (what-for); a why-not question pins the skeleton's TV to `(STV 0.0 $conf)`. A question licenses ONE `ReasonFor` (hop-count is graph knowledge the asker doesn't have). The surface text is kept in `question-surface`; answer plurality and depth come from the genome (`R_trans`), with the mechanism chain recoverable from a root answer's trans-id provenance.
 
 ## The clamp-switch experiment (Package B)
 
@@ -37,7 +37,7 @@ Texts carry **both** an antecedent and (for agent actions) a goal, so an ambiguo
 
 Same corpus + chamber, **swap the clamp → a different surviving strategy-ACS**. That is the purest demonstration of the core thesis (reward selects strategy), reachable at P1/P2 with no reproduction (P3) needed. A single-class question (only one allowed-class edge into its focus) earns only under its matching clamp and correctly **abstains** under the other (its graph-ideal is empty there); concessive `Despite` (off-class) and the co-occurrence-only negative vignettes are traps: a fabricated or off-class cite grounds no on-ideal edge (so it earns no Match), and a focus whose graph-ideal is empty correctly **abstains**. (Minting is currently **Match-only**)
 
-> **Clamp representation caveat:** MSC specifies clamps *functionally* (eq 17 + typed-token output + chamber-locality) but gives **no IR data shape**. Our `(clamp …)` facts (`../../ir/schema.md` §2.8) are an interim design choice.
+> **Clamp representation caveat:** MSC specifies clamps *functionally* (eq 17 + typed-token output + chamber-locality) but gives **no IR data shape**; clamp facts land with the economy stages of the pipeline.
 
 ## Files
 
@@ -46,10 +46,11 @@ This directory is **data only** — pure portable facts loaded by `import!`. The
 | File | What |
 |------|------|
 | `corpus.json` | the 24 vignette texts + questions as structured JSON (`id` / `statements` / `questions` / `additional_info`) — the **input tier** (surface-marked parse target, parser-loadable) |
-| `molecules.metta` | pure-fact IR: the 5 parser-derived semantic graphs (parsed from `corpus.json`, adapted per `../../ir/parser_adapter.md`) |
-| `tasks.metta` | pure-fact IR: the **QA benchmark** — questions only (the 5); no gold answer content, the evaluator derives the target from the graph |
-| `configs.metta` | pure-fact IR: causal-QA **domain mappings** (edge-cluster, intent-map, …) + the Exp-1 **run config** (organism `O_qa` owning the genome, clamps, chamber, worker, seed) |
-| `rules.metta` | pure-fact IR: **the genome** — the four causal-QA rules as canonical per-match `rule-lhs`/`rule-rhs` IR with `(var Name)` markers |
+| `corpus_parsed.json` | the semantic parser's output over `corpus.json` — all 24 vignettes as PLN proof atoms (`(: id (Rel args) (STV s c))`), **surface level** (discourse cues, no causal relations) + variable-bearing `queries` per question (normal form: `ReasonFor`/`PurposeOf`) |
+| `molecules.metta` | pure-fact IR: the parser-derived semantic graphs in **§10.1 sem-graph form** (`sem-edge`/`sem-edge-tv`; variable-arity, edge-ref dedup, `And` decomposed with TV-less operands) — generated from `corpus_parsed.json` by `../../ir/to_semgraph.py` (currently V3) |
+| `tasks.metta` | pure-fact IR: the **QA benchmark** — questions + their `answer-skeleton` sem-graphs (the parser's variable-bearing queries; the query TV kept as `answer-skeleton-tv`); no gold answer content — answering = grounding a skeleton against the derived graph |
+| `configs.metta` | pure-fact IR: the Exp-1 **run config** — the chamber, the two mortal organisms (`O_base` owns the cue-normalizers `R_so`/`R_result`; `O_chain` owns the transitive chainer `R_trans` and starves under `CL_shallow`), the **clamps** (`CL_shallow`/`CL_deep`: `(clamp-mint CL achievement tok n)` — which achievement mints which typed fuel), and the shared fuel **snapshot** `SNAP_qa` (the canonical one-chamber-run endowment each worker restores; MSC §6.4). Worker *instances* are declared by their runners (the test exercising each kind), not here. |
+| `rules.metta` | pure-fact IR: **the derivation genome** — cue-normalization rules (`R_so`/`R_result` ⊢ `ReasonFor`, `R_trans` chains derived edges) as canonical per-match `rule-lhs`/`rule-rhs` IR with `(var Name)` markers |
 | `load.metta` | the **data loader** — imports molecules + tasks + configs + rules into `&self` (PeTTa side) |
 | `README.md` | this file (+ the hand-authored-graph **Appendix** below) |
 
@@ -61,8 +62,8 @@ The Exp-1 chamber is **K-like** on the life-history simplex (MSC §4.6: "stable 
 
 ## What's where (logic vs data)
 
-- **The genome** — `rules.metta` here: the four causal-QA rules (`R_qtype` question-type-detector + paraphrase-collapse, `R_align` causal-alignment, `R_complete` role-completion, `R_project` answer-projection) as **canonical per-match `rule-lhs`/`rule-rhs` IR** with `(var Name)` markers (**abstain is the evaluator's job**, not a rule). Tokens use `gm`/`ci` (the PeTTa short symbols for `tau_graph_match`/`tau_causal`; see `../../ir/schema.md` §1).
-- **The engine + evaluator code** — `../../petta/kernel.metta` (P0 engine) + `../../petta/evaluator.metta` (eq-17 scoring, target derived from the graph). This dir is the *data* they operate on.
+- **The genome** — `rules.metta` here: the **derivation genome**, the interpretive theory that normalizes the parser's surface cues into the explanatory layer the questions query (`R_so`/`R_result`: cue ⊢ `ReasonFor`; `R_trans`: chains **derived** `ReasonFor` edges — a rule feeding on rules' products), as **canonical per-match `rule-lhs`/`rule-rhs` IR** with `(var Name)` markers. Products carry provenance-bearing ids (`(norm E)`/`(trans E1 E2)`). Tokens: `sm` = skeleton-match fuel (`tau_graph_match`), `tr` = transitive-explanation fuel (see `../../ir/schema.md` §1).
+- **The engine + solve code** — `../../petta/` : the engine (`util`/`fuel`/`compiler`/`gate`/`reaction`), the grounder (`grounder.metta`), and the evaluator (`evaluator.metta`). This dir is the *data* they operate on.
 
 ## Notation legend (for the Appendix graphs)
 

@@ -1,100 +1,49 @@
-; Experiment 1 — CONFIGS, pure portable facts. Two sections:
-;  (1) causal-QA DOMAIN MAPPINGS — edge clusters + q-word intent map. Family knowledge
-;      (reusable across causal-QA experiments), read as facts by the rules + evaluator.
-;      Factor to a shared file when a second causal-QA experiment appears.
-;  (2) RUN CONFIG — Exp-1 instance: clamps, chamber, worker, snapshot, seed.
+; Experiment 1 — RUN CONFIG, pure portable facts: the chamber, the two mortal organisms
+; that own the genome, the clamps, and the shared fuel snapshot. Worker INSTANCES are
+; declared by their runners (the test that exercises each kind), not here.
 
-; --- (1) domain mappings -------------------------------------------------------
-(edge-cluster CauseOf physical-cause)
-(edge-cluster Trigger physical-cause)
-(edge-cluster Enable physical-cause)
-(edge-cluster Contribute physical-cause)
-(edge-cluster Prevent physical-cause)
-(edge-cluster Despite concession)
-(edge-cluster Motivate intentional)
-(edge-cluster Reason intentional)
-(intent-map why explain)
-(intent-map what-made explain)
-(intent-map how-come explain)
-(intent-map what-for explain-goal)
-(intent-map trying-to-do explain-goal)
-(intent-map how explain-mechanism)
-(intent-map why-not explain-prevention)
-(intent-allows explain physical-cause)
-(intent-allows explain intentional)
-(intent-allows explain-goal intentional)
-(intent-allows explain-mechanism physical-cause)
-(intent-allows explain-prevention physical-cause)
-; intent scope: a chain-scoped intent's ideal is the backward chain closure into the
-; focus; intents with no intent-scope fact default to direct edges into the focus
-(intent-scope explain-mechanism chain)
-; the relations mechanism chains are made of — the chain closure follows only these
-; (in this vocabulary causal chains are CauseOf links; the other physical-cause
-; relations are single-hop contributors, not chain links)
-(chain-relation CauseOf)
-(explanatory physical-cause)
-(explanatory intentional)
-; role relations (non-causal participant edges) — the POSITIVE complement of edge-cluster,
-; so role-completion (R_complete) matches them without a negation.
-(role-relation Agent)
-(role-relation Experiencer)
-(role-relation Theme)
-(role-relation Destination)
-(role-relation Patient)
-
-; --- (2) run configuration -----------------------------------------------------
 (chamber CH_expt1)
 (chamber-context CH_expt1 causal-qa)
-(chamber-context CH_expt1 everyday)
 (chamber-life-history CH_expt1 K-like)
 
-; --- organism (schema §2.3): Exp-1 runs the whole genome as ONE mortal organism O_qa.
-; Its genome GNM_qa quotes the ruleset RS_qa (the 4 causal-QA rules); the engine resolves
-; each rule -> O_qa (rule-organism) so O_qa's typed purse `(fuel O_qa …)` pays for firing.
-(organism O_qa)
-(organism-chamber O_qa CH_expt1)
-(genome-of O_qa GNM_qa)
-(quoted-ruleset GNM_qa RS_qa)
-(ruleset-member RS_qa R_qtype)
-(ruleset-member RS_qa R_align)
-(ruleset-member RS_qa R_complete)
-(ruleset-member RS_qa R_project)
+; --- organisms (schema §2.3): the genome runs as TWO mortal organisms, so that death is
+; organism-level (a starved organism is one whose every rule can fire nothing). O_base owns
+; the cue-normalizers (cost sm only); O_chain owns the transitive chainer (costs sm + tr)
+; and FEEDS on O_base's derived ReasonFor edges — a rule eating rules' products. The engine
+; resolves each rule -> its organism (rule-organism), so each organism's own typed purse pays
+; for its firings. O_chain's only income is the root answer (which needs R_trans to fire, so
+; it needs tr): under CL_shallow it earns no tr, its per-cycle tr surplus is negative, and it
+; starves to death (eq 19); O_base lives on sm. Under CL_deep O_chain's tr income sustains it.
+(organism O_base)
+(organism-chamber O_base CH_expt1)
+(genome-of O_base GNM_base)
+(quoted-ruleset GNM_base RS_base)
+(ruleset-member RS_base R_so)
+(ruleset-member RS_base R_result)
 
-(clamp CL_antecedent)
-(clamp-class CL_antecedent physical-cause)
-(clamp-coeff CL_antecedent match 1.0)
-(clamp-mint-scale CL_antecedent 6)
-(clamp-abstain-reward CL_antecedent 4)
-(clamp-token CL_antecedent skeleton-match gm)
-(clamp-token CL_antecedent causal-citation ci)
-(clamp-scope CL_antecedent CH_expt1)
+(organism O_chain)
+(organism-chamber O_chain CH_expt1)
+(genome-of O_chain GNM_chain)
+(quoted-ruleset GNM_chain RS_chain)
+(ruleset-member RS_chain R_trans)
 
-(clamp CL_goal)
-(clamp-class CL_goal intentional)
-(clamp-coeff CL_goal match 1.0)
-(clamp-mint-scale CL_goal 6)
-(clamp-abstain-reward CL_goal 4)
-(clamp-token CL_goal skeleton-match gm)
-(clamp-scope CL_goal CH_expt1)
-(chamber-graph CH_expt1 V7g)
-(chamber-graph CH_expt1 V3g)
-(chamber-graph CH_expt1 V17g)
-(chamber-graph CH_expt1 V20g)
-(chamber-graph CH_expt1 V23g)
+; --- clamps (MSC §4.4): the evaluator converts a grounding's ACHIEVEMENTS into typed
+; fuel — the clamp maps each achievement to the token + amount it mints. The shallow
+; clamp pays only the skeleton match, so O_chain earns no tr and starves; the deep clamp
+; additionally pays transitive-explanation in tr, so O_chain's chaining is self-sustaining.
+(clamp CL_shallow)
+(clamp-mint CL_shallow skeleton-match sm 2)
+(clamp-scope CL_shallow CH_expt1)
 
-(worker W_expt1)
-(worker-kind W_expt1 context-chamber)
-(worker-backend W_expt1 petta)
-(worker-chamber W_expt1 CH_expt1)
-(worker-snapshot W_expt1 SNAP_e1)
-(worker-seed W_expt1 SEED_e1)
-(worker-budget-steps W_expt1 100)
-(worker-output-log W_expt1 LOG_e1)
-(worker-clamp W_expt1 CL_antecedent)
-(snapshot SNAP_e1 CH_expt1)
-; the snapshot's per-organism fuel endowment — the purses a worker restores at launch
-(snapshot-fuel SNAP_e1 O_qa gm 30)
-(snapshot-fuel SNAP_e1 O_qa ci 10)
-(seed SEED_e1 7)
-(event-log LOG_e1)
-(log-chamber LOG_e1 CH_expt1)
+(clamp CL_deep)
+(clamp-mint CL_deep skeleton-match sm 2)
+(clamp-mint CL_deep transitive-explanation tr 2)
+(clamp-scope CL_deep CH_expt1)
+
+; --- the shared fuel SNAPSHOT (MSC §6.4): the canonical initial endowment a worker restores
+; into its isolated hot-pool space — enough for one chamber run (R_so/R_result spend sm,
+; R_trans spends sm + tr, seed tr = 1). Each worker instance (declared by its runner, in the
+; test that exercises its kind) restores this via (worker-snapshot W SNAP_qa).
+(snapshot-fuel SNAP_qa O_base sm 10)
+(snapshot-fuel SNAP_qa O_chain sm 10)
+(snapshot-fuel SNAP_qa O_chain tr 1)

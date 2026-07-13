@@ -37,29 +37,29 @@
 
 ; --- a shared worker space with a SEPARATE typed purse per organism --------------
 !(bind! &ws (new-space))
-!(add-atom &ws (fuel O_a gm 3))
-!(add-atom &ws (fuel O_b gm 1))
+!(add-atom &ws (fuel O_a sm 3))
+!(add-atom &ws (fuel O_b sm 1))
 
 ; (2) afford? reads the FIRING organism's own purse ------------------------------
-!(test (afford? &ws O_a ((gm 2))) True)    ; O_a holds 3 >= 2
-!(test (afford? &ws O_a ((gm 5))) False)   ; O_a holds 3 <  5
-!(test (afford? &ws O_b ((gm 2))) False)   ; O_b holds 1 <  2 (its OWN purse, not O_a's)
+!(test (afford? &ws O_a ((sm 2))) True)    ; O_a holds 3 >= 2
+!(test (afford? &ws O_a ((sm 5))) False)   ; O_a holds 3 <  5
+!(test (afford? &ws O_b ((sm 2))) False)   ; O_b holds 1 <  2 (its OWN purse, not O_a's)
 
 ; (2) debit hits ONLY the firing organism's purse — ISOLATION ---------------------
-!(debit &ws O_a gm 2)
-!(test (fuel-of &ws O_a gm) 1)             ; O_a: 3 - 2 = 1
-!(test (fuel-of &ws O_b gm) 1)             ; O_b: UNTOUCHED (isolated ledger)
+!(debit &ws O_a sm 2)
+!(test (fuel-of &ws O_a sm) 1)             ; O_a: 3 - 2 = 1
+!(test (fuel-of &ws O_b sm) 1)             ; O_b: UNTOUCHED (isolated ledger)
 
 ; --- attention state: hand-set typed levels; shell threshold = 1 -----------------
-!(add-atom &self (attention R_hot gm 5))
-!(add-atom &self (attention R_cold gm 0))
+!(add-atom &self (attention R_hot sm 5))
+!(add-atom &self (attention R_cold sm 0))
 ; (3) in-attn?: >= threshold passes; below fails; ABSENT is vacuously True (shell) --
 !(test (in-attn? R_hot) True)             ; 5 >= 1
 !(test (in-attn? R_cold) False)           ; 0 <  1  -> cold, gated off
 !(test (in-attn? R_a) True)               ; no attention fact -> attention not modelled -> pass
 
 ; (3) the computed gate folds afford? + attention (O_a now holds 1) ---------------
-!(test (gate? &ws O_a R_a ((gm 1))) True)     ; afford (1>=1) + attn vacuous -> OPEN
-!(test (gate? &ws O_a R_a ((gm 2))) False)    ; afford FAILS (O_a holds 1) -> gate SHUT
-!(test (gate? &ws O_a R_hot ((gm 1))) True)   ; hot rule, afforded -> OPEN
-!(test (gate? &ws O_a R_cold ((gm 1))) False) ; COLD rule (attn 0<1) -> SHUT despite afford
+!(test (gate? &ws O_a R_a ((sm 1))) True)     ; afford (1>=1) + attn vacuous -> OPEN
+!(test (gate? &ws O_a R_a ((sm 2))) False)    ; afford FAILS (O_a holds 1) -> gate SHUT
+!(test (gate? &ws O_a R_hot ((sm 1))) True)   ; hot rule, afforded -> OPEN
+!(test (gate? &ws O_a R_cold ((sm 1))) False) ; COLD rule (attn 0<1) -> SHUT despite afford

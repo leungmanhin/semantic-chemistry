@@ -51,10 +51,10 @@
 !(test (cfoo &wb) 1)
 
 ; Q5 remove-atom via a param space (the engine debits fuel this way)
-!(add-atom &wa (fuel gm 5))
+!(add-atom &wa (fuel sm 5))
 (= (rmit $s $a) (remove-atom $s $a))
-!(rmit &wa (fuel gm 5))
-!(test (foldall + (match &wa (fuel gm $n) 1) 0) 0)
+!(rmit &wa (fuel sm 5))
+!(test (foldall + (match &wa (fuel sm $n) 1) 0) 0)
 
 ; Q6 copy ALL atoms src->fresh wc (could seed read-only IR into a worker space)
 !(bind! &src (new-space))

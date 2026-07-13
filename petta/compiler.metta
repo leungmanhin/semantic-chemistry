@@ -19,7 +19,10 @@
 (= (resolve-space self $ws) &self)
 (= (resolve-space ws $ws) $ws)
 
-; fold nested match over the clause list, yielding the (bound) $out template per solution
+; fold nested match over the clause list, yielding the (bound) $out template per solution.
+; A bare clause matches the RUN space $ws (the hot pool — molecules + derived edges;
+; $ws is &self on a bare run, a worker's own space under isolation); an explicit
+; (at self PAT) still routes to &self for a read-only-IR read.
 (= (clause-join $ws $lits $out)
    (case $lits
      ((() $out)
@@ -29,7 +32,7 @@
                (((at $sp $pat)
                      (let $space (resolve-space $sp $ws)
                           (match $space $pat (clause-join $ws $rest $out))))
-                ($bare (match &self $bare (clause-join $ws $rest $out))))))))))
+                ($bare (match $ws $bare (clause-join $ws $rest $out))))))))))
 
 ; enumerate rule $rule's candidates: pull its crule, join the clauses -> a (cand …) per match
 (= (rule-cands $ws $rule)

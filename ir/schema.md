@@ -13,7 +13,7 @@ The facts below are the canonical IR. They are stored as **bare portable S-expre
 - **Relation name first, grounded keys next, variables/values at the suffix** (MORK prefix-friendly schema discipline — keeps the trie prefix-shared and matches fast).
 - One fact = one tuple. Multi-valued attributes (a fuel vector, a rule's token costs) are **expanded into one fact per element**, never packed into a list — so they index and diff cleanly.
 - **IDs are opaque symbols** with a type prefix by convention: `G_*` graph, `N_*`/`n_*` node, `E_*`/`e_*` edge, `R*` rule, `O*` organism, `GNM*` genome, `RS*` ruleset, `CH_*` chamber, `W*` worker, `SNAP*` snapshot, `SEED*` seed, `LOG*` event log, `B*` binding. IDs are globally unique within a run.
-- **Token-type symbols** follow the **TECAN typed alphabet** (TECAN §4.1 general + §8.4 semantic): `τ_graph_match`, `τ_causal`, `τ_pln_deduction`, `τ_compression`, `τ_paraphrase`, `τ_dequote`, … — written **ASCII** as `tau_graph_match`, `tau_causal`, … (literal `τ` avoided for MORK byte-safety). The set is extensible; domain clamps/chambers add more. (Exp-1 uses `tau_graph_match` + `tau_causal`; the **PeTTa executor abbreviates them to `gm` / `ci`** in its fact files + engine — a documented 1:1 alias, with `tau_*` the canonical name. A backend may use either, since the engine is generic over the token symbol.)
+- **Token-type symbols** follow the **TECAN typed alphabet** (TECAN §4.1 general + §8.4 semantic): `τ_graph_match`, `τ_causal`, `τ_pln_deduction`, `τ_compression`, `τ_paraphrase`, `τ_dequote`, … — written **ASCII** as `tau_graph_match`, `tau_causal`, … (literal `τ` avoided for MORK byte-safety). The set is extensible; domain clamps/chambers add more. (Exp-1 uses two tokens; the **PeTTa executor names them `sm` (skeleton-match, = `tau_graph_match`) and `tr` (transitive-explanation)** in its fact files + engine — each symbol is the achievement it rewards. A backend may use any symbol, since the engine is generic over the token.)
 - Truth values are two trailing reals `<strength> <confidence>` (PLN `stv`), each in `[0,1]`.
 
 ---
@@ -61,7 +61,7 @@ A rule is the fuel-aware form `C ^ G1 ^ HasFuel(O,R) ==> G2 ^ ConsumeFuel(O,R) ^
 | `(ruleset-member RS R)` | Rule `R` is in ruleset `RS`. **One fact per rule.** |
 | `(fuel O token-type n)` | The organism currently holds `n` of `token-type` (a component of fuel vector `F_O`). **One fact per token type held.** Debited on firing (the firing organism resolved by `rule-organism`). |
 
-> **Note:** `afford`/`debit` (`petta/kernel.metta`) read and write the *firing organism's own* purse; a rule's organism is resolved from `ruleset-member` · `quoted-ruleset` · `genome-of` by `rule-organism`, with `the-organism` the single-organism accessor. Exp-1 declares one organism `O_qa` owning the whole genome (`experiments/expt1-causal-qa/configs.metta`), so its single purse serves the run; the shape holds an independent purse per organism. Inter-organism token flow (splitter/joiner, shadow prices Λ) is not modelled here.
+> **Note:** `afford?`/`debit` (`petta/fuel.metta`) read and write the *firing organism's own* purse; a rule's organism is resolved from `ruleset-member` · `quoted-ruleset` · `genome-of` by `rule-organism`. Exp-1 declares two organisms — `O_base` owning the cue-normalizers, `O_chain` owning the transitive chainer (`experiments/expt1-causal-qa/configs.metta`) — each with its own independent purse, so `O_chain` can starve to death while `O_base` lives. Inter-organism token flow (splitter/joiner, shadow prices Λ) is not modelled here.
 
 ### 2.4 Chambers (the contexts / reaction environments)
 
@@ -160,7 +160,7 @@ The Experiment-1 toy causal-QA chamber (MSC §7.1) adds a task layer on top of t
 
 ### 2.9 ACS detection + promotion (Experiment-1 layer; P2 output)
 
-P2 (`petta/acs.metta`, = TECAN T3) certifies whether a rule loop is a **mortal semantic ACS** (the 5 conditions of MSC / TECAN eq 67) and promotes it only if it earns its keep. Outputs (written by the ACS-detector, not the soma):
+P2 (= TECAN T3, to be rebuilt on the sem-graph pipeline) certifies whether a rule loop is a **mortal semantic ACS** (the 5 conditions of MSC / TECAN eq 67) and promotes it only if it earns its keep. Outputs (written by the ACS-detector, not the soma):
 
 | Fact | Meaning |
 |------|---------|
@@ -175,7 +175,7 @@ P2 (`petta/acs.metta`, = TECAN T3) certifies whether a rule loop is a **mortal s
 
 ### 2.10 Lineage + reproduction (Experiment-1 layer; P3 output)
 
-P3 (`petta/selection.metta`, = TECAN T6) mutates / recombines the promoted ACS's quoted genome, selects by surplus under matched replay, and reproduces. Lineage outputs:
+P3 (= TECAN T6, to be rebuilt on the sem-graph pipeline) mutates / recombines the promoted ACS's quoted genome, selects by surplus under matched replay, and reproduces. Lineage outputs:
 
 | Fact | Meaning |
 |------|---------|
@@ -234,8 +234,8 @@ A change is IR-legal only if it keeps all of these true:
 ## 6. Beyond the P0 kernel (later stages)
 
 - **Evaluator-minted fuel + clamps** → P1 (`petta/evaluator.metta`): eq-17 scoring, clamp-gated typed-fuel minting (never soma-minted), and the chamber↔evaluator epoch loop that credits earned fuel back, closing the metabolic loop. The clamp-switch (`CL_antecedent` ↔ `CL_goal`) flips which strategy runs a surplus.
-- **ACS detection + metabolic surplus + causal replay** → P2 (`petta/acs.metta`, = TECAN T3): builds the rule-motif graph from the log, certifies the 5-condition mortal ACS (closure is *metabolic* — the cycle closes only via the evaluator), computes surplus, runs paired-replay ablation (which marks inert members such as `R_complete`), reifies the genome, and promotes (clamp-switch: promoted under `CL_antecedent`, rejected under `CL_goal`). Facts in §2.9.
-- **Genome mutation / reproduction** → P3 (`petta/selection.metta`, = TECAN T6): mutates / recombines the quoted genome as data, expresses member rules via `run-ablate` by membership, scores offspring by surplus under matched replay, and reproduces (surplus-funded, token-gated dequotation). Selection prunes inert members (e.g. `R_complete`) and rejects loop-breaking mutations; recombination rescues complementary defective genomes; under `CL_goal` the founder cannot afford to reproduce. Facts in §2.10.
+- **ACS detection + metabolic surplus + causal replay** → P2 (= TECAN T3, to be rebuilt on the sem-graph pipeline): builds the rule-motif graph from the log, certifies the 5-condition mortal ACS (closure is *metabolic* — the cycle closes only via the evaluator), computes surplus, runs paired-replay ablation (which marks inert members such as `R_complete`), reifies the genome, and promotes (clamp-switch: promoted under `CL_antecedent`, rejected under `CL_goal`). Facts in §2.9.
+- **Genome mutation / reproduction** → P3 (= TECAN T6, to be rebuilt on the sem-graph pipeline): mutates / recombines the quoted genome as data, expresses member rules via `run-ablate` by membership, scores offspring by surplus under matched replay, and reproduces (surplus-funded, token-gated dequotation). Selection prunes inert members (e.g. `R_complete`) and rejects loop-breaking mutations; recombination rescues complementary defective genomes; under `CL_goal` the founder cannot afford to reproduce. Facts in §2.10.
 - **Multiple workers, reducers, ECAN epochs** → P4.
 - **MeTTa-IL executor** → later; the whole point of this schema is that it drops in by log-equivalence, not rewrite.
 

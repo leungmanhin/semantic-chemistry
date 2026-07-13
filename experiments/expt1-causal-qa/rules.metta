@@ -1,56 +1,43 @@
-; Experiment 1 — RULES in the CANONICAL per-match `C ^ G1 ==> G2` IR. The genome's
-; source of truth: separate `rule-lhs`/`rule-rhs` facts with `(var Name)` markers (named
-; variables AS DATA), backend-neutral. The engine's converter (petta/kernel.metta:
-; express / convert-rule / to-vars) mints co-referent PeTTa match-vars and assembles each
-; rule into the runnable `(crule …)` at genome-expression time. Rules fire PER-MATCH θ
-; (MSC §4.3 eq 12–16): one firing per LHS match, `X' = X ⊕ θ(G2)` (set-union).
+; Experiment 1 — RULES: the derivation GENOME, canonical per-match `rule-lhs`/`rule-rhs`
+; IR with (var Name) markers (the engine's converter compiles each to a runnable crule;
+; rules fire per LHS match θ, products ⊕ set-union). The genome is the INTERPRETIVE
+; THEORY: the parser emits surface discourse cues only, and these rules derive the
+; normalized explanatory layer — `ReasonFor`, the relation the answer-skeletons query
+; (SC §4.5) — the fuse-nf-normalizer's job expressed as selectable genes.
 ;
-; Every petta/ module runs these rules via the engine's converter + generic run.
-; Tokens: gm = tau_graph_match, ci = tau_causal.
-;
-; Design notes: abstain is NOT a rule (it's the alignment rule simply not matching +
-; the evaluator scoring the absence); align fires PER EDGE (no aggregation, no exists-guard
-; — no edge ⇒ no match ⇒ no fire); complete's "rel is not causal" is the POSITIVE
-; `(role-relation …)` vocabulary (configs.metta), not a negation. An explanatory edge is a
-; binary relation `(Rel Src Foc)` with the relation as head; `(node-graph G N)` scopes a node.
+; Products carry deterministic, provenance-bearing edge-ids — (norm E) names its source
+; cue edge, (trans E1 E2) its two premise edges — and copy the premise TV (PLN TV
+; formulas arrive with the chainer). The IR convention the engine reads structurally:
+; a DERIVED edge-id is a compound whose head names the deriving step and whose
+; arguments are the premise edge-ids (so depth/provenance need no id vocabulary).
+; Tokens: sm = skeleton-match fuel (tau_graph_match), tr = transitive-explanation fuel.
 
-; --- R_qtype: question-type detector + paraphrase-collapse (a clean join) ---------
-(rule-context    R_qtype causal-qa)
-(rule-priority   R_qtype 0)
-(rule-token-cost R_qtype gm 1)
-(rule-lhs R_qtype ((qa-question (var T) (var Q)) (q-word (var Q) (var W)) (intent-map (var W) (var I))))
-(rule-rhs R_qtype ((q-intent (var Q) (var I))))
+; --- R_so: "X, so Y" — the cue asserts X is the reason for Y -------------------
+(rule-context    R_so causal-qa)
+(rule-priority   R_so 0)
+(rule-token-cost R_so sm 1)
+(rule-lhs R_so ((sem-edge (var g) (var e) So (var x) (var y))
+                (sem-edge-tv (var g) (var e) (var tv))))
+(rule-rhs R_so ((sem-edge (var g) (norm (var e)) ReasonFor (var x) (var y))
+                (sem-edge-tv (var g) (norm (var e)) (var tv))))
 
-; --- R_align: causal-alignment, PER EDGE (fires once per explanatory edge into the focus) -
-(rule-context    R_align causal-qa)
-(rule-priority   R_align 1)
-(rule-token-cost R_align gm 1)
-(rule-token-cost R_align ci 1)
-(rule-lhs R_align ((at ws (q-intent (var Q) (var I)))
-                   (at self (intent-allows (var I) (var Cls)))
-                   (at self (question-focus (var Q) (var Foc)))
-                   (at self (question-source (var Q) (var G)))
-                   (at self (node-graph (var G) (var Foc)))
-                   (at self ((var Rel) (var Src) (var Foc)))
-                   (at self (edge-cluster (var Rel) (var Cls)))))
-(rule-rhs R_align ((alignment (var Q) (var Cls))
-                   (cites (var Q) (var Cls) (var Rel) (var Src) (var Foc))
-                   (prov  (var Q) (var Cls) (var Src))))
+; --- R_result: "X, and as a result Y" ------------------------------------------
+(rule-context    R_result causal-qa)
+(rule-priority   R_result 1)
+(rule-token-cost R_result sm 1)
+(rule-lhs R_result ((sem-edge (var g) (var e) AsAResult (var x) (var y))
+                    (sem-edge-tv (var g) (var e) (var tv))))
+(rule-rhs R_result ((sem-edge (var g) (norm (var e)) ReasonFor (var x) (var y))
+                    (sem-edge-tv (var g) (norm (var e)) (var tv))))
 
-; --- R_complete: role-completion (cause's non-causal participants; POSITIVE role-relation) -
-(rule-context    R_complete causal-qa)
-(rule-priority   R_complete 2)
-(rule-token-cost R_complete gm 1)
-(rule-lhs R_complete ((at ws (cites (var Q) (var Cls) (var Rel) (var Cause) (var Foc)))
-                      (at self ((var Rel2) (var Cause) (var Filler)))
-                      (at self (role-relation (var Rel2)))))
-(rule-rhs R_complete ((role-fill (var Q) (var Cls) (var Rel2) (var Filler))))
-
-; --- R_project: answer projection (one candidate-answer per alignment) -----
-(rule-context    R_project causal-qa)
-(rule-priority   R_project 3)
-(rule-token-cost R_project gm 1)
-(rule-lhs R_project ((at ws (alignment (var Q) (var Cls)))))
-(rule-rhs R_project ((candidate-answer (var Q) (ans (var Q) (var Cls)))
-                     (answer-by (ans (var Q) (var Cls)) O_qa)
-                     (answer-class (ans (var Q) (var Cls)) (var Cls))))
+; --- R_trans: reasons chain — the reason of my reason explains me too ----------
+; (consumes DERIVED ReasonFor edges: a level-2 rule feeding on level-1 products)
+(rule-context    R_trans causal-qa)
+(rule-priority   R_trans 2)
+(rule-token-cost R_trans sm 1)
+(rule-token-cost R_trans tr 1)
+(rule-lhs R_trans ((sem-edge (var g) (var e1) ReasonFor (var x) (var y))
+                   (sem-edge (var g) (var e2) ReasonFor (var y) (var z))
+                   (sem-edge-tv (var g) (var e1) (var tv))))
+(rule-rhs R_trans ((sem-edge (var g) (trans (var e1) (var e2)) ReasonFor (var x) (var z))
+                   (sem-edge-tv (var g) (trans (var e1) (var e2)) (var tv))))

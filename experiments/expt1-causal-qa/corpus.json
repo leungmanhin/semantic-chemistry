@@ -1,7 +1,7 @@
 [
   {
     "id": "V1",
-    "statements": [
+    "sentences": [
       "Heavy rain fell all night, so by morning the low road was flooded."
     ],
     "questions": [
@@ -11,7 +11,7 @@
   },
   {
     "id": "V2",
-    "statements": [
+    "sentences": [
       "An early frost settled over the garden, so the tomato plants blackened and died."
     ],
     "questions": [
@@ -21,18 +21,17 @@
   },
   {
     "id": "V3",
-    "statements": [
+    "sentences": [
       "The power went out during the storm, so the fridge stopped running, and as a result the food had spoiled by morning."
     ],
     "questions": [
-      "How did the food end up spoiled?",
       "Why did the food spoil?"
     ],
     "additional_info": []
   },
   {
     "id": "V4",
-    "statements": [
+    "sentences": [
       "The waiter knocked the glass off the edge, so it hit the tiles and shattered."
     ],
     "questions": [
@@ -42,7 +41,7 @@
   },
   {
     "id": "V5",
-    "statements": [
+    "sentences": [
       "Snow piled up for days on the old barn, so the roof finally collapsed under the weight."
     ],
     "questions": [
@@ -52,7 +51,7 @@
   },
   {
     "id": "V6",
-    "statements": [
+    "sentences": [
       "A long drought dried the hills, so the reservoir fell to a record low, and as a result the town brought in water restrictions."
     ],
     "questions": [
@@ -62,7 +61,7 @@
   },
   {
     "id": "V7",
-    "statements": [
+    "sentences": [
       "Maria was out of milk, so she drove to the store to buy a carton."
     ],
     "questions": [
@@ -73,7 +72,7 @@
   },
   {
     "id": "V8",
-    "statements": [
+    "sentences": [
       "Tom's phone battery was dead, so he walked to a café to charge it."
     ],
     "questions": [
@@ -83,7 +82,7 @@
   },
   {
     "id": "V9",
-    "statements": [
+    "sentences": [
       "Lena was cold, so she got up and closed the window to warm the room."
     ],
     "questions": [
@@ -93,7 +92,7 @@
   },
   {
     "id": "V10",
-    "statements": [
+    "sentences": [
       "Sam was hungry after the run, so he made a sandwich to eat before work."
     ],
     "questions": [
@@ -103,7 +102,7 @@
   },
   {
     "id": "V11",
-    "statements": [
+    "sentences": [
       "Priya's basil was wilting on the sill, so she watered it to bring it back."
     ],
     "questions": [
@@ -113,7 +112,7 @@
   },
   {
     "id": "V12",
-    "statements": [
+    "sentences": [
       "Raj missed the morning bus, so he called a taxi to get to work on time."
     ],
     "questions": [
@@ -124,7 +123,7 @@
   },
   {
     "id": "V13",
-    "statements": [
+    "sentences": [
       "Nadia's laptop screen was cracked, so she took it to the repair shop to have it fixed."
     ],
     "questions": [
@@ -134,7 +133,7 @@
   },
   {
     "id": "V14",
-    "statements": [
+    "sentences": [
       "Omar thought it would rain later, so he took an umbrella when he left."
     ],
     "questions": [
@@ -144,7 +143,7 @@
   },
   {
     "id": "V15",
-    "statements": [
+    "sentences": [
       "Ella wanted to surprise her sister, so she baked a cake before the party."
     ],
     "questions": [
@@ -154,7 +153,7 @@
   },
   {
     "id": "V16",
-    "statements": [
+    "sentences": [
       "The hikers believed the rope bridge was unsafe, so they took the long path around."
     ],
     "questions": [
@@ -164,7 +163,7 @@
   },
   {
     "id": "V17",
-    "statements": [
+    "sentences": [
       "A fire started in the kitchen, but the sprinklers switched on and stopped it from spreading to the rest of the house."
     ],
     "questions": [
@@ -174,7 +173,7 @@
   },
   {
     "id": "V18",
-    "statements": [
+    "sentences": [
       "A hard frost was forecast, but the gardener covered the seedlings overnight and kept them from freezing."
     ],
     "questions": [
@@ -184,7 +183,7 @@
   },
   {
     "id": "V19",
-    "statements": [
+    "sentences": [
       "Despite the heavy rain, the match went ahead, because the pitch drained well."
     ],
     "questions": [
@@ -194,7 +193,7 @@
   },
   {
     "id": "V20",
-    "statements": [
+    "sentences": [
       "The streetlights came on at dusk.",
       "Maria drove to the store."
     ],
@@ -205,7 +204,7 @@
   },
   {
     "id": "V21",
-    "statements": [
+    "sentences": [
       "A black cat crossed the road in the morning.",
       "That afternoon, Dan's car broke down."
     ],
@@ -216,7 +215,7 @@
   },
   {
     "id": "V22",
-    "statements": [
+    "sentences": [
       "The clock struck noon.",
       "The dog began to bark."
     ],
@@ -227,7 +226,7 @@
   },
   {
     "id": "V23",
-    "statements": [
+    "sentences": [
       "The cake came out dense, because the baker had used too little baking powder and had overmixed the batter."
     ],
     "questions": [
@@ -237,7 +236,7 @@
   },
   {
     "id": "V24",
-    "statements": [
+    "sentences": [
       "The river flooded the valley, because heavy rain had fallen for days and the dam's gates had been left open."
     ],
     "questions": [

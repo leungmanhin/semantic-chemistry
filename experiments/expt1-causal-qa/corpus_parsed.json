@@ -1,0 +1,836 @@
+[
+  {
+    "id": "V1",
+    "sentences": [
+      "Heavy rain fell all night, so by morning the low road was flooded."
+    ],
+    "questions": [
+      "Why was the low road flooded?"
+    ],
+    "statements": [
+      "(: v1_rain_m (Member sk_rain_1 rain) (STV 1.0 0.99))",
+      "(: v1_rain_heavy (Member sk_rain_1 heavy) (STV 1.0 0.99))",
+      "(: v1_fall_m (Member sk_fall_1 fall) (STV 1.0 0.99))",
+      "(: v1_fall_ag (Agent sk_fall_1 sk_rain_1) (STV 1.0 0.99))",
+      "(: v1_fall_past (Past sk_fall_1) (STV 1.0 0.99))",
+      "(: v1_fall_time (Time sk_fall_1 night) (STV 1.0 0.99))",
+      "(: v1_road_m (Member sk_road_1 road) (STV 1.0 0.99))",
+      "(: v1_road_low (Member sk_road_1 low) (STV 1.0 0.99))",
+      "(: v1_flood_m (Member sk_flood_1 flood) (STV 1.0 0.99))",
+      "(: v1_flood_pat (Patient sk_flood_1 sk_road_1) (STV 1.0 0.99))",
+      "(: v1_flood_past (Past sk_flood_1) (STV 1.0 0.99))",
+      "(: v1_flood_time (TimeAtMost sk_flood_1 morning) (STV 1.0 0.99))",
+      "(: v1_conn (So sk_fall_1 sk_flood_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e flood) (Patient $e $r) (Member $r road) (Member $r low) (Past $e) (ReasonFor $w $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V2",
+    "sentences": [
+      "An early frost settled over the garden, so the tomato plants blackened and died."
+    ],
+    "questions": [
+      "Why did the tomato plants die?"
+    ],
+    "statements": [
+      "(: v2_frost_m (Member sk_frost_1 frost) (STV 1.0 0.99))",
+      "(: v2_frost_early (Member sk_frost_1 early) (STV 1.0 0.99))",
+      "(: v2_settle_m (Member sk_settle_1 settle) (STV 1.0 0.99))",
+      "(: v2_settle_ag (Agent sk_settle_1 sk_frost_1) (STV 1.0 0.99))",
+      "(: v2_settle_loc (Location sk_settle_1 sk_garden_1) (STV 1.0 0.99))",
+      "(: v2_garden_m (Member sk_garden_1 garden) (STV 1.0 0.99))",
+      "(: v2_settle_past (Past sk_settle_1) (STV 1.0 0.99))",
+      "(: v2_tp_genus (Inheritance tomato_plant plant) (STV 0.99 0.99))",
+      "(: v2_group (GroupOf sk_group_1 tomato_plant) (STV 1.0 0.99))",
+      "(: v2_blacken_m (Member sk_blacken_1 blacken) (STV 1.0 0.99))",
+      "(: v2_blacken_pat (Patient sk_blacken_1 sk_group_1) (STV 1.0 0.99))",
+      "(: v2_blacken_past (Past sk_blacken_1) (STV 1.0 0.99))",
+      "(: v2_blacken_rule (Implication (Premises (PartOf $x sk_group_1)) (Conclusions (Member (sk_blacken $x) blacken) (Patient (sk_blacken $x) $x) (Past (sk_blacken $x)))) (STV 1.0 0.9))",
+      "(: v2_die_m (Member sk_die_1 die) (STV 1.0 0.99))",
+      "(: v2_die_pat (Patient sk_die_1 sk_group_1) (STV 1.0 0.99))",
+      "(: v2_die_past (Past sk_die_1) (STV 1.0 0.99))",
+      "(: v2_die_rule (Implication (Premises (PartOf $x sk_group_1)) (Conclusions (Member (sk_die $x) die) (Patient (sk_die $x) $x) (Past (sk_die $x)))) (STV 1.0 0.9))",
+      "(: v2_conn1 (So sk_settle_1 sk_blacken_1) (STV 1.0 0.99))",
+      "(: v2_conn2 (So sk_settle_1 sk_die_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e die) (Patient $e $g) (GroupOf $g tomato_plant) (Past $e) (ReasonFor $w $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V3",
+    "sentences": [
+      "The power went out during the storm, so the fridge stopped running, and as a result the food had spoiled by morning."
+    ],
+    "questions": [
+      "Why did the food spoil?"
+    ],
+    "statements": [
+      "(: v3_goout_m (Member sk_go_out_1 go_out) (STV 1.0 0.99))",
+      "(: v3_goout_pat (Patient sk_go_out_1 sk_power_1) (STV 1.0 0.99))",
+      "(: v3_power_m (Member sk_power_1 power) (STV 1.0 0.99))",
+      "(: v3_goout_past (Past sk_go_out_1) (STV 1.0 0.99))",
+      "(: v3_goout_during (During sk_go_out_1 sk_storm_1) (STV 1.0 0.99))",
+      "(: v3_storm_m (Member sk_storm_1 storm) (STV 1.0 0.99))",
+      "(: v3_stop_m (Member sk_stop_1 stop) (STV 1.0 0.99))",
+      "(: v3_stop_ag (Agent sk_stop_1 sk_fridge_1) (STV 1.0 0.99))",
+      "(: v3_fridge_m (Member sk_fridge_1 fridge) (STV 1.0 0.99))",
+      "(: v3_stop_th (Theme sk_stop_1 sk_run_1) (STV 1.0 0.99))",
+      "(: v3_run_m (Member sk_run_1 run) (STV 1.0 0.99))",
+      "(: v3_stop_past (Past sk_stop_1) (STV 1.0 0.99))",
+      "(: v3_spoil_m (Member sk_spoil_1 spoil) (STV 1.0 0.99))",
+      "(: v3_spoil_pat (Patient sk_spoil_1 sk_food_1) (STV 1.0 0.99))",
+      "(: v3_food_m (Member sk_food_1 food) (STV 1.0 0.99))",
+      "(: v3_spoil_past (Past sk_spoil_1) (STV 1.0 0.99))",
+      "(: v3_spoil_time (TimeAtMost sk_spoil_1 morning) (STV 1.0 0.99))",
+      "(: v3_conn1 (So sk_go_out_1 sk_stop_1) (STV 1.0 0.99))",
+      "(: v3_conn2 (AsAResult sk_stop_1 sk_spoil_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e spoil) (Patient $e $f) (Member $f food) (Past $e) (ReasonFor $w $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V4",
+    "sentences": [
+      "The waiter knocked the glass off the edge, so it hit the tiles and shattered."
+    ],
+    "questions": [
+      "What made the glass shatter?"
+    ],
+    "statements": [
+      "(: v4_knock_m (Member sk_knock_1 knock) (STV 1.0 0.99))",
+      "(: v4_knock_ag (Agent sk_knock_1 sk_waiter_1) (STV 1.0 0.99))",
+      "(: v4_waiter_m (Member sk_waiter_1 waiter) (STV 1.0 0.99))",
+      "(: v4_knock_th (Theme sk_knock_1 sk_glass_1) (STV 1.0 0.99))",
+      "(: v4_glass_m (Member sk_glass_1 glass) (STV 1.0 0.99))",
+      "(: v4_knock_src (Source sk_knock_1 sk_edge_1) (STV 1.0 0.99))",
+      "(: v4_edge_m (Member sk_edge_1 edge) (STV 1.0 0.99))",
+      "(: v4_knock_past (Past sk_knock_1) (STV 1.0 0.99))",
+      "(: v4_hit_m (Member sk_hit_1 hit) (STV 1.0 0.99))",
+      "(: v4_hit_ag (Agent sk_hit_1 sk_glass_1) (STV 1.0 0.99))",
+      "(: v4_tiles_g (GroupOf sk_tiles_1 tile) (STV 1.0 0.99))",
+      "(: v4_hit_th (Theme sk_hit_1 sk_tiles_1) (STV 1.0 0.99))",
+      "(: v4_hit_past (Past sk_hit_1) (STV 1.0 0.99))",
+      "(: v4_shatter_m (Member sk_shatter_1 shatter) (STV 1.0 0.99))",
+      "(: v4_shatter_pat (Patient sk_shatter_1 sk_glass_1) (STV 1.0 0.99))",
+      "(: v4_shatter_past (Past sk_shatter_1) (STV 1.0 0.99))",
+      "(: v4_conn1 (So sk_knock_1 sk_hit_1) (STV 1.0 0.99))",
+      "(: v4_conn2 (So sk_knock_1 sk_shatter_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e shatter) (Patient $e $g) (Member $g glass) (Past $e) (ReasonFor $w $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V5",
+    "sentences": [
+      "Snow piled up for days on the old barn, so the roof finally collapsed under the weight."
+    ],
+    "questions": [
+      "Why did the barn roof collapse?"
+    ],
+    "statements": [
+      "(: e_pile (Member sk_pile_1 pile_up) (STV 1.0 0.99))",
+      "(: e_pile_pat (Patient sk_pile_1 snow) (STV 1.0 0.99))",
+      "(: e_pile_loc (Location sk_pile_1 sk_barn_1) (STV 1.0 0.99))",
+      "(: e_barn (Member sk_barn_1 barn) (STV 1.0 0.99))",
+      "(: e_barn_old (Member sk_barn_1 old) (STV 1.0 0.99))",
+      "(: e_pile_dur (MeasureAtLeast sk_pile_1 duration 2 day) (STV 1.0 0.99))",
+      "(: e_pile_past (Past sk_pile_1) (STV 1.0 0.99))",
+      "(: e_roof (Member sk_roof_1 roof) (STV 1.0 0.99))",
+      "(: e_roof_part (PartOf sk_roof_1 sk_barn_1) (STV 1.0 0.99))",
+      "(: e_collapse (Member sk_collapse_1 collapse) (STV 1.0 0.99))",
+      "(: e_collapse_pat (Patient sk_collapse_1 sk_roof_1) (STV 1.0 0.99))",
+      "(: e_collapse_manner (Manner sk_collapse_1 finally) (STV 1.0 0.99))",
+      "(: e_weight (Member sk_weight_1 weight) (STV 1.0 0.99))",
+      "(: e_collapse_instr (Instrument sk_collapse_1 sk_weight_1) (STV 1.0 0.99))",
+      "(: e_collapse_past (Past sk_collapse_1) (STV 1.0 0.99))",
+      "(: conn_so (So sk_pile_1 sk_collapse_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e collapse) (Patient $e $rf) (Member $rf roof) (PartOf $rf $bn) (Member $bn barn) (Past $e) (ReasonFor $w $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V6",
+    "sentences": [
+      "A long drought dried the hills, so the reservoir fell to a record low, and as a result the town brought in water restrictions."
+    ],
+    "questions": [
+      "How did the town end up with water restrictions?"
+    ],
+    "statements": [
+      "(: v6_drought_m (Member sk_drought_1 drought) (STV 1.0 0.99))",
+      "(: v6_drought_long (Member sk_drought_1 long) (STV 1.0 0.99))",
+      "(: v6_dry_m (Member sk_dry_1 dry) (STV 1.0 0.99))",
+      "(: v6_dry_ag (Agent sk_dry_1 sk_drought_1) (STV 1.0 0.99))",
+      "(: v6_hills_g (GroupOf sk_hills_1 hill) (STV 1.0 0.99))",
+      "(: v6_dry_pat (Patient sk_dry_1 sk_hills_1) (STV 1.0 0.99))",
+      "(: v6_dry_past (Past sk_dry_1) (STV 1.0 0.99))",
+      "(: v6_fall_m (Member sk_fall_1 fall) (STV 1.0 0.99))",
+      "(: v6_fall_pat (Patient sk_fall_1 sk_reservoir_1) (STV 1.0 0.99))",
+      "(: v6_reservoir_m (Member sk_reservoir_1 reservoir) (STV 1.0 0.99))",
+      "(: v6_fall_goal (Goal sk_fall_1 sk_low_1) (STV 1.0 0.99))",
+      "(: v6_low_m (Member sk_low_1 low) (STV 1.0 0.99))",
+      "(: v6_low_record (Member sk_low_1 record) (STV 1.0 0.99))",
+      "(: v6_fall_past (Past sk_fall_1) (STV 1.0 0.99))",
+      "(: v6_bringin_m (Member sk_bring_in_1 bring_in) (STV 1.0 0.99))",
+      "(: v6_bringin_ag (Agent sk_bring_in_1 sk_town_1) (STV 1.0 0.99))",
+      "(: v6_town_m (Member sk_town_1 town) (STV 1.0 0.99))",
+      "(: v6_bringin_pat (Patient sk_bring_in_1 water_restriction) (STV 1.0 0.99))",
+      "(: v6_wr_genus (Inheritance water_restriction restriction) (STV 0.99 0.99))",
+      "(: v6_bringin_past (Past sk_bring_in_1) (STV 1.0 0.99))",
+      "(: v6_conn1 (So sk_dry_1 sk_fall_1) (STV 1.0 0.99))",
+      "(: v6_conn2 (AsAResult sk_fall_1 sk_bring_in_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e end_up) (Holder $e $t) (Member $t town) (Theme $e $g) (GroupOf $g water_restriction) (Past $e) (ReasonFor $mid $e) (ReasonFor $c $mid)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V7",
+    "sentences": [
+      "Maria was out of milk, so she drove to the store to buy a carton."
+    ],
+    "questions": [
+      "Why did Maria drive to the store?",
+      "What did Maria drive to the store for?"
+    ],
+    "statements": [
+      "(: e_oom (Member sk_out_of_milk_1 out_of_milk) (STV 1.0 0.99))",
+      "(: e_oom_exp (Experiencer sk_out_of_milk_1 maria) (STV 1.0 0.99))",
+      "(: e_oom_past (Past sk_out_of_milk_1) (STV 1.0 0.99))",
+      "(: e_oom_flat (Past (Member maria out_of_milk)) (STV 1.0 0.99))",
+      "(: maria_name (Name maria \"Maria\") (STV 1.0 0.99))",
+      "(: e_drive (Member sk_drive_1 drive) (STV 1.0 0.99))",
+      "(: e_drive_ag (Agent sk_drive_1 maria) (STV 1.0 0.99))",
+      "(: e_drive_goal (Goal sk_drive_1 sk_store_1) (STV 1.0 0.99))",
+      "(: e_store (Member sk_store_1 store) (STV 1.0 0.99))",
+      "(: e_drive_past (Past sk_drive_1) (STV 1.0 0.99))",
+      "(: e_buy (Member sk_buy_1 buy) (STV 1.0 0.99))",
+      "(: e_buy_ag (Agent sk_buy_1 maria) (STV 1.0 0.99))",
+      "(: e_buy_th (Theme sk_buy_1 sk_carton_1) (STV 1.0 0.99))",
+      "(: e_carton (Member sk_carton_1 carton) (STV 1.0 0.99))",
+      "(: conn_to (To sk_drive_1 sk_buy_1) (STV 1.0 0.99))",
+      "(: conn_so (So sk_out_of_milk_1 sk_drive_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e drive) (Agent $e $m) (Name $m \"Maria\") (Goal $e $s) (Member $s store) (Past $e) (ReasonFor $r $e)) $tv)"
+      ],
+      [
+        "(: $prf (And (Member $e drive) (Agent $e $m) (Name $m \"Maria\") (Goal $e $s) (Member $s store) (Past $e) (PurposeOf $g $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V8",
+    "sentences": [
+      "Tom's phone battery was dead, so he walked to a café to charge it."
+    ],
+    "questions": [
+      "Why did Tom walk to a café?"
+    ],
+    "statements": [
+      "(: tom_name (Name tom \"Tom\") (STV 1.0 0.99))",
+      "(: e_own (Member sk_own_1 own) (STV 1.0 0.99))",
+      "(: e_own_holder (Holder sk_own_1 tom) (STV 1.0 0.99))",
+      "(: e_own_theme (Theme sk_own_1 sk_phone_1) (STV 1.0 0.99))",
+      "(: e_phone (Member sk_phone_1 phone) (STV 1.0 0.99))",
+      "(: e_battery (Member sk_battery_1 battery) (STV 1.0 0.99))",
+      "(: e_battery_part (PartOf sk_battery_1 sk_phone_1) (STV 1.0 0.99))",
+      "(: e_dead (Member sk_dead_1 dead) (STV 1.0 0.99))",
+      "(: e_dead_exp (Experiencer sk_dead_1 sk_battery_1) (STV 1.0 0.99))",
+      "(: e_dead_past (Past sk_dead_1) (STV 1.0 0.99))",
+      "(: e_dead_flat (Past (Member sk_battery_1 dead)) (STV 1.0 0.99))",
+      "(: e_walk (Member sk_walk_1 walk) (STV 1.0 0.99))",
+      "(: e_walk_ag (Agent sk_walk_1 tom) (STV 1.0 0.99))",
+      "(: e_walk_goal (Goal sk_walk_1 sk_cafe_1) (STV 1.0 0.99))",
+      "(: e_cafe (Member sk_cafe_1 cafe) (STV 1.0 0.99))",
+      "(: e_walk_past (Past sk_walk_1) (STV 1.0 0.99))",
+      "(: e_charge (Member sk_charge_1 charge) (STV 1.0 0.99))",
+      "(: e_charge_ag (Agent sk_charge_1 tom) (STV 1.0 0.99))",
+      "(: e_charge_pat (Patient sk_charge_1 sk_battery_1) (STV 1.0 0.99))",
+      "(: conn_to (To sk_walk_1 sk_charge_1) (STV 1.0 0.99))",
+      "(: conn_so (So sk_dead_1 sk_walk_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e walk) (Agent $e $t) (Name $t \"Tom\") (Goal $e $c) (Member $c cafe) (Past $e) (ReasonFor $r $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V9",
+    "sentences": [
+      "Lena was cold, so she got up and closed the window to warm the room."
+    ],
+    "questions": [
+      "Why did Lena close the window?"
+    ],
+    "statements": [
+      "(: lena_name (Name lena \"Lena\") (STV 1.0 0.99))",
+      "(: e_cold (Member sk_cold_1 cold) (STV 1.0 0.99))",
+      "(: e_cold_exp (Experiencer sk_cold_1 lena) (STV 1.0 0.99))",
+      "(: e_cold_past (Past sk_cold_1) (STV 1.0 0.99))",
+      "(: e_cold_flat (Past (Member lena cold)) (STV 1.0 0.99))",
+      "(: e_getup (Member sk_get_up_1 get_up) (STV 1.0 0.99))",
+      "(: e_getup_ag (Agent sk_get_up_1 lena) (STV 1.0 0.99))",
+      "(: e_getup_past (Past sk_get_up_1) (STV 1.0 0.99))",
+      "(: e_close (Member sk_close_1 close) (STV 1.0 0.99))",
+      "(: e_close_ag (Agent sk_close_1 lena) (STV 1.0 0.99))",
+      "(: e_close_pat (Patient sk_close_1 sk_window_1) (STV 1.0 0.99))",
+      "(: e_window (Member sk_window_1 window) (STV 1.0 0.99))",
+      "(: e_close_past (Past sk_close_1) (STV 1.0 0.99))",
+      "(: e_warm (Member sk_warm_1 warm) (STV 1.0 0.99))",
+      "(: e_warm_ag (Agent sk_warm_1 lena) (STV 1.0 0.99))",
+      "(: e_warm_pat (Patient sk_warm_1 sk_room_1) (STV 1.0 0.99))",
+      "(: e_room (Member sk_room_1 room) (STV 1.0 0.99))",
+      "(: conn_to (To sk_close_1 sk_warm_1) (STV 1.0 0.99))",
+      "(: conn_so1 (So sk_cold_1 sk_get_up_1) (STV 1.0 0.99))",
+      "(: conn_so2 (So sk_cold_1 sk_close_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e close) (Agent $e $l) (Name $l \"Lena\") (Patient $e $w) (Member $w window) (Past $e) (ReasonFor $r $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V10",
+    "sentences": [
+      "Sam was hungry after the run, so he made a sandwich to eat before work."
+    ],
+    "questions": [
+      "Why did Sam make a sandwich?"
+    ],
+    "statements": [
+      "(: sam_name (Name sam \"Sam\") (STV 1.0 0.99))",
+      "(: e_run (Member sk_run_1 run) (STV 1.0 0.99))",
+      "(: e_hungry (Member sk_hungry_1 hungry) (STV 1.0 0.99))",
+      "(: e_hungry_exp (Experiencer sk_hungry_1 sam) (STV 1.0 0.99))",
+      "(: e_hungry_past (Past sk_hungry_1) (STV 1.0 0.99))",
+      "(: e_hungry_flat (Past (Member sam hungry)) (STV 1.0 0.99))",
+      "(: e_before1 (Before sk_run_1 sk_hungry_1) (STV 1.0 0.99))",
+      "(: e_make (Member sk_make_1 make) (STV 1.0 0.99))",
+      "(: e_make_ag (Agent sk_make_1 sam) (STV 1.0 0.99))",
+      "(: e_make_pat (Patient sk_make_1 sk_sandwich_1) (STV 1.0 0.99))",
+      "(: e_sandwich (Member sk_sandwich_1 sandwich) (STV 1.0 0.99))",
+      "(: e_make_past (Past sk_make_1) (STV 1.0 0.99))",
+      "(: e_eat (Member sk_eat_1 eat) (STV 1.0 0.99))",
+      "(: e_eat_ag (Agent sk_eat_1 sam) (STV 1.0 0.99))",
+      "(: e_eat_pat (Patient sk_eat_1 sk_sandwich_1) (STV 1.0 0.99))",
+      "(: e_work (Member sk_work_1 work) (STV 1.0 0.99))",
+      "(: e_before2 (Before sk_eat_1 sk_work_1) (STV 1.0 0.99))",
+      "(: conn_to (To sk_make_1 sk_eat_1) (STV 1.0 0.99))",
+      "(: conn_so (So sk_hungry_1 sk_make_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e make) (Agent $e $s) (Name $s \"Sam\") (Patient $e $sw) (Member $sw sandwich) (Past $e) (ReasonFor $r $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V11",
+    "sentences": [
+      "Priya's basil was wilting on the sill, so she watered it to bring it back."
+    ],
+    "questions": [
+      "Why did Priya water the basil?"
+    ],
+    "statements": [
+      "(: priya_name (Name priya \"Priya\") (STV 1.0 0.99))",
+      "(: e_own (Member sk_own_1 own) (STV 1.0 0.99))",
+      "(: e_own_holder (Holder sk_own_1 priya) (STV 1.0 0.99))",
+      "(: e_own_theme (Theme sk_own_1 sk_basil_1) (STV 1.0 0.99))",
+      "(: e_basil (Member sk_basil_1 basil) (STV 1.0 0.99))",
+      "(: e_wilt (Member sk_wilt_1 wilt) (STV 1.0 0.99))",
+      "(: e_wilt_pat (Patient sk_wilt_1 sk_basil_1) (STV 1.0 0.99))",
+      "(: e_wilt_loc (Location sk_wilt_1 sk_sill_1) (STV 1.0 0.99))",
+      "(: e_sill (Member sk_sill_1 sill) (STV 1.0 0.99))",
+      "(: e_wilt_past (Past sk_wilt_1) (STV 1.0 0.99))",
+      "(: e_wilt_ong (Ongoing sk_wilt_1) (STV 1.0 0.99))",
+      "(: e_water (Member sk_water_1 water) (STV 1.0 0.99))",
+      "(: e_water_ag (Agent sk_water_1 priya) (STV 1.0 0.99))",
+      "(: e_water_pat (Patient sk_water_1 sk_basil_1) (STV 1.0 0.99))",
+      "(: e_water_past (Past sk_water_1) (STV 1.0 0.99))",
+      "(: e_bring_back (Member sk_bring_back_1 bring_back) (STV 1.0 0.99))",
+      "(: e_bring_back_ag (Agent sk_bring_back_1 priya) (STV 1.0 0.99))",
+      "(: e_bring_back_pat (Patient sk_bring_back_1 sk_basil_1) (STV 1.0 0.99))",
+      "(: conn_to (To sk_water_1 sk_bring_back_1) (STV 1.0 0.99))",
+      "(: conn_so (So sk_wilt_1 sk_water_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e water) (Agent $e $p) (Name $p \"Priya\") (Patient $e $b) (Member $b basil) (Past $e) (ReasonFor $r $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V12",
+    "sentences": [
+      "Raj missed the morning bus, so he called a taxi to get to work on time."
+    ],
+    "questions": [
+      "Why did Raj call a taxi?",
+      "What did Raj call a taxi for?"
+    ],
+    "statements": [
+      "(: raj_name (Name raj \"Raj\") (STV 1.0 0.99))",
+      "(: e_bus (Member sk_bus_1 morning_bus) (STV 1.0 0.99))",
+      "(: e_bus_genus (Inheritance morning_bus bus) (STV 0.99 0.99))",
+      "(: e_miss (Member sk_miss_1 miss) (STV 1.0 0.99))",
+      "(: e_miss_ag (Agent sk_miss_1 raj) (STV 1.0 0.99))",
+      "(: e_miss_th (Theme sk_miss_1 sk_bus_1) (STV 1.0 0.99))",
+      "(: e_miss_past (Past sk_miss_1) (STV 1.0 0.99))",
+      "(: e_call (Member sk_call_1 call) (STV 1.0 0.99))",
+      "(: e_call_ag (Agent sk_call_1 raj) (STV 1.0 0.99))",
+      "(: e_call_th (Theme sk_call_1 sk_taxi_1) (STV 1.0 0.99))",
+      "(: e_taxi (Member sk_taxi_1 taxi) (STV 1.0 0.99))",
+      "(: e_call_past (Past sk_call_1) (STV 1.0 0.99))",
+      "(: e_get (Member sk_get_1 get) (STV 1.0 0.99))",
+      "(: e_get_ag (Agent sk_get_1 raj) (STV 1.0 0.99))",
+      "(: e_get_goal (Goal sk_get_1 sk_work_1) (STV 1.0 0.99))",
+      "(: e_work (Member sk_work_1 work) (STV 1.0 0.99))",
+      "(: e_get_manner (Manner sk_get_1 on_time) (STV 1.0 0.99))",
+      "(: conn_to (To sk_call_1 sk_get_1) (STV 1.0 0.99))",
+      "(: conn_so (So sk_miss_1 sk_call_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e call) (Agent $e $rj) (Name $rj \"Raj\") (Theme $e $tx) (Member $tx taxi) (Past $e) (ReasonFor $r $e)) $tv)"
+      ],
+      [
+        "(: $prf (And (Member $e call) (Agent $e $rj) (Name $rj \"Raj\") (Theme $e $tx) (Member $tx taxi) (Past $e) (PurposeOf $g $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V13",
+    "sentences": [
+      "Nadia's laptop screen was cracked, so she took it to the repair shop to have it fixed."
+    ],
+    "questions": [
+      "Why did Nadia take her laptop to the repair shop?"
+    ],
+    "statements": [
+      "(: v13_nadia_name (Name nadia \"Nadia\") (STV 1.0 0.99))",
+      "(: v13_own_m (Member sk_own_1 own) (STV 1.0 0.99))",
+      "(: v13_own_holder (Holder sk_own_1 nadia) (STV 1.0 0.99))",
+      "(: v13_own_theme (Theme sk_own_1 sk_laptop_1) (STV 1.0 0.99))",
+      "(: v13_laptop_m (Member sk_laptop_1 laptop) (STV 1.0 0.99))",
+      "(: v13_screen_m (Member sk_screen_1 screen) (STV 1.0 0.99))",
+      "(: v13_screen_partof (PartOf sk_screen_1 sk_laptop_1) (STV 1.0 0.99))",
+      "(: v13_cracked_m (Member sk_cracked_1 cracked) (STV 1.0 0.99))",
+      "(: v13_cracked_exp (Experiencer sk_cracked_1 sk_screen_1) (STV 1.0 0.99))",
+      "(: v13_cracked_past (Past sk_cracked_1) (STV 1.0 0.99))",
+      "(: v13_cracked_flat (Past (Member sk_screen_1 cracked)) (STV 1.0 0.99))",
+      "(: v13_take_m (Member sk_take_1 take) (STV 1.0 0.99))",
+      "(: v13_take_agent (Agent sk_take_1 nadia) (STV 1.0 0.99))",
+      "(: v13_take_theme (Theme sk_take_1 sk_screen_1) (STV 1.0 0.99))",
+      "(: v13_take_goal (Goal sk_take_1 sk_shop_1) (STV 1.0 0.99))",
+      "(: v13_take_past (Past sk_take_1) (STV 1.0 0.99))",
+      "(: v13_shop_m (Member sk_shop_1 repair_shop) (STV 1.0 0.99))",
+      "(: v13_shop_genus (Inheritance repair_shop shop) (STV 0.99 0.99))",
+      "(: v13_conn_so (So sk_cracked_1 sk_take_1) (STV 1.0 0.99))",
+      "(: v13_conn_to (To sk_take_1 sk_fix_1) (STV 1.0 0.99))",
+      "(: v13_fix_m (Member sk_fix_1 fix) (STV 1.0 0.99))",
+      "(: v13_fix_patient (Patient sk_fix_1 sk_screen_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e take) (Agent $e $n) (Name $n \"Nadia\") (Theme $e $lap) (Member $lap laptop) (Goal $e $s) (Member $s repair_shop) (Past $e) (ReasonFor $r $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V14",
+    "sentences": [
+      "Omar thought it would rain later, so he took an umbrella when he left."
+    ],
+    "questions": [
+      "Why did Omar take an umbrella?"
+    ],
+    "statements": [
+      "(: v14_omar_name (Name omar \"Omar\") (STV 1.0 0.99))",
+      "(: v14_think_m (Member sk_think_1 think) (STV 1.0 0.99))",
+      "(: v14_think_exp (Experiencer sk_think_1 omar) (STV 1.0 0.99))",
+      "(: v14_think_past (Past sk_think_1) (STV 1.0 0.99))",
+      "(: v14_think_stim (Stimulus sk_think_1 sk_rain_1) (STV 1.0 0.99))",
+      "(: v14_rain_m (Member sk_rain_1 rain) (STV 1.0 0.99))",
+      "(: v14_rain_fut (Future sk_rain_1) (STV 1.0 0.99))",
+      "(: v14_rain_time (Time sk_rain_1 later) (STV 1.0 0.99))",
+      "(: v14_take_m (Member sk_take_1 take) (STV 1.0 0.99))",
+      "(: v14_take_agent (Agent sk_take_1 omar) (STV 1.0 0.99))",
+      "(: v14_take_theme (Theme sk_take_1 sk_umbrella_1) (STV 1.0 0.99))",
+      "(: v14_take_past (Past sk_take_1) (STV 1.0 0.99))",
+      "(: v14_umbrella_m (Member sk_umbrella_1 umbrella) (STV 1.0 0.99))",
+      "(: v14_leave_m (Member sk_leave_1 leave) (STV 1.0 0.99))",
+      "(: v14_leave_agent (Agent sk_leave_1 omar) (STV 1.0 0.99))",
+      "(: v14_leave_past (Past sk_leave_1) (STV 1.0 0.99))",
+      "(: v14_conn_so (So sk_think_1 sk_take_1) (STV 1.0 0.99))",
+      "(: v14_conn_during (During sk_take_1 sk_leave_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e take) (Agent $e $o) (Name $o \"Omar\") (Theme $e $u) (Member $u umbrella) (Past $e) (ReasonFor $r $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V15",
+    "sentences": [
+      "Ella wanted to surprise her sister, so she baked a cake before the party."
+    ],
+    "questions": [
+      "Why did Ella bake a cake?"
+    ],
+    "statements": [
+      "(: v15_ella_name (Name ella \"Ella\") (STV 1.0 0.99))",
+      "(: v15_want_m (Member sk_want_1 want) (STV 1.0 0.99))",
+      "(: v15_want_exp (Experiencer sk_want_1 ella) (STV 1.0 0.99))",
+      "(: v15_want_past (Past sk_want_1) (STV 1.0 0.99))",
+      "(: v15_want_stim (Stimulus sk_want_1 sk_surprise_1) (STV 1.0 0.99))",
+      "(: v15_surprise_m (Member sk_surprise_1 surprise) (STV 1.0 0.99))",
+      "(: v15_surprise_agent (Agent sk_surprise_1 ella) (STV 1.0 0.99))",
+      "(: v15_surprise_theme (Theme sk_surprise_1 sk_sister_1) (STV 1.0 0.99))",
+      "(: v15_sister_m (Member sk_sister_1 sister) (STV 1.0 0.99))",
+      "(: v15_sister_rel (Sister sk_sister_1 ella) (STV 1.0 0.99))",
+      "(: v15_bake_m (Member sk_bake_1 bake) (STV 1.0 0.99))",
+      "(: v15_bake_agent (Agent sk_bake_1 ella) (STV 1.0 0.99))",
+      "(: v15_bake_patient (Patient sk_bake_1 sk_cake_1) (STV 1.0 0.99))",
+      "(: v15_bake_past (Past sk_bake_1) (STV 1.0 0.99))",
+      "(: v15_cake_m (Member sk_cake_1 cake) (STV 1.0 0.99))",
+      "(: v15_party_m (Member sk_party_1 party) (STV 1.0 0.99))",
+      "(: v15_before (Before sk_bake_1 sk_party_1) (STV 1.0 0.99))",
+      "(: v15_conn_so (So sk_want_1 sk_bake_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e bake) (Agent $e $el) (Name $el \"Ella\") (Patient $e $c) (Member $c cake) (Past $e) (ReasonFor $r $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V16",
+    "sentences": [
+      "The hikers believed the rope bridge was unsafe, so they took the long path around."
+    ],
+    "questions": [
+      "Why did the hikers take the long path?"
+    ],
+    "statements": [
+      "(: v16_group (GroupOf sk_group_1 hiker) (STV 1.0 0.99))",
+      "(: v16_believe_m (Member sk_believe_1 believe) (STV 1.0 0.99))",
+      "(: v16_believe_exp (Experiencer sk_believe_1 sk_group_1) (STV 1.0 0.99))",
+      "(: v16_believe_stim (Stimulus sk_believe_1 sk_unsafe_1) (STV 1.0 0.99))",
+      "(: v16_believe_past (Past sk_believe_1) (STV 1.0 0.99))",
+      "(: v16_bridge_m (Member sk_bridge_1 rope_bridge) (STV 1.0 0.99))",
+      "(: v16_bridge_genus (Inheritance rope_bridge bridge) (STV 0.99 0.99))",
+      "(: v16_unsafe_m (Member sk_unsafe_1 unsafe) (STV 1.0 0.99))",
+      "(: v16_unsafe_exp (Experiencer sk_unsafe_1 sk_bridge_1) (STV 1.0 0.99))",
+      "(: v16_unsafe_past (Past sk_unsafe_1) (STV 1.0 0.99))",
+      "(: v16_unsafe_flat (Past (Member sk_bridge_1 unsafe)) (STV 1.0 0.99))",
+      "(: v16_take_m (Member sk_take_1 take) (STV 1.0 0.99))",
+      "(: v16_take_agent (Agent sk_take_1 sk_group_1) (STV 1.0 0.99))",
+      "(: v16_take_theme (Theme sk_take_1 sk_path_1) (STV 1.0 0.99))",
+      "(: v16_take_past (Past sk_take_1) (STV 1.0 0.99))",
+      "(: v16_take_manner (Manner sk_take_1 around) (STV 1.0 0.99))",
+      "(: v16_path_m (Member sk_path_1 path) (STV 1.0 0.99))",
+      "(: v16_path_long (Member sk_path_1 long) (STV 1.0 0.99))",
+      "(: v16_conn_so (So sk_believe_1 sk_take_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e take) (Agent $e $g) (GroupOf $g hiker) (Theme $e $p) (Member $p path) (Member $p long) (Past $e) (ReasonFor $r $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V17",
+    "sentences": [
+      "A fire started in the kitchen, but the sprinklers switched on and stopped it from spreading to the rest of the house."
+    ],
+    "questions": [
+      "Why didn't the fire spread to the rest of the house?"
+    ],
+    "statements": [
+      "(: v17_fire_m (Member sk_fire_1 fire) (STV 1.0 0.99))",
+      "(: v17_start_m (Member sk_start_1 start) (STV 1.0 0.99))",
+      "(: v17_start_patient (Patient sk_start_1 sk_fire_1) (STV 1.0 0.99))",
+      "(: v17_start_loc (Location sk_start_1 sk_kitchen_1) (STV 1.0 0.99))",
+      "(: v17_start_past (Past sk_start_1) (STV 1.0 0.99))",
+      "(: v17_kitchen_m (Member sk_kitchen_1 kitchen) (STV 1.0 0.99))",
+      "(: v17_kitchen_partof (PartOf sk_kitchen_1 sk_house_1) (STV 1.0 0.99))",
+      "(: v17_sprinklers_group (GroupOf sk_sprinklers_1 sprinkler) (STV 1.0 0.99))",
+      "(: v17_switchon_m (Member sk_switch_on_1 switch_on) (STV 1.0 0.99))",
+      "(: v17_switchon_patient (Patient sk_switch_on_1 sk_sprinklers_1) (STV 1.0 0.99))",
+      "(: v17_switchon_past (Past sk_switch_on_1) (STV 1.0 0.99))",
+      "(: v17_stop_m (Member sk_stop_1 stop) (STV 1.0 0.99))",
+      "(: v17_stop_agent (Agent sk_stop_1 sk_sprinklers_1) (STV 1.0 0.99))",
+      "(: v17_stop_theme (Theme sk_stop_1 sk_spread_1) (STV 1.0 0.99))",
+      "(: v17_stop_past (Past sk_stop_1) (STV 1.0 0.99))",
+      "(: v17_spread_m (Member sk_spread_1 spread) (STV 1.0 0.99))",
+      "(: v17_spread_patient (Patient sk_spread_1 sk_fire_1) (STV 1.0 0.99))",
+      "(: v17_spread_goal (Goal sk_spread_1 sk_rest_1) (STV 1.0 0.99))",
+      "(: v17_rest_m (Member sk_rest_1 rest) (STV 1.0 0.99))",
+      "(: v17_rest_partof (PartOf sk_rest_1 sk_house_1) (STV 1.0 0.99))",
+      "(: v17_house_m (Member sk_house_1 house) (STV 1.0 0.99))",
+      "(: v17_conn_but (But sk_start_1 sk_switch_on_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e spread) (Patient $e $f) (Member $f fire) (Goal $e $rest) (Member $rest rest) (PartOf $rest $h) (Member $h house) (Past $e) (ReasonFor $r $e)) (STV 0.0 $conf))"
+      ]
+    ]
+  },
+  {
+    "id": "V18",
+    "sentences": [
+      "A hard frost was forecast, but the gardener covered the seedlings overnight and kept them from freezing."
+    ],
+    "questions": [
+      "Why didn't the seedlings freeze?"
+    ],
+    "statements": [
+      "(: v18_frost_m (Member sk_frost_1 frost) (STV 1.0 0.99))",
+      "(: v18_frost_hard (Member sk_frost_1 hard) (STV 1.0 0.99))",
+      "(: v18_forecast_m (Member sk_forecast_1 forecast) (STV 1.0 0.99))",
+      "(: v18_forecast_theme (Theme sk_forecast_1 sk_frost_1) (STV 1.0 0.99))",
+      "(: v18_forecast_past (Past sk_forecast_1) (STV 1.0 0.99))",
+      "(: v18_gardener_m (Member sk_gardener_1 gardener) (STV 1.0 0.99))",
+      "(: v18_cover_m (Member sk_cover_1 cover) (STV 1.0 0.99))",
+      "(: v18_cover_agent (Agent sk_cover_1 sk_gardener_1) (STV 1.0 0.99))",
+      "(: v18_cover_theme (Theme sk_cover_1 sk_seedlings_1) (STV 1.0 0.99))",
+      "(: v18_cover_past (Past sk_cover_1) (STV 1.0 0.99))",
+      "(: v18_cover_time (Time sk_cover_1 overnight) (STV 1.0 0.99))",
+      "(: v18_seedlings_group (GroupOf sk_seedlings_1 seedling) (STV 1.0 0.99))",
+      "(: v18_keep_m (Member sk_keep_1 keep) (STV 1.0 0.99))",
+      "(: v18_keep_agent (Agent sk_keep_1 sk_gardener_1) (STV 1.0 0.99))",
+      "(: v18_keep_theme (Theme sk_keep_1 sk_freeze_1) (STV 1.0 0.99))",
+      "(: v18_keep_past (Past sk_keep_1) (STV 1.0 0.99))",
+      "(: v18_freeze_m (Member sk_freeze_1 freeze) (STV 1.0 0.99))",
+      "(: v18_freeze_patient (Patient sk_freeze_1 sk_seedlings_1) (STV 1.0 0.99))",
+      "(: v18_conn_but (But sk_forecast_1 sk_cover_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e freeze) (Patient $e $g) (GroupOf $g seedling) (Past $e) (ReasonFor $r $e)) (STV 0.0 $conf))"
+      ]
+    ]
+  },
+  {
+    "id": "V19",
+    "sentences": [
+      "Despite the heavy rain, the match went ahead, because the pitch drained well."
+    ],
+    "questions": [
+      "Why did the match go ahead despite the rain?"
+    ],
+    "statements": [
+      "(: v19_rain (Member sk_rain_1 rain) (STV 1.0 0.99))",
+      "(: v19_rain_heavy (Member sk_rain_1 heavy) (STV 1.0 0.99))",
+      "(: v19_rain_past (Past sk_rain_1) (STV 1.0 0.99))",
+      "(: v19_go_ahead (Member sk_go_ahead_1 go_ahead) (STV 1.0 0.99))",
+      "(: v19_go_ahead_ag (Agent sk_go_ahead_1 sk_match_1) (STV 1.0 0.99))",
+      "(: v19_match (Member sk_match_1 match) (STV 1.0 0.99))",
+      "(: v19_go_ahead_past (Past sk_go_ahead_1) (STV 1.0 0.99))",
+      "(: v19_drain (Member sk_drain_1 drain) (STV 1.0 0.99))",
+      "(: v19_drain_pat (Patient sk_drain_1 sk_pitch_1) (STV 1.0 0.99))",
+      "(: v19_pitch (Member sk_pitch_1 pitch) (STV 1.0 0.99))",
+      "(: v19_drain_manner (Manner sk_drain_1 well) (STV 1.0 0.99))",
+      "(: v19_drain_past (Past sk_drain_1) (STV 1.0 0.99))",
+      "(: v19_conn_despite (Despite sk_go_ahead_1 sk_rain_1) (STV 1.0 0.99))",
+      "(: v19_conn_because (Because sk_go_ahead_1 sk_drain_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e go_ahead) (Agent $e $m) (Member $m match) (Past $e) (Member $rn rain) (Despite $e $rn) (ReasonFor $r $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V20",
+    "sentences": [
+      "The streetlights came on at dusk.",
+      "Maria drove to the store."
+    ],
+    "questions": [
+      "Why did Maria drive to the store?"
+    ],
+    "statements": [
+      "(: v20_sl_group (GroupOf sk_group_1 streetlight) (STV 1.0 0.99))",
+      "(: v20_come_on (Member sk_come_on_1 come_on) (STV 1.0 0.99))",
+      "(: v20_come_on_pat (Patient sk_come_on_1 sk_group_1) (STV 1.0 0.99))",
+      "(: v20_come_on_time (Time sk_come_on_1 dusk) (STV 1.0 0.99))",
+      "(: v20_come_on_past (Past sk_come_on_1) (STV 1.0 0.99))",
+      "(: v20_sl_rule (Implication (Premises (PartOf $x sk_group_1)) (Conclusions (Member (sk_come_on $x) come_on) (Patient (sk_come_on $x) $x) (Time (sk_come_on $x) dusk) (Past (sk_come_on $x)))) (STV 1.0 0.9))",
+      "(: v20_maria_name (Name maria \"Maria\") (STV 1.0 0.99))",
+      "(: v20_drive (Member sk_drive_1 drive) (STV 1.0 0.99))",
+      "(: v20_drive_ag (Agent sk_drive_1 maria) (STV 1.0 0.99))",
+      "(: v20_drive_goal (Goal sk_drive_1 sk_store_1) (STV 1.0 0.99))",
+      "(: v20_store (Member sk_store_1 store) (STV 1.0 0.99))",
+      "(: v20_drive_past (Past sk_drive_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e drive) (Agent $e $m) (Name $m \"Maria\") (Goal $e $s) (Member $s store) (Past $e) (ReasonFor $r $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V21",
+    "sentences": [
+      "A black cat crossed the road in the morning.",
+      "That afternoon, Dan's car broke down."
+    ],
+    "questions": [
+      "Why did Dan's car break down?"
+    ],
+    "statements": [
+      "(: v21_cat (Member sk_cat_1 cat) (STV 1.0 0.99))",
+      "(: v21_cat_black (Member sk_cat_1 black) (STV 1.0 0.99))",
+      "(: v21_cross (Member sk_cross_1 cross) (STV 1.0 0.99))",
+      "(: v21_cross_ag (Agent sk_cross_1 sk_cat_1) (STV 1.0 0.99))",
+      "(: v21_cross_th (Theme sk_cross_1 sk_road_1) (STV 1.0 0.99))",
+      "(: v21_road (Member sk_road_1 road) (STV 1.0 0.99))",
+      "(: v21_cross_time (Time sk_cross_1 morning) (STV 1.0 0.99))",
+      "(: v21_cross_past (Past sk_cross_1) (STV 1.0 0.99))",
+      "(: v21_dan_name (Name dan \"Dan\") (STV 1.0 0.99))",
+      "(: v21_car (Member sk_car_1 car) (STV 1.0 0.99))",
+      "(: v21_own (Member sk_own_1 own) (STV 1.0 0.99))",
+      "(: v21_own_holder (Holder sk_own_1 dan) (STV 1.0 0.99))",
+      "(: v21_own_theme (Theme sk_own_1 sk_car_1) (STV 1.0 0.99))",
+      "(: v21_break (Member sk_break_down_1 break_down) (STV 1.0 0.99))",
+      "(: v21_break_pat (Patient sk_break_down_1 sk_car_1) (STV 1.0 0.99))",
+      "(: v21_break_time (Time sk_break_down_1 afternoon) (STV 1.0 0.99))",
+      "(: v21_break_past (Past sk_break_down_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $o own) (Holder $o $d) (Name $d \"Dan\") (Theme $o $c) (Member $c car) (Member $e break_down) (Patient $e $c) (Past $e) (ReasonFor $r $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V22",
+    "sentences": [
+      "The clock struck noon.",
+      "The dog began to bark."
+    ],
+    "questions": [
+      "Why did the dog start barking?"
+    ],
+    "statements": [
+      "(: v22_clock (Member sk_clock_1 clock) (STV 1.0 0.99))",
+      "(: v22_strike (Member sk_strike_1 strike) (STV 1.0 0.99))",
+      "(: v22_strike_ag (Agent sk_strike_1 sk_clock_1) (STV 1.0 0.99))",
+      "(: v22_strike_time (Time sk_strike_1 (Hour 12)) (STV 1.0 0.99))",
+      "(: v22_strike_past (Past sk_strike_1) (STV 1.0 0.99))",
+      "(: v22_dog (Member sk_dog_1 dog) (STV 1.0 0.99))",
+      "(: v22_begin (Member sk_begin_1 begin) (STV 1.0 0.99))",
+      "(: v22_begin_ag (Agent sk_begin_1 sk_dog_1) (STV 1.0 0.99))",
+      "(: v22_begin_th (Theme sk_begin_1 sk_bark_1) (STV 1.0 0.99))",
+      "(: v22_begin_past (Past sk_begin_1) (STV 1.0 0.99))",
+      "(: v22_bark (Member sk_bark_1 bark) (STV 1.0 0.99))",
+      "(: v22_bark_ag (Agent sk_bark_1 sk_dog_1) (STV 1.0 0.99))",
+      "(: v22_bark_on (Ongoing sk_bark_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e start) (Agent $e $d) (Member $d dog) (Theme $e $b) (Member $b bark) (Agent $b $d) (Ongoing $b) (Past $e) (ReasonFor $r $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V23",
+    "sentences": [
+      "The cake came out dense, because the baker had used too little baking powder and had overmixed the batter."
+    ],
+    "questions": [
+      "Why was the cake dense?"
+    ],
+    "statements": [
+      "(: v23_cake (Member sk_cake_1 cake) (STV 1.0 0.99))",
+      "(: v23_dense (Member sk_dense_1 dense) (STV 1.0 0.99))",
+      "(: v23_dense_exp (Experiencer sk_dense_1 sk_cake_1) (STV 1.0 0.99))",
+      "(: v23_dense_past (Past sk_dense_1) (STV 1.0 0.99))",
+      "(: v23_cake_dense_flat (Member sk_cake_1 dense) (STV 1.0 0.99))",
+      "(: v23_baker (Member sk_baker_1 baker) (STV 1.0 0.99))",
+      "(: v23_powder (Member sk_powder_1 baking_powder) (STV 1.0 0.99))",
+      "(: v23_powder_genus (Inheritance baking_powder powder) (STV 0.99 0.99))",
+      "(: v23_powder_little (Member sk_powder_1 little) (STV 1.0 0.99))",
+      "(: v23_powder_degree (Degree sk_powder_1 little excessive) (STV 1.0 0.99))",
+      "(: v23_use (Member sk_use_1 use) (STV 1.0 0.99))",
+      "(: v23_use_ag (Agent sk_use_1 sk_baker_1) (STV 1.0 0.99))",
+      "(: v23_use_th (Theme sk_use_1 sk_powder_1) (STV 1.0 0.99))",
+      "(: v23_use_past (Past sk_use_1) (STV 1.0 0.99))",
+      "(: v23_batter (Member sk_batter_1 batter) (STV 1.0 0.99))",
+      "(: v23_overmix (Member sk_overmix_1 overmix) (STV 1.0 0.99))",
+      "(: v23_overmix_ag (Agent sk_overmix_1 sk_baker_1) (STV 1.0 0.99))",
+      "(: v23_overmix_pat (Patient sk_overmix_1 sk_batter_1) (STV 1.0 0.99))",
+      "(: v23_overmix_past (Past sk_overmix_1) (STV 1.0 0.99))",
+      "(: v23_because1 (Because sk_dense_1 sk_use_1) (STV 1.0 0.99))",
+      "(: v23_because2 (Because sk_dense_1 sk_overmix_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $s dense) (Experiencer $s $c) (Member $c cake) (Past $s) (ReasonFor $r $s)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V24",
+    "sentences": [
+      "The river flooded the valley, because heavy rain had fallen for days and the dam's gates had been left open."
+    ],
+    "questions": [
+      "Why did the river flood the valley?"
+    ],
+    "statements": [
+      "(: v24_river (Member sk_river_1 river) (STV 1.0 0.99))",
+      "(: v24_valley (Member sk_valley_1 valley) (STV 1.0 0.99))",
+      "(: v24_flood (Member sk_flood_1 flood) (STV 1.0 0.99))",
+      "(: v24_flood_ag (Agent sk_flood_1 sk_river_1) (STV 1.0 0.99))",
+      "(: v24_flood_pat (Patient sk_flood_1 sk_valley_1) (STV 1.0 0.99))",
+      "(: v24_flood_past (Past sk_flood_1) (STV 1.0 0.99))",
+      "(: v24_rain (Member sk_rain_1 rain) (STV 1.0 0.99))",
+      "(: v24_rain_heavy (Member sk_rain_1 heavy) (STV 1.0 0.99))",
+      "(: v24_fall (Member sk_fall_1 fall) (STV 1.0 0.99))",
+      "(: v24_fall_pat (Patient sk_fall_1 sk_rain_1) (STV 1.0 0.99))",
+      "(: v24_fall_dur (MeasureAtLeast sk_fall_1 duration 2 day) (STV 1.0 0.99))",
+      "(: v24_fall_past (Past sk_fall_1) (STV 1.0 0.99))",
+      "(: v24_dam (Member sk_dam_1 dam) (STV 1.0 0.99))",
+      "(: v24_gate_group (GroupOf sk_group_1 gate) (STV 1.0 0.99))",
+      "(: v24_gate_partof (PartOf sk_group_1 sk_dam_1) (STV 1.0 0.99))",
+      "(: v24_leave (Member sk_leave_1 leave) (STV 1.0 0.99))",
+      "(: v24_leave_pat (Patient sk_leave_1 sk_group_1) (STV 1.0 0.99))",
+      "(: v24_leave_past (Past sk_leave_1) (STV 1.0 0.99))",
+      "(: v24_gates_open_flat (Member sk_group_1 open) (STV 1.0 0.99))",
+      "(: v24_gates_open_rule (Implication (Premises (PartOf $x sk_group_1)) (Conclusions (Member (sk_leave $x) leave) (Patient (sk_leave $x) $x) (Member $x open) (Past (sk_leave $x)))) (STV 1.0 0.9))",
+      "(: v24_because1 (Because sk_flood_1 sk_fall_1) (STV 1.0 0.99))",
+      "(: v24_because2 (Because sk_flood_1 sk_leave_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e flood) (Agent $e $rv) (Member $rv river) (Patient $e $vl) (Member $vl valley) (Past $e) (ReasonFor $r $e)) $tv)"
+      ]
+    ]
+  }
+]

@@ -1,26 +1,33 @@
 ; ===========================================================================
-; REDUCER — the reducer worker body (worker-kind `reducer`): a deterministic merge
-; of the per-worker summaries across all workers into `(reduced …)` facts in &self.
-; Re-run-safe: each key's fact is REPLACED, not stacked, so (reduced …) always
-; reflects the current summary set. Only builtins. Dispatched by workers.metta.
+; REDUCER — the reducer worker body (worker-kind `reducer`): a deterministic merge of the
+; per-worker summaries across a par-group into `(reduced …)` facts in &self. A
+; synchronization boundary (MSC §6.4) — the fan-in over independent, isolated worker runs.
+; Re-run-safe: the reduced fact is REPLACED, not stacked, so it always reflects the current
+; summaries. Assumes util loaded; the worker summaries are already in &self (emit-summary).
 ; ===========================================================================
 
-; drop every (reduced $k …) fact for key $k
-(= (clear-reduced $k)
-   (case (collapse (match &self (reduced $k $x) $x))
+; the firings worker $w reported (0 if it emitted none)
+(= (worker-firings-of $w)
+   (case (collapse (match &self (worker-firings $w $n) $n)) ((() 0) ($ns (car-atom $ns)))))
+
+; the total firings across par-group $pg's member workers
+(= (group-firings $pg)
+   (foldall + (match &self (par-member $pg $w) (worker-firings-of $w)) 0))
+
+; drop the current (reduced total-firings $pg …) fact (re-run-safety). The value is let*-
+; bound before remove-atom, which takes its atom UNEVALUATED (a bare (car-atom …) there
+; would never match, looping forever).
+(= (clear-reduced $pg)
+   (case (collapse (match &self (reduced total-firings $pg $x) $x))
          ((() done)
           ($vs (let* (($h (car-atom $vs))
-                      ($z (remove-atom &self (reduced $k $h))))
-                     (clear-reduced $k))))))
+                      ($z (remove-atom &self (reduced total-firings $pg $h))))
+                 (clear-reduced $pg))))))
 
-; set (reduced $k $v), replacing any previous value for $k
-(= (set-reduced $k $v)
-   (let $z (clear-reduced $k)
-        (add-atom &self (reduced $k $v))))
-
-; reducer: deterministic merge of the per-worker summaries across all workers
+; reducer worker body: merge par-group PG's per-worker firings into (reduced total-firings
+; PG N), replacing any prior value
 (= (run-reduce $w)
-   (let* (($tf (foldall + (match &self (worker-summary $cw firings $n) $n) 0))
-          ($z1 (set-reduced total-firings $tf))
-          ($ta (foldall + (match &self (worker-summary $cw2 answers $m) $m) 0)))
-     (set-reduced total-answers $ta)))
+   (let* (($pg (match &self (worker-group $w $g) $g))
+          ($z0 (clear-reduced $pg))
+          ($tf (group-firings $pg)))
+     (add-atom &self (reduced total-firings $pg $tf))))

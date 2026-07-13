@@ -23,21 +23,25 @@
 ; R_ctxok — rule-context is a declared chamber-context (active) -> admitted
 !(add-atom &self (rule-priority R_ctxok 5))
 !(add-atom &self (rule-context R_ctxok causal-qa))
-!(add-atom &self (rule-token-cost R_ctxok gm 1))
+!(add-atom &self (rule-token-cost R_ctxok sm 1))
 !(add-atom &self (rule-lhs R_ctxok ((qa-question (var T) (var Q)))))
 !(add-atom &self (rule-rhs R_ctxok ((ctxok-fired (var Q)))))
 ; R_ctxbad — rule-context declared by no chamber (inactive) -> rejected
 !(add-atom &self (rule-priority R_ctxbad 6))
 !(add-atom &self (rule-context R_ctxbad offtopic))
-!(add-atom &self (rule-token-cost R_ctxbad gm 1))
+!(add-atom &self (rule-token-cost R_ctxbad sm 1))
 !(add-atom &self (rule-lhs R_ctxbad ((qa-question (var T) (var Q)))))
 !(add-atom &self (rule-rhs R_ctxbad ((ctxbad-fired (var Q)))))
-; both synthetic rules belong to O_qa's ruleset, so rule-organism resolves them to O_qa
-!(add-atom &self (ruleset-member RS_qa R_ctxok))
-!(add-atom &self (ruleset-member RS_qa R_ctxbad))
+; both synthetic rules belong to a test organism O_ctx, so rule-organism resolves them to
+; it (this test owns its organism — it does not depend on the experiment's org config)
+!(add-atom &self (organism O_ctx))
+!(add-atom &self (genome-of O_ctx GNM_ctx))
+!(add-atom &self (quoted-ruleset GNM_ctx RS_ctx))
+!(add-atom &self (ruleset-member RS_ctx R_ctxok))
+!(add-atom &self (ruleset-member RS_ctx R_ctxbad))
 
-!(add-atom &self (fuel O_qa gm 100))
-!(add-atom &self (fuel O_qa ci 100))
+!(add-atom &self (fuel O_ctx sm 100))
+!(add-atom &self (fuel O_ctx tr 100))
 !(run-chamber &self CH_expt1)
 
 ; the gate predicate directly (scoped to chamber CH_expt1)
@@ -46,5 +50,5 @@
 !(test (rule-eligible-in? CH_expt1 R_ctxok) True)    ; -> admitted to CH_expt1
 !(test (rule-eligible-in? CH_expt1 R_ctxbad) False)  ; -> rejected from CH_expt1
 ; the gate's EFFECT on firing (accept vs reject branch)
-!(test (foldall + (match &self (ctxok-fired $q) 1) 0) 6)   ; ACCEPT: eligible rule fires, once per qa-question
+!(test (foldall + (match &self (ctxok-fired $q) 1) 0) 1)   ; ACCEPT: eligible rule fires, once per qa-question
 !(test (foldall + (match &self (ctxbad-fired $q) 1) 0) 0)  ; REJECT: gated rule never fires

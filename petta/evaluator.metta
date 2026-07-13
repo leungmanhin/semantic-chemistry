@@ -1,174 +1,189 @@
 ; ===========================================================================
-; EVALUATOR — intrinsic, GRAPH-DERIVED eq-17 scoring ($ws-parameterized).
-; ---------------------------------------------------------------------------
-; The eq-17 minting score (MSC §4.4), fully data-parameterized: the evaluator carries
-; NO domain symbols — every domain semantic reads from facts:
-;   question-focus (the asked-about node) · intent-allows (classes an intent admits) ·
-;   edge-cluster (relation -> answer-class) · chain-relation (the links mechanism
-;   chains are made of) · intent-scope (chain-scoped intents; default = direct) ·
-;   clamp-class / clamp-coeff / clamp-mint-scale / clamp-abstain-reward (the clamp).
-; Scoring runs under an EXPLICIT clamp $cl (threaded, so the same products can be
-; evaluated under different clamps — the clamp-switch). The minting score:
-;   Match = covered / idealsize   (recall vs the graph-derived ideal)
-;   M     = a * Match             (a = clamp-coeff match)
-;   mint  = floor(mint-scale * M) when M>0 and the answer-class is the clamp's rewarded class.
-; Only Match is scored for now. eq-17's other terms need machinery the toy lacks: its
-; (Y,L) terms — Unsupportedness / Redundancy / CausalClarity / Compression — are
-; provenance-aware (they inspect the derivation log L), awaiting a real proof store; each
-; is reintroduced per-factor once its doc-faithful meaning is settled.
-; Abstain is graph-derived: a typed, unanswered question whose ideal is EMPTY (no
-; groundable explanatory edge into the focus over the allowed classes) earns the clamp's
-; abstain reward. IR + domain mappings read from &self; the answer products
-; (q-intent / cites / candidate-answer / event) from the worker $ws.
+; EVALUATOR — scores each GROUNDING (a solution returned by ground-skeleton) and
+; mints typed fuel under a clamp (MSC §4.4: the evaluator is the sole minting
+; authority — the soma never mints). Match is BINARY per grounding: every solution
+; is a match, and each mints separately (per-solution piece-rate: answer plurality
+; pays, partial work pays partially). The kind of good behavior shapes the KIND of
+; fuel earned: a grounding's ACHIEVEMENTS are detected structurally, and the clamp
+; maps each achievement to the token + amount it mints ((clamp-mint CL a tok n)):
+;   skeleton-match          — every successful grounding      (§4.4 "answer-skeleton match")
+;   transitive-explanation  — the cited derivation is a chain (§4.4 "compact causal explanation")
+; Achievements read the provenance-bearing edge-ids by STRUCTURE (the IR convention:
+; a derived id = a compound whose head names the deriving step and whose args are the
+; premise edge-ids — no genome id-vocabulary is named here). The mint is credited to
+; the organism whose rule derived the cited edge (producer looked up in the event
+; log). Growth: the abstain reference-oracle; provenance-aware eq-17 terms
+; (Unsupportedness/Redundancy) when a real proof store supplies L. Also hosts the evaluator
+; WORKER body (`run-eval`, worker-kind `evaluator`): mint every question in a worker's
+; already-derived space under its clamp, then emit the resulting purses. Assumes util +
+; fuel + grounder are loaded.
 ; ===========================================================================
 
-; --- clamp accessors (all clamp semantics are facts, keyed by the threaded $cl) ---
+; the derivation depth of an edge-id: a parser-given id is atomic (depth 0); a DERIVED
+; id is a compound (step premise-id …) whose depth = its number of atomic id-leaves
+; (= source edges consumed; e.g. the V3 genome's (norm E) = 1, (trans A B) = |A|+|B|)
+(= (id-depth $id)
+   (if (== (get-metatype $id) Expression)
+       (leaf-count (cdr-atom $id))
+       0))
 
-; the eq-17 coefficient for $term under clamp $cl
-(= (coeff $cl $term)
-   (match &self (clamp-coeff $cl $term $w) $w))
+; count atomic leaves across a list of id-trees (each compound's head is a step name,
+; not a leaf)
+(= (leaf-count $l)
+   (case $l
+         ((() 0)
+          ($ne (let $h (car-atom $l)
+                    (+ (if (== (get-metatype $h) Expression)
+                           (leaf-count (cdr-atom $h))
+                           1)
+                       (leaf-count (cdr-atom $l))))))))
 
-; the answer-class clamp $cl rewards
-(= (clamp-class-of $cl)
-   (match &self (clamp-class $cl $c) $c))
+; the edge-id of a solution element (a grounded sem-edge of any arity; non-edges -> none)
+(= (element-id $el)
+   (case $el
+         (((sem-edge $g $id $r $a) $id)
+          ((sem-edge $g $id $r $a $b) $id)
+          ((sem-edge $g $id $r $a $b $c) $id)
+          ($other none))))
 
-; the clamp's mint scale (tokens per unit of M)
-(= (mint-scale-of $cl)
-   (match &self (clamp-mint-scale $cl $s) $s))
+; a solution's derivation depth = the summed depth of its cited edge-ids
+(= (solution-depth $sol)
+   (case $sol
+         ((() 0)
+          ($ne (+ (id-depth (element-id (car-atom $sol)))
+                  (solution-depth (cdr-atom $sol)))))))
 
-; the clamp's flat reward for a correct abstention
-(= (abstain-reward-of $cl)
-   (match &self (clamp-abstain-reward $cl $r) $r))
+; the depths of a solution list (report helper)
+(= (depths-of $sols)
+   (case $sols
+         ((() ())
+          ($ne (cons-atom (solution-depth (car-atom $sols)) (depths-of (cdr-atom $sols)))))))
 
-; the token the clamp's eq-17 (skeleton-match) mint is denominated in
-(= (mint-token-of $cl)
-   (match &self (clamp-token $cl skeleton-match $tok) $tok))
+; --- achievements: what a grounding accomplished, detected structurally ---
 
-; --- accessors (focus from IR; intent from the q-intent product in $ws) ---
+; every grounding is a skeleton match; one whose cited derivation is a chain
+; (depth >= 2) is additionally a transitive explanation
+(= (solution-achievements $sol)
+   (if (>= (solution-depth $sol) 2)
+       (skeleton-match transitive-explanation)
+       (skeleton-match)))
 
-; the event node a question asks about
-(= (focus-of $q)
-   (match &self (question-focus $q $f) $f))
+; --- the clamp (pure data): (clamp-mint CL achievement tok n) ---
 
-; the question's derived intent (the q-intent product the soma wrote)
-(= (intent-of $ws $q)
-   (match $ws (q-intent $q $i) $i))
+; the (tok n) mints clamp $cl pays for achievement $a
+(= (achievement-mints $cl $a)
+   (collapse (match &self (clamp-mint $cl $a $tok $n) ($tok $n))))
 
-; --- graph predicates (IR in &self) ---
+; every (tok n) a solution mints under $cl, across its achievements
+(= (mints-of $cl $as)
+   (case $as
+         ((() ())
+          ($ne (concat-lists (achievement-mints $cl (car-atom $as))
+                             (mints-of $cl (cdr-atom $as)))))))
 
-; is edge ($rel $src $dst) present in the molecule graph?
-(= (edge-present? $rel $src $dst)
-   (case (collapse (match &self ($rel $src $dst) yes)) ((() False) ($x True))))
+(= (solution-mints $cl $sol)
+   (mints-of $cl (solution-achievements $sol)))
 
-; is relation $rel in answer-class $cls?
-(= (rel-cls? $rel $cls)
-   (case (collapse (match &self (edge-cluster $rel $cls) yes)) ((() False) ($x True))))
+; the amount of token $tok in a mint list
+(= (sum-tok $tok $mints)
+   (case $mints
+         ((() 0)
+          ($ne (let ($t $n)
+                    (car-atom $mints)
+                    (+ (if (== $t $tok) $n 0) (sum-tok $tok (cdr-atom $mints))))))))
 
-; ideal-direct: # edges of class $cls directly into the focus
-(= (ideal-direct $q $cls)
-   (let $foc (focus-of $q) (foldall + (match &self ($rel $src $foc) (if (rel-cls? $rel $cls) 1 0)) 0)))
+; the amount of token $tok ONE grounding mints under $cl
+(= (solution-mint $cl $tok $sol)
+   (sum-tok $tok (solution-mints $cl $sol)))
 
-; --- the chain ideal (chain-scoped intents): the backward closure over the declared chain-relation links into the focus ---
+; --- income (pure), per token: skeleton / question / chamber ---
 
-; is relation $rel a declared chain link?
-(= (chain-rel? $rel)
-   (case (collapse (match &self (chain-relation $rel) yes)) ((() False) ($x True))))
+; total $tok minted over a solution list
+(= (mint-sum $cl $tok $sols)
+   (case $sols
+         ((() 0)
+          ($ne (+ (solution-mint $cl $tok (car-atom $sols))
+                  (mint-sum $cl $tok (cdr-atom $sols)))))))
 
-; the chain predecessors of node $n (sources of chain-relation edges into $n)
-(= (preds-chain $n)
-   (collapse (match &self (chain-relation $rel) (match &self ($rel $s $n) $s))))
+(= (skeleton-income $ws $gas $cl $tok)
+   (mint-sum $cl $tok (collapse (ground-skeleton $ws $gas))))
 
-; the backward chain closure: every node that chains into the frontier
-(= (bwd-reach $frontier $seen)
-   (case $frontier
-         ((() $seen)
-          ($ne (let* (($h (car-atom $frontier))
-                      ($rest (cdr-atom $frontier)))
-                 (if (in-list? $h $seen)
-                     (bwd-reach $rest $seen)
-                     (bwd-reach (concat-lists (preds-chain $h) $rest) (cons-atom $h $seen))))))))
+(= (question-income $ws $q $cl $tok)
+   (foldall + (match &self (answer-skeleton $q $gas) (skeleton-income $ws $gas $cl $tok)) 0))
 
-; the chain ancestors of a question's focus
-(= (reach-of $q)
-   (bwd-reach (cons-atom (focus-of $q) ()) ()))
+(= (chamber-income $ws $cl $tok)
+   (foldall + (match &self (qa-question $v $q) (question-income $ws $q $cl $tok)) 0))
 
-; # chain edges landing inside that closure (the mechanism-chain ideal size)
-(= (ideal-chain $q)
-   (let $r (reach-of $q)
-        (foldall + (match &self (chain-relation $rel)
-                          (foldall + (match &self ($rel $s $d) (if (in-list? $d $r) 1 0)) 0))
-                 0)))
+; --- crediting: each minted (tok n) goes to the organism whose rule DERIVED the cite ---
 
-; is intent $i chain-scoped? (declared via an (intent-scope I chain) fact; default direct)
-(= (chain-scoped? $i)
-   (case (collapse (match &self (intent-scope $i chain) yes)) ((() False) ($x True))))
+; the first derived (depth>0) cite of a solution — the answer edge; none if pure lookup
+(= (derived-cite $sol)
+   (case $sol
+         ((() none)
+          ($ne (let $h (car-atom $sol)
+                    (if (> (id-depth (element-id $h)) 0)
+                        $h
+                        (derived-cite (cdr-atom $sol))))))))
 
-; idealsize: intent-aware (chain-scoped -> the chain closure; else direct edges into the focus)
-(= (idealsize $ws $q $cls)
-   (if (chain-scoped? (intent-of $ws $q))
-       (ideal-chain $q)
-       (ideal-direct $q $cls)))
+; the rule that produced $edge: the event whose product-key contains it (the event log
+; key IS the instantiated product list — provenance from L)
+(= (producer-of $ws $edge)
+   (let $rs (filter-out skip (collapse (match $ws (event $c $s $r $k) (if (in-list? $edge $k) $r skip))))
+        (if (== $rs ()) none (car-atom $rs))))
 
-; --- per-cite classification (cites in $ws; graph checks in &self) ---
+; the earning organism of a solution (rule -> organism via ruleset membership)
+(= (solution-earner $ws $sol)
+   (rule-organism (producer-of $ws (derived-cite $sol))))
 
-; is a cite on-ideal? (chain-scoped: a chain edge reaching the closure; else a class edge
-; into the focus)
-(= (cite-ideal? $ws $q $cls $rel $src $foc)
-   (if (chain-scoped? (intent-of $ws $q))
-       (if (chain-rel? $rel)
-           (in-list? $foc (reach-of $q))
-           False)
-       (if (rel-cls? $rel $cls)
-           (== $foc (focus-of $q))
-           False)))
+; credit every (tok n) in $mints to organism $O; returns the total tokens credited
+(= (credit-mints $ws $O $mints)
+   (case $mints
+         ((() 0)
+          ($ne (let* ((($t $n) (car-atom $mints))
+                      ($z (credit $ws $O $t $n)))
+                 (+ $n (credit-mints $ws $O (cdr-atom $mints))))))))
 
-; # cites that are grounded AND on-ideal (the recall numerator)
-(= (covered $ws $q $cls)
-   (foldall + (match $ws (cites $q $cls $rel $src $foc) (if (edge-present? $rel $src $foc) (if (cite-ideal? $ws $q $cls $rel $src $foc) 1 0) 0)) 0))
+; credit every solution in $sols under $cl; returns the total tokens credited
+(= (credit-sols $ws $cl $sols)
+   (case $sols
+         ((() 0)
+          ($ne (let* (($sol (car-atom $sols))
+                      ($O (solution-earner $ws $sol))
+                      ($m (credit-mints $ws $O (solution-mints $cl $sol))))
+                 (+ $m (credit-sols $ws $cl (cdr-atom $sols))))))))
 
-; --- the minting score ---
+; the skeletons of question $q
+(= (skeletons-of $q)
+   (collapse (match &self (answer-skeleton $q $gas) $gas)))
 
-; Match = covered / idealsize (0 when the ideal is empty)
-(= (match-score $ws $q $cls)
-   (let $is (idealsize $ws $q $cls) (if (== $is 0) 0 (/ (covered $ws $q $cls) $is))))
+; ground + credit every skeleton of $q under $cl; returns the total tokens credited
+(= (credit-skels $ws $cl $gasl)
+   (case $gasl
+         ((() 0)
+          ($ne (+ (credit-sols $ws $cl (collapse (ground-skeleton $ws (car-atom $gasl))))
+                  (credit-skels $ws $cl (cdr-atom $gasl)))))))
 
-; the minting score M = a * Match under clamp $cl (a = the clamp's match coefficient)
-(= (m-score $ws $q $cls $cl)
-   (* (coeff $cl match) (match-score $ws $q $cls)))
+(= (credit-question $ws $q $cl)
+   (credit-skels $ws $cl (skeletons-of $q)))
 
-; the mint for a cited answer under clamp $cl: floor(mint-scale*M) when the answer-class
-; is the clamp's rewarded class and M>0; an abstain answer earns the clamp's abstain reward
-(= (would-mint $ws $q $cls $cl)
-   (if (== $cls (clamp-class-of $cl))
-       (let $m (m-score $ws $q $cls $cl)
-            (if (> $m 0) (floor-math (* (mint-scale-of $cl) $m)) 0))
-       (if (== $cls abstain) (abstain-reward-of $cl) 0)))
+; --- MINT every question in $ws under clamp $cl (the evaluator's per-cycle income): run
+; credit-question over the whole task set. A context-chamber worker fills $ws first; the
+; evaluator reads that output graph and mints — it never derives. ---
+(= (credit-all-questions $ws $cl)
+   (credit-each $ws (collapse (match &self (qa-question $v $q) $q)) $cl))
 
-; --- abstain (graph-derived): typed + unanswered + EMPTY ideal over the allowed classes ---
+(= (credit-each $ws $qs $cl)
+   (case $qs
+         ((() done)
+          ($ne (let* (($q (car-atom $qs))
+                      ($z (credit-question $ws $q $cl)))
+                 (credit-each $ws (cdr-atom $qs) $cl))))))
 
-; did the soma produce any answer for $q? / did it type $q (write a q-intent)?
-(= (answered? $ws $q)
-   (case (collapse (match $ws (candidate-answer $q $a) yes)) ((() False) ($x True))))
-
-(= (typed? $ws $q)
-   (case (collapse (match $ws (q-intent $q $i) yes)) ((() False) ($x True))))
-
-; the total ideal size across every class the intent allows (0 => nothing to answer => abstain)
-(= (total-ideal $ws $q)
-   (let $i (intent-of $ws $q) (foldall + (match &self (intent-allows $i $cls) (idealsize $ws $q $cls)) 0)))
-
-; abstain income: the clamp's reward for each typed, unanswered question whose ideal is empty
-(= (abstain-income $ws $cl)
-   (foldall + (match &self (qa-question $t $q) (if (typed? $ws $q) (if (answered? $ws $q) 0 (if (== (total-ideal $ws $q) 0) (abstain-reward-of $cl) 0)) 0)) 0))
-
-; total gm minted over the answer set under clamp $cl, plus abstain income
-(= (gm-income $ws $cl)
-   (+ (foldall + (match $ws (candidate-answer $q (ans $q $cls)) (would-mint $ws $q $cls $cl)) 0)
-      (abstain-income $ws $cl)))
-
-; gm spent = one per firing / # candidate answers produced
-(= (gm-spend $ws)
-   (foldall + (match $ws (event $s $r $k) 1) 0))
-
-(= (count-answers $ws)
-   (foldall + (match $ws (candidate-answer $q $a) 1) 0))
+; --- the EVALUATOR worker body (worker-kind `evaluator`): mint typed fuel for every
+; question in the worker's space under its clamp, then emit the resulting purses (the token
+; delta) to &self. Dispatched by dispatch.metta.
+(= (run-eval $w)
+   (let* (($ws (match &self (worker-space $w $sp) $sp))
+          ($cl (match &self (worker-clamp $w $c) $c))
+          ($z (credit-all-questions $ws $cl)))
+     (add-all &self (collapse (match $ws (fuel $O $t $n) (worker-purse $w $O $t $n))))))
