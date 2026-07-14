@@ -310,13 +310,14 @@
    (> (total-answers $ws) (ablated-answers $abl $ch $snap $members)))
 
 ; --- the PROMOTION verdict: closure + autocatalysis hold structurally for a nonempty member
-; set (both emitted as their own verdicts), it causally matters (cond 4, the replay ablation),
-; and its surplus is positive componentwise (cond 3). Heritability (cond 5) is a P3 concern,
-; not gated here. The clamp enters only via the surplus. ---
+; set (both emitted as their own verdicts), it causally matters (cond 4 = $ci, the precomputed
+; replay-ablation result, emitted separately as acs-causal-influence), and its surplus is
+; positive componentwise (cond 3). Heritability (cond 5) is a P3 concern, not gated here.
+; The clamp enters only via the surplus. ---
 (= (and3 $a $b $c) (if $a (if $b (if $c True False) False) False))
-(= (acs-promoted? $ws $abl $ch $snap $members $cl)
+(= (acs-promoted? $ws $members $cl $ci)
    (and3 (surplus-positive? $ws $members $cl (members-tokens $members))
-         (causal-influence? $ws $abl $ch $snap $members)
+         $ci
          (if (== $members ()) False True)))
 
 ; --- RECURRENCE (§4.5 "sustains itself in an event log" / §6.4 P2 "recurrent" loops): a
@@ -372,20 +373,23 @@
 
 ; the full §2.9 verdict list = the ACS A = (M_A, R_A) + its conditions: one acs-member per
 ; cycle rule (R_A) + one acs-motif per motif species (M_A) + metabolic closure + autocatalysis
-; (cond 1+2, structural) + one signed acs-surplus per costed token (cond 3) + the acs-promoted
-; verdict under $cl (cond 3+4 — its condition 4 runs the replay ablation in the caller-bound
-; space $abl, re-posing chamber $ch from snapshot $snap) + acs-recurrent (the loop recurs across
-; $ws's cycle-tagged event log — False for a single epoch, the structural-candidate case)
+; (cond 1+2, structural) + one signed acs-surplus per costed token (cond 3) + acs-causal-influence
+; (cond 4 = $ci, the replay ablation in the caller-bound space $abl, re-posing chamber $ch from
+; snapshot $snap; computed ONCE here, clamp-independent) + the acs-promoted verdict under $cl
+; (cond 3+4, consuming $ci) + acs-recurrent (the loop recurs across $ws's cycle-tagged event log
+; — False for a single epoch, the structural-candidate case)
 (= (acs-verdicts $A $g $ws $abl $ch $snap $cl)
    (let* (($members (acs-members $g (fired-rules $ws)))
-          ($toks (members-tokens $members)))
+          ($toks (members-tokens $members))
+          ($ci (causal-influence? $ws $abl $ch $snap $members)))
      (concat-lists (member-facts $A $members)
        (concat-lists (motif-facts $A (acs-motifs $g $members))
          (cons-atom (acs-closure $A metabolic)
            (cons-atom (acs-autocatalytic $A (autocatalytic? $g $members))
              (concat-lists (surplus-facts $A $ws $members $cl $toks)
-                           (cons-atom (acs-promoted $A $cl (acs-promoted? $ws $abl $ch $snap $members $cl))
-                                      (cons-atom (acs-recurrent $A (recurrent? $ws $members (recurrence-min))) ())))))))))
+               (cons-atom (acs-causal-influence $A $ci)
+                 (cons-atom (acs-promoted $A $cl (acs-promoted? $ws $members $cl $ci))
+                            (cons-atom (acs-recurrent $A (recurrent? $ws $members (recurrence-min))) ()))))))))))
 
 ; --- the acs-scan WORKER body (worker-kind `acs-scan`): the whole certification as a §6.4
 ; worker. Its run space $ws is populated by a prior context-chamber worker; run-as CONSUMES

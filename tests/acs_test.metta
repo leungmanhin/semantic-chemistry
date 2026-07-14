@@ -22,7 +22,7 @@
 ; structural candidate (a single cycle); adding a second cycle to the cycle-tagged event log
 ; makes the loop recurrent (>= recurrence-min).
 ;
-; Run:  sh ../PeTTa/run.sh tests/acs_test.metta < /dev/null 2>&1 | grep should  # forty-eight ✅
+; Run:  sh ../PeTTa/run.sh tests/acs_test.metta < /dev/null 2>&1 | grep should  # forty-nine ✅
 ; ===========================================================================
 !(import! &self "petta/util.metta")
 !(import! &self "petta/fuel.metta")
@@ -77,13 +77,14 @@
 
 ; --- the clamp-switch: acs-promoted flips on the tr component (membership + closure + causal
 ; influence all held fixed; only the componentwise surplus condition differs) ---
-!(test (acs-promoted? &self &abl CH_expt1 SNAP_qa (acs-members &g (fired-rules &self)) CL_deep) True)
-!(test (acs-promoted? &self &abl CH_expt1 SNAP_qa (acs-members &g (fired-rules &self)) CL_shallow) False)
+!(test (acs-promoted? &self (acs-members &g (fired-rules &self)) CL_deep True) True)
+!(test (acs-promoted? &self (acs-members &g (fired-rules &self)) CL_shallow True) False)
 
 ; --- the §2.9 verdict facts ---
 !(test (in-list? (acs-member A_qa R_trans) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
 !(test (in-list? (acs-closure A_qa metabolic) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
 !(test (in-list? (acs-surplus A_qa CL_deep tr 1) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (acs-causal-influence A_qa True) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
 !(test (in-list? (acs-promoted A_qa CL_deep True) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
 !(test (in-list? (acs-promoted A_qa CL_shallow False) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_shallow)) True)
 
