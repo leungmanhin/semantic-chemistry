@@ -1,7 +1,7 @@
 ; ===========================================================================
 ; ECAN — the ECAN-EPOCH worker body (worker-kind `ecan-epoch`): the MINTING worker kind
 ; (vs context-chamber's deriving-only). `run-ee` runs the metabolic-closure epoch loop
-; (MSC §4.5 cond 1 / TECAN T2) in the worker's ISOLATED space: own hot pool -> restore
+; (TECAN Alg 5.1) in the worker's ISOLATED space: own hot pool -> restore
 ; snapshot fuel -> loop the cycle (tag the cycle -> re-derive -> mint+credit -> decay the
 ; derived layer) for the worker's `worker-cycles` cycles under its `worker-clamp`. The purse
 ; persists in the space across cycles; the single event log accumulates cycle-tagged, in

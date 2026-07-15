@@ -1,8 +1,8 @@
 ; ===========================================================================
-; EPOCH TEST — the metabolic-closure loop (TECAN Alg 5.1 / MSC §4.5 cond 1) on V3:
+; EPOCH TEST — the metabolic-closure loop (a reduced TECAN epoch, Alg 5.1) on V3:
 ; the LITERAL typed-starvation, 1-vs-2-answer death.
 ; ---------------------------------------------------------------------------
-; Each epoch re-performs the task (fuel-gated re-derivation), grounds the skeleton, mints
+; Each epoch re-derives (fuel-gated), grounds the skeleton, mints
 ; + credits typed fuel under the clamp, then DECAYS the derived layer (the purse persists,
 ; the derivation does not — so the organism must keep earning to keep answering). Two
 ; mortal organisms: O_base {R_so,R_result} (cost sm), O_chain {R_trans} (cost sm + tr).

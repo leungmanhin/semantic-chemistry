@@ -1,21 +1,27 @@
 ; ===========================================================================
-; EPOCH LOOP — the metabolic-closure cycle (TECAN Alg 5.1 / MSC §4.5 cond 1),
-; $ws-parameterized. Each epoch RE-PERFORMS the chamber's function on a fresh posing
-; of the task: run the genome to quiescence (fuel-gated re-derivation), ground the
-; answer-skeletons, mint + credit typed fuel under the clamp, then DECAY the derived
-; layer. The fuel purse persists across cycles; the derived explanatory layer does not
-; — so an organism must keep earning to keep answering. It survives iff its per-cycle
-; surplus stays > 0 (MSC eq 19); an organism whose every rule can fire nothing is dead
-; by starvation (permanent deadlock). Re-posing the one task each cycle stands in for a
-; stream of tasks (TECAN: an organism "repeatedly solves a family of tasks"). Runs in
-; &self (the grounder binds &self); per-worker-space isolation arrives with the worker
-; stage. Assumes util + fuel + reaction + grounder + evaluator are loaded.
+; EPOCH LOOP — the metabolic-closure cycle, $ws-parameterized: a REDUCED form of a TECAN
+; epoch (Alg 5.1 = score -> fire affordable ops -> evaluator-mint -> charge rent). Here each
+; cycle re-derives the genome (fuel-gated), grounds the answer-skeletons, mints + credits
+; typed fuel under the clamp, then DECAYS the derived layer. TECAN's rent + shadow-prices +
+; scored gate are NOT built; the decay + single-task re-posing are OURS (see the DECAY note).
+; The fuel purse persists across cycles; the derived explanatory layer does not — so an
+; organism must keep earning to keep answering: dead by starvation (permanent deadlock) once
+; it can afford to fire nothing, alive while income >= spend so its typed fuel never runs out
+; (thriving at surplus > 0, MSC eq 19). Re-posing the one task each cycle stands in for a
+; stream of tasks. Runs in &self or a worker's space (the grounder binds the space). Assumes
+; util + fuel + reaction + grounder + evaluator are loaded.
 ; ===========================================================================
 
-; --- DECAY: forget the derived explanatory layer, keep the molecules + fuel + the event
-; log. The derived edges are the organism's metabolic PRODUCTS (the maintenance cost
-; cmaint of eq 19); the molecules are the given environment, re-supplied when the task is
-; re-posed. This is the maintenance/rent limit — no free memory of a past derivation.
+; --- DECAY: drop the derived explanatory layer each cycle, keep the molecules + fuel + the
+; event log. This is our device to make the eq-19 metabolic accounting VISIBLE: by forgetting
+; the products, an organism must RE-DERIVE them each cycle, so a rule whose token income < its
+; firing spend eventually can't afford to re-fire and its answers vanish (starvation / permanent
+; deadlock). It is NOT the maintenance cost: cmaint is TECAN's RENT — a per-cycle fuel charge
+; that kills IDLE loops (a separate, unbuilt mechanism). Decay charges NO fuel, so an idle
+; organism keeps its purse and does NOT starve here (it just goes silent); the death in the demo
+; is eq-19 starvation via forced re-spend, not rent. Loosely a "forgetting" (atom removal, TECAN
+; §4.6). Molecules = the given environment (re-supplied); the derived edges = the organism's
+; own products, not kept for free.
 
 ; the derived (compound-id) explanatory edges in $ws, across relation arities (unary /
 ; binary / ternary — the arities the grounder handles): any sem-edge with a derived id

@@ -1,5 +1,5 @@
 ; ===========================================================================
-; ECAN TEST — the ecan-epoch worker (MSC §6.4 / §4.5 cond 1): the metabolic-closure epoch
+; ECAN TEST — the ecan-epoch worker (MSC §6.4; TECAN Alg 5.1): the metabolic-closure epoch
 ; loop re-hosted on a worker, in an ISOLATED space, with a cycle-tagged event log.
 ; ---------------------------------------------------------------------------
 ; run-ee runs the epoch loop in the worker's own space (not &self): each cycle tags the cycle,
