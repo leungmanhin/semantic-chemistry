@@ -3,8 +3,10 @@
 ; reaction graph from the event log + rule IR, discover the food-generated reflexively-
 ; autocatalytic loop A = (M_A, R_A), certify its §4.5 conditions, and emit the §2.9 verdicts —
 ; both M_A (the cycle's motif species) and R_A (the rules), plus closure + autocatalysis
-; (structural), metabolic surplus + causal influence (the promotion gate), and RECURRENCE over
-; the cycle-tagged event log (one epoch = a structural candidate); heritability is P3.
+; (structural, cond 1-2), metabolic surplus + causal influence (cond 3-4), and RECURRENCE over
+; the cycle-tagged event log (one epoch = a structural candidate); heritability is P3. Each
+; condition is its OWN verdict fact — there is no single "promoted/certified" summary; a
+; consumer conjoins them (closure present ∧ surplus>0 ∧ causal ∧ recurrent ∧ …).
 ; Also hosts the acs-scan WORKER body (`run-as`) — the SAME certification run as a §6.4 worker
 ; kind, in isolated spaces (dispatched by `dispatch.metta`).
 ; ---------------------------------------------------------------------------
@@ -12,13 +14,18 @@
 ; (a list of sem-edge clauses, jointly canonicalized so shared variables are kept), NOT a bare
 ; relation. Product-feeds-reactant is decided by UNIFICATION (a common instance), so a specific
 ; product meets a general premise (subsumption) and a single edge feeds a multi-edge premise
-; ("products feed motifs that return to M_A within bounded steps"). Closure is
-; METABOLIC: the soma rules alone are feed-forward, so the cycle closes only through the
-; evaluator's minting edge (answer-relation → E → token → rule-that-costs-it). Membership +
-; closure are clamp-INDEPENDENT (the graph uses every mintable token); the clamp-switch
-; shows only in PROMOTION, via the componentwise metabolic surplus (eq 19) — a member's
-; token whose income < spend fails condition 3 under that clamp. The food set is the
-; parser's cues (a rule whose input relation is never rule-produced consumes food).
+; ("products feed motifs that return to M_A within bounded steps"). STRUCTURAL CLOSURE
+; (§4.5 cond 1) is ENDOGENOUS: a member set is structurally closed (kind `substrate`) iff every
+; member lies on a feeds-cycle — its product motif regenerates its own reactant motif through
+; member-to-member feeds. The evaluator's minting edge is FOOD (external reward), NOT closure, so
+; the soma's feed-forward cue-converters leave V3 with NO acs-closure fact — a subsidized
+; candidate (viable+useful, but not a closed ACS; its subsidy is read off as surplus-but-no-
+; closure). Membership (the food-fed reaction network) + closure are clamp-INDEPENDENT (the
+; graph uses every mintable token); the clamp-switch shows in the componentwise metabolic surplus
+; (eq 19) — a member's token whose income < spend fails condition 3 under that clamp (the SAME
+; loop is viable under one clamp, starves under another). The food set is the parser's cues AND
+; the minting reward (a
+; rule whose input is never rule-produced, or is funded only by external reward, eats food).
 ; Condition 4 (causal influence) is a REPLAY ablation: re-derive the chamber's answers in a
 ; caller-bound ISOLATED space with the ACS members suppressed; if the answer count drops
 ; below the baseline, the loop causally produces those answers. Assumes util + fuel +
@@ -143,7 +150,7 @@
 (= (rule-firings $ws $r)
    (let $cyc (current-cycle $ws) (foldall + (match $ws (event $cyc $s $r $k) 1) 0)))
 
-; --- the metabolic-closure ingredients (clamp-independent, for membership) ---
+; --- the food-supply (external-reward) ingredients (clamp-independent, for membership) ---
 
 ; every token some clamp can mint (the evaluator's minting alphabet)
 (= (mintable-tokens) (dedup (collapse (match &self (clamp-mint $cl $a $tok $n) $tok))))
@@ -164,7 +171,7 @@
                      (collapse (match &self (sem-edge $g $c $r $a $b $d) (if (answer-skel? $g) (canon1 (sem-edge $g $c $r $a $b $d)) skip))))))))
 
 ; --- build the reaction graph in space $g: reactant→rule→product, product-feeds-reactant, +
-; the metabolic closure ---
+; the food-supply edges ---
 
 ; add each medge in list $es to $g
 (= (add-edges $g $es)
@@ -197,8 +204,10 @@
          ((() ())
           ($ne (concat-lists (feeds-from (car-atom $products) $reactants) (feeds-edges (cdr-atom $products) $reactants))))))
 
-; the metabolic-closure edges: answer-motif → E, E → token, token → funded rule (an answer-
-; motif is a product motif that feeds an answer-skeleton clause)
+; the FOOD-supply edges: answer-motif → E, E → token, token → funded rule (an answer-motif is
+; a product motif that feeds an answer-skeleton clause). The evaluator's external reward is
+; FOOD — it lets the food-fed converters participate in the reaction NETWORK (so they count as
+; members) but does NOT establish closure; closure is endogenous only (`structurally-closed?`).
 (= (motif-E-edges $motifs) (if (== $motifs ()) () (cons-atom (medge (car-atom $motifs) E) (motif-E-edges (cdr-atom $motifs)))))
 (= (E-tok-edges $toks) (if (== $toks ()) () (cons-atom (medge E (car-atom $toks)) (E-tok-edges (cdr-atom $toks)))))
 (= (tok-fund-edges $tok $rs) (if (== $rs ()) () (cons-atom (medge $tok (car-atom $rs)) (tok-fund-edges $tok (cdr-atom $rs)))))
@@ -211,16 +220,19 @@
                     (if (motif-feeds? $P (answer-clauses))
                         (cons-atom $P (queried-products (cdr-atom $products)))
                         (queried-products (cdr-atom $products))))))))
-(= (closure-edges $rs)
+(= (food-edges $rs)
    (concat-lists (motif-E-edges (queried-products (all-products $rs)))
                  (concat-lists (E-tok-edges (mintable-tokens)) (toks-fund-edges (mintable-tokens)))))
 
-; build the whole reaction graph (rule edges + feeds edges + metabolic closure) into $g
+; build the whole reaction graph (rule edges + endogenous feeds + food-supply edges) into $g
 (= (build-graph $g $rs)
    (add-edges $g (concat-lists (rules-edges $rs)
-                   (concat-lists (feeds-edges (all-products $rs) (all-reactants $rs)) (closure-edges $rs)))))
+                   (concat-lists (feeds-edges (all-products $rs) (all-reactants $rs)) (food-edges $rs)))))
 
-; --- MEMBERSHIP: the fired rules on a metabolic cycle (each reaches itself) ---
+; --- MEMBERSHIP: the fired rules in the food-fed reaction network — each on a cycle in the
+; FULL graph (endogenous feeds + food-supply edges). Food edges legitimately place the cue-
+; converters in the network; whether the set is CLOSED is the separate endogenous question
+; below. ---
 (= (acs-members $g $rs)
    (case $rs
          ((() ())
@@ -229,8 +241,70 @@
                         (cons-atom $r (acs-members $g (cdr-atom $rs)))
                         (acs-members $g (cdr-atom $rs))))))))
 
+; --- STRUCTURAL CLOSURE (§4.5 cond 1, per Ben's ACS_notes): does the member SET regenerate its
+; own non-food ingredients? Computed over the ENDOGENOUS feeds ONLY (member product motif unifies
+; member reactant motif, `motif-feeds?`) — the evaluator's minting edge is FOOD, so it never
+; closes the loop. A member is endo-cyclic iff its product reaches its own reactant through
+; member-to-member feeds; the set is structurally closed iff EVERY member is endo-cyclic (a
+; recurrent component over feeds-edges). A feed-forward food-converter (its reactant is a cue no
+; rule regenerates) is on no such cycle, so a set containing one is `subsidized`, not closed. ---
+
+; does member $a's product motif feed member $b's reactant motif (endogenous, by unification)?
+(= (rule-feeds-rule? $a $b) (motif-feeds? (rule-product $a) (rule-reactant $b)))
+
+; the members $a's product feeds (its endogenous successors within the set)
+(= (feed-succs $a $members)
+   (case $members
+         ((() ())
+          ($ne (let $b (car-atom $members)
+                    (if (rule-feeds-rule? $a $b)
+                        (cons-atom $b (feed-succs $a (cdr-atom $members)))
+                        (feed-succs $a (cdr-atom $members))))))))
+
+; BFS over member-to-member feeds: does any rule in $frontier reach $goal? ($seen guards cycles)
+(= (rules-reach $members $frontier $goal $seen)
+   (case $frontier
+         ((() False)
+          ($ne (let $h (car-atom $frontier)
+                    (if (== $h $goal)
+                        True
+                        (if (in-list? $h $seen)
+                            (rules-reach $members (cdr-atom $frontier) $goal $seen)
+                            (rules-reach $members (concat-lists (feed-succs $h $members) (cdr-atom $frontier)) $goal (cons-atom $h $seen)))))))))
+
+; is $r on an endogenous cycle within the set (its product feeds back to its own reactant)?
+(= (endo-cyclic? $r $members) (rules-reach $members (feed-succs $r $members) $r ()))
+
+; structurally closed iff every member is endo-cyclic (empty set ⇒ not closed); $todo iterates
+; while the FULL $members set is threaded to each endo-cyclic? check — a member may reach itself
+; only THROUGH other members, so the set must not shrink during the walk
+(= (all-endo-cyclic? $todo $members)
+   (case $todo
+         ((() True)
+          ($ne (if (endo-cyclic? (car-atom $todo) $members)
+                   (all-endo-cyclic? (cdr-atom $todo) $members)
+                   False)))))
+(= (structurally-closed? $members) (if (== $members ()) False (all-endo-cyclic? $members $members)))
+
+; the closure KIND of a structurally-closed member set — `substrate` (the loop regenerates its
+; own SEMANTIC motifs, our only detectable feed today), or `none` if it is not closed. Ben's
+; `control`/`hybrid` kinds (the loop regenerates endogenous CONTROL motifs — success traces,
+; reusable templates, learned gates) arrive once those motifs are emitted as graph nodes.
+(= (closure-kind $members) (if (structurally-closed? $members) substrate none))
+
+; the closure verdict FACT, emitted ONLY when the set is genuinely closed — a food-fed /
+; subsidized candidate is NOT an ACS (it fails closure), so it gets NO acs-* closure fact; its
+; "subsidized" status is inferred elsewhere (metabolic surplus present + no acs-closure fact).
+(= (closure-facts $A $members)
+   (let $k (closure-kind $members) (if (== $k none) () (cons-atom (acs-closure $A $k) ()))))
+
+; a display reader: the closure kind emitted for $A in &self, or `none` if $A has no acs-closure
+; fact (not closed) — so a conditions checklist can show closure without the match vanishing
+(= (closure-of $A)
+   (let $r (collapse (match &self (acs-closure $A $c) $c)) (if (== $r ()) none (car-atom $r))))
+
 ; --- M_A (§4.5): the graph-motif SPECIES. A member rule's motif patterns are its candidate
-; motifs; those on the metabolic cycle = M_A (the loop regenerates them). Food motifs
+; motifs; those on the cycle = M_A (the loop regenerates them). Food motifs
 ; (consumed but never produced, so off every cycle) are external and stay out. ---
 
 ; the distinct motifs the members consume or produce (candidate motif species): each member's
@@ -241,7 +315,7 @@
           ($ne (concat-lists (cons-atom (rule-reactant (car-atom $members)) (cons-atom (rule-product (car-atom $members)) ()))
                              (motifs-touched (cdr-atom $members)))))))
 
-; M_A: the motif species that lie on the metabolic cycle
+; M_A: the motif species that lie on the cycle
 (= (acs-motifs $g $members) (cycling-only $g (dedup (motifs-touched $members))))
 (= (cycling-only $g $ms)
    (case $ms
@@ -283,14 +357,6 @@
 (= (members-tokens $members)
    (dedup (filter-out skip (collapse (match &self (rule-token-cost $r $tok $n) (if (in-list? $r $members) $tok skip))))))
 
-; is the surplus > 0 for EVERY token the members cost? (condition 3, componentwise)
-(= (surplus-positive? $ws $members $cl $toks)
-   (case $toks
-         ((() True)
-          ($ne (if (> (token-surplus $ws $members $cl (car-atom $toks)) 0)
-                   (surplus-positive? $ws $members $cl (cdr-atom $toks))
-                   False)))))
-
 ; --- causal influence (condition 4): a REPLAY ablation (the stronger form). Re-derive the
 ; chamber's answers in the isolated space $abl with the ACS members SUPPRESSED, restoring
 ; the snapshot fuel; if the count drops below the baseline (the certification run's
@@ -308,17 +374,6 @@
 ; does suppressing the members in $abl drop the answer count below the $ws baseline?
 (= (causal-influence? $ws $abl $ch $snap $members)
    (> (total-answers $ws) (ablated-answers $abl $ch $snap $members)))
-
-; --- the PROMOTION verdict: closure + autocatalysis hold structurally for a nonempty member
-; set (both emitted as their own verdicts), it causally matters (cond 4 = $ci, the precomputed
-; replay-ablation result, emitted separately as acs-causal-influence), and its surplus is
-; positive componentwise (cond 3). Heritability (cond 5) is a P3 concern, not gated here.
-; The clamp enters only via the surplus. ---
-(= (and3 $a $b $c) (if $a (if $b (if $c True False) False) False))
-(= (acs-promoted? $ws $members $cl $ci)
-   (and3 (surplus-positive? $ws $members $cl (members-tokens $members))
-         $ci
-         (if (== $members ()) False True)))
 
 ; --- RECURRENCE (§4.5 "sustains itself in an event log" / §6.4 P2 "recurrent" loops): a
 ; genuine ACS is not a one-off closed loop — it must RECUR across cycles. The loop recurs iff
@@ -372,24 +427,26 @@
                                (surplus-facts $A $ws $members $cl (cdr-atom $toks))))))))
 
 ; the full §2.9 verdict list = the ACS A = (M_A, R_A) + its conditions: one acs-member per
-; cycle rule (R_A) + one acs-motif per motif species (M_A) + metabolic closure + autocatalysis
-; (cond 1+2, structural) + one signed acs-surplus per costed token (cond 3) + acs-causal-influence
+; cycle rule (R_A) + one acs-motif per motif species (M_A) + acs-closure (substrate, ONLY when
+; structurally closed — a subsidized candidate emits NONE) + autocatalysis (cond 1+2, structural)
+; + one signed acs-surplus per costed token (cond 3) + acs-causal-influence
 ; (cond 4 = $ci, the replay ablation in the caller-bound space $abl, re-posing chamber $ch from
-; snapshot $snap; computed ONCE here, clamp-independent) + the acs-promoted verdict under $cl
-; (cond 3+4, consuming $ci) + acs-recurrent (the loop recurs across $ws's cycle-tagged event log
-; — False for a single epoch, the structural-candidate case)
+; snapshot $snap; computed ONCE here, clamp-independent) + acs-recurrent (the loop recurs across
+; $ws's cycle-tagged event log — False for a single epoch, the structural-candidate case). There
+; is NO single acs-promoted/certified summary: each condition is its own fact, conjoined by a
+; consumer (a "certified ACS under $cl" = acs-closure present ∧ every acs-surplus > 0 ∧ causal ∧
+; recurrent).
 (= (acs-verdicts $A $g $ws $abl $ch $snap $cl)
    (let* (($members (acs-members $g (fired-rules $ws)))
           ($toks (members-tokens $members))
           ($ci (causal-influence? $ws $abl $ch $snap $members)))
      (concat-lists (member-facts $A $members)
        (concat-lists (motif-facts $A (acs-motifs $g $members))
-         (cons-atom (acs-closure $A metabolic)
+         (concat-lists (closure-facts $A $members)
            (cons-atom (acs-autocatalytic $A (autocatalytic? $g $members))
              (concat-lists (surplus-facts $A $ws $members $cl $toks)
                (cons-atom (acs-causal-influence $A $ci)
-                 (cons-atom (acs-promoted $A $cl (acs-promoted? $ws $members $cl $ci))
-                            (cons-atom (acs-recurrent $A (recurrent? $ws $members (recurrence-min))) ()))))))))))
+                 (cons-atom (acs-recurrent $A (recurrent? $ws $members (recurrence-min))) ())))))))))
 
 ; --- the acs-scan WORKER body (worker-kind `acs-scan`): the whole certification as a §6.4
 ; worker. Its run space $ws is populated by a prior context-chamber worker; run-as CONSUMES

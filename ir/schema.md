@@ -166,12 +166,14 @@ P2 (= TECAN T3, to be rebuilt on the sem-graph pipeline) certifies whether a rul
 |------|---------|
 | `(acs A)` / `(acs-chamber A C)` | Declares detected ACS `A` in chamber `C`. |
 | `(acs-member A R)` | Rule `R` is a member of the ACS's (heritable) rule loop. One per rule. |
-| `(acs-closure A metabolic)` | The loop forms a closed cycle — `metabolic` records that the cycle closes via the evaluator's fuel minting (`E → fuel → rules`), **not** graph-structurally (the soma rules alone are a feed-forward DAG). |
+| `(acs-closure A substrate)` | The structural-closure verdict (§4.5 cond 1), emitted **only when the set is genuinely closed** — every member's product regenerates its own reactant through member-to-member feeds (a recurrent component in the rule-motif graph, computed over **endogenous** feeds; the evaluator's minting edge is **FOOD, not closure**). `substrate` = the loop regenerates its own semantic motifs; `control`/`hybrid` (endogenous control-motif regeneration) arrive with control-motif detection. A **subsidized / food-fed candidate is NOT an ACS** (it fails closure), so it emits **no** `acs-closure` fact — that state is inferred as *metabolic surplus present + no `acs-closure`*. V3 = no fact (feed-forward cue-converters; only `R_trans` is endo-cyclic). |
 | `(acs-autocatalysis A via-evaluator-fuel)` | The motifs that re-enable members (the typed fuel) are produced by the evaluator. |
 | `(acs-surplus A CL token n)` | Metabolic surplus `E[minted]−E[spent]` for `token` under clamp `CL` (signed). Condition 3 holds iff positive componentwise. |
 | `(acs-do-influence A R n)` | Paired-replay ablation: the minted-reward drop when rule `R` is suppressed. `0` ⇒ an inert member (cost without reward → prune candidate). |
 | `(acs-heritable A GNM)` | The loop reifies as quoted genome `GNM`, copy-and-re-expressible. |
-| `(acs-promoted A CL bool)` | Promotion verdict under clamp `CL` (surplus>0 ∧ ablation-impact>0 ∧ closure ∧ autocatalysis ∧ heritability). The clamp-switch: the same loop is `true` under `CL_antecedent`, `false` under `CL_goal`. |
+| `(acs-recurrent A bool)` | The loop's members all fire in ≥ `acs-recurrence-min` distinct cycles of the event log (recurrent species, not a one-epoch candidate). |
+
+*No single "promoted / certified" verdict is stored — each condition above is its own fact. "Certified ACS under clamp `CL`" is the conjunction a consumer computes: `acs-closure` present ∧ every `acs-surplus …CL… > 0` ∧ `acs-causal-influence True` ∧ `acs-recurrent True`. The clamp-switch shows in `acs-surplus` — the same loop's token surplus is positive under one clamp, negative under another.*
 
 ### 2.10 Lineage + reproduction (Experiment-1 layer; P3 output)
 

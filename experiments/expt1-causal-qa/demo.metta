@@ -5,9 +5,11 @@
 ; layer, the EVALUATOR worker mints typed fuel on that same space, and the ACS-SCAN worker
 ; CONSUMES the resulting event log to certify the food-generated autocatalytic loop.
 ;
-; The ACS verdict from ONE epoch is a STRUCTURAL CANDIDATE — closure + autocatalysis + causal
-; influence + this-cycle surplus. Recurrence + heritability (what make it a genuine ACS
-; species) need multiple epochs and are P3.
+; The ACS verdict from ONE epoch is a viable + useful CANDIDATE PRECURSOR — autocatalysis +
+; causal influence + this-cycle surplus hold, but there is NO structural closure (the evaluator's
+; reward is FOOD, not closure; V3's cue-converters are feed-forward), so it emits no acs-closure
+; fact — a subsidized candidate (surplus but no closure). Recurrence + heritability (what make it
+; a genuine ACS species) need multiple epochs and are P3.
 ;
 ; Run:  sh ../PeTTa/run.sh experiments/expt1-causal-qa/demo.metta < /dev/null 2>&1 \
 ;         | sed 's/\x1b\[[0-9;]*m//g' | sed -n '/STAGE-0/,$p' | grep '^('
@@ -78,14 +80,13 @@
                               O_chain-sm (fuel-of &ws_qa O_chain sm) O_chain-tr (fuel-of &ws_qa O_chain tr)))
 
 ; ===========================================================================
-!(println! (STAGE-3 --- ACS-SCAN-WORKER certify-from-the-log structural-candidate ---))
+!(println! (STAGE-3 --- ACS-SCAN-WORKER certify-from-the-log subsidized-candidate ---))
 !(run-as W_scan)
 !(println! (R_A (collapse (match &self (acs-member A_qa $r) $r))))
 !(println! (M_A (collapse (match &self (acs-motif A_qa $m) $m))))
-!(println! (closure (match &self (acs-closure A_qa $c) $c)
+!(println! (closure (closure-of A_qa)
                     autocatalytic (match &self (acs-autocatalytic A_qa $b) $b)))
 !(println! (surplus-tr (match &self (acs-surplus A_qa CL_deep tr $n) $n)
-                       promoted-CL_deep (match &self (acs-promoted A_qa CL_deep $pb) $pb)
                        recurrent (match &self (acs-recurrent A_qa $rb) $rb)))
 
 ; ===========================================================================
@@ -121,14 +122,14 @@
 !(run-as W_scan2)
 !(println! (R_A (collapse (match &self (acs-member A_qa2 $r) $r))))
 !(println! (recurrent-NOW (match &self (acs-recurrent A_qa2 $rb) $rb)
-                          promoted-CL_deep (match &self (acs-promoted A_qa2 CL_deep $pb) $pb)))
+                          surplus-tr-CL_deep (match &self (acs-surplus A_qa2 CL_deep tr $n) $n)))
 
 ; ===========================================================================
 !(println! (STAGE-6 --- CL_shallow-CONTRAST the-same-loop-starved-to-death ---))
 ; the SAME pipeline in a SEPARATE space under CL_shallow. The clamp bites ONLY at the evaluator
 ; (mints no tr) and the acs (promotion); the chamber derivation is identical, so its worker is
 ; here only for space-isolation. chamber-derive -> eval (no tr) -> 2nd epoch (R_trans starves)
-; -> certify (the loop stopped closing -> recurrent False; tr surplus fails -> promoted False).
+; -> certify (the loop stopped closing -> recurrent False; tr surplus fails -> the loop starves).
 ; --- chamber worker: identical derivation, its own space ---
 !(add-atom &self (worker W_qa_s))
 !(add-atom &self (worker-kind W_qa_s context-chamber))
@@ -165,4 +166,4 @@
 !(add-atom &self (worker-ablate-space W_scan_s &abl_s))
 !(run-as W_scan_s)
 !(println! (CL_shallow-verdict recurrent (match &self (acs-recurrent A_qa_s $rb) $rb)
-                               promoted (match &self (acs-promoted A_qa_s CL_shallow $pb) $pb)))
+                               surplus-tr (match &self (acs-surplus A_qa_s CL_shallow tr $n) $n)))
