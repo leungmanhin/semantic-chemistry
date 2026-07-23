@@ -13,7 +13,10 @@
 ; ===========================================================================
 
 ; --- DECAY: drop the derived explanatory layer each cycle, keep the molecules + fuel + the
-; event log. This is our device to make the eq-19 metabolic accounting VISIBLE: by forgetting
+; event log + any relation declared `(persistent R)` (a persistent molecule, exempt from the
+; forgetting — our stand-in for TECAN importance-graded retention: a consolidated motif is
+; retained across cycles so a control loop can close through it). This is our device to make
+; the eq-19 metabolic accounting VISIBLE: by forgetting
 ; the products, an organism must RE-DERIVE them each cycle, so a rule whose token income < its
 ; firing spend eventually can't afford to re-fire and its answers vanish (starvation / permanent
 ; deadlock). It is NOT the maintenance cost: cmaint is TECAN's RENT — a per-cycle fuel charge
@@ -23,23 +26,48 @@
 ; §4.6). Molecules = the given environment (re-supplied); the derived edges = the organism's
 ; own products, not kept for free.
 
-; the derived (compound-id) explanatory edges in $ws, across relation arities (unary /
-; binary / ternary — the arities the grounder handles): any sem-edge with a derived id
+; a relation declared `(persistent R)` (in &self) is a PERSISTENT molecule: its derived
+; edges survive decay even though their ids are compound. No such fact is declared for
+; classic V3, so decay there is unchanged.
+(= (persistent-rel? $r)
+   (case (collapse (match &self (persistent $r) $r)) ((() False) ($x True))))
+
+; the derived (compound-id) explanatory edges in $ws to forget, across relation arities
+; (unary / binary / ternary — the arities the grounder handles): any sem-edge with a
+; derived id whose relation is NOT persistent
 (= (derived-edges-1 $ws)
-   (collapse (match $ws (sem-edge $g $id $r $a) (if (derived-id? $id) (sem-edge $g $id $r $a) skip))))
+   (collapse (match $ws (sem-edge $g $id $r $a)
+                    (if (derived-id? $id) (if (persistent-rel? $r) skip (sem-edge $g $id $r $a)) skip))))
 (= (derived-edges-2 $ws)
-   (collapse (match $ws (sem-edge $g $id $r $a $b) (if (derived-id? $id) (sem-edge $g $id $r $a $b) skip))))
+   (collapse (match $ws (sem-edge $g $id $r $a $b)
+                    (if (derived-id? $id) (if (persistent-rel? $r) skip (sem-edge $g $id $r $a $b)) skip))))
 (= (derived-edges-3 $ws)
-   (collapse (match $ws (sem-edge $g $id $r $a $b $c) (if (derived-id? $id) (sem-edge $g $id $r $a $b $c) skip))))
+   (collapse (match $ws (sem-edge $g $id $r $a $b $c)
+                    (if (derived-id? $id) (if (persistent-rel? $r) skip (sem-edge $g $id $r $a $b $c)) skip))))
 (= (derived-edges $ws)
    (filter-out skip (concat-lists (derived-edges-1 $ws)
                                   (concat-lists (derived-edges-2 $ws) (derived-edges-3 $ws)))))
 
-; the TVs of the derived edges
+; the ids of the PERSISTENT edges in $ws — their TVs are exempt too, so a kept edge never
+; dangles a forgotten TV
+(= (persistent-ids-1 $ws)
+   (collapse (match $ws (sem-edge $g $id $r $a) (if (persistent-rel? $r) $id skip))))
+(= (persistent-ids-2 $ws)
+   (collapse (match $ws (sem-edge $g $id $r $a $b) (if (persistent-rel? $r) $id skip))))
+(= (persistent-ids-3 $ws)
+   (collapse (match $ws (sem-edge $g $id $r $a $b $c) (if (persistent-rel? $r) $id skip))))
+(= (persistent-ids $ws)
+   (filter-out skip (concat-lists (persistent-ids-1 $ws)
+                                  (concat-lists (persistent-ids-2 $ws) (persistent-ids-3 $ws)))))
+
+; the TVs of the derived edges to forget: a derived id that is NOT a persistent edge's
 (= (derived-tvs $ws)
-   (filter-out skip
-               (collapse (match $ws (sem-edge-tv $g $id $tv)
-                                (if (derived-id? $id) (sem-edge-tv $g $id $tv) skip)))))
+   (let $pids (persistent-ids $ws)
+        (filter-out skip
+                    (collapse (match $ws (sem-edge-tv $g $id $tv)
+                                     (if (derived-id? $id)
+                                         (if (in-list? $id $pids) skip (sem-edge-tv $g $id $tv))
+                                         skip))))))
 
 ; remove every (already-ground) atom in list $atoms from $ws
 (= (remove-all $ws $atoms)

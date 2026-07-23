@@ -55,3 +55,21 @@
 !(test (epochs-traced &self CH_expt1 CL_deep 3 O_chain tr) ((2 1) (2 1) (2 1)))
 !(test (fuel-of &self O_chain tr) 4)          ; alive: tr income sustains the chain
 !(test (fuel-of &self O_base sm) 6)           ; O_base lives (sm break-even)
+
+; --- DECAY persistence-exemption: a relation declared `(persistent R)` survives decay ---
+; even with a compound (derived) id — the retained motif a control loop closes through.
+; Classic V3 declares none (so the runs above are unaffected); here we declare a synthetic
+; one and check its edge + TV outlive the forgetting while a non-persistent derived edge dies.
+!(reset-run &self)
+!(add-atom &self (persistent Hb))
+!(add-atom &self (sem-edge tg (learn s1) Hb strat))              ; derived id, persistent relation
+!(add-atom &self (sem-edge-tv tg (learn s1) (stv 1.0 0.9)))      ; ...its TV
+!(add-atom &self (sem-edge tg (norm e9) ReasonFor a b))          ; derived id, NON-persistent
+!(add-atom &self (sem-edge-tv tg (norm e9) (stv 1.0 0.9)))       ; ...its TV
+!(add-atom &self (sem-edge tg surf9 So a b))                     ; surface molecule (atomic id)
+!(decay &self)
+!(test (foldall + (match &self (sem-edge tg (learn s1) Hb $s) 1) 0) 1)          ; persistent edge KEPT
+!(test (foldall + (match &self (sem-edge-tv tg (learn s1) $tv) 1) 0) 1)         ; ...its TV KEPT
+!(test (foldall + (match &self (sem-edge tg (norm e9) ReasonFor $x $y) 1) 0) 0) ; non-persistent DROPPED
+!(test (foldall + (match &self (sem-edge-tv tg (norm e9) $tv) 1) 0) 0)          ; ...its TV DROPPED
+!(test (foldall + (match &self (sem-edge tg surf9 So $x $y) 1) 0) 1)            ; molecule KEPT
