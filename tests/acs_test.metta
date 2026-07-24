@@ -100,6 +100,28 @@
 !(test (injective-covered? R_ring1 (R_ring1 R_ring2)) True)
 !(test (msort (endo-component (R_ring1 R_ring2))) (R_ring1 R_ring2))
 
+; --- closure-KIND classifier (substrate / control / hybrid), from the motifs the loop
+; REGENERATES (its members' non-food premise relations) vs `(control-relation R)` declarations.
+; The P→Q→P ring above is all-semantic ⇒ substrate; here we declare control motifs. ---
+!(add-atom &self (control-relation CtrlA))
+!(add-atom &self (control-relation CtrlC))
+; a HYBRID ring: control CtrlA ⇌ semantic SemB (regenerates one of each)
+!(add-atom &self (rule-lhs R_hy1 ((sem-edge hg h1 CtrlA (var x)))))
+!(add-atom &self (rule-rhs R_hy1 ((sem-edge hg h2 SemB (var x)))))
+!(add-atom &self (rule-lhs R_hy2 ((sem-edge hg h3 SemB (var x)))))
+!(add-atom &self (rule-rhs R_hy2 ((sem-edge hg h4 CtrlA (var x)))))
+!(test (msort (closure-rels (R_hy1 R_hy2))) (CtrlA SemB))             ; regenerates one control + one semantic
+!(test (closure-kind (R_hy1 R_hy2)) hybrid)                          ; ⇒ hybrid closure
+!(test (closure-facts AH (R_hy1 R_hy2)) ((acs-closure AH hybrid)))
+; a pure CONTROL ring: control CtrlA ⇌ control CtrlC
+!(add-atom &self (rule-lhs R_co1 ((sem-edge cg c1 CtrlA (var x)))))
+!(add-atom &self (rule-rhs R_co1 ((sem-edge cg c2 CtrlC (var x)))))
+!(add-atom &self (rule-lhs R_co2 ((sem-edge cg c3 CtrlC (var x)))))
+!(add-atom &self (rule-rhs R_co2 ((sem-edge cg c4 CtrlA (var x)))))
+!(test (closure-kind (R_co1 R_co2)) control)                        ; all-control ⇒ control closure
+; the all-semantic P→Q→P ring stays substrate (control declared for OTHER relations only)
+!(test (closure-kind (R_ring1 R_ring2)) substrate)
+
 ; --- per-token surplus (eq 19), componentwise; only the tr component flips with the clamp ---
 !(test (token-surplus &self (acs-members &g (fired-rules &self)) CL_deep sm) 1)     ; income 4 − spend 3
 !(test (token-surplus &self (acs-members &g (fired-rules &self)) CL_deep tr) 1)     ; income 2 − spend 1
