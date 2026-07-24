@@ -139,6 +139,24 @@
 !(test (causal-influence? &self &abl CH_expt1 SNAP_qa (acs-members &g (fired-rules &self))) True)
 !(test (causal-influence? &self &abl0 CH_expt1 SNAP_qa ()) False)                   ; suppress nothing → no drop
 
+; --- RULE-LEVEL causal coding (SC §3): per-member do-influence by LEAVE-ONE-OUT replay (baseline
+; minted reward − reward with that ONE member disabled). In V3 all three members are load-bearing
+; (none redundant): R_result produces the base ReasonFor both answers need (ablating it → 0 reward,
+; do-influence = the full baseline 6); R_so and R_trans are each required for the 2-hop chain
+; answer (do-influence 4). So the minimal ACS is all three. ---
+!(test (member-do-influences &self &abl CH_expt1 SNAP_qa CL_deep (R_so R_result R_trans)) ((R_so 4) (R_result 6) (R_trans 4)))
+!(test (minimal-acs &self &abl CH_expt1 SNAP_qa CL_deep (R_so R_result R_trans)) (R_so R_result R_trans))   ; all load-bearing
+; the redundancy + minimal-ACS logic on a synthetic (rule delta) list: a delta-0 member is
+; REDUNDANT and dropped from the minimal ACS
+!(test (do-inf-facts ((Ra 3) (Rb 0) (Rc 2)))
+       ((rule-do-influence Ra target answer-reward 3) (rule-redundancy Ra False)
+        (rule-do-influence Rb target answer-reward 0) (rule-redundancy Rb True)
+        (rule-do-influence Rc target answer-reward 2) (rule-redundancy Rc False)))
+!(test (nonzero-members ((Ra 3) (Rb 0) (Rc 2))) (Ra Rc))                            ; Rb (delta 0) dropped
+; the do-influence facts appear in the verdict list (per member, keyed on the rule)
+!(test (in-list? (rule-do-influence R_trans target answer-reward 4) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (rule-redundancy R_result False) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
+
 ; --- the clamp-switch lives ENTIRELY in the componentwise surplus (tested above): membership +
 ; closure + causal influence are clamp-independent; only token-surplus flips (tr +1 under CL_deep
 ; vs −1 under CL_shallow). There is no acs-promoted summary fact — a consumer conjoins the per-
@@ -202,6 +220,7 @@
 !(test (closure-of A_qa) none)                                                     ; the display reader shows none
 !(test (match &self (acs-autocatalytic A_qa $b) $b) True)
 !(test (match &self (acs-surplus A_qa CL_deep tr $n) $n) 1)
+!(test (match &self (rule-do-influence R_trans target answer-reward $d) $d) 4)      ; the worker emitted the per-rule do-influence
 
 ; --- a SECOND acs-scan worker over the SAME ACS under CL_shallow: membership + closure clamp-
 ; independent, but the tr surplus FLIPS to −1 (the loop starves under this clamp) — the clamp-

@@ -86,6 +86,7 @@
 !(pp ("- loop autocatalytic? " (match &self (acs-autocatalytic A_qa $b) $b)))
 !(pp ("- loop surplus? sm " (match &self (acs-surplus A_qa CL_deep sm $n) $n) " | tr " (match &self (acs-surplus A_qa CL_deep tr $n) $n)))
 !(pp ("- loop causal-influence? " (match &self (acs-causal-influence A_qa $ci) $ci)))
+!(pp ("- per-rule do-influence: " (repr (collapse (match &self (rule-do-influence $r target answer-reward $d) ($r $d))))))
 !(pp ("- loop recurrent? " (match &self (acs-recurrent A_qa $rb) $rb)))
 
 ;; running the workers -- cycle 2
@@ -129,6 +130,7 @@
 !(pp ("- loop autocatalytic? " (match &self (acs-autocatalytic A_qa2 $b) $b)))
 !(pp ("- loop surplus? sm " (match &self (acs-surplus A_qa2 CL_deep sm $n) $n) " | tr " (match &self (acs-surplus A_qa2 CL_deep tr $n) $n)))
 !(pp ("- loop causal-influence? " (match &self (acs-causal-influence A_qa2 $ci) $ci)))
+!(pp ("- per-rule do-influence: " (repr (collapse (match &self (rule-do-influence $r target answer-reward $d) ($r $d))))))
 !(pp ("- loop recurrent? " (match &self (acs-recurrent A_qa2 $rb) $rb)))
 
 !(pp ("Event log:"))

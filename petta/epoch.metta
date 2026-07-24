@@ -63,14 +63,6 @@
                                          (if (in-list? $id $pids) skip (sem-edge-tv $g $id $tv))
                                          skip))))))
 
-; remove every (already-ground) atom in list $atoms from $ws
-(= (remove-all $ws $atoms)
-   (case $atoms
-         ((() done)
-          ($ne (let* (($h (car-atom $atoms))
-                      ($z (remove-atom $ws $h)))
-                 (remove-all $ws (cdr-atom $atoms)))))))
-
 ; decay: drop the derived edges + their TVs (NOT the event log). Each list is collapsed
 ; BEFORE removal, so the space is not matched while it is being mutated.
 (= (decay $ws)

@@ -27,6 +27,15 @@
    (case $l ((() ())
              ($ne (if (== (car-atom $l) $x) (cdr-atom $l) (cons-atom (car-atom $l) (remove-one $x (cdr-atom $l))))))))
 
+; remove every (already-ground) atom in list $atoms from space $ws. Each list is collapsed
+; BEFORE removal by the caller, so the space is not matched while it is being mutated.
+(= (remove-all $ws $atoms)
+   (case $atoms
+         ((() done)
+          ($ne (let* (($h (car-atom $atoms))
+                      ($z (remove-atom $ws $h)))
+                 (remove-all $ws (cdr-atom $atoms)))))))
+
 ; the length of list $l
 (= (len $l) (if (== $l ()) 0 (+ 1 (len (cdr-atom $l)))))
 

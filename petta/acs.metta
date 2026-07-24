@@ -464,17 +464,85 @@
 ; total-answers in $ws), the loop causally PRODUCES those answers. An actual counterfactual
 ; re-run, not the structural "a member names an answer-queried relation" proxy. ---
 
-; run the chamber in the isolated space $abl with the rules $skip suppressed (molecules +
-; snapshot fuel materialized first), and return the resulting answer count
+; WIPE all mutable state from replay space $abl (molecules, derived layer, tvs, events, fuel,
+; cycle) so it can be freshly re-materialized — leave-one-out reuses one $abl across many replays
+(= (wipe-space $abl)
+   (let* (($z1 (remove-all $abl (collapse (match $abl (sem-edge $g $i $r $a) (sem-edge $g $i $r $a)))))
+          ($z2 (remove-all $abl (collapse (match $abl (sem-edge $g $i $r $a $b) (sem-edge $g $i $r $a $b)))))
+          ($z3 (remove-all $abl (collapse (match $abl (sem-edge $g $i $r $a $b $c) (sem-edge $g $i $r $a $b $c)))))
+          ($z4 (remove-all $abl (collapse (match $abl (sem-edge-tv $g $i $tv) (sem-edge-tv $g $i $tv)))))
+          ($z5 (remove-all $abl (collapse (match $abl (event $c $s $r $k) (event $c $s $r $k)))))
+          ($z6 (remove-all $abl (collapse (match $abl (fuel $O $t $n) (fuel $O $t $n)))))
+          ($z7 (remove-all $abl (collapse (match $abl (cycle-now $k) (cycle-now $k))))))
+     done))
+
+; run the chamber in the isolated space $abl with the rules $skip suppressed (space WIPED then
+; molecules + snapshot fuel re-materialized), and return the resulting answer count
 (= (ablated-answers $abl $ch $snap $skip)
-   (let* (($z0 (copy-molecules $abl))
-          ($z1 (restore-snapshot $abl $snap))
-          ($z2 (run-chamber-ablate $abl $ch $skip)))
+   (let* (($z0 (wipe-space $abl))
+          ($z1 (copy-molecules $abl))
+          ($z2 (restore-snapshot $abl $snap))
+          ($z3 (run-chamber-ablate $abl $ch $skip)))
      (total-answers $abl)))
 
 ; does suppressing the members in $abl drop the answer count below the $ws baseline?
 (= (causal-influence? $ws $abl $ch $snap $members)
    (> (total-answers $ws) (ablated-answers $abl $ch $snap $members)))
+
+; --- RULE-LEVEL CAUSAL CODING (SC §3, per-rule do-influence): the finer, per-member breakdown
+; of the ACS-level causal influence above. do-influence is measured by a LEAVE-ONE-OUT paired
+; replay (SC §3.7 "rule enabled vs disabled"): baseline minted reward − reward with just that one
+; member disabled. delta > 0 ⇒ the member is load-bearing (its firing changes the downstream
+; reward); delta = 0 ⇒ the member is REDUNDANT / not-contributing (disabling it leaves the reward
+; unchanged). The minimal ACS is the load-bearing members (§3.9 "its members have nontrivial
+; do-influence"). Metric = MINTED REWARD (chamber-income summed over the mintable tokens), so a
+; member is credited for the KIND of answer it enables (a chain earns the causal-inference token
+; too). This is distinct from Ben's ACS-level "not reproduced by redundant alternatives", which is
+; the whole-loop causal-influence? above. ---
+
+; the total minted reward in $ws under $cl = the income summed over every mintable token
+(= (total-reward $ws $cl) (sum-token-incomes $ws $cl (mintable-tokens)))
+(= (sum-token-incomes $ws $cl $toks)
+   (case $toks ((() 0) ($ne (+ (chamber-income $ws $cl (car-atom $toks)) (sum-token-incomes $ws $cl (cdr-atom $toks)))))))
+
+; the minted reward when the rules $skip are suppressed (fresh replay in $abl)
+(= (ablated-reward $abl $ch $snap $cl $skip)
+   (let* (($z0 (wipe-space $abl))
+          ($z1 (copy-molecules $abl))
+          ($z2 (restore-snapshot $abl $snap))
+          ($z3 (run-chamber-ablate $abl $ch $skip)))
+     (total-reward $abl $cl)))
+
+; the do-influence of each member = baseline reward − reward with that ONE member ablated;
+; returns a list of (rule delta) pairs. Baseline = the real run $ws (all members active).
+(= (member-do-influences $ws $abl $ch $snap $cl $members)
+   (do-inf-each $abl $ch $snap $cl $members (total-reward $ws $cl)))
+(= (do-inf-each $abl $ch $snap $cl $members $base)
+   (case $members
+         ((() ())
+          ($ne (let $r (car-atom $members)
+                    (cons-atom ($r (- $base (ablated-reward $abl $ch $snap $cl (cons-atom $r ()))))
+                               (do-inf-each $abl $ch $snap $cl (cdr-atom $members) $base)))))))
+
+; the §3.7 causal-coding facts from the (rule delta) list: one (rule-do-influence R target
+; answer-reward delta) + one (rule-redundancy R bool) per member (redundant iff delta = 0)
+(= (do-inf-facts $dis)
+   (case $dis
+         ((() ())
+          ($ne (let* ((($r $d) (car-atom $dis))
+                      ($red (== $d 0)))
+                 (cons-atom (rule-do-influence $r target answer-reward $d)
+                   (cons-atom (rule-redundancy $r $red)
+                              (do-inf-facts (cdr-atom $dis)))))))))
+
+; the MINIMAL ACS: the members with nonzero do-influence (redundant members dropped)
+(= (minimal-acs $ws $abl $ch $snap $cl $members)
+   (nonzero-members (member-do-influences $ws $abl $ch $snap $cl $members)))
+(= (nonzero-members $dis)
+   (case $dis
+         ((() ())
+          ($ne (let ($r $d) (car-atom $dis)
+                    (if (== $d 0) (nonzero-members (cdr-atom $dis)) (cons-atom $r (nonzero-members (cdr-atom $dis)))))))))
 
 ; --- RECURRENCE (§4.5 "sustains itself in an event log" / §6.4 P2 "recurrent" loops): a
 ; genuine ACS is not a one-off closed loop — it must RECUR across cycles. The loop recurs iff
@@ -534,21 +602,24 @@
 ; + one signed acs-surplus per costed token (cond 3) + acs-causal-influence
 ; (cond 4 = $ci, the replay ablation in the caller-bound space $abl, re-posing chamber $ch from
 ; snapshot $snap; computed ONCE here, clamp-independent) + acs-recurrent (the loop recurs across
-; $ws's cycle-tagged event log — False for a single epoch, the structural-candidate case). There
-; is NO single acs-promoted/certified summary: each condition is its own fact, conjoined by a
+; $ws's cycle-tagged event log — False for a single epoch, the structural-candidate case) + the
+; per-member SC §3 causal coding (rule-do-influence + rule-redundancy, the leave-one-out
+; breakdown of causal influence). There is NO single acs-promoted/certified summary: each condition is its own fact, conjoined by a
 ; consumer (a "certified ACS under $cl" = acs-closure present ∧ every acs-surplus > 0 ∧ causal ∧
 ; recurrent).
 (= (acs-verdicts $A $g $ws $abl $ch $snap $cl)
    (let* (($members (acs-member-set $g (fired-rules $ws)))
           ($toks (members-tokens $members))
-          ($ci (causal-influence? $ws $abl $ch $snap $members)))
+          ($ci (causal-influence? $ws $abl $ch $snap $members))
+          ($rif (do-inf-facts (member-do-influences $ws $abl $ch $snap $cl $members))))
      (concat-lists (member-facts $A $members)
        (concat-lists (motif-facts $A (acs-motifs $g $members))
          (concat-lists (closure-facts $A $members)
            (cons-atom (acs-autocatalytic $A (autocatalytic? $g $members))
              (concat-lists (surplus-facts $A $ws $members $cl $toks)
                (cons-atom (acs-causal-influence $A $ci)
-                 (cons-atom (acs-recurrent $A (recurrent? $ws $members (recurrence-min))) ())))))))))
+                 (cons-atom (acs-recurrent $A (recurrent? $ws $members (recurrence-min)))
+                   $rif)))))))))
 
 ; --- the acs-scan WORKER body (worker-kind `acs-scan`): the whole certification as a §6.4
 ; worker. Its run space $ws is populated by a prior context-chamber worker; run-as CONSUMES
