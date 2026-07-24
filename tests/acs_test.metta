@@ -6,13 +6,14 @@
 ; One chamber run (seed tr=1 so R_trans fires once) supplies the event log + derived layer.
 ; The miner keys the graph on the MOTIF — a rule's whole reactant/product PATTERN (composite,
 ; shared vars kept), matched producer→reactant by UNIFICATION. The set is FOOD-FED: the minting
-; edge is FOOD, not closure, so V3 gets NO acs-closure fact — a subsidized candidate (R_so/
-; R_result are feed-forward cue-converters; only R_trans is endo-cyclic), its subsidy read off
-; as surplus-but-no-closure. Membership + closure are clamp-independent;
-; only PROMOTION flips — CL_deep surplus (sm +1, tr +1) → promoted; CL_shallow
-; (sm +1, tr −1) → the tr component fails condition 3 → rejected. Food = the cues (R_so/
-; R_result consume So/AsAResult, which no rule produces), so {R_trans} alone is not food-
-; generated and the whole loop is the ACS. Condition 4 (causal influence) is a REPLAY
+; edge is FOOD, not closure, so V3 gets NO acs-closure fact — a subsidized candidate. R_so/
+; R_result are feed-forward cue-converters; R_trans is endo-cyclic but its two-ReasonFor premise
+; is not injectively covered once the converters peel away, so the CLOSED component is EMPTY and
+; the member set falls back to the food-fed candidate — its subsidy read off as surplus-but-no-
+; closure. Membership + closure are clamp-independent; only the metabolic SURPLUS flips — CL_deep
+; (sm +1, tr +1) is viable; CL_shallow (sm +1, tr −1) fails condition 3 on the tr component. Food
+; = the cues (R_so/R_result consume So/AsAResult, which no rule produces). Condition 4 (causal
+; influence) is a REPLAY
 ; ablation: re-derive with the members suppressed in an isolated space → the 2 answers drop
 ; to 0 (the negative control — suppress nothing — re-derives the full 2, so it does not drop).
 ; The verdict names both M_A (the cycle's motif species — the single ReasonFor motif AND the
@@ -82,6 +83,22 @@
 !(test (structurally-closed? (R_ring1 R_ring2)) True)                         ; mutual regeneration
 !(test (closure-kind (R_ring1 R_ring2)) substrate)                           ; substrate-level closure
 !(test (closure-facts AX (R_ring1 R_ring2)) ((acs-closure AX substrate)))    ; closed ⇒ the acs-closure fact IS emitted
+
+; --- #2 SUBSET-MINING: the ENDO-COMPONENT is the closed self-recreating subnetwork. Closure now
+; needs endo-cyclic AND injective non-food-premise coverage, so the contracting self-loop
+; {R_trans} (two ReasonFor in, one out) is NOT a closed singleton: the candidate set's several
+; ReasonFor producers cover it, but once the feed-forward converters peel away it stands alone
+; with one producer for a two-ReasonFor premise and fails. V3 thus has an EMPTY closed component
+; ⇒ acs-member-set falls back to the food-fed candidate network (the subsidized story is kept). ---
+!(test (injective-covered? R_trans (fired-rules &self)) True)                ; candidate set: 3 ReasonFor producers cover it
+!(test (injective-covered? R_trans (R_trans)) False)                        ; alone: 2 ReasonFor premise, 1 producer
+!(test (endo-satisfied? R_trans (R_trans)) False)                           ; on a cycle, but not injectively covered
+!(test (structurally-closed? (R_trans)) False)                              ; ⇒ the lone self-loop is not closed
+!(test (endo-component (fired-rules &self)) ())                             ; V3 peels to an EMPTY closed component
+!(test (msort (acs-member-set &g (fired-rules &self))) (R_result R_so R_trans))  ; ⇒ fall back to the candidate network
+; a genuine 2-rule ring IS its own closed component (each 1-clause premise met by a distinct producer)
+!(test (injective-covered? R_ring1 (R_ring1 R_ring2)) True)
+!(test (msort (endo-component (R_ring1 R_ring2))) (R_ring1 R_ring2))
 
 ; --- per-token surplus (eq 19), componentwise; only the tr component flips with the clamp ---
 !(test (token-surplus &self (acs-members &g (fired-rules &self)) CL_deep sm) 1)     ; income 4 − spend 3

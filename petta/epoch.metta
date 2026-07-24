@@ -26,12 +26,6 @@
 ; §4.6). Molecules = the given environment (re-supplied); the derived edges = the organism's
 ; own products, not kept for free.
 
-; a relation declared `(persistent R)` (in &self) is a PERSISTENT molecule: its derived
-; edges survive decay even though their ids are compound. No such fact is declared for
-; classic V3, so decay there is unchanged.
-(= (persistent-rel? $r)
-   (case (collapse (match &self (persistent $r) $r)) ((() False) ($x True))))
-
 ; the derived (compound-id) explanatory edges in $ws to forget, across relation arities
 ; (unary / binary / ternary — the arities the grounder handles): any sem-edge with a
 ; derived id whose relation is NOT persistent

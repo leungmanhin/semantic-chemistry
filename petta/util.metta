@@ -22,6 +22,11 @@
    (case $a ((() $b)
              ($ne (cons-atom (car-atom $a) (concat-lists (cdr-atom $a) $b))))))
 
+; remove the FIRST occurrence of $x from list $l (leaving any later duplicates)
+(= (remove-one $x $l)
+   (case $l ((() ())
+             ($ne (if (== (car-atom $l) $x) (cdr-atom $l) (cons-atom (car-atom $l) (remove-one $x (cdr-atom $l))))))))
+
 ; the length of list $l
 (= (len $l) (if (== $l ()) 0 (+ 1 (len (cdr-atom $l)))))
 
@@ -50,3 +55,9 @@
 ; is $id a DERIVED edge-id? The parser mints ATOMIC ids (Symbol); the genome mints compound
 ; provenance ids like (norm e) / (trans e1 e2) (Expression), so a compound id marks a product.
 (= (derived-id? $id) (== (get-metatype $id) Expression))
+
+; a relation declared `(persistent R)` (in &self) is a PERSISTENT molecule: its derived edges
+; are decay-exempt (they carry across cycles) and count as a self-sustaining anchor for closure.
+; Shared by decay (epoch) and the ACS self-sustains guard (acs). No such fact for classic V3.
+(= (persistent-rel? $r)
+   (case (collapse (match &self (persistent $r) $r)) ((() False) ($x True))))
