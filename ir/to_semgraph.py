@@ -9,14 +9,14 @@ Faithful reshaping (nothing dropped, nothing flattened, nothing invented):
 Edge-reference de-duplication: if a nested ARGUMENT atom (Rel a b) is identical to an
 existing standalone statement in the same graph, the argument is replaced by that
 statement's id (an edge reference), so every relation is a sem-edge and arguments are
-nodes OR edge-ids -- never an embedded relation literal. This dedups e.g. V23's
+nodes OR edge-ids -- never an embedded relation literal. This dedups e.g. a nested
 (Past (Member sk_cake_1 dense)) -> (Past e_cake_dense_flat).
 
 Statement-level (And op1 op2 ...) compounds are DECOMPOSED: each operand becomes a
 standalone TV-LESS sem-edge (id {sid}_cK, or a reference to an identical existing edge),
 and the And edge holds the operand ids. Operands carry no TV because the And is the sole
-truth-bearer (e.g. V17's spread-conjunction at strength 0.0 -- asserting operand TVs would
-assert the non-event's parts as true). Other compounds (V20's (Implication ...)) stay
+truth-bearer (e.g. a negated conjunction at strength 0.0 -- asserting operand TVs would
+assert the non-event's parts as true). Other compounds ((Implication ...)) stay
 verbatim -- Implication is promoted to the sem-rule schema when the rules layer lands.
 
 Questions: each query pattern (And c1 c2 ...) -> an answer-skeleton sem-graph (conjuncts as

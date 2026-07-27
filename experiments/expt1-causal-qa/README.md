@@ -1,43 +1,30 @@
 # Experiment 1 — Toy Causal-QA Corpus
 
-The **first build target** for Mortal Semantic Chemistry (MSC §7.1): short everyday-causal texts + why/how questions, scored by an evaluator that derives the target answer from the graph. This corpus anchors stages **P0 → P2**, ahead of the larger fiction corpus (Experiment 2).
+The **first build target** for Mortal Semantic Chemistry (MSC §7.1): a short everyday-causal text + why-questions, answered by grounding a variable-bearing skeleton against a graph the genome derives. This corpus anchors stages **P0 → P2**, ahead of the larger fiction corpus (Experiment 2).
 
-## Why this corpus is small (~24 vignettes, ~58 sentences)
+## Why the corpus is one vignette
 
-Deliberate. MSC's §10.2 "1k–10k sentences" guidance is for the fiction-world domain (Aelmere already satisfies it). Exp 1 is the *simplest end-to-end causal-accountability test* (hard prohibition #8: start small + inspectable). The corpus is **dense, not large** — nearly every sentence carries an explanatory edge that some question interrogates.
+Deliberate. MSC's §10.2 "1k–10k sentences" guidance is for the fiction-world domain (Aelmere already satisfies it). Exp 1 is the *simplest end-to-end causal-accountability test* (hard prohibition #8: start small + inspectable), so it carries the single vignette **V3** — a two-hop causal chain dense enough to exercise every mechanism in the stack: cue normalization, chaining, achievement-typed minting, the metabolic epoch loop, ACS certification, and control-level closure.
 
 ## What's in a vignette
 
-A 2–4 sentence text + a **Neo-Davidsonian** semantic graph (events reified, roles as edges, explanatory edges on top) + one or more questions. The 5 encoded graphs are produced by the semantic parser over `corpus.json` and adapted to IR (`../../ir/parser_adapter.md`); the 19 pending are hand-authored designs (Appendix). The evaluator derives the ideal answer (`Y*_q`) from the graph, so **no gold answer content is stored**.
+A text + a **Neo-Davidsonian** semantic graph (events reified, roles as edges) + one or more questions. The graph is produced by the semantic parser over `corpus.json` and reshaped to §10.1 sem-graph IR by `../../ir/to_semgraph.py`. The evaluator derives the answer by grounding, so **no gold answer content is stored**.
+
+V3 is *"The power went out during the storm, so the fridge stopped running, and as a result the food had spoiled by morning."* — two discourse cues (`So`, `AsAResult`) over three events, which the genome normalizes into a `ReasonFor` chain.
 
 ## Surface-marked text
 
-The vignette texts in `corpus.json` make their causation **explicit** with discourse connectives (`so` / `because` / purpose `to …` / `stopped/kept … from` / `despite`), so the semantic parser can extract the causal edges directly rather than infer them. The three co-occurrence negatives (V20–V22) are deliberately left **cue-free** (→ correct abstention), and V19 keeps its concessive `despite` (a trap, never an answer). Natural connectives carry **class-level** fidelity: a finer edge (`Trigger`, `Enable`) may surface as `CauseOf` / `Motivate`, but the answer *class* (physical / intentional / concession) — what the clamp-switch selects on — is preserved.
+The vignette text makes its causation **explicit** with discourse connectives (`so` / `as a result`), so the parser extracts the *cue* directly rather than inferring a causal relation. That split is load-bearing: the parser emits **surface** cues only, and the **derivation genome** (`rules.metta`) is the interpretive theory that turns them into the normalized `ReasonFor` layer the questions query. What the parser asserts and what the system concludes stay separable — which is what makes the genome selectable, ablatable, and chargeable for fuel.
 
-## Explanatory-edge vocabulary (8 edges, 3 clusters)
+## Questions
 
-| Cluster | Edges | Answer class |
-|---------|-------|--------------|
-| **physical** | `CauseOf` `Trigger` `Enable` `Contribute` `Prevent` | `physical-cause` |
-| **concession** | `Despite` | — (never an answer; trap material) |
-| **intentional** | `Motivate` `Reason` | `intentional` |
+The parser maps each question to a variable-bearing **answer-skeleton** whose sought relation is the normal form `ReasonFor`. A question licenses ONE `ReasonFor` (hop-count is graph knowledge the asker doesn't have); the surface text is kept in `question-surface`. **Answer plurality and depth come from the genome, never from the query shape** — V3's *"Why did the food spoil?"* grounds two ways (the proximate cause and, via `R_trans`, the root cause), with the mechanism chain recoverable from the root answer's `(trans …)` provenance id.
 
-The clusters double as the answer-classes a **clamp** selects (see below).
+## The clamp-switch
 
-## Question types (pass 1)
+A **clamp** is the evaluator's reward regime (MSC §4.4): it maps a grounding's *achievements* to the typed fuel they mint (`(clamp-mint CL achievement tok n)`). Both clamps here pay a `skeleton-match` in `sm`; only `CL_deep` additionally pays a `transitive-explanation` in `tr` — the token `R_trans` must spend to chain. So the same corpus and chamber, with the clamp swapped, select different survivors: under `CL_deep` the chaining organism `O_chain` runs a `tr` surplus and both answers persist; under `CL_shallow` it earns no `tr`, starves, and the root answer disappears. Reward selects strategy, demonstrated at P1/P2 with no reproduction (P3) needed.
 
-`antecedent-why`, `how-mechanism` (multi-hop chains), `goal-why`, `belief-why`, `why-not`, `concession-why`. The parser maps each question to a variable-bearing **answer-skeleton** whose sought relation is the normal form `ReasonFor` (why/how) or `PurposeOf` (what-for); a why-not question pins the skeleton's TV to `(STV 0.0 $conf)`. A question licenses ONE `ReasonFor` (hop-count is graph knowledge the asker doesn't have). The surface text is kept in `question-surface`; answer plurality and depth come from the genome (`R_trans`), with the mechanism chain recoverable from a root answer's trans-id provenance.
-
-## The clamp-switch experiment (Package B)
-
-Texts carry **both** an antecedent and (for agent actions) a goal, so an ambiguous `"why?"` focus carries two explanatory edges — a physical `CauseOf` and an intentional `Motivate`. A **clamp** (the evaluator's reward, MSC §4.4 / eq 17) selects which class earns fuel:
-
-- under `clamp-antecedent` → the antecedent-extraction strategy earns surplus and survives; the goal strategy starves;
-- under `clamp-goal` → the reverse.
-
-Same corpus + chamber, **swap the clamp → a different surviving strategy-ACS**. That is the purest demonstration of the core thesis (reward selects strategy), reachable at P1/P2 with no reproduction (P3) needed. A single-class question (only one allowed-class edge into its focus) earns only under its matching clamp and correctly **abstains** under the other (its graph-ideal is empty there); concessive `Despite` (off-class) and the co-occurrence-only negative vignettes are traps: a fabricated or off-class cite grounds no on-ideal edge (so it earns no Match), and a focus whose graph-ideal is empty correctly **abstains**. (Minting is currently **Match-only**)
-
-> **Clamp representation caveat:** MSC specifies clamps *functionally* (eq 17 + typed-token output + chamber-locality) but gives **no IR data shape**; clamp facts land with the economy stages of the pipeline.
+> **Clamp representation caveat:** MSC specifies clamps *functionally* (eq 17 + typed-token output + chamber-locality) but gives **no IR data shape**; the `clamp-mint` facts are ours.
 
 ## Files
 
@@ -45,16 +32,32 @@ This directory is **data only** — pure portable facts loaded by `import!`. The
 
 | File | What |
 |------|------|
-| `corpus.json` | the 24 vignette texts + questions as structured JSON (`id` / `statements` / `questions` / `additional_info`) — the **input tier** (surface-marked parse target, parser-loadable) |
-| `corpus_parsed.json` | the semantic parser's output over `corpus.json` — all 24 vignettes as PLN proof atoms (`(: id (Rel args) (STV s c))`), **surface level** (discourse cues, no causal relations) + variable-bearing `queries` per question (normal form: `ReasonFor`/`PurposeOf`) |
-| `molecules.metta` | pure-fact IR: the parser-derived semantic graphs in **§10.1 sem-graph form** (`sem-edge`/`sem-edge-tv`; variable-arity, edge-ref dedup, `And` decomposed with TV-less operands) — generated from `corpus_parsed.json` by `../../ir/to_semgraph.py` (currently V3) |
+| `corpus.json` | the vignette text + questions as structured JSON (`id` / `sentences` / `questions` / `additional_info`) — the **input tier** (surface-marked parse target, parser-loadable) |
+| `corpus_parsed.json` | the semantic parser's output over `corpus.json` — the vignette as PLN proof atoms (`(: id (Rel args) (STV s c))`), **surface level** (discourse cues, no causal relations) + a variable-bearing `queries` entry per question (normal form: `ReasonFor`) |
+| `molecules.metta` | pure-fact IR: the parser-derived semantic graph in **§10.1 sem-graph form** (`sem-edge`/`sem-edge-tv`; variable-arity, edge-ref dedup, `And` decomposed with TV-less operands) — generated from `corpus_parsed.json` by `../../ir/to_semgraph.py` |
 | `tasks.metta` | pure-fact IR: the **QA benchmark** — questions + their `answer-skeleton` sem-graphs (the parser's variable-bearing queries; the query TV kept as `answer-skeleton-tv`); no gold answer content — answering = grounding a skeleton against the derived graph |
 | `configs.metta` | pure-fact IR: the Exp-1 **run config** — the chamber, the two mortal organisms (`O_base` owns the cue-normalizers `R_so`/`R_result`; `O_chain` owns the transitive chainer `R_trans` and starves under `CL_shallow`), the **clamps** (`CL_shallow`/`CL_deep`: `(clamp-mint CL achievement tok n)` — which achievement mints which typed fuel), and the shared fuel **snapshot** `SNAP_qa` (the canonical one-chamber-run endowment each worker restores; MSC §6.4). Worker *instances* are declared by their runners (the test exercising each kind), not here. |
 | `rules.metta` | pure-fact IR: **the derivation genome** — cue-normalization rules (`R_so`/`R_result` ⊢ `ReasonFor`, `R_trans` chains derived edges) as canonical per-match `rule-lhs`/`rule-rhs` IR with `(var Name)` markers |
 | `load.metta` | the **data loader** — imports molecules + tasks + configs + rules into `&self` (PeTTa side) |
-| `README.md` | this file (+ the hand-authored-graph **Appendix** below) |
+| `control-rules.metta` | pure-fact IR: **the control genome** — the same derivation, re-expressed as a loop that sustains its own activation (see *Control-level closure* below). The substrate rules (`R_so_rf`/`R_result_rf`/`R_trans_rf`) are gated on an internal `Primed` state; `R_worked`/`R_learn`/`R_prime` turn a successful derivation back into it; `R_detect`/`R_explore` convert an arriving question into the first `Primed` out of the `ex` endowment |
+| `control-tasks.metta` | pure-fact IR: what the parser emits for the control genome — a `WhyQuestion` question-type marker per question (the genome's food) + a second, one-hop question over the same molecules, so the strategy is exercised across a stream. **The molecule shapes are unchanged** |
+| `control-configs.metta` | pure-fact IR: the control **run config** — the `ctrlg` control graph, `CH_ctrl`, the single organism `O_ctrl` owning all 8 rules, the clamp `CL_ctrl`, the snapshot `SNAP_ctrl` (incl. the one-off `ex`), plus the two relation-level declarations the engine reads: `(persistent Habit)` and `(control-relation …)` |
+| `control-load.metta` | the **control data loader** — molecules + tasks + the control tier; deliberately *not* the substrate genome/config (that chamber's context and question set stay separate) |
+| `README.md` | this file |
 
-The IR encodes a representative slice — V7 (dual), V3 (mechanism), V17 (why-not), V20 (abstain), V23 (multi-cause) — enough to exercise every fact shape (`../../ir/schema.md` §2.7–2.8). The remaining **19 vignettes' hand-authored graphs are preserved in the Appendix** below; they get transcribed into `molecules.metta` / `tasks.metta` as the chamber scales to the full corpus.
+Regenerate the IR from the parse with `python3 ../../ir/to_semgraph.py corpus_parsed.json V3 mol` (and `… task` for the answer-skeletons).
+
+## Control-level closure
+
+A why-question's semantic content flows from question to answer and does not reconstruct the question, so a small QA example closes more naturally at the **control** level than the substrate level: the reusable thing is the inference-control pattern that recurs across many questions of the same type. `control-rules.metta` builds that loop — the substrate rules fire only while the strategy is `Primed`, and a successful derivation feeds back through
+
+```
+Primed -> ReasonFor -> Worked -> Habit -> Primed
+```
+
+so the loop regenerates control motifs *and* a semantic one — **hybrid** closure. Two rules stay outside it: `R_detect` turns an arriving `WhyQuestion` into an attempt, and `R_explore` spends a one-off `ex` **exploration endowment** to prime the strategy cold. Nothing mints `ex`, so after the first cycle `R_explore` falls silent and `Primed` can only come from the habit — which `(persistent Habit)` carries across the between-cycle decay. From there the ring is the strategy's only life support: it keeps answering while running a positive surplus, and ablating its single closing edge `R_prime` leaves cycle 1 intact but collapses cycle 2 to zero answers.
+
+Two things this does **not** need: any change to the molecule shapes (the parser's substrate output is untouched — only a question-type marker is added), and any new node kind for control state (the control motifs are ordinary `sem-edge`s on the `ctrlg` graph, which is not `neo-davidsonian` and so never grounds an answer).
 
 ## Chamber
 
@@ -64,148 +67,3 @@ The Exp-1 chamber is **K-like** on the life-history simplex (MSC §4.6: "stable 
 
 - **The genome** — `rules.metta` here: the **derivation genome**, the interpretive theory that normalizes the parser's surface cues into the explanatory layer the questions query (`R_so`/`R_result`: cue ⊢ `ReasonFor`; `R_trans`: chains **derived** `ReasonFor` edges — a rule feeding on rules' products), as **canonical per-match `rule-lhs`/`rule-rhs` IR** with `(var Name)` markers. Products carry provenance-bearing ids (`(norm E)`/`(trans E1 E2)`). Tokens: `sm` = skeleton-match fuel (`tau_graph_match`), `tr` = transitive-explanation fuel (see `../../ir/schema.md` §1).
 - **The engine + solve code** — `../../petta/` : the engine (`util`/`fuel`/`compiler`/`gate`/`reaction`), the grounder (`grounder.metta`), and the evaluator (`evaluator.metta`). This dir is the *data* they operate on.
-
-## Notation legend (for the Appendix graphs)
-
-- **nodes:** `id=Type[role:filler, …]`. A trailing `·intended` / `·prevented` marks `node-modal` (a goal/purpose state, or a blocked non-event).
-- **edges:** `Rel(src→dst)` from the 8-edge vocabulary (clusters in the table above).
-- **questions:** `Q <q-word> "surface text"` → its intended answer(s).
-- **intended answer** (what the graph-derived evaluator should score highest): `⟨phys⟩` / `⟨int⟩` = answer class; `cite Rel(a→b)` = the explanatory edge a correct answer cites; `prov n` = provenance node; `+` joins multiple required cites (multi-cause / mechanism chains); `ABSTAIN` = correct abstention (the focus has no groundable explanatory edge — an empty ideal).
-- Two answers (one per class) = *ambiguous-dual* (the clamp-switch material): the focus carries both a physical and an intentional edge. A single-class question earns only under its matching clamp and abstains under the other. `Despite` is never an answer class (trap material).
-
-## Coverage (all 24)
-
-| Aspect | Vignettes |
-|--------|-----------|
-| antecedent-why `⟨phys⟩` | V1,V2,V3,V5,V7–V13 |
-| how-mechanism (multi-hop) | V3, V6 |
-| proximate `Trigger` | V4 |
-| goal-why `⟨int⟩` (Motivate) | V7–V13, V15 |
-| belief `Reason` | V14, V16 |
-| ambiguous-dual (clamp-switch core) | V7–V13 |
-| why-not `Prevent` (`·prevented`) | V17, V18 |
-| concession `Despite` (trap) | V19 |
-| unsupported-bridge → abstain | V20, V21, V22 |
-| multi-cause `Contribute` (coverage — both required) | V23, V24 |
-
-24 vignettes · ~58 sentences · 5 negatives (21%). All 8 edges + both `node-modal` values exercised. **5 are encoded as IR** (V3, V7, V17, V20, V23 → `molecules.metta` / `tasks.metta`); the other **19 are below**.
-
-## Appendix — hand-authored graphs (19 vignettes pending IR encoding)
-
-The Neo-Davidsonian graphs + intended answers for the vignettes **not yet** in `molecules.metta` / `tasks.metta` (the 5 encoded ones are authoritative there). Transcribe these into the IR as the corpus scales to the full Experiment 1. Raw texts for all 24 are in `corpus.json`; notation per the legend above.
-
-**V1 · rain-flood**
-"Heavy rain fell all night. By morning the low road was flooded."
-nodes: e1=Rain, e2=Flood[theme:road]
-edges: CauseOf(e1→e2)
-Q why "Why was the low road flooded?" → ⟨phys⟩ cite CauseOf(e1→e2) prov e1
-
-**V2 · early-frost**
-"An early frost settled over the garden. The tomato plants blackened and died."
-nodes: e1=Frost, e2=Die[theme:plants]
-edges: CauseOf(e1→e2)
-Q why "Why did the tomato plants die?" → ⟨phys⟩ cite CauseOf(e1→e2) prov e1
-
-**V4 · dropped-glass**
-"The waiter knocked the glass off the edge. It hit the tiles and shattered."
-nodes: e1=Knock[agent:waiter,theme:glass], e2=Shatter[theme:glass]
-edges: Trigger(e1→e2)
-Q what-made "What made the glass shatter?" → ⟨phys⟩ cite Trigger(e1→e2) prov e1
-
-**V5 · snow-roof**
-"Snow piled up for days on the old barn. The roof finally collapsed under the weight."
-nodes: e1=SnowLoad[theme:roof], e2=Collapse[theme:roof]
-edges: CauseOf(e1→e2)
-Q why "Why did the barn roof collapse?" → ⟨phys⟩ cite CauseOf(e1→e2) prov e1
-
-**V6 · drought-restrictions**
-"A long drought dried the hills. The reservoir fell to a record low, so the town brought in water restrictions."
-nodes: e1=Drought, e2=ReservoirLow, e3=WaterRestrictions
-edges: CauseOf(e1→e2), CauseOf(e2→e3)
-Q how "How did the town end up with water restrictions?" → ⟨phys⟩ cite CauseOf(e1→e2)+CauseOf(e2→e3) prov e1+e3
-
-**V8 · dead-battery**
-"Tom's phone battery was dead. He walked to a café to charge it."
-nodes: e1=DeadBattery[poss:tom], e2=WalkTo[agent:tom,dest:cafe], e3=Charge[agent:tom,theme:phone]·intended, g1=PhoneCharged·intended
-edges: CauseOf(e1→e2), Motivate(g1→e2), Enable(e2→e3)
-Q why "Why did Tom walk to a café?" → ⟨phys⟩ cite CauseOf(e1→e2) prov e1 · ⟨int⟩ cite Motivate(g1→e2) prov g1
-
-**V9 · cold-room**
-"Lena was cold. She got up and closed the window to warm the room."
-nodes: e1=Cold[exp:lena], e2=Close[agent:lena,theme:window], g1=WarmRoom·intended
-edges: CauseOf(e1→e2), Motivate(g1→e2)
-Q why "Why did Lena close the window?" → ⟨phys⟩ cite CauseOf(e1→e2) prov e1 · ⟨int⟩ cite Motivate(g1→e2) prov g1
-
-**V10 · hungry**
-"Sam was hungry after the run. He made a sandwich to eat before work."
-nodes: e1=Hungry[exp:sam], e2=Make[agent:sam,theme:sandwich], g1=Eat·intended
-edges: CauseOf(e1→e2), Motivate(g1→e2)
-Q why "Why did Sam make a sandwich?" → ⟨phys⟩ cite CauseOf(e1→e2) prov e1 · ⟨int⟩ cite Motivate(g1→e2) prov g1
-
-**V11 · wilting-plants**
-"Priya's basil was wilting on the sill. She watered it to bring it back."
-nodes: e1=Wilting[theme:basil], e2=Water[agent:priya,theme:basil], g1=Revive·intended
-edges: CauseOf(e1→e2), Motivate(g1→e2)
-Q why "Why did Priya water the basil?" → ⟨phys⟩ cite CauseOf(e1→e2) prov e1 · ⟨int⟩ cite Motivate(g1→e2) prov g1
-
-**V12 · missed-bus**
-"Raj missed the morning bus. He called a taxi to get to work on time."
-nodes: e1=MissedBus[exp:raj], e2=CallTaxi[agent:raj], g1=ReachWork·intended
-edges: CauseOf(e1→e2), Motivate(g1→e2)
-Q why "Why did Raj call a taxi?" → ⟨phys⟩ cite CauseOf(e1→e2) prov e1 · ⟨int⟩ cite Motivate(g1→e2) prov g1
-Q what-for "What did Raj call a taxi for?" → ⟨int⟩ cite Motivate(g1→e2) prov g1
-
-**V13 · cracked-screen**
-"Nadia's laptop screen was cracked. She took it to the repair shop to have it fixed."
-nodes: e1=Cracked[theme:screen,poss:nadia], e2=TakeTo[agent:nadia,theme:laptop,dest:shop], g1=Fixed·intended
-edges: CauseOf(e1→e2), Motivate(g1→e2)
-Q why "Why did Nadia take her laptop to the repair shop?" → ⟨phys⟩ cite CauseOf(e1→e2) prov e1 · ⟨int⟩ cite Motivate(g1→e2) prov g1
-
-**V14 · umbrella-belief**
-"Omar thought it would rain later, so he took an umbrella when he left."
-nodes: b1=BelieveRain[exp:omar], e1=Take[agent:omar,theme:umbrella]
-edges: Reason(b1→e1)
-Q why "Why did Omar take an umbrella?" → ⟨int⟩ cite Reason(b1→e1) prov b1
-
-**V15 · surprise-cake**
-"Ella wanted to surprise her sister. She baked a cake before the party."
-nodes: g1=SurpriseSister·intended, e1=Bake[agent:ella,theme:cake]
-edges: Motivate(g1→e1)
-Q why "Why did Ella bake a cake?" → ⟨int⟩ cite Motivate(g1→e1) prov g1
-
-**V16 · long-path-belief**
-"The hikers believed the rope bridge was unsafe, so they took the long path around."
-nodes: b1=BelieveUnsafe[exp:hikers], e1=Take[agent:hikers,theme:longpath]
-edges: Reason(b1→e1)
-Q why "Why did the hikers take the long path?" → ⟨int⟩ cite Reason(b1→e1) prov b1
-
-**V18 · covered-plants**
-"A hard frost was forecast, but the gardener covered the seedlings overnight, and they did not freeze."
-nodes: e1=FrostForecast, e2=Freeze[theme:seedlings]·prevented, e3=Cover[agent:gardener,theme:seedlings]
-edges: Prevent(e3→e2)
-Q why-not "Why didn't the seedlings freeze?" → ⟨phys⟩ cite Prevent(e3→e2) prov e3
-
-**V19 · rain-match**
-"Despite the heavy rain, the match went ahead, because the pitch drained well."
-nodes: e1=Rain, e2=MatchContinued, e3=GoodDrainage[theme:pitch]
-edges: Despite(e1→e2), Enable(e3→e2)
-Q why "Why did the match go ahead despite the rain?" → ⟨phys⟩ cite Enable(e3→e2) prov e3
-  (a candidate citing Despite(e1→e2) — "because of the rain" — is wrong: concessive, not causal.)
-
-**V21 · black-cat**
-"A black cat crossed the road in the morning. That afternoon, Dan's car broke down."
-nodes: e1=CatCrossed, e2=Breakdown[theme:car,poss:dan]
-edges: *(none — temporal co-occurrence only)*
-Q why "Why did Dan's car break down?" → ABSTAIN
-
-**V22 · clock-dog**
-"The clock struck noon. The dog began to bark."
-nodes: e1=ClockNoon, e2=Bark[agent:dog]
-edges: *(none — co-occurrence only)*
-Q why "Why did the dog start barking?" → ABSTAIN
-
-**V24 · river-flood**
-"The river flooded the valley. Heavy rain had fallen for days, and the dam's gates had been left open."
-nodes: e1=Flood[theme:valley], c1=HeavyRain, c2=GatesOpen[theme:dam]
-edges: Contribute(c1→e1), Contribute(c2→e1)
-Q why "Why did the river flood the valley?" → ⟨phys⟩ cite Contribute(c1→e1)+Contribute(c2→e1) prov c1+c2

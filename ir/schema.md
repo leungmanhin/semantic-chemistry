@@ -22,16 +22,18 @@ The facts below are the canonical IR. They are stored as **bare portable S-expre
 
 ### 2.1 Semantic graphs (the "molecules")
 
-A semantic graph is a set of typed nodes and binary relations, in the parser's generic shape: a node is scoped to its graph and typed by `Member`; roles and explanatory links are binary relations with the relation as head.
+A semantic graph is a set of identified, variable-arity **edges** (§10.1 sem-graph form). Every relation — thematic roles, tense/aspect, discourse cues, derived explanatory links — is one `sem-edge` carrying its own id, so any edge can be cited, given a truth value, or named as another edge's argument.
 
 | Fact | Meaning |
 |------|---------|
-| `(node-graph G N)` | Node `N` belongs to graph `G`. Scopes the node; node ids are **globally unique** across graphs, so an id-less edge stays unambiguous. |
-| `(Member N lemma)` | Node `N`'s type/class — a lowercase lemma (e.g. `drive`, `out_of_milk`). A node may carry ≥1. |
-| `(Rel Nsrc Ndst)` | A **binary relation**, relation as head — both **role** edges (`Agent`, `Patient`, `Experiencer`, `Theme`, `Destination`) and **explanatory** edges (`CauseOf`, `Trigger`, `Enable`, `Contribute`, `Prevent`, `Motivate`, `Reason`, `Despite`). An edge has no id; it is identified by its `(Rel Src Dst)` triple. |
-| `(node-modal N m)` | Modality marker: `m ∈ {intended, prevented}`. `intended` = a goal/purpose state or event not (yet) realized in the text (the source of a `Motivate` edge); `prevented` = an event that did *not* occur because something blocked it (the target of a `Prevent` edge). Unmarked nodes are realized/actual. |
+| `(sem-graph G)` | Declares graph `G`. |
+| `(sem-graph-kind G kind)` | What `G` is: `neo-davidsonian` (a molecule graph — the parser's event graph) \| `answer-skeleton` (a variable-bearing query, §2.7) \| `control` (internally-generated control state, never grounded against). |
+| `(sem-edge G E Rel arg…)` | An edge of graph `G` with id `E`, relation head `Rel`, and **variable arity** — `(sem-edge G e Past ev)` unary, `(sem-edge G e Member n lemma)` binary, and so on. An argument is a node symbol, a literal, another edge's id (edge reference), or a `(var Name)` marker in a skeleton. |
+| `(sem-edge-tv G E tv)` | Edge `E`'s truth value, kept as the parser emits it (e.g. `(STV 1.0 0.99)`). Separate from the edge so a TV-less edge is representable — an `And` decomposition gives its operands no TV, since the `And` is the sole truth-bearer. |
 
-> **Stability note:** the *internal* node/relation vocabulary (`drive`, `Theme`, Neo-Davidsonian event reification, …) tracks the LLM parser's output style. The *fact shapes* — graph scoping via `node-graph`, typing via `Member`, and binary `(Rel Src Dst)` relations — are the **backend-neutral** contract any executor reads; no PeTTaChainer-specific convention (e.g. per-atom STV) is load-bearing in the kernel.
+> **Edge ids carry provenance.** A parser-minted id is **atomic** (`v3_conn1`); a genome-derived product's id is a **compound** whose head names the deriving step and whose arguments are the premise ids (`(norm v3_conn1)`, `(trans e1 e2)`). That one convention lets the executor tell a given molecule from a derived product structurally — which is how decay knows what to forget, how a worker knows what to copy, and how the evaluator reads derivation depth — with no id vocabulary named anywhere in the engine.
+
+> **Stability note:** the *internal* relation vocabulary (`Member`, `Patient`, `So`, `ReasonFor`, …) tracks the parser's output style and the genome's interpretive theory. The *fact shapes* — `sem-graph`/`sem-graph-kind`/`sem-edge`/`sem-edge-tv`, with ids on edges and arity left open — are the **backend-neutral** contract any executor reads.
 
 ### 2.2 Rules (the "reactions")
 
@@ -46,7 +48,7 @@ A rule is the fuel-aware form `C ^ G1 ^ HasFuel(O,R) ==> G2 ^ ConsumeFuel(O,R) ^
 | `(rule-tv R intensional-implication s c)` | The rule's PLN intensional-implication strength `s_C(G1,G2)` + confidence. |
 | `(rule-token-cost R token-type n)` | One component of the cost vector `κ_R` — firing consumes `n` of `token-type`. **One fact per token type**; absent type ⇒ cost 0. |
 
-> **Rule form — canonical `rule-lhs`/`rule-rhs`, per-match.** The rules ARE the `rule-lhs`/`rule-rhs` facts above, stored in **per-match `C ^ G1 ==> G2`** form (MSC §4.3 eq 12–16: one firing per match θ, `X' = X ⊕ θ(G2)` set-union). The shapes are richer than a bare node/edge pattern: a clause is `(at SPACE PAT)` (`SPACE ∈ {self, ws}`; bare `PAT` = `at self`) and a variable is the inline data marker `(var Name)`. So `(rule-lhs R (clauses…))` is the conjunctive match (`C ^ G1`) and `(rule-rhs R (prods…))` is the products (`G2`). The engine (`petta/kernel.metta`) holds a **converter** that, at genome-expression time, mints co-referent PeTTa match-vars from the `(var Name)` markers and assembles each rule into a one-atom **runnable** view `(crule R KEY CLAUSES COST PRODS)` — an engine-internal compiled form, NOT the source of truth (it is one atom there only because per-atom variable co-reference requires it). What is deliberately **not** in a rule: **negation** is precomputed as positive vocabulary (e.g. `role-relation`, the non-causal complement) or handled by the evaluator (**abstain is no soma rule** — the alignment rule simply doesn't match, and the evaluator scores the absence); **aggregation** lives in the evaluator's set-based scoring (cites accumulate as separate facts), not in the rule. `rule-context`/`rule-priority`/`rule-token-cost`/`rule-tv` are separate annotations on `R`. **Compliance:** a future MeTTa-IL backend reads these same `rule-lhs`/`rule-rhs` facts. *(The four Exp-1 rules — `R_qtype`/`R_align`/`R_complete`/`R_project` — are in `experiments/expt1-causal-qa/rules.metta`.)*
+> **Rule form — canonical `rule-lhs`/`rule-rhs`, per-match.** The rules ARE the `rule-lhs`/`rule-rhs` facts above, stored in **per-match `C ^ G1 ==> G2`** form (MSC §4.3 eq 12–16: one firing per match θ, `X' = X ⊕ θ(G2)` set-union). The shapes are richer than a bare node/edge pattern: a clause is `(at SPACE PAT)` (`SPACE ∈ {self, ws}`; bare `PAT` = `at self`) and a variable is the inline data marker `(var Name)`. So `(rule-lhs R (clauses…))` is the conjunctive match (`C ^ G1`) and `(rule-rhs R (prods…))` is the products (`G2`). The engine (`petta/compiler.metta`) holds a **converter** that, at genome-expression time, mints co-referent PeTTa match-vars from the `(var Name)` markers and assembles each rule into a one-atom **runnable** view `(crule R KEY CLAUSES COST PRODS)` — an engine-internal compiled form, NOT the source of truth (it is one atom there only because per-atom variable co-reference requires it). What is deliberately **not** in a rule: **negation** (**abstain is no soma rule** — the rule simply doesn't match, and a skeleton with no grounding earns nothing) and **aggregation** (plurality is per-grounding at the evaluator, §2.8). `rule-context`/`rule-priority`/`rule-token-cost`/`rule-tv` are separate annotations on `R`. **Compliance:** a future MeTTa-IL backend reads these same `rule-lhs`/`rule-rhs` facts. *(Exp-1's genomes are in `experiments/expt1-causal-qa/rules.metta` — the substrate derivation genome — and `control-rules.metta` — the same derivation re-expressed as a self-priming control loop.)*
 
 ### 2.3 Organisms (the mortal units)
 
@@ -73,7 +75,7 @@ A rule is the fuel-aware form `C ^ G1 ^ HasFuel(O,R) ==> G2 ^ ConsumeFuel(O,R) ^
 | `(chamber-graph C G)` | Semantic graph `G` is part of the chamber's working state `X`. Membership changes as events add/remove products. |
 | `(chamber-life-history C strategy)` | `strategy ∈ {r-like, K-like, …}` on the life-history simplex (MSC §4.6). Aelmere ⇒ `r-like`. |
 
-> **`chamber-hot-rule` and the computed gate.** `(chamber-hot-rule C R)` is a boolean placeholder for "attention above the hot threshold." The firing decision is the **computed gate** `gate?` = `rule-eligible?` ∧ `afford` ∧ `attn-ok?` (`petta/kernel.metta`; MSC eq 24 / §3 step 3), folding two filters over rule facts — the **context** filter (`rule-eligible?` admits a rule iff its `rule-context` is a declared `chamber-context`) and the **typed-attention** filter (`attn-ok?` over `(attention R token-type v)` against a threshold) — together with the per-organism `afford`. So `chamber-hot-rule` is not a stored scalar STI; hotness is *evaluated* from rule facts, the way `afford` is computed over `fuel` facts. On single-organism, single-chamber Exp-1 the gate reduces to `afford`: context admits every rule, and no rule carries an `(attention …)` fact so `attn-ok?` holds vacuously. `(attention …)` is hand-set and rule-level; the attention *dynamics* (decay / rent / spreading / stimulus, per-worker in `$ws`, typed per TECAN as scalar ECAN STI → typed attention) and the richer gate factors (do-influence, novelty, −redundancy, +FuelMargin, +ACSBoost) are not modelled here — they belong to a multi-chamber setting (Exp 2) where attention is scarce and contested.
+> **`chamber-hot-rule` and the computed gate.** `(chamber-hot-rule C R)` is a boolean placeholder for "attention above the hot threshold." The firing decision is the **computed gate** `gate?` = `rule-eligible-in?` ∧ `afford?` ∧ `in-attn?` (`petta/gate.metta`; MSC eq 24 / §3 step 3), folding two filters over rule facts — the **context** filter (`rule-eligible-in?` admits a rule iff its `rule-context` is a declared `chamber-context`) and the **typed-attention** filter (`in-attn?` over `(attention R token-type v)` against a threshold) — together with the per-organism `afford?`. So `chamber-hot-rule` is not a stored scalar STI; hotness is *evaluated* from rule facts, the way `afford?` is computed over `fuel` facts. On single-organism, single-chamber Exp-1 the gate reduces to `afford?`: context admits every rule, and no rule carries an `(attention …)` fact so `in-attn?` holds vacuously. `(attention …)` is hand-set and rule-level; the attention *dynamics* (decay / rent / spreading / stimulus, per-worker in `$ws`, typed per TECAN as scalar ECAN STI → typed attention) and the richer gate factors (do-influence, novelty, −redundancy, +FuelMargin, +ACSBoost) are not modelled here — they belong to a multi-chamber setting (Exp 2) where attention is scarce and contested.
 
 ### 2.5 Workers + replay handles
 
@@ -110,53 +112,30 @@ The event log is an **ordered** sequence of firing records, indexed by an intege
 
 ### 2.7 QA tasks (Experiment-1 layer; additive)
 
-The Experiment-1 toy causal-QA chamber (MSC §7.1) adds a task layer on top of the core. A **task** wraps one source vignette graph and carries one or more **questions** (paraphrase variants are separate questions on the same task). The evaluator scores answers against a **graph-derived** target `Y*_q` (MSC eq 17) — the explanatory edges of the allowed class on causal paths into the question-focus — so **no gold answer content is stored**. The clamp-switch arises when the focus carries edges of more than one class (a physical `CauseOf` and an intentional `Motivate`); the active clamp selects which class earns fuel.
+The Experiment-1 toy causal-QA chamber (MSC §7.1) adds a task layer on top of the core. A **task** carries one or more **questions**, and each question carries one or more **answer-skeletons** — the parser's variable-bearing query, itself a `sem-graph` (§2.1) whose conjunct edges hold `(var Name)` slots. Alternative readings of one question are simply several skeletons.
 
 | Fact | Meaning |
 |------|---------|
 | `(qa-task T)` | Declares task `T`. |
-| `(qa-source T G)` | The vignette graph the task is about. |
 | `(qa-question T Q)` | Question `Q` belongs to task `T` (≥1; paraphrase variants share the task). |
-| `(q-word Q w)` | Surface interrogative form: `why \| what-made \| how-come \| how \| why-not \| trying-to-do \| what-for`. The organism's *question-type detector* + *paraphrase-collapse* rules operate on this — the corpus does NOT pre-supply a question type. |
-| `(question-focus Q N)` | The event node being asked about. *(P0/P1 simplification: focus is given. Resolving focus from a parsed question-graph becomes organism work when the LLM parser lands.)* |
-| `(question-source Q G)` | Denormalized copy of `qa-source` (single-pattern-match convenience). |
+| `(question-surface Q "…")` | The question's surface text, kept for reporting. Nothing reads it as structure — the query shape is the skeleton. |
+| `(answer-skeleton Q GAS)` | Skeleton graph `GAS` is one reading of `Q`. `GAS` is a `sem-graph` of kind `answer-skeleton` whose `sem-edge`s carry `(var Name)` slots. |
+| `(answer-skeleton-tv GAS tv)` | The query's truth-value pattern — usually the open `(var tv)`; a why-*not* question pins it, e.g. `(STV 0.0 (var conf))`. |
 
-**No gold skeletons.** The target `Y*_q` is derived from the molecule graph by the evaluator (`petta/evaluator.metta`), intent-aware: direct edges of the allowed class into the focus for `why`/`why-not`/`what-for`, the transitive `CauseOf` closure for `how`. Abstain is graph-derived too — a typed, unanswered question whose ideal is empty (no groundable explanatory edge into the focus) is a correct abstention. So the QA layer stores only the questions above; correctness is scored against the graph, not hand-authored gold.
+**No gold answers, and no stored answers.** Answering *is* grounding: the grounder solves a skeleton against the derived graph in the run space, and a solution is the fully-grounded conjunct list — every element a cited `sem-edge`, so provenance is built in. Nothing writes a candidate answer, a class, or a score back as a fact; the evaluator reads the groundings and mints (§2.8). Answer **plurality and depth come from the genome**, never from the query shape — a question licenses one sought relation, and how many ways it grounds depends on what the rules derived. **Abstention** is likewise structural: a skeleton with no grounding earns nothing, and no rule is needed to produce it.
 
-**Runtime candidate answers** (chamber output → evaluator input — written by the soma):
-
-| Fact | Meaning |
-|------|---------|
-| `(candidate-answer Q A)` / `(answer-by A O)` | Organism `O` proposed answer `A` for `Q`. |
-| `(answer-class A cls)` | The answer's class (`physical-cause` \| `intentional`), set from the cited edge's `edge-cluster` (§2.8). Absent on an abstain answer. |
-| `(answer-cites A G E)` / `(answer-provenance A G N)` | What the answer cites / traces to. |
-| `(answer-role A Role Filler)` | A participant the answer carries (role-completion output, e.g. `Experiencer=maria`). |
-| `(answer-abstain A)` | The organism explicitly abstains. |
-
-**P1 evaluator outputs** (written ONLY by the evaluator, never the soma — hard prohibition #1):
-
-| Fact | Meaning |
-|------|---------|
-| `(answer-score A term v)` | The eq-17 term breakdown the evaluator computed for `A`: `term ∈ {match, unsupportedness, redundancy, …}`, `v ∈ [0,1]`. Audit of *why* `A` was (or wasn't) rewarded under the active clamp. |
-| `(answer-reward A token n)` | Minted typed fuel credited to `A`'s organism — the eq-17 score mapped through the active clamp's `clamp-token` map (§2.8). The mint currency is an *operational* token (e.g. `tau_graph_match`) so it can re-fund firing — this is what closes the metabolic loop. |
-| `(reward-credit LOG epoch O token n)` | The organism-side credit event: at evaluation `epoch`, `n` of `token` was added to `O`'s fuel vector. The inverse of `event-spend`; lets a reader reconstruct the fuel economy across the chamber↔evaluator epoch loop. |
-| `(log-clamp LOG CL)` | Records which clamp `CL` was active for the run that produced `LOG` (the clamp-switch handle — pairs with `worker-clamp`, §2.8). |
-
-**Dual-question semantics:** a question with skeletons of both classes is *ambiguous*; the active clamp selects which is scored. A question with a single class scores only under the matching clamp; **under the other clamp the correct behavior is abstain** (the evaluator derives this: no skeleton of the active class ⇒ abstain-gold). No extra corpus facts needed.
-
-### 2.8 Edge clusters + clamp config (P1 preview — interim shape)
+### 2.8 Clamp config (the evaluator's reward regime)
 
 > **Status note:** MSC §4.4 defines clamps *functionally* (a token source tied to a desired output class; minting score eq 17; scalar→typed-fuel conversion; chamber-local scope) but prescribes **no data representation** — the §6.1 portable-facts example contains no clamp/evaluator facts. The shapes below are **our design choice**, consistent with the portable-facts discipline: a clamp = a *parameterization of eq 17* stored as facts; the eq-17 term computations (Match, CausalClarity, …) are evaluator-worker **code**, not facts. **The worker-IR these sit alongside has a canonical source** (`docs/Goal-Guided…pdf` §20.2 + App A.3.2 — see §2.5), but **clamps specifically are not covered there** (MSC-specific), so these shapes have no external source to reconcile against and stand as our own.
 
 | Fact | Meaning |
 |------|---------|
-| `(edge-cluster Rel cls)` | Vocabulary-level: assigns explanatory relation `Rel` to an answer-class. Exp-1 set: `CauseOf/Trigger/Enable/Contribute/Prevent → physical-cause`; `Motivate/Reason → intentional`; `Despite → concession` (never an answer class — concessive edges are trap material). |
 | `(clamp CL)` | Declares clamp `CL`. |
-| `(clamp-class CL cls)` | The answer-class this clamp rewards (selects which skeleton `Y*_q` the Match term scores against). The clamp-switch experiment = swap `physical-cause` ↔ `intentional`. |
-| `(clamp-coeff CL term w)` | eq-17 coefficient, e.g. `(clamp-coeff CL_a match 1.0)`, `(clamp-coeff CL_a unsupportedness 2.0)`. One fact per term. |
-| `(clamp-token CL signal token)` | Score→typed-fuel mapping, e.g. `(clamp-token CL_a skeleton-match answer-reward-token)`. |
+| `(clamp-mint CL achievement token n)` | **Achievement-typed minting** (MSC §4.4 verbatim: *"the kind of good behavior shapes the kind of fuel earned"*). A grounding's achievements are detected structurally by the evaluator — `skeleton-match` for every grounding, `transitive-explanation` when the cited derivation is a chain — and this map says what each mints. One fact per (achievement, token); an achievement a clamp does not list mints nothing under it. Match is **binary per grounding**, so plurality pays per solution rather than being averaged into one score. |
 | `(clamp-scope CL C)` | Chamber-local scoping (MSC: "clamping can also be local"). |
-| `(worker-clamp W CL)` | The active clamp for a run — the experimental switch. A paired clamp-switch run = same snapshot+seed+budget, different `worker-clamp`. |
+| `(worker-clamp W CL)` | The active clamp for a run — the experimental switch. A paired clamp-switch run = same snapshot+budget, different `worker-clamp`. |
+
+**The clamp-switch is typed, not class-based.** Swapping the clamp changes *which token* a behaviour earns, and a rule starves when the token it spends stops being minted — so selection acts through the metabolism rather than through an answer-class filter. Exp-1's pair differ in exactly one fact: both mint `skeleton-match`, only the deep clamp mints `transitive-explanation`, and the chaining rule spends that token.
 
 ### 2.9 ACS detection + promotion (Experiment-1 layer; P2 output)
 
@@ -166,14 +145,22 @@ P2 (= TECAN T3, to be rebuilt on the sem-graph pipeline) certifies whether a rul
 |------|---------|
 | `(acs A)` / `(acs-chamber A C)` | Declares detected ACS `A` in chamber `C`. |
 | `(acs-member A R)` | Rule `R` is a member of the ACS's (heritable) rule loop. One per rule. |
-| `(acs-closure A substrate)` | The structural-closure verdict (§4.5 cond 1), emitted **only when the set is genuinely closed** — every member's product regenerates its own reactant through member-to-member feeds (a recurrent component in the rule-motif graph, computed over **endogenous** feeds; the evaluator's minting edge is **FOOD, not closure**). `substrate` = the loop regenerates its own semantic motifs; `control`/`hybrid` (endogenous control-motif regeneration) arrive with control-motif detection. A **subsidized / food-fed candidate is NOT an ACS** (it fails closure), so it emits **no** `acs-closure` fact — that state is inferred as *metabolic surplus present + no `acs-closure`*. V3 = no fact (feed-forward cue-converters; only `R_trans` is endo-cyclic). |
-| `(acs-autocatalysis A via-evaluator-fuel)` | The motifs that re-enable members (the typed fuel) are produced by the evaluator. |
+| `(acs-closure A kind)` | The structural-closure verdict (§4.5 cond 1), emitted **only when the set is genuinely closed** — every member lies on a member-to-member feeds cycle **and** has its whole **non-food premise injectively regenerated** by member products (each non-food premise clause matched to a *distinct* member product; a clause no member produces is food and exempt). The evaluator's minting edge is **FOOD, not closure**. `kind` ∈ `substrate` (the loop regenerates semantic domain motifs only) · `control` (only internally-generated control motifs — see `control-relation`) · `hybrid` (it alternates between the two). A **subsidized / food-fed candidate is NOT an ACS** (it fails closure), so it emits **no** `acs-closure` fact — that state is inferred as *metabolic surplus present + no `acs-closure`*. The injective test is what keeps a *contracting* self-loop (two premise clauses of a relation, one product of it) from passing as a closed singleton, while admitting a balanced singleton that regenerates its own catalyst. |
+| `(acs-autocatalytic A bool)` | Condition 2: every member is enabled by a motif or token that lies **on** the loop's own cycle — the loop catalyzes itself. Checked per member, independently of how membership was found. |
 | `(acs-surplus A CL token n)` | Metabolic surplus `E[minted]−E[spent]` for `token` under clamp `CL` (signed). Condition 3 holds iff positive componentwise. |
-| `(acs-do-influence A R n)` | Paired-replay ablation: the minted-reward drop when rule `R` is suppressed. `0` ⇒ an inert member (cost without reward → prune candidate). |
+| `(rule-do-influence R target answer-reward n)` | Per-rule causal coding (SC §3.7): the **leave-one-out** paired replay — the minted-reward drop when rule `R` alone is suppressed, same snapshot / budget / context. Emitted per ACS member. |
+| `(rule-redundancy R bool)` | `True` iff that rule's do-influence is `0` — suppressing `R` alone leaves the reward unchanged, so `R` is redundant / not-contributing. A single-cycle measurement: a rule whose product only acts on the *next* cycle reads `0` here, and its role shows in the multi-cycle trajectory instead. |
 | `(acs-heritable A GNM)` | The loop reifies as quoted genome `GNM`, copy-and-re-expressible. |
 | `(acs-recurrent A bool)` | The loop's members all fire in ≥ `acs-recurrence-min` distinct cycles of the event log (recurrent species, not a one-epoch candidate). |
 
 *No single "promoted / certified" verdict is stored — each condition above is its own fact. "Certified ACS under clamp `CL`" is the conjunction a consumer computes: `acs-closure` present ∧ every `acs-surplus …CL… > 0` ∧ `acs-causal-influence True` ∧ `acs-recurrent True`. The clamp-switch shows in `acs-surplus` — the same loop's token surplus is positive under one clamp, negative under another.*
+
+**Relation-level declarations** these read — properties of a *relation*, not of a rule or an edge:
+
+| Fact | Meaning |
+|------|---------|
+| `(persistent Rel)` | Edges of relation `Rel` survive the between-cycle **decay** even though their ids are derived — a persistent molecule (the edge *and* its TV are exempt). A stand-in for importance-graded retention. Read by the epoch loop's `decay`, not by the ACS detector: it lets a closed loop carry a motif across the cycle boundary and so **recur**, but it is no part of the closure test. |
+| `(control-relation Rel)` | `Rel` is an internally-generated **control** state (attention shift, activation, success trace, reusable template, learned gate) rather than a semantic domain motif. Read by the closure classifier to label `acs-closure` `substrate` / `control` / `hybrid`. An externally-supplied marker is food, not an endogenous control motif, and is left undeclared. |
 
 ### 2.10 Lineage + reproduction (Experiment-1 layer; P3 output)
 
@@ -184,7 +171,7 @@ P3 (= TECAN T6, to be rebuilt on the sem-graph pipeline) mutates / recombines th
 | `(lineage L)` / `(lineage-founder L GNM)` | A lineage `L` rooted at founder genome `GNM`. |
 | `(genome-rule GNM R)` | Member rule `R` of genome `GNM` (the heritable ruleset; one per rule). |
 | `(genome-fitness GNM CL token n)` | Fitness of `GNM` under clamp `CL` = metabolic surplus for `token` (signed), under matched replay. |
-| `(birth GNM_child GNM_parent mutation)` | `GNM_child` was produced from `GNM_parent` by `mutation` (e.g. `prune-R_complete`). |
+| `(birth GNM_child GNM_parent mutation)` | `GNM_child` was produced from `GNM_parent` by `mutation` (e.g. pruning a member rule). |
 | `(birth-cost GNM_child token n)` | Reproduction cost the parent paid from surplus — incl. the `tau_dequote` germ→soma dequotation (eq 27). |
 | `(lineage-improvement GNM_parent GNM_child token n)` | Signed fitness change child−parent under matched replay. Selection keeps `n>0`. |
 
@@ -196,7 +183,7 @@ One kernel **step** (MSC §4.3, eqs 13–16):
 
 1. **Enumerate candidates** — for the chamber `C`, for each organism `O` in `C`, for each hot rule `R` (`chamber-hot-rule C R` ∧ `ruleset-member`(genome of `O`)`R`) whose `rule-context` is satisfied by `C`'s `chamber-context` facts, find every match `θ` of `rule-lhs R` against the chamber graphs `X`. **Candidate enumeration order MUST be canonical** (sort by `R` id, then a canonical serialization of `θ`) — see §4.
 2. **Fuel filter** — keep candidate `(R,θ)` only if `F_O ≥ κ_R` componentwise: for every `(rule-token-cost R t n)`, the organism has `(fuel O t m)` with `m ≥ n`.
-3. **Score + sample** — compute `Gate_C(R,O,X)` (MSC eq 24: strength, confidence, do-influence, novelty, −redundancy, −cost, +FuelMargin, +ACSBoost). Draw `U` from the seeded PRNG; the rule fires if `U < Gate` (or pick the arg-max candidate — P0 may start with deterministic arg-max and add sampling later, as long as it stays seed-deterministic). *(`petta/kernel.metta`: `gate?` computes the boolean subset `rule-eligible?` ∧ `afford` ∧ `attn-ok?` — context + affordability + typed attention; deterministic, no sampling. The scalar eq-24 factors and PRNG sampling are not modelled here.)*
+3. **Score + sample** — compute `Gate_C(R,O,X)` (MSC eq 24: strength, confidence, do-influence, novelty, −redundancy, −cost, +FuelMargin, +ACSBoost). Draw `U` from the seeded PRNG; the rule fires if `U < Gate` (or pick the arg-max candidate — P0 may start with deterministic arg-max and add sampling later, as long as it stays seed-deterministic). *(`petta/gate.metta`: `gate?` computes the boolean subset `rule-eligible-in?` ∧ `afford?` ∧ `in-attn?` — context + affordability + typed attention; deterministic, no sampling. The scalar eq-24 factors and PRNG sampling are not modelled here.)*
 4. **Fire, in lockstep:**
    - `X' = X ⊕ θ(G2)` → emit `event-add`/`event-del` facts; update `chamber-graph`.
    - `F'_O = F_O − κ_R` → debit `fuel` facts; emit `event-spend`.
@@ -235,9 +222,9 @@ A change is IR-legal only if it keeps all of these true:
 
 ## 6. Beyond the P0 kernel (later stages)
 
-- **Evaluator-minted fuel + clamps** → P1 (`petta/evaluator.metta`): eq-17 scoring, clamp-gated typed-fuel minting (never soma-minted), and the chamber↔evaluator epoch loop that credits earned fuel back, closing the metabolic loop. The clamp-switch (`CL_antecedent` ↔ `CL_goal`) flips which strategy runs a surplus.
-- **ACS detection + metabolic surplus + causal replay** → P2 (= TECAN T3, to be rebuilt on the sem-graph pipeline): builds the rule-motif graph from the log, certifies the 5-condition mortal ACS (closure is *metabolic* — the cycle closes only via the evaluator), computes surplus, runs paired-replay ablation (which marks inert members such as `R_complete`), reifies the genome, and promotes (clamp-switch: promoted under `CL_antecedent`, rejected under `CL_goal`). Facts in §2.9.
-- **Genome mutation / reproduction** → P3 (= TECAN T6, to be rebuilt on the sem-graph pipeline): mutates / recombines the quoted genome as data, expresses member rules via `run-ablate` by membership, scores offspring by surplus under matched replay, and reproduces (surplus-funded, token-gated dequotation). Selection prunes inert members (e.g. `R_complete`) and rejects loop-breaking mutations; recombination rescues complementary defective genomes; under `CL_goal` the founder cannot afford to reproduce. Facts in §2.10.
+- **Evaluator-minted fuel + clamps** → P1 (`petta/evaluator.metta`): eq-17 scoring, clamp-gated typed-fuel minting (never soma-minted), and the chamber↔evaluator epoch loop that credits earned fuel back, closing the metabolic loop. The clamp-switch flips which strategy runs a surplus (§2.8).
+- **ACS detection + metabolic surplus + causal replay** → P2 (= TECAN T3): builds the rule-motif graph from the log, mines the closed self-recreating component, certifies the mortal-ACS conditions (structural closure — **endogenous**, substrate/control/hybrid; autocatalysis; componentwise surplus; causal influence by replay ablation; recurrence over the cycle-tagged log), and breaks causal influence down per member (SC §3 leave-one-out do-influence + redundancy). Heritability is P3. Facts in §2.9.
+- **Genome mutation / reproduction** → P3 (= TECAN T6, to be rebuilt on the sem-graph pipeline): mutates / recombines the quoted genome as data, expresses member rules via `run-ablate` by membership, scores offspring by surplus under matched replay, and reproduces (surplus-funded, token-gated dequotation). Selection prunes inert members (those the per-rule do-influence measures at zero) and rejects loop-breaking mutations; recombination rescues complementary defective genomes; under `CL_goal` the founder cannot afford to reproduce. Facts in §2.10.
 - **Multiple workers, reducers, ECAN epochs** → P4.
 - **MeTTa-IL executor** → later; the whole point of this schema is that it drops in by log-equivalence, not rewrite.
 
@@ -247,8 +234,8 @@ A change is IR-legal only if it keeps all of these true:
 
 - `schema.md` — this spec (authoritative).
 - **Worked examples** (load + round-trip in PeTTa) — the Experiment-1 fixtures:
-  - `../experiments/expt1-causal-qa/{molecules,tasks,configs}.metta` — the IR (5 vignettes): semantic graphs · QA tasks (questions only; the evaluator derives the target from the graph) · domain mappings (edge-cluster/intent-map) + clamps + chamber/worker. Loaded together by `load.metta`.
+  - `../experiments/expt1-causal-qa/{molecules,tasks,configs}.metta` — the IR (the V3 vignette): semantic graphs · QA tasks (questions only; the evaluator derives the target from the graph) · clamps + chamber/organisms/snapshot. Loaded together by `load.metta`.
   - `../experiments/expt1-causal-qa/rules.metta` — the genome: the four causal-QA rules as canonical per-match `rule-lhs`/`rule-rhs` IR with `(var Name)` markers (§2.2).
-- **Reference engine** over these facts: `../petta/` — `kernel.metta` (the generic engine + the converter + `run-rules`/`run-ablate`) + `evaluator.metta` (eq-17 scoring) + the reusable P1–P3 mechanism modules `acs`/`workers`/`selection`/`ecan`; exercised by the per-stage demos in `../tests/` (`kernel_test` P0 · `evaluator_test` P1 · `acs_scan_test`/`acs_mine_test` P2 · `selection_test` P3 · `workers_test`/`ecan_epoch_test`/`backend_render_test` P4 · `context_gate_test`).
+- **Reference engine** over these facts: `../petta/` — the engine (`util`/`fuel`/`compiler`/`gate`/`reaction`), the solve layer (`grounder`/`evaluator`), the metabolic `epoch` loop, the `acs` detector, and the worker layer (`worker` envelope + `chamber`/`ecan`/`reducer` bodies + `dispatch`); exercised by `../tests/` (`sh tests/run_suite.sh`).
 
 See the corpus these rules come from: `experiments/fiction-world-v0/` (world_rules R1–R5 = Cycle A).

@@ -90,10 +90,12 @@ contribution must "not be entirely reproduced by redundant alternatives."
 Two lessons this variant taught:
 - A naive condition-4 (whole-set ablation judged on answer count) would *spuriously
   certify* it — suppressing the whole set kills the substrate members and answers with
-  them. Whole-set answer-count ablation is blind to intra-set redundancy. This is what
-  motivated upgrading condition 4 to multi-cycle replay judged on reward/surplus delta
-  (the doc's own judgment: "reduce task performance, explanation quality, novelty, or
-  some other relevant outcome"; the schema's `acs-do-influence` is a minted-reward drop).
+  them. Whole-set ablation is blind to intra-set redundancy. What resolves this is not a
+  change to condition 4 (which is a whole-loop question, and correctly a single paired
+  replay) but the separate per-rule layer: leave-one-out `rule-do-influence` /
+  `rule-redundancy`, judged on the minted-reward drop, which asks of each member the
+  doc's own question — does removing it change the outcome, or is it merely along for
+  the ride?
 - Without `R_prime` at all, the chain dead-ends at `Habit` (nothing consumes it): no
   cycle, no closure, correctly no ACS. `R_prime` is *the* closing edge.
 
