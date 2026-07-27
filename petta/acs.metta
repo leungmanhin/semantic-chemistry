@@ -494,8 +494,9 @@
 ; replay (SC §3.7 "rule enabled vs disabled"): baseline minted reward − reward with just that one
 ; member disabled. delta > 0 ⇒ the member is load-bearing (its firing changes the downstream
 ; reward); delta = 0 ⇒ the member is REDUNDANT / not-contributing (disabling it leaves the reward
-; unchanged). The minimal ACS is the load-bearing members (§3.9 "its members have nontrivial
-; do-influence"). Metric = MINTED REWARD (chamber-income summed over the mintable tokens), so a
+; unchanged). The minimal ACS (§3.9 "its members have nontrivial do-influence") is then found by
+; GREEDY SEQUENTIAL ablation, which the per-rule pass alone cannot settle — see `minimal-acs`.
+; Metric = MINTED REWARD (chamber-income summed over the mintable tokens), so a
 ; member is credited for the KIND of answer it enables (a chain earns the causal-inference token
 ; too). This is distinct from Ben's ACS-level "not reproduced by redundant alternatives", which is
 ; the whole-loop causal-influence? above. ---
@@ -535,14 +536,30 @@
                    (cons-atom (rule-redundancy $r $red)
                               (do-inf-facts (cdr-atom $dis)))))))))
 
-; the MINIMAL ACS: the members with nonzero do-influence (redundant members dropped)
+; the MINIMAL ACS, by GREEDY SEQUENTIAL ablation: walk the members carrying an ACCUMULATED skip
+; set — test ablating (already-dropped + this member); if the reward holds at the baseline the
+; member is genuinely droppable GIVEN what is already gone, so commit it to the skip set; else
+; keep it. The survivors are a set that still does the job. Leave-one-out alone CANNOT do this:
+; a MUTUALLY redundant group (either member alone suffices, both together are needed) measures
+; do-influence 0 on every member, and dropping them all at once leaves a set that no longer
+; produces the answers. Note this yields A minimal set, not THE minimum one — which member of a
+; redundant group survives depends on the walk order (inherent to greedy minimization). A member
+; with `rule-redundancy True` that nonetheless survives here is exactly the signature of such a
+; group. Costs one replay per member, on top of the leave-one-out pass.
 (= (minimal-acs $ws $abl $ch $snap $cl $members)
-   (nonzero-members (member-do-influences $ws $abl $ch $snap $cl $members)))
-(= (nonzero-members $dis)
-   (case $dis
+   (greedy-minimize $abl $ch $snap $cl $members () (total-reward $ws $cl)))
+
+; walk $todo threading the committed $skip set (see minimal-acs): drop a member iff ablating it
+; on top of $skip still pays the baseline reward $base
+(= (greedy-minimize $abl $ch $snap $cl $todo $skip $base)
+   (case $todo
          ((() ())
-          ($ne (let ($r $d) (car-atom $dis)
-                    (if (== $d 0) (nonzero-members (cdr-atom $dis)) (cons-atom $r (nonzero-members (cdr-atom $dis)))))))))
+          ($ne (let* (($r (car-atom $todo))
+                      ($try (cons-atom $r $skip))
+                      ($rew (ablated-reward $abl $ch $snap $cl $try)))
+                 (if (== $rew $base)
+                     (greedy-minimize $abl $ch $snap $cl (cdr-atom $todo) $try $base)
+                     (cons-atom $r (greedy-minimize $abl $ch $snap $cl (cdr-atom $todo) $skip $base))))))))
 
 ; --- RECURRENCE (§4.5 "sustains itself in an event log" / §6.4 P2 "recurrent" loops): a
 ; genuine ACS is not a one-off closed loop — it must RECUR across cycles. The loop recurs iff

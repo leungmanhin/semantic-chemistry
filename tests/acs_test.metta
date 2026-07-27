@@ -152,7 +152,7 @@
        ((rule-do-influence Ra target answer-reward 3) (rule-redundancy Ra False)
         (rule-do-influence Rb target answer-reward 0) (rule-redundancy Rb True)
         (rule-do-influence Rc target answer-reward 2) (rule-redundancy Rc False)))
-!(test (nonzero-members ((Ra 3) (Rb 0) (Rc 2))) (Ra Rc))                            ; Rb (delta 0) dropped
+!(test (minimal-acs &self &abl CH_expt1 SNAP_qa CL_shallow (R_so R_result R_trans)) (R_so R_result R_trans))  ; also minimal under the other clamp
 ; the do-influence facts appear in the verdict list (per member, keyed on the rule)
 !(test (in-list? (rule-do-influence R_trans target answer-reward 4) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
 !(test (in-list? (rule-redundancy R_result False) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
@@ -265,3 +265,55 @@
 ; counts cycle-2's one R_so firing, not both cycles' — so a multi-cycle log keeps surplus per-cycle
 !(add-atom &self (cycle-now 2))
 !(test (rule-firings &self R_so) 1)
+
+; ===========================================================================
+; --- MUTUAL REDUNDANCY: leave-one-out measures individual necessity, but minimality is a JOINT
+; property, and the two come apart. R_dup1/R_dup2 derive the IDENTICAL product edge (same product
+; id, so whichever fires second is a no-op under ⊕ set-union): either ALONE reproduces the answer,
+; but dropping BOTH loses it. Each therefore measures do-influence 0 — a correct per-rule
+; measurement — while the naive "drop every zero-influence member" reading would return the EMPTY
+; set. `minimal-acs` greedy-sequential ablation keeps one of the pair instead.
+; Declared LAST: the synthetic question shifts every income/answer total, so nothing above may
+; depend on it. ---
+!(add-atom &self (sem-graph-kind dupg neo-davidsonian))
+!(add-atom &self (sem-edge dupg dm1 Cue dc1 dc2))
+!(add-atom &self (sem-edge-tv dupg dm1 (stv 1.0 0.9)))
+!(add-atom &self (rule-context R_dup1 dup-ctx))
+!(add-atom &self (rule-priority R_dup1 0))
+!(add-atom &self (rule-token-cost R_dup1 sm 1))
+!(add-atom &self (rule-lhs R_dup1 ((sem-edge (var g) (var e) Cue (var x) (var y)) (sem-edge-tv (var g) (var e) (var tv)))))
+!(add-atom &self (rule-rhs R_dup1 ((sem-edge (var g) (dn (var e)) ReasonFor (var x) (var y)) (sem-edge-tv (var g) (dn (var e)) (var tv)))))
+!(add-atom &self (rule-context R_dup2 dup-ctx))
+!(add-atom &self (rule-priority R_dup2 1))
+!(add-atom &self (rule-token-cost R_dup2 sm 1))
+!(add-atom &self (rule-lhs R_dup2 ((sem-edge (var g) (var e) Cue (var x) (var y)) (sem-edge-tv (var g) (var e) (var tv)))))
+!(add-atom &self (rule-rhs R_dup2 ((sem-edge (var g) (dn (var e)) ReasonFor (var x) (var y)) (sem-edge-tv (var g) (dn (var e)) (var tv)))))
+!(add-atom &self (chamber CH_dup))
+!(add-atom &self (chamber-context CH_dup dup-ctx))
+!(add-atom &self (organism O_dup))
+!(add-atom &self (genome-of O_dup GNM_dup))
+!(add-atom &self (quoted-ruleset GNM_dup RS_dup))
+!(add-atom &self (ruleset-member RS_dup R_dup1))
+!(add-atom &self (ruleset-member RS_dup R_dup2))
+!(add-atom &self (snapshot-fuel SNAP_dup O_dup sm 10))
+!(add-atom &self (clamp CL_dup))
+!(add-atom &self (clamp-mint CL_dup skeleton-match sm 2))
+!(add-atom &self (clamp-scope CL_dup CH_dup))
+!(add-atom &self (qa-task DUP))
+!(add-atom &self (qa-question DUP Q_dup))
+!(add-atom &self (answer-skeleton Q_dup GAS_dup))
+!(add-atom &self (sem-graph GAS_dup))
+!(add-atom &self (sem-graph-kind GAS_dup answer-skeleton))
+!(add-atom &self (sem-edge GAS_dup dqc1 ReasonFor (var w) (var z)))
+!(bind! &ws_dup (new-space))
+!(bind! &abl_dup (new-space))
+!(copy-molecules &ws_dup)
+!(restore-snapshot &ws_dup SNAP_dup)
+!(run-chamber &ws_dup CH_dup)
+!(test (msort (fired-rules &ws_dup)) (R_dup1 R_dup2))                                        ; both fire
+!(test (total-reward &ws_dup CL_dup) 2)                                                      ; baseline: the answer is minted
+!(test (ablated-reward &abl_dup CH_dup SNAP_dup CL_dup (R_dup1)) 2)                          ; either ALONE is droppable...
+!(test (ablated-reward &abl_dup CH_dup SNAP_dup CL_dup (R_dup2)) 2)
+!(test (ablated-reward &abl_dup CH_dup SNAP_dup CL_dup (R_dup1 R_dup2)) 0)                   ; ...but BOTH together are necessary
+!(test (member-do-influences &ws_dup &abl_dup CH_dup SNAP_dup CL_dup (R_dup1 R_dup2)) ((R_dup1 0) (R_dup2 0)))  ; each measures 0
+!(test (minimal-acs &ws_dup &abl_dup CH_dup SNAP_dup CL_dup (R_dup1 R_dup2)) (R_dup2))       ; greedy keeps one (not the empty set)
