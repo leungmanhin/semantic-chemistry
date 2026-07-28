@@ -43,6 +43,8 @@ This directory is **data only** — pure portable facts loaded by `import!`. The
 | `control-tasks.metta` | pure-fact IR: what the parser emits for the control genome — a `WhyQuestion` question-type marker per question (the genome's food) + a second, one-hop question over the same molecules, so the strategy is exercised across a stream. **The molecule shapes are unchanged** |
 | `control-configs.metta` | pure-fact IR: the control **run config** — the `ctrlg` control graph, `CH_ctrl`, the single organism `O_ctrl` owning all 8 rules, the clamp `CL_ctrl`, the snapshot `SNAP_ctrl` (incl. the one-off `ex`), plus the two relation-level declarations the engine reads: `(persistent Habit)` and `(control-relation …)` |
 | `control-load.metta` | the **control data loader** — molecules + tasks + the control tier; deliberately *not* the substrate genome/config (that chamber's context and question set stay separate) |
+| `demo.metta` | the end-to-end **substrate** run: chamber → evaluator → ACS scan across two cycles, then the clamp-switch contrast (`CL_deep` sustains the chainer, `CL_shallow` starves it — metabolic death) |
+| `demo-ctrl.metta` | the end-to-end **control-closure** run: cold start on the `ex` endowment → decay keeps only the habit → the loop re-primes itself for two more cycles → certification as a `hybrid`-closed ACS, then the deferred-death contrast (ablate `R_prime` — the organism stays solvent but loses closure) |
 | `README.md` | this file |
 
 Regenerate the IR from the parse with `python3 ../../ir/to_semgraph.py corpus_parsed.json V3 mol` (and `… task` for the answer-skeletons).
