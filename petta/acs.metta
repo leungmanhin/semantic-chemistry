@@ -31,7 +31,8 @@
 ; Condition 4 (causal influence) is a REPLAY ablation: re-derive the chamber's answers in a
 ; caller-bound ISOLATED space with the ACS members suppressed; if the answer count drops
 ; below the baseline, the loop causally produces those answers. Assumes util + fuel +
-; compiler + reaction + grounder + evaluator + worker loaded; the event log + derived layer
+; compiler + reaction + grounder + evaluator + epoch + worker loaded (epoch supplies the
+; set-cycle/decay the multi-cycle do-influence replay runs on); the event log + derived layer
 ; of one chamber run supply the log + income (the log reads take the run space $ws — &self on
 ; a bare run, the worker's own space via `run-as`, which CONSUMES the log a prior context-
 ; chamber worker left there rather than re-deriving — MSC §6.4 P2 "scan event logs"); the
@@ -506,35 +507,84 @@
 (= (sum-token-incomes $ws $cl $toks)
    (case $toks ((() 0) ($ne (+ (chamber-income $ws $cl (car-atom $toks)) (sum-token-incomes $ws $cl (cdr-atom $toks)))))))
 
-; the minted reward when the rules $skip are suppressed (fresh replay in $abl)
-(= (ablated-reward $abl $ch $snap $cl $skip)
+; --- the measurement WINDOW. A rule whose product survives decay acts on the NEXT cycle, so a
+; one-cycle replay cannot see it at all: the control rules of a self-priming loop each measure 0
+; there — true of one cycle, false of the loop. The fix is to widen the window, NOT to special-case
+; the rule; every member is still measured identically. The replay runs as many cycles as the log
+; being certified spans, so the ablated run is exactly as long as the run it is compared against
+; (the doc's same-snapshot / same-budget paired replay, extended to the cycle count).
+
+; the replay CAP (config `(acs-window-max n)`, default 3). Past the cycle where the ablated and
+; unablated trajectories separate, each further cycle adds a constant — so a longer window rescales
+; the delta without telling us anything new, while costing (members + 1) x cycles epochs. On a log
+; thousands of cycles long that is the whole cost and none of the information. The cap is also what
+; keeps a 0 honest: it reads "no difference within n cycles", which is exactly what the window
+; recorded in the fact claims. Raise it for a chamber whose loops take longer to reach steady state.
+(= (window-max)
+   (case (collapse (match &self (acs-window-max $n) $n)) ((() 3) ($ns (car-atom $ns)))))
+
+; the certification window: how many distinct cycles the observed log spans, capped (at least 1)
+(= (window-of $ws)
+   (let* (($n (len (log-cycles $ws)))
+          ($m (window-max)))
+     (if (== $n 0) 1 (if (> $n $m) $m $n))))
+
+; ONE ablated epoch in $sp: re-derive with $skip suppressed -> read the reward it minted ->
+; credit it -> decay. The crediting step is what makes a multi-cycle ablation mean anything:
+; without income the organism cannot afford cycle 2, so ablated and unablated runs alike
+; collapse to the first cycle and every difference vanishes.
+(= (ablate-epoch $sp $ch $cl $k $skip)
+   (let* (($z0 (set-cycle $sp $k))
+          ($z1 (run-chamber-ablate $sp $ch $skip))
+          ($r (total-reward $sp $cl))
+          ($z2 (credit-all-questions $sp $cl))
+          ($z3 (decay $sp)))
+     $r))
+
+; the cumulative reward of cycles $k..$n with $skip suppressed
+(= (ablate-epochs $sp $ch $cl $k $n $skip $acc)
+   (if (> $k $n)
+       $acc
+       (ablate-epochs $sp $ch $cl (+ $k 1) $n $skip (+ $acc (ablate-epoch $sp $ch $cl $k $skip)))))
+
+; the reward a fresh $n-cycle run mints in $abl with $skip suppressed — the space is wiped and
+; re-materialized from the snapshot first, so every measurement starts from the same state
+(= (windowed-reward $abl $ch $snap $cl $n $skip)
    (let* (($z0 (wipe-space $abl))
           ($z1 (copy-molecules $abl))
           ($z2 (restore-snapshot $abl $snap))
-          ($z3 (run-chamber-ablate $abl $ch $skip)))
-     (total-reward $abl $cl)))
+          ($r (ablate-epochs $abl $ch $cl 1 $n $skip 0)))
+     $r))
 
-; the do-influence of each member = baseline reward − reward with that ONE member ablated;
-; returns a list of (rule delta) pairs. Baseline = the real run $ws (all members active).
+; the single-cycle case, kept as its own name (the plain one-run intervention)
+(= (ablated-reward $abl $ch $snap $cl $skip) (windowed-reward $abl $ch $snap $cl 1 $skip))
+
+; the do-influence of each member over the observed window = the drop in cumulative minted reward
+; when that ONE member is suppressed, against an unablated run of the SAME length; returns a list
+; of (rule delta) pairs. The baseline is itself a replay, so both sides are paired.
 (= (member-do-influences $ws $abl $ch $snap $cl $members)
-   (do-inf-each $abl $ch $snap $cl $members (total-reward $ws $cl)))
-(= (do-inf-each $abl $ch $snap $cl $members $base)
+   (let $n (window-of $ws)
+        (do-inf-each $abl $ch $snap $cl $n $members (windowed-reward $abl $ch $snap $cl $n ()))))
+(= (do-inf-each $abl $ch $snap $cl $n $members $base)
    (case $members
          ((() ())
           ($ne (let $r (car-atom $members)
-                    (cons-atom ($r (- $base (ablated-reward $abl $ch $snap $cl (cons-atom $r ()))))
-                               (do-inf-each $abl $ch $snap $cl (cdr-atom $members) $base)))))))
+                    (cons-atom ($r (- $base (windowed-reward $abl $ch $snap $cl $n (cons-atom $r ()))))
+                               (do-inf-each $abl $ch $snap $cl $n (cdr-atom $members) $base)))))))
 
-; the §3.7 causal-coding facts from the (rule delta) list: one (rule-do-influence R target
-; answer-reward delta) + one (rule-redundancy R bool) per member (redundant iff delta = 0)
-(= (do-inf-facts $dis)
+; the §3.7 causal-coding facts from the (rule delta) list, each carrying the window $n it was
+; measured over: one (rule-do-influence R target answer-reward n delta) + one
+; (rule-redundancy R n bool) per member (redundant iff delta = 0 over that window). The window is
+; part of the fact because it is part of the claim — the same rule can read 0 over one cycle and
+; be load-bearing over two, and both readings are true of their own window.
+(= (do-inf-facts $n $dis)
    (case $dis
          ((() ())
           ($ne (let* ((($r $d) (car-atom $dis))
                       ($red (== $d 0)))
-                 (cons-atom (rule-do-influence $r target answer-reward $d)
-                   (cons-atom (rule-redundancy $r $red)
-                              (do-inf-facts (cdr-atom $dis)))))))))
+                 (cons-atom (rule-do-influence $r target answer-reward $n $d)
+                   (cons-atom (rule-redundancy $r $n $red)
+                              (do-inf-facts $n (cdr-atom $dis)))))))))
 
 ; the MINIMAL ACS, by GREEDY SEQUENTIAL ablation: walk the members carrying an ACCUMULATED skip
 ; set — test ablating (already-dropped + this member); if the reward holds at the baseline the
@@ -546,20 +596,24 @@
 ; redundant group survives depends on the walk order (inherent to greedy minimization). A member
 ; with `rule-redundancy True` that nonetheless survives here is exactly the signature of such a
 ; group. Costs one replay per member, on top of the leave-one-out pass.
+; Measured over the SAME window as do-influence: on a one-cycle window this drops every rule whose
+; product only pays off next cycle, so a self-priming loop would be "minimized" to a set that no
+; longer closes. The window is what makes it sound, not a special case for control rules.
 (= (minimal-acs $ws $abl $ch $snap $cl $members)
-   (greedy-minimize $abl $ch $snap $cl $members () (total-reward $ws $cl)))
+   (let $n (window-of $ws)
+        (greedy-minimize $abl $ch $snap $cl $n $members () (windowed-reward $abl $ch $snap $cl $n ()))))
 
 ; walk $todo threading the committed $skip set (see minimal-acs): drop a member iff ablating it
 ; on top of $skip still pays the baseline reward $base
-(= (greedy-minimize $abl $ch $snap $cl $todo $skip $base)
+(= (greedy-minimize $abl $ch $snap $cl $n $todo $skip $base)
    (case $todo
          ((() ())
           ($ne (let* (($r (car-atom $todo))
                       ($try (cons-atom $r $skip))
-                      ($rew (ablated-reward $abl $ch $snap $cl $try)))
+                      ($rew (windowed-reward $abl $ch $snap $cl $n $try)))
                  (if (== $rew $base)
-                     (greedy-minimize $abl $ch $snap $cl (cdr-atom $todo) $try $base)
-                     (cons-atom $r (greedy-minimize $abl $ch $snap $cl (cdr-atom $todo) $skip $base))))))))
+                     (greedy-minimize $abl $ch $snap $cl $n (cdr-atom $todo) $try $base)
+                     (cons-atom $r (greedy-minimize $abl $ch $snap $cl $n (cdr-atom $todo) $skip $base))))))))
 
 ; --- RECURRENCE (§4.5 "sustains itself in an event log" / §6.4 P2 "recurrent" loops): a
 ; genuine ACS is not a one-off closed loop — it must RECUR across cycles. The loop recurs iff
@@ -628,7 +682,7 @@
    (let* (($members (acs-member-set $g (fired-rules $ws)))
           ($toks (members-tokens $members))
           ($ci (causal-influence? $ws $abl $ch $snap $members))
-          ($rif (do-inf-facts (member-do-influences $ws $abl $ch $snap $cl $members))))
+          ($rif (do-inf-facts (window-of $ws) (member-do-influences $ws $abl $ch $snap $cl $members))))
      (concat-lists (member-facts $A $members)
        (concat-lists (motif-facts $A (acs-motifs $g $members))
          (concat-lists (closure-facts $A $members)

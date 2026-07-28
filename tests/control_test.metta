@@ -119,11 +119,25 @@
 !(run-chamber-ablate &wk CH_ctrl (R_prime))
 !(test (total-answers &wk) 0)          ; cycle 2: nothing re-primes the strategy — it dies
 
-; --- per-rule causal coding (SC §3) on this loop: the SUBSTRATE members carry the measured
-; do-influence, while the three CONTROL members read 0. That is a true statement about a SINGLE
-; cycle — a control rule's product (Worked/Habit/Primed) changes no answer in the cycle that
-; derives it, only the cycle that follows — so the leave-one-out replay, which is one cold
-; chamber run, cannot see a cross-cycle role. The deferred-death contrast above is what measures
-; it. ---
-!(test (member-do-influences &wc &ablc CH_ctrl SNAP_ctrl CL_ctrl (R_so_rf R_result_rf R_trans_rf)) ((R_so_rf 8) (R_result_rf 8) (R_trans_rf 5)))
-!(test (member-do-influences &wc &ablc CH_ctrl SNAP_ctrl CL_ctrl (R_prime R_worked R_learn)) ((R_prime 0) (R_worked 0) (R_learn 0)))
+; --- per-rule causal coding (SC §3) on this loop, measured over the OBSERVED WINDOW. Every
+; member is measured the same way — suppress it, replay a run of the same length, diff the
+; cumulative minted reward — so what distinguishes a control rule is not the code but the window:
+; its product acts on the cycle AFTER the one that derives it. Over this log's three cycles all
+; six members are load-bearing; the substrate members score 3x their per-cycle value (the loop
+; keeps paying), and the three control members score 22 because suppressing any of them makes the
+; loop flatline after the cold start (11 earned, then nothing). ---
+!(test (window-of &wc) 3)                                                    ; the replay is as long as the run it certifies
+!(test (member-do-influences &wc &ablc CH_ctrl SNAP_ctrl CL_ctrl (R_so_rf R_result_rf R_trans_rf)) ((R_so_rf 24) (R_result_rf 24) (R_trans_rf 15)))
+!(test (member-do-influences &wc &ablc CH_ctrl SNAP_ctrl CL_ctrl (R_prime R_worked R_learn)) ((R_prime 22) (R_worked 22) (R_learn 22)))
+
+; the WINDOW is doing the work, not a rule-kind check: the very same measurement over ONE cycle
+; still reads 0 for R_prime, and turns nonzero as soon as it spans the decay boundary.
+!(test (windowed-reward &ablc CH_ctrl SNAP_ctrl CL_ctrl 1 ()) 11)           ; 1-cycle baseline
+!(test (windowed-reward &ablc CH_ctrl SNAP_ctrl CL_ctrl 1 (R_prime)) 11)    ; ...unchanged ⇒ delta 0
+!(test (windowed-reward &ablc CH_ctrl SNAP_ctrl CL_ctrl 2 ()) 22)           ; 2-cycle baseline
+!(test (windowed-reward &ablc CH_ctrl SNAP_ctrl CL_ctrl 2 (R_prime)) 11)    ; the loop flatlines ⇒ delta 11
+
+; and the minimal ACS is now the WHOLE ring: over a one-cycle window the greedy pass would drop
+; every control member and return a set that no longer closes.
+!(test (msort (minimal-acs &wc &ablc CH_ctrl SNAP_ctrl CL_ctrl (acs-member-set &gc (fired-rules &wc))))
+       (R_learn R_prime R_result_rf R_so_rf R_trans_rf R_worked))

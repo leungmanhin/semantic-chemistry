@@ -34,6 +34,9 @@
        (if (afford? $ws $O (rule-cost (car-atom $rs))) True (can-fire? $ws $O (cdr-atom $rs)))))
 ;; alive iff it can still fire >= 1 of its rules; else starved to death (permanent deadlock)
 (= (life $ws $O) (if (can-fire? $ws $O (org-rules $O)) alive DEAD))
+;; the per-rule do-influence measured over an $n-cycle window. $n must arrive as an ARGUMENT:
+;; a call left inside the match pattern is matched structurally, not evaluated, so it never binds.
+(= (do-inf-win $n) (collapse (match &self (rule-do-influence $r target answer-reward $n $d) ($r $d))))
 
 ;; the context-chamber worker
 !(add-atom &self (worker W_qa))
@@ -84,9 +87,9 @@
 ;; !(pp ("- M_A: " (repr (collapse (match &self (acs-motif A_qa $m) $m)))))
 !(pp ("- loop closure? " (closure-of A_qa)))
 !(pp ("- loop autocatalytic? " (match &self (acs-autocatalytic A_qa $b) $b)))
-!(pp ("- loop surplus? sm " (match &self (acs-surplus A_qa CL_deep sm $n) $n) " | tr " (match &self (acs-surplus A_qa CL_deep tr $n) $n)))
+!(pp ("- loop surplus? sm " (match &self (acs-surplus A_qa CL_deep sm $ns) $ns) " | tr " (match &self (acs-surplus A_qa CL_deep tr $nt) $nt)))
 !(pp ("- loop causal-influence? " (match &self (acs-causal-influence A_qa $ci) $ci)))
-!(pp ("- per-rule do-influence: " (repr (collapse (match &self (rule-do-influence $r target answer-reward $d) ($r $d))))))
+!(pp ("- per-rule do-influence (over " (window-of &ws_qa) " cycle(s)): " (repr (do-inf-win (window-of &ws_qa)))))
 !(pp ("- loop recurrent? " (match &self (acs-recurrent A_qa $rb) $rb)))
 
 ;; running the workers -- cycle 2
@@ -128,9 +131,9 @@
 ;; !(pp ("- M_A: " (repr (collapse (match &self (acs-motif A_qa2 $m) $m)))))
 !(pp ("- loop closure? " (closure-of A_qa)))
 !(pp ("- loop autocatalytic? " (match &self (acs-autocatalytic A_qa2 $b) $b)))
-!(pp ("- loop surplus? sm " (match &self (acs-surplus A_qa2 CL_deep sm $n) $n) " | tr " (match &self (acs-surplus A_qa2 CL_deep tr $n) $n)))
+!(pp ("- loop surplus? sm " (match &self (acs-surplus A_qa2 CL_deep sm $ns) $ns) " | tr " (match &self (acs-surplus A_qa2 CL_deep tr $nt) $nt)))
 !(pp ("- loop causal-influence? " (match &self (acs-causal-influence A_qa2 $ci) $ci)))
-!(pp ("- per-rule do-influence: " (repr (collapse (match &self (rule-do-influence $r target answer-reward $d) ($r $d))))))
+!(pp ("- per-rule do-influence (over " (window-of &ws_qa) " cycle(s)): " (repr (do-inf-win (window-of &ws_qa)))))
 !(pp ("- loop recurrent? " (match &self (acs-recurrent A_qa2 $rb) $rb)))
 
 !(pp ("Event log:"))

@@ -36,6 +36,7 @@
 !(import! &self "petta/evaluator.metta")
 !(import! &self "petta/worker.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")
+!(import! &self "petta/epoch.metta")
 !(import! &self "petta/acs.metta")
 !(import! &self "petta/dispatch.metta")
 
@@ -148,14 +149,33 @@
 !(test (minimal-acs &self &abl CH_expt1 SNAP_qa CL_deep (R_so R_result R_trans)) (R_so R_result R_trans))   ; all load-bearing
 ; the redundancy + minimal-ACS logic on a synthetic (rule delta) list: a delta-0 member is
 ; REDUNDANT and dropped from the minimal ACS
-!(test (do-inf-facts ((Ra 3) (Rb 0) (Rc 2)))
-       ((rule-do-influence Ra target answer-reward 3) (rule-redundancy Ra False)
-        (rule-do-influence Rb target answer-reward 0) (rule-redundancy Rb True)
-        (rule-do-influence Rc target answer-reward 2) (rule-redundancy Rc False)))
+!(test (do-inf-facts 1 ((Ra 3) (Rb 0) (Rc 2)))
+       ((rule-do-influence Ra target answer-reward 1 3) (rule-redundancy Ra 1 False)
+        (rule-do-influence Rb target answer-reward 1 0) (rule-redundancy Rb 1 True)
+        (rule-do-influence Rc target answer-reward 1 2) (rule-redundancy Rc 1 False)))
 !(test (minimal-acs &self &abl CH_expt1 SNAP_qa CL_shallow (R_so R_result R_trans)) (R_so R_result R_trans))  ; also minimal under the other clamp
+
+; --- the replay WINDOW is the observed log's cycle count, CAPPED. Uncapped it would replay a
+; production log's thousands of cycles per member, for a delta that only rescales past the point
+; the trajectories separate. The cap bounds the cost and bounds the CLAIM: a 0 means "no difference
+; within n cycles". Here the log is one cycle, so the window is 1 and every number above stands. ---
+!(test (window-max) 3)                                   ; the default cap
+!(test (window-of &self) 1)                              ; a one-cycle log is not padded up to it
+!(bind! &ws_long (new-space))
+!(add-atom &ws_long (event 1 0 R_so k))
+!(add-atom &ws_long (event 2 0 R_so k))
+!(add-atom &ws_long (event 3 0 R_so k))
+!(add-atom &ws_long (event 4 0 R_so k))
+!(add-atom &ws_long (event 5 0 R_so k))
+!(test (len (log-cycles &ws_long)) 5)                    ; five cycles observed...
+!(test (window-of &ws_long) 3)                           ; ...but the replay is capped at 3
+!(add-atom &self (acs-window-max 4))                     ; the cap is config
+!(test (window-of &ws_long) 4)
+!(remove-atom &self (acs-window-max 4))
+!(test (window-of &ws_long) 3)                           ; back to the default
 ; the do-influence facts appear in the verdict list (per member, keyed on the rule)
-!(test (in-list? (rule-do-influence R_trans target answer-reward 4) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
-!(test (in-list? (rule-redundancy R_result False) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (rule-do-influence R_trans target answer-reward 1 4) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (rule-redundancy R_result 1 False) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
 
 ; --- the clamp-switch lives ENTIRELY in the componentwise surplus (tested above): membership +
 ; closure + causal influence are clamp-independent; only token-surplus flips (tr +1 under CL_deep
@@ -220,7 +240,7 @@
 !(test (closure-of A_qa) none)                                                     ; the display reader shows none
 !(test (match &self (acs-autocatalytic A_qa $b) $b) True)
 !(test (match &self (acs-surplus A_qa CL_deep tr $n) $n) 1)
-!(test (match &self (rule-do-influence R_trans target answer-reward $d) $d) 4)      ; the worker emitted the per-rule do-influence
+!(test (match &self (rule-do-influence R_trans target answer-reward 1 $d) $d) 4)      ; the worker emitted the per-rule do-influence
 
 ; --- a SECOND acs-scan worker over the SAME ACS under CL_shallow: membership + closure clamp-
 ; independent, but the tr surplus FLIPS to −1 (the loop starves under this clamp) — the clamp-
