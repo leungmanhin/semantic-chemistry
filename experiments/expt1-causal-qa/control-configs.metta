@@ -24,11 +24,6 @@
 (ruleset-member RS_ctrl R_worked)
 (ruleset-member RS_ctrl R_learn)
 
-; --- PERSISTENCE: the consolidated habit survives the between-cycle decay, so the loop can
-; re-prime itself next cycle. Everything else the genome derives is forgotten and re-earned.
-; A stand-in for importance-graded retention (TECAN §4.6 forgetting).
-(persistent Habit)
-
 ; --- CONTROL relations: internally-generated control states, as opposed to semantic domain
 ; motifs. The closure classifier reads these to tell substrate / control / hybrid closure apart.
 ; WhyQuestion is deliberately NOT declared: it is supplied by the environment, not generated
@@ -45,9 +40,12 @@
 (clamp-mint CL_ctrl transitive-explanation tr 2)
 (clamp-scope CL_ctrl CH_ctrl)
 
-; --- the fuel SNAPSHOT: enough sm to fund the first cold cycle before any income arrives, one
+; --- the fuel SNAPSHOT: enough sm to fund the first cold task before any income arrives, one
 ; tr to seed the chainer, and a SINGLE ex — the exploration endowment. Nothing mints ex, so it
 ; is spent once and R_explore falls silent; from then on Primed comes only from the habit.
-(snapshot-fuel SNAP_ctrl O_ctrl sm 10)
+; The sm headroom also has to absorb the re-derivation the between-task decay forces: forgetting
+; the derived layer means an already-explained text is normalized again while the next task is
+; worked, so spend grows with the number of arrivals while income stays flat.
+(snapshot-fuel SNAP_ctrl O_ctrl sm 12)
 (snapshot-fuel SNAP_ctrl O_ctrl tr 1)
 (snapshot-fuel SNAP_ctrl O_ctrl ex 1)

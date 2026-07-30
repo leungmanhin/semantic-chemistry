@@ -32,7 +32,7 @@
 (rule-context    R_detect control-qa)
 (rule-priority   R_detect 1)
 (rule-token-cost R_detect sm 1)
-(rule-lhs R_detect ((sem-edge ctrlg (var e) WhyQuestion (var q))))
+(rule-lhs R_detect ((sem-edge (var g) (var e) WhyQuestion (var q))))
 (rule-rhs R_detect ((sem-edge ctrlg (att (var e)) Attempting (var q) cause-strat)))
 
 ; --- R_explore: effortful cold spin-up, paid out of the exploration endowment -----------

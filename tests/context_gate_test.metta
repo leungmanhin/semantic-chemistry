@@ -50,5 +50,5 @@
 !(test (rule-eligible-in? CH_expt1 R_ctxok) True)    ; -> admitted to CH_expt1
 !(test (rule-eligible-in? CH_expt1 R_ctxbad) False)  ; -> rejected from CH_expt1
 ; the gate's EFFECT on firing (accept vs reject branch)
-!(test (foldall + (match &self (ctxok-fired $q) 1) 0) 1)   ; ACCEPT: eligible rule fires, once per qa-question
+!(test (foldall + (match &self (ctxok-fired $q) 1) 0) 3)   ; ACCEPT: eligible rule fires, once per qa-question
 !(test (foldall + (match &self (ctxbad-fired $q) 1) 0) 0)  ; REJECT: gated rule never fires

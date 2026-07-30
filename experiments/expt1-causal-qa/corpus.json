@@ -8,5 +8,25 @@
       "Why did the food spoil?"
     ],
     "additional_info": []
+  },
+  {
+    "id": "V4",
+    "sentences": [
+      "The bridge closed during the repairs, so the traffic diverted through town, and as a result the shops had lost business by evening."
+    ],
+    "questions": [
+      "Why did the shops lose business?"
+    ],
+    "additional_info": []
+  },
+  {
+    "id": "V5",
+    "sentences": [
+      "The river rose during the thaw, so the ferry suspended service, and as a result the market had emptied by noon."
+    ],
+    "questions": [
+      "Why did the market empty?"
+    ],
+    "additional_info": []
   }
 ]

@@ -54,9 +54,18 @@
 ; the deterministic step cap that halts a bounded run at a step boundary)
 (= (budget-reached? $seq $b) (if (== $b none) False (>= $seq $b)))
 
+; is EVERY fact in $ps already in $ws?
+(= (all-present? $ws $ps)
+   (case $ps
+         ((() True)
+          ($ne (if (present? $ws (car-atom $ps)) (all-present? $ws (cdr-atom $ps)) False)))))
+
 ; walk a rule's candidate list for organism $O: halt at the step budget $b; else skip
-; already-fired candidates and fire the next iff the gate passes (continue at seq+1); a shut
-; gate halts this rule (cold / unaffordable — later same-cost candidates would fail too).
+; already-fired candidates, skip those whose whole product set is ALREADY PRESENT (work already
+; done — a settled rule stops paying to re-derive what it has derived; forgetting the products
+; re-enables it, so the guard tracks the STATE rather than the log), and fire the next iff the
+; gate passes (continue at seq+1); a shut gate halts this rule (cold / unaffordable — later
+; same-cost candidates would fail too).
 (= (walk $ws $O $rule $cands $seq $b)
    (if (budget-reached? $seq $b)
        $seq
@@ -65,10 +74,12 @@
               ($ne (let (cand $key $cost $prods) (car-atom $cands)
                         (if (fired? $ws $rule $key)
                             (walk $ws $O $rule (cdr-atom $cands) $seq $b)
-                            (if (gate? $ws $O $rule $cost)
-                                (let $z (fire $ws $O $rule $key $cost $prods $seq)
-                                     (walk $ws $O $rule (cdr-atom $cands) (+ $seq 1) $b))
-                                $seq))))))))
+                            (if (all-present? $ws $prods)
+                                (walk $ws $O $rule (cdr-atom $cands) $seq $b)
+                                (if (gate? $ws $O $rule $cost)
+                                    (let $z (fire $ws $O $rule $key $cost $prods $seq)
+                                         (walk $ws $O $rule (cdr-atom $cands) (+ $seq 1) $b))
+                                    $seq)))))))))
 
 ; walk every rule in priority order (halting at the step budget $b), resolving each rule's
 ; firing organism, threading $seq
@@ -107,6 +118,43 @@
 (= (run-chamber-b $ws $ch $b)
    (let $z (express)
         (walk-rules $ws (chamber-rules $ch) 0 $b)))
+
+; --- FIXPOINT run (prototype for the execution-model question). A single pass is ORDER-DEPENDENT:
+; each firing adds its products immediately, so a rule walked before its premises are produced sees
+; nothing and is not revisited — which is the only reason `rule-priority` has to encode a
+; topological order of the genome's dependencies. Iterating the pass to a fixpoint removes that
+; dependence: rules only ADD (⊕ is set-union) and `fired?` blocks re-firing a (rule,key) within a
+; cycle, so each pass can only fire what earlier passes enabled, the iteration terminates at the
+; genome's closure over the state, and that closure is the same whatever order the rules are walked
+; in. Termination is by the finite (rule,key) set; the doc's budget B is what bounds an expensive
+; closure (a transitively-closing rule over a large graph), and is not modelled here.
+; This is NOT TECAN Alg 5.1 — there the candidate queue is collected against the EPOCH-START state
+; and fired once, so a chain advances one hop per epoch. This is an honest within-epoch settle:
+; it buys order-independence without changing what one cycle means.
+; NOTE it runs the genome to CLOSURE, where a single pass does one level: identical on data whose
+; chains are one deep, more complete on data where they are not.
+
+; iterate $rules to a fixpoint from $seq: stop when a whole pass fires nothing new
+(= (run-rules-fix $ws $rules $seq)
+   (let $seq2 (walk-rules $ws $rules $seq none)
+        (if (== $seq2 $seq)
+            $seq2
+            (run-rules-fix $ws $rules $seq2))))
+
+; express the genome, then iterate a CALLER-GIVEN rule order to fixpoint (any order reaches the
+; same closure — that is the point)
+(= (run-fix-order $ws $rules)
+   (let $z (express)
+        (run-rules-fix $ws $rules 0)))
+
+; a chamber run to fixpoint, in the default priority order
+(= (run-chamber-fix $ws $ch) (run-fix-order $ws (chamber-rules $ch)))
+
+; ONE pass in a caller-given order (the current cascade, exposed so the order-sensitivity
+; contrast is testable)
+(= (run-once-order $ws $rules)
+   (let $z (express)
+        (walk-rules $ws $rules 0 none)))
 
 ; --- generic ABLATION run (P2 paired-replay / P3 genome-by-membership): a run that SKIPS
 ; every rule in the $skip list. The ACS replay-ablation (condition 4) suppresses the ACS

@@ -1,18 +1,19 @@
 ; ===========================================================================
-; EPOCH TEST — the metabolic-closure loop (a reduced TECAN epoch, Alg 5.1) on V3:
-; the LITERAL typed-starvation, 1-vs-2-answer death.
+; EPOCH TEST — working a task, and the typed-starvation death across a stream of them.
 ; ---------------------------------------------------------------------------
-; Each epoch re-derives (fuel-gated), grounds the skeleton, mints
-; + credits typed fuel under the clamp, then DECAYS the derived layer (the purse persists,
-; the derivation does not — so the organism must keep earning to keep answering). Two
-; mortal organisms: O_base {R_so,R_result} (cost sm), O_chain {R_trans} (cost sm + tr).
-; Under CL_shallow O_chain earns no tr -> per-cycle tr surplus < 0 -> it starves and by
-; epoch 2 R_trans can fire nothing (death), so the ROOT answer disappears (2 -> 1). Under
-; CL_deep its tr surplus is +1 -> it self-sustains (2 every cycle). O_base lives on sm
-; either way. `epochs-traced` returns (answers  tr-surplus) per cycle: the surplus (rate)
-; predicts and the answer count (state) confirms.
+; A task arrives, its text lands in a FRESH hot pool, and the chamber runs cycles until it
+; SETTLES (a whole cycle fires nothing more). Products persist across the cycles of one task —
+; a chain needs its intermediates alive when the cycle that consumes them runs — and a rule
+; whose products are already present does not re-fire, so a settled task stops spending.
+; What crosses a task boundary is what MSC eq 8 puts in the organism: the purse F and the log L
+; ride with the soma; the hot pool X turns over.
+; Two mortal organisms: O_base {R_so,R_result} (cost sm), O_chain {R_trans} (cost sm + tr).
+; Under CL_shallow O_chain earns no tr, so by the time the second task arrives it can no longer
+; chain and the ROOT answer is gone (2 -> 1) — death by starvation of one token type, now shown
+; on genuinely new work rather than on the same question re-asked. Under CL_deep the chain pays
+; for itself and every arrival gets both answers.
 ;
-; Run:  sh ../PeTTa/run.sh tests/epoch_test.metta < /dev/null 2>&1 | grep should  # ten ✅
+; Run:  sh ../PeTTa/run.sh tests/epoch_test.metta < /dev/null 2>&1 | grep should
 ; ===========================================================================
 !(import! &self "petta/util.metta")
 !(import! &self "petta/fuel.metta")
@@ -21,55 +22,67 @@
 !(import! &self "petta/reaction.metta")
 !(import! &self "petta/grounder.metta")
 !(import! &self "petta/evaluator.metta")
+!(import! &self "petta/worker.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")
 !(import! &self "petta/epoch.metta")
 
-; --- DECAY forgets the derived layer, keeps the molecules + the event log -----
-!(add-atom &self (fuel O_base sm 6))
-!(add-atom &self (fuel O_chain sm 4))
-!(add-atom &self (fuel O_chain tr 1))
-!(run-chamber &self CH_expt1)
-!(test (foldall + (match &self (sem-edge V3g $e ReasonFor $x $y) 1) 0) 3)   ; derived layer present
-!(decay &self)
-!(test (foldall + (match &self (sem-edge V3g $e ReasonFor $x $y) 1) 0) 0)   ; ...forgotten
-!(test (foldall + (match &self (sem-edge V3g v3_conn1 So $x $y) 1) 0) 1)    ; molecule cue KEPT
-!(test (foldall + (match &self (event $c $s $r $k) 1) 0) 3)                     ; event log KEPT
-!(reset-run &self)
+; --- REFRESH-POOL clears the working material and nothing else -------------------------
+!(bind! &wr (new-space))
+!(set-task &wr V3)
+!(copy-molecules &wr)
+!(add-atom &wr (fuel O_base sm 6))
+!(set-cycle &wr 1)
+!(run-chamber &wr CH_expt1)
+!(test (foldall + (match &wr (sem-edge V3g $e ReasonFor $x $y) 1) 0) 2)   ; derived layer present
+!(refresh-pool &wr)
+!(test (foldall + (match &wr (sem-edge V3g $e ReasonFor $x $y) 1) 0) 0)   ; derived: gone
+!(test (foldall + (match &wr (sem-edge V3g v3_conn1 So $x $y) 1) 0) 0)    ; the task's TEXT: gone too
+!(test (foldall + (match &wr (event $c $s $r $k) 1) 0) 2)                 ; the log RIDES with the soma
+!(test (fuel-of &wr O_base sm) 4)                                        ; ...and so does the purse
 
-; --- CL_shallow: O_chain starves — the root answer dies at epoch 2 ----------------------
-; (answers  tr-surplus) per cycle: 2 answers then 1; tr-surplus −1 (spends its seed) then 0
-; (the Definition-1 flatline — R_trans can fire nothing).
-!(add-atom &self (fuel O_base sm 6))
-!(add-atom &self (fuel O_chain sm 4))
-!(add-atom &self (fuel O_chain tr 1))
-!(test (epochs-traced &self CH_expt1 CL_shallow 3 O_chain tr) ((2 -1) (1 0) (1 0)))
-!(test (fuel-of &self O_chain tr) 0)          ; dead: tr starved to 0, never replenished
-!(test (fuel-of &self O_base sm) 6)           ; O_base lives (sm break-even)
-!(reset-run &self)
+; --- WORKING one task: cycles run until the chamber settles ----------------------------
+; Products persist across the cycles of the task, and a rule whose products are already present
+; does not re-fire — so cycle 2 costs nothing and the task is done.
+!(bind! &wk (new-space))
+!(set-task &wk V3)
+!(copy-molecules &wk)
+!(add-atom &wk (fuel O_base sm 6))
+!(add-atom &wk (fuel O_chain sm 4))
+!(add-atom &wk (fuel O_chain tr 1))
+!(test (work-task &wk CH_expt1 CL_deep 1 9) 2)     ; settles with both answers
+!(test (log-cycles &wk) (1))                       ; only cycle 1 logged a firing...
+!(test (cycles-of-task &wk V3) (1 2))              ; ...though cycle 2 ran and found nothing to do
+!(test (fuel-of &wk O_base sm) 4)                  ; spent once, not once per cycle
+!(test (fuel-of &wk O_chain tr) 0)
 
-; --- CL_deep: O_chain self-sustains — both answers every cycle --------------------------
-; tr-surplus +1 each cycle (income 2 − draw 1); tr grows 1 -> 2 -> 3 -> 4.
-!(add-atom &self (fuel O_base sm 6))
-!(add-atom &self (fuel O_chain sm 4))
-!(add-atom &self (fuel O_chain tr 1))
-!(test (epochs-traced &self CH_expt1 CL_deep 3 O_chain tr) ((2 1) (2 1) (2 1)))
-!(test (fuel-of &self O_chain tr) 4)          ; alive: tr income sustains the chain
-!(test (fuel-of &self O_base sm) 6)           ; O_base lives (sm break-even)
+; --- THE TASK STREAM: each arrival brings its own text into a fresh pool ----------------
+; CL_shallow: O_chain earns no tr, so the second arrival cannot be chained (2 -> 1).
+!(bind! &wst (new-space))
+!(add-atom &wst (fuel O_base sm 6))
+!(add-atom &wst (fuel O_chain sm 4))
+!(add-atom &wst (fuel O_chain tr 1))
+!(test (run-tasks &wst CH_expt1 CL_shallow (V3 V4) 1 9) (2 1))
+!(test (fuel-of &wst O_chain tr) 0)           ; never replenished under the shallow clamp
+!(test (fuel-of &wst O_base sm) 6)            ; O_base breaks even on EACH arrival — spend is
+                                              ; per task now, not per text ever seen
+!(test (current-task &wst) V4)                ; the last arrival is still posed
+!(test (log-tasks &wst) (V3 V4))              ; the log is dated by task, not just by cycle
+!(test (cycles-of-task &wst V3) (1 2))
+!(test (cycles-of-task &wst V4) (3 4))
+; the retired task's text is gone from the pool, but its firings stay in the log
+!(test (foldall + (match &wst (sem-edge V3g v3_conn1 So $x $y) 1) 0) 0)
+!(test (foldall + (match &wst (event 1 $s R_so $k) 1) 0) 1)
 
-; --- DECAY persistence-exemption: a relation declared `(persistent R)` survives decay ---
-; even with a compound (derived) id — the retained motif a control loop closes through.
-; Classic V3 declares none (so the runs above are unaffected); here we declare a synthetic
-; one and check its edge + TV outlive the forgetting while a non-persistent derived edge dies.
-!(reset-run &self)
-!(add-atom &self (persistent Hb))
-!(add-atom &self (sem-edge tg (learn s1) Hb strat))              ; derived id, persistent relation
-!(add-atom &self (sem-edge-tv tg (learn s1) (stv 1.0 0.9)))      ; ...its TV
-!(add-atom &self (sem-edge tg (norm e9) ReasonFor a b))          ; derived id, NON-persistent
-!(add-atom &self (sem-edge-tv tg (norm e9) (stv 1.0 0.9)))       ; ...its TV
-!(add-atom &self (sem-edge tg surf9 So a b))                     ; surface molecule (atomic id)
-!(decay &self)
-!(test (foldall + (match &self (sem-edge tg (learn s1) Hb $s) 1) 0) 1)          ; persistent edge KEPT
-!(test (foldall + (match &self (sem-edge-tv tg (learn s1) $tv) 1) 0) 1)         ; ...its TV KEPT
-!(test (foldall + (match &self (sem-edge tg (norm e9) ReasonFor $x $y) 1) 0) 0) ; non-persistent DROPPED
-!(test (foldall + (match &self (sem-edge-tv tg (norm e9) $tv) 1) 0) 0)          ; ...its TV DROPPED
-!(test (foldall + (match &self (sem-edge tg surf9 So $x $y) 1) 0) 1)            ; molecule KEPT
+; CL_deep: the chain funds itself, so every arrival gets both answers.
+!(bind! &wdt (new-space))
+!(add-atom &wdt (fuel O_base sm 6))
+!(add-atom &wdt (fuel O_chain sm 4))
+!(add-atom &wdt (fuel O_chain tr 1))
+!(test (run-tasks &wdt CH_expt1 CL_deep (V3 V4 V5) 1 9) (2 2 2))
+!(test (fuel-of &wdt O_chain tr) 4)           ; tr grows: +1 per arrival (income 2 − draw 1)
+!(test (fuel-of &wdt O_base sm) 6)            ; and O_base holds steady across all three
+
+; retiring the stream leaves nothing posed, so the scoping falls back to the whole corpus
+!(retire-task &wdt)
+!(test (current-task &wdt) all)
+!(test (msort (posed-questions &wdt)) (V3_q1 V4_q1 V5_q1))

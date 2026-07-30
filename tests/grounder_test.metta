@@ -12,7 +12,7 @@
 ; grounds TWO ways (proximate + root cause) — the mechanism CHAIN is recoverable from the
 ; root answer's trans-id provenance, not from the query's shape.
 ;
-; Run:  sh ../PeTTa/run.sh tests/grounder_test.metta < /dev/null 2>&1 | grep should  # seven ✅
+; Run:  sh ../PeTTa/run.sh tests/grounder_test.metta < /dev/null 2>&1 | grep should  # eighteen ✅
 ; ===========================================================================
 !(import! &self "petta/util.metta")
 !(import! &self "petta/fuel.metta")
@@ -37,14 +37,32 @@
 !(add-atom &self (fuel O_chain tr 5))
 !(run-rules &self)
 
-!(test (foldall + (match &self (event $c $s $r $k) 1) 0) 3)              ; R_so + R_result + R_trans
-!(test (fuel-of &self O_base sm) 8)                                   ; O_base: R_so + R_result @ sm 1
-!(test (fuel-of &self O_chain sm) 9)                                  ; O_chain: R_trans @ sm 1
-!(test (fuel-of &self O_chain tr) 4)                                  ; only R_trans costs tr
+; the genome is TEXT-GENERIC: loaded straight into &self, all three corpus texts are present,
+; so each of the three rules fires once per text — the same strategy applied to new material.
+!(test (foldall + (match &self (event $c $s $r $k) 1) 0) 9)              ; (R_so + R_result + R_trans) x 3
+!(test (fuel-of &self O_base sm) 4)                                   ; O_base: R_so + R_result @ sm 1, x3
+!(test (fuel-of &self O_chain sm) 7)                                  ; O_chain: R_trans @ sm 1, x3
+!(test (fuel-of &self O_chain tr) 2)                                  ; only R_trans costs tr
 !(test (foldall + (match &self (sem-edge V3g $e ReasonFor $x $y) 1) 0) 3)  ; 2 normalized + 1 chained
+!(test (foldall + (match &self (sem-edge V4g $e ReasonFor $x $y) 1) 0) 3)  ; and the same shape on V4
 
-; --- grounding: the why-question grounds two ways (proximate + root) ---
+; --- grounding: each why-question grounds two ways (proximate + root) ---
 !(test (len (collapse (ground-skeleton &self V3_q1_as1))) 2)
+!(test (len (collapse (ground-skeleton &self V4_q1_as1))) 2)
+
+; posing a task scopes the OUTPUT to that task's questions, though both texts are derived here
+!(add-atom &self (task-now V3))
+!(test (current-task &self) V3)
+!(test (posed-questions &self) (V3_q1))
+!(test (posed-graphs &self) (V3g))
+!(test (total-answers &self) 2)
+!(remove-atom &self (task-now V3))
+!(add-atom &self (task-now V4))
+!(test (posed-questions &self) (V4_q1))
+!(test (total-answers &self) 2)
+!(remove-atom &self (task-now V4))
+!(test (current-task &self) all)
+!(test (total-answers &self) 6)                                       ; nothing posed: every question counts
 
 ; the proximate cause (the normalized as-a-result cue)...
 !(test (cites? (collapse (ground-skeleton &self V3_q1_as1))

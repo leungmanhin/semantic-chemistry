@@ -25,7 +25,7 @@
 ; structural candidate (a single cycle); adding a second cycle to the cycle-tagged event log
 ; makes the loop recurrent (>= recurrence-min).
 ;
-; Run:  sh ../PeTTa/run.sh tests/acs_test.metta < /dev/null 2>&1 | grep should  # fifty-two ✅
+; Run:  sh ../PeTTa/run.sh tests/acs_test.metta < /dev/null 2>&1 | grep should  # ninety-four ✅
 ; ===========================================================================
 !(import! &self "petta/util.metta")
 !(import! &self "petta/fuel.metta")
@@ -41,11 +41,15 @@
 !(import! &self "petta/dispatch.metta")
 
 ; --- one chamber run supplies the log + derived layer (seed tr=1 so R_trans fires once) ---
-!(add-atom &self (fuel O_base sm 10))
-!(add-atom &self (fuel O_chain sm 10))
-!(add-atom &self (fuel O_chain tr 1))
-!(run-chamber &self CH_expt1)
-!(test (msort (fired-rules &self)) (R_result R_so R_trans))                   ; all three fired
+!(bind! &ws0 (new-space))
+!(set-task &ws0 V3)
+!(set-cycle &ws0 1)          ; dates the log to the task, so a paired replay re-poses the same one
+!(copy-molecules &ws0)
+!(add-atom &ws0 (fuel O_base sm 10))
+!(add-atom &ws0 (fuel O_chain sm 10))
+!(add-atom &ws0 (fuel O_chain tr 1))
+!(run-chamber &ws0 CH_expt1)
+!(test (msort (fired-rules &ws0)) (R_result R_so R_trans))                   ; all three fired
 
 ; --- motifs are whole reactant/product PATTERNS (composite, shared vars kept), matched by
 ; UNIFICATION. R_trans's reactant is the two-edge CHAIN motif (shared middle mvar 1); a single
@@ -55,23 +59,23 @@
 !(test (rule-reactant R_so) ((So (mvar 0) (mvar 1))))                                          ; the So cue (food)
 !(test (rule-product R_so) ((ReasonFor (mvar 0) (mvar 1))))                                    ; a ReasonFor
 !(test (motif-feeds? (rule-product R_so) (rule-reactant R_trans)) True)                        ; ReasonFor feeds the chain
-!(test (queried-products (all-products (fired-rules &self))) (((ReasonFor (mvar 0) (mvar 1))))); ReasonFor answers the query
+!(test (queried-products (all-products (fired-rules &ws0))) (((ReasonFor (mvar 0) (mvar 1))))); ReasonFor answers the query
 
 ; --- mine the graph; the food-generated loop = all three rules (in the food-fed network) ---
 !(bind! &g (new-space))
-!(build-graph &g (fired-rules &self))
-!(test (msort (acs-members &g (fired-rules &self))) (R_result R_so R_trans))
+!(build-graph &g (fired-rules &ws0))
+!(test (msort (acs-members &g (fired-rules &ws0))) (R_result R_so R_trans))
 
 ; --- STRUCTURAL CLOSURE (§4.5 cond 1): ENDOGENOUS only — the minting edge is FOOD, not closure.
 ; R_trans is endo-cyclic (its ReasonFor product feeds its own two-edge chain premise); R_so/
 ; R_result are feed-forward food-converters (So/AsAResult are cues no rule regenerates), so the
 ; SET is NOT structurally closed — a subsidized candidate (no acs-closure fact; viable+useful,
 ; food-fed), its subsidy inferred as surplus-but-no-closure. ---
-!(test (endo-cyclic? R_trans (acs-members &g (fired-rules &self))) True)      ; ReasonFor feeds its own chain
-!(test (endo-cyclic? R_so (acs-members &g (fired-rules &self))) False)        ; So is food — feed-forward
-!(test (structurally-closed? (acs-members &g (fired-rules &self))) False)     ; a feed-forward member ⇒ not closed
-!(test (closure-kind (acs-members &g (fired-rules &self))) none)              ; not closed ⇒ no closure kind
-!(test (closure-facts A_qa (acs-members &g (fired-rules &self))) ())          ; ⇒ NO acs-closure fact emitted (not an ACS)
+!(test (endo-cyclic? R_trans (acs-members &g (fired-rules &ws0))) True)      ; ReasonFor feeds its own chain
+!(test (endo-cyclic? R_so (acs-members &g (fired-rules &ws0))) False)        ; So is food — feed-forward
+!(test (structurally-closed? (acs-members &g (fired-rules &ws0))) False)     ; a feed-forward member ⇒ not closed
+!(test (closure-kind (acs-members &g (fired-rules &ws0))) none)              ; not closed ⇒ no closure kind
+!(test (closure-facts A_qa (acs-members &g (fired-rules &ws0))) ())          ; ⇒ NO acs-closure fact emitted (not an ACS)
 
 ; positive control: a synthetic 2-rule substrate ring (P→Q, Q→P) IS structurally closed — each
 ; rule's product regenerates the other's reactant, so both are endo-cyclic (the Exp-2 biomedical-
@@ -91,12 +95,12 @@
 ; ReasonFor producers cover it, but once the feed-forward converters peel away it stands alone
 ; with one producer for a two-ReasonFor premise and fails. V3 thus has an EMPTY closed component
 ; ⇒ acs-member-set falls back to the food-fed candidate network (the subsidized story is kept). ---
-!(test (injective-covered? R_trans (fired-rules &self)) True)                ; candidate set: 3 ReasonFor producers cover it
+!(test (injective-covered? R_trans (fired-rules &ws0)) True)                ; candidate set: 3 ReasonFor producers cover it
 !(test (injective-covered? R_trans (R_trans)) False)                        ; alone: 2 ReasonFor premise, 1 producer
 !(test (endo-satisfied? R_trans (R_trans)) False)                           ; on a cycle, but not injectively covered
 !(test (structurally-closed? (R_trans)) False)                              ; ⇒ the lone self-loop is not closed
-!(test (endo-component (fired-rules &self)) ())                             ; V3 peels to an EMPTY closed component
-!(test (msort (acs-member-set &g (fired-rules &self))) (R_result R_so R_trans))  ; ⇒ fall back to the candidate network
+!(test (endo-component (fired-rules &ws0)) ())                             ; V3 peels to an EMPTY closed component
+!(test (msort (acs-member-set &g (fired-rules &ws0))) (R_result R_so R_trans))  ; ⇒ fall back to the candidate network
 ; a genuine 2-rule ring IS its own closed component (each 1-clause premise met by a distinct producer)
 !(test (injective-covered? R_ring1 (R_ring1 R_ring2)) True)
 !(test (msort (endo-component (R_ring1 R_ring2))) (R_ring1 R_ring2))
@@ -124,10 +128,10 @@
 !(test (closure-kind (R_ring1 R_ring2)) substrate)
 
 ; --- per-token surplus (eq 19), componentwise; only the tr component flips with the clamp ---
-!(test (token-surplus &self (acs-members &g (fired-rules &self)) CL_deep sm) 1)     ; income 4 − spend 3
-!(test (token-surplus &self (acs-members &g (fired-rules &self)) CL_deep tr) 1)     ; income 2 − spend 1
-!(test (token-surplus &self (acs-members &g (fired-rules &self)) CL_shallow sm) 1)  ; income 4 − spend 3
-!(test (token-surplus &self (acs-members &g (fired-rules &self)) CL_shallow tr) -1) ; income 0 − spend 1
+!(test (token-surplus &ws0 (acs-members &g (fired-rules &ws0)) CL_deep sm) 1)     ; income 4 − spend 3
+!(test (token-surplus &ws0 (acs-members &g (fired-rules &ws0)) CL_deep tr) 1)     ; income 2 − spend 1
+!(test (token-surplus &ws0 (acs-members &g (fired-rules &ws0)) CL_shallow sm) 1)  ; income 4 − spend 3
+!(test (token-surplus &ws0 (acs-members &g (fired-rules &ws0)) CL_shallow tr) -1) ; income 0 − spend 1
 
 ; --- causal influence (condition 4): a REPLAY ablation in an isolated space. Suppressing the
 ; ACS members re-poses the chamber with nothing to derive ReasonFor → 0 answers, below the
@@ -135,47 +139,57 @@
 ; the empty set) — re-derives the full 2, so the count does NOT drop (a real counterfactual). ---
 !(bind! &abl (new-space))
 !(bind! &abl0 (new-space))
-!(test (total-answers &self) 2)                                                    ; baseline: the loop present
-!(test (ablated-answers &abl CH_expt1 SNAP_qa (acs-members &g (fired-rules &self))) 0)    ; loop suppressed → no answers
-!(test (causal-influence? &self &abl CH_expt1 SNAP_qa (acs-members &g (fired-rules &self))) True)
-!(test (causal-influence? &self &abl0 CH_expt1 SNAP_qa ()) False)                   ; suppress nothing → no drop
+!(test (total-answers &ws0) 2)                                                    ; baseline: the loop present
+!(test (ablated-answers &abl CH_expt1 SNAP_qa V3 (acs-members &g (fired-rules &ws0))) 0)  ; loop suppressed → no answers
+!(test (causal-influence? &ws0 &abl CH_expt1 SNAP_qa (acs-members &g (fired-rules &ws0))) True)
+!(test (causal-influence? &ws0 &abl0 CH_expt1 SNAP_qa ()) False)                   ; suppress nothing → no drop
 
 ; --- RULE-LEVEL causal coding (SC §3): per-member do-influence by LEAVE-ONE-OUT replay (baseline
 ; minted reward − reward with that ONE member disabled). In V3 all three members are load-bearing
 ; (none redundant): R_result produces the base ReasonFor both answers need (ablating it → 0 reward,
 ; do-influence = the full baseline 6); R_so and R_trans are each required for the 2-hop chain
 ; answer (do-influence 4). So the minimal ACS is all three. ---
-!(test (member-do-influences &self &abl CH_expt1 SNAP_qa CL_deep (R_so R_result R_trans)) ((R_so 4) (R_result 6) (R_trans 4)))
-!(test (minimal-acs &self &abl CH_expt1 SNAP_qa CL_deep (R_so R_result R_trans)) (R_so R_result R_trans))   ; all load-bearing
+!(test (member-do-influences &ws0 &abl CH_expt1 SNAP_qa CL_deep (R_so R_result R_trans)) ((R_so 4) (R_result 6) (R_trans 4)))
+!(test (minimal-acs &ws0 &abl CH_expt1 SNAP_qa CL_deep (R_so R_result R_trans)) (R_so R_result R_trans))   ; all load-bearing
 ; the redundancy + minimal-ACS logic on a synthetic (rule delta) list: a delta-0 member is
 ; REDUNDANT and dropped from the minimal ACS
 !(test (do-inf-facts 1 ((Ra 3) (Rb 0) (Rc 2)))
        ((rule-do-influence Ra target answer-reward 1 3) (rule-redundancy Ra 1 False)
         (rule-do-influence Rb target answer-reward 1 0) (rule-redundancy Rb 1 True)
         (rule-do-influence Rc target answer-reward 1 2) (rule-redundancy Rc 1 False)))
-!(test (minimal-acs &self &abl CH_expt1 SNAP_qa CL_shallow (R_so R_result R_trans)) (R_so R_result R_trans))  ; also minimal under the other clamp
+!(test (minimal-acs &ws0 &abl CH_expt1 SNAP_qa CL_shallow (R_so R_result R_trans)) (R_so R_result R_trans))  ; also minimal under the other clamp
 
-; --- the replay WINDOW is the observed log's cycle count, CAPPED. Uncapped it would replay a
-; production log's thousands of cycles per member, for a delta that only rescales past the point
-; the trajectories separate. The cap bounds the cost and bounds the CLAIM: a 0 means "no difference
-; within n cycles". Here the log is one cycle, so the window is 1 and every number above stands. ---
+; --- the replay WINDOW is the TASK SEQUENCE the observed log served, CAPPED. Uncapped it would
+; replay a production log's thousands of tasks per member, for a delta that only rescales past the
+; point the trajectories separate. The cap bounds the cost and bounds the CLAIM: a 0 means "no
+; difference within n tasks". Here the log served one task, so the window is 1 and every number
+; above stands. ---
 !(test (window-max) 3)                                   ; the default cap
-!(test (window-of &self) 1)                              ; a one-cycle log is not padded up to it
+!(test (replay-tasks &ws0) (V3))                         ; the replay re-poses the task actually worked
+!(test (window-of &ws0) 1)                              ; a one-task log is not padded up to the cap
 !(bind! &ws_long (new-space))
+!(add-atom &ws_long (cycle-task 1 T1))
+!(add-atom &ws_long (cycle-task 2 T2))
+!(add-atom &ws_long (cycle-task 3 T3))
+!(add-atom &ws_long (cycle-task 4 T4))
+!(add-atom &ws_long (cycle-task 5 T5))
 !(add-atom &ws_long (event 1 0 R_so k))
 !(add-atom &ws_long (event 2 0 R_so k))
-!(add-atom &ws_long (event 3 0 R_so k))
-!(add-atom &ws_long (event 4 0 R_so k))
-!(add-atom &ws_long (event 5 0 R_so k))
-!(test (len (log-cycles &ws_long)) 5)                    ; five cycles observed...
-!(test (window-of &ws_long) 3)                           ; ...but the replay is capped at 3
+!(test (len (log-cycles &ws_long)) 2)                    ; two cycles actually logged a firing...
+!(test (len (log-tasks &ws_long)) 5)                     ; ...across five tasks served
+!(test (window-of &ws_long) 3)                           ; but the replay is capped at 3
+!(test (replay-tasks &ws_long) (T1 T2 T3))               ; the first three, in arrival order
 !(add-atom &self (acs-window-max 4))                     ; the cap is config
 !(test (window-of &ws_long) 4)
 !(remove-atom &self (acs-window-max 4))
 !(test (window-of &ws_long) 3)                           ; back to the default
+; a log with no task dating at all falls back to a single whole-corpus replay
+!(bind! &ws_untagged (new-space))
+!(add-atom &ws_untagged (event 1 0 R_so k))
+!(test (replay-tasks &ws_untagged) (all))
 ; the do-influence facts appear in the verdict list (per member, keyed on the rule)
-!(test (in-list? (rule-do-influence R_trans target answer-reward 1 4) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
-!(test (in-list? (rule-redundancy R_result 1 False) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (rule-do-influence R_trans target answer-reward 1 4) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (rule-redundancy R_result 1 False) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
 
 ; --- the clamp-switch lives ENTIRELY in the componentwise surplus (tested above): membership +
 ; closure + causal influence are clamp-independent; only token-surplus flips (tr +1 under CL_deep
@@ -183,23 +197,23 @@
 ; condition verdicts (acs-closure present ∧ every acs-surplus > 0 ∧ causal ∧ recurrent) itself. ---
 
 ; --- the §2.9 verdict facts ---
-!(test (in-list? (acs-member A_qa R_trans) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
-!(test (in-list? (acs-closure A_qa substrate) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) False)  ; V3 not closed ⇒ no acs-closure fact in the verdict list
-!(test (in-list? (acs-surplus A_qa CL_deep tr 1) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
-!(test (in-list? (acs-causal-influence A_qa True) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (acs-member A_qa R_trans) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (acs-closure A_qa substrate) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) False)  ; V3 not closed ⇒ no acs-closure fact in the verdict list
+!(test (in-list? (acs-surplus A_qa CL_deep tr 1) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (acs-causal-influence A_qa True) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
 
 ; --- A = (M_A, R_A): the verdict names both M_A (the cycle's motif species) and R_A (the
 ; rules), plus autocatalysis (cond 2). M_A now includes the COMPOSITE chain motif (R_trans's
 ; two-edge premise, shared middle) alongside the single ReasonFor motif; food motifs (So/
 ; AsAResult, never produced) are off every cycle and excluded. ---
-!(test (len (acs-motifs &g (acs-members &g (fired-rules &self)))) 2)                                          ; two motif species
-!(test (in-list? ((ReasonFor (mvar 0) (mvar 1))) (acs-motifs &g (acs-members &g (fired-rules &self)))) True)  ; the single ReasonFor motif
-!(test (in-list? ((ReasonFor (mvar 0) (mvar 1)) (ReasonFor (mvar 1) (mvar 2))) (acs-motifs &g (acs-members &g (fired-rules &self)))) True)  ; the CHAIN motif
-!(test (autocatalytic? &g (acs-members &g (fired-rules &self))) True)             ; cond 2 holds
-!(test (in-list? (acs-motif A_qa ((ReasonFor (mvar 0) (mvar 1)))) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
-!(test (in-list? (acs-motif A_qa ((ReasonFor (mvar 0) (mvar 1)) (ReasonFor (mvar 1) (mvar 2)))) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)  ; the chain motif is a verdict
-!(test (in-list? (acs-motif A_qa ((So (mvar 0) (mvar 1)))) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) False)  ; food motif excluded
-!(test (in-list? (acs-autocatalytic A_qa True) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (len (acs-motifs &g (acs-members &g (fired-rules &ws0)))) 2)                                          ; two motif species
+!(test (in-list? ((ReasonFor (mvar 0) (mvar 1))) (acs-motifs &g (acs-members &g (fired-rules &ws0)))) True)  ; the single ReasonFor motif
+!(test (in-list? ((ReasonFor (mvar 0) (mvar 1)) (ReasonFor (mvar 1) (mvar 2))) (acs-motifs &g (acs-members &g (fired-rules &ws0)))) True)  ; the CHAIN motif
+!(test (autocatalytic? &g (acs-members &g (fired-rules &ws0))) True)             ; cond 2 holds
+!(test (in-list? (acs-motif A_qa ((ReasonFor (mvar 0) (mvar 1)))) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (acs-motif A_qa ((ReasonFor (mvar 0) (mvar 1)) (ReasonFor (mvar 1) (mvar 2)))) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)  ; the chain motif is a verdict
+!(test (in-list? (acs-motif A_qa ((So (mvar 0) (mvar 1)))) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) False)  ; food motif excluded
+!(test (in-list? (acs-autocatalytic A_qa True) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
 
 ; ===========================================================================
 ; --- the acs-scan WORKER (worker-kind acs-scan): the SAME certification hosted as a §6.4
@@ -222,6 +236,7 @@
 !(add-atom &self (worker-ablate-space W_scan &abl_scan))
 ; run-as CONSUMES a chamber's log, so a chamber run must populate its space first (a context-
 ; chamber worker does this in the pipeline; here we materialize that output directly)
+!(set-task &ws_scan V3)
 !(copy-molecules &ws_scan)
 !(restore-snapshot &ws_scan SNAP_qa)
 !(run-chamber &ws_scan CH_expt1)
@@ -257,6 +272,7 @@
 !(add-atom &self (worker-space W_scanS &ws_scanS))
 !(add-atom &self (worker-graph-space W_scanS &g_scanS))
 !(add-atom &self (worker-ablate-space W_scanS &abl_scanS))
+!(set-task &ws_scanS V3)
 !(copy-molecules &ws_scanS)
 !(restore-snapshot &ws_scanS SNAP_qa)
 !(run-chamber &ws_scanS CH_expt1)
@@ -265,26 +281,37 @@
 
 ; isolation, both directions: neither worker leaked derivation into &self (still the bare
 ; run's 2 answers, not 4)
-!(test (total-answers &self) 2)
+!(test (total-answers &ws0) 2)
 
 ; ===========================================================================
-; --- RECURRENCE (§4.5 "sustains itself in an event log" / §6.4 P2 "recurrent"): the single
-; chamber run at the top fired in ONE cycle (cycle 1), so the loop is only a STRUCTURAL
-; CANDIDATE. The cycle-tagged event log accumulates in place; here we add a second
-; cycle of the loop {R_so, R_result, R_trans} firing, and it reads as recurrent (>= recurrence-min). ---
-!(test (recurrence-count &self (acs-members &g (fired-rules &self))) 1)   ; single run: one cycle
-!(test (recurrent? &self (acs-members &g (fired-rules &self)) 2) False)   ; candidate, not yet recurrent
-!(add-atom &self (event 2 1 R_so k1))
-!(add-atom &self (event 2 2 R_result k2))
-!(add-atom &self (event 2 3 R_trans k3))
-!(test (recurrence-count &self (acs-members &g (fired-rules &self))) 2)   ; the loop closes in 2 cycles
-!(test (recurrent? &self (acs-members &g (fired-rules &self)) 2) True)    ; recurrent
-!(test (in-list? (acs-recurrent A_qa True) (acs-verdicts A_qa &g &self &abl CH_expt1 SNAP_qa CL_deep)) True)
+; --- RECURRENCE (§4.5 "sustains itself in an event log" / §6.4 P2 "recurrent"): counted across
+; TASKS, not cycles — the docs' metric is "recurrence of useful motifs across tasks", so a loop
+; recurs when it turns again on NEWLY ARRIVED material rather than when one question is re-asked.
+; The chamber run at the top worked ONE task, so the loop is only a STRUCTURAL CANDIDATE; here a
+; second task arrives, the same loop turns on it, and it reads as recurrent (>= recurrence-min). ---
+!(test (recurrence-count &ws0 (acs-members &g (fired-rules &ws0))) 1)   ; one task worked so far
+!(test (recurrent? &ws0 (acs-members &g (fired-rules &ws0)) 2) False)   ; candidate, not yet recurrent
+!(add-atom &ws0 (cycle-task 2 V4))                                     ; a second task arrives...
+!(add-atom &ws0 (event 2 1 R_so k1))                                   ; ...and the loop turns again
+!(add-atom &ws0 (event 2 2 R_result k2))
+!(add-atom &ws0 (event 2 3 R_trans k3))
+!(test (log-tasks &ws0) (V3 V4))
+!(test (loop-in-task? &ws0 (acs-members &g (fired-rules &ws0)) V4) True)
+!(test (recurrence-count &ws0 (acs-members &g (fired-rules &ws0))) 2)   ; the loop turned for both
+!(test (recurrent? &ws0 (acs-members &g (fired-rules &ws0)) 2) True)    ; recurrent ACROSS TASKS
+!(test (in-list? (acs-recurrent A_qa True) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
 
-; rule-firings scopes to the CURRENT cycle (per-cycle surplus, eq-19): with cycle-now = 2 it
-; counts cycle-2's one R_so firing, not both cycles' — so a multi-cycle log keeps surplus per-cycle
-!(add-atom &self (cycle-now 2))
-!(test (rule-firings &self R_so) 1)
+; a loop that turned for only ONE of the two tasks is NOT recurrent — the second arrival is what
+; distinguishes a reusable strategy from a one-off derivation
+!(test (loop-in-task? &ws0 (R_so R_result R_trans R_absent) V3) False)
+!(test (recurrence-count &ws0 (R_so R_result R_trans R_absent)) 0)
+
+; rule-firings scopes to the POSED TASK's cycles (per-task surplus, eq-19): posing V3 counts only
+; the cycles that served V3, posing V4 only V4's — so a multi-task log keeps surplus per task
+!(test (rule-firings &ws0 R_so) 1)                                     ; V3 is posed: its cycle 1
+!(set-task &ws0 V4)
+!(test (rule-firings &ws0 R_so) 1)                                     ; V4: its cycle 2
+!(set-task &ws0 V3)
 
 ; ===========================================================================
 ; --- MUTUAL REDUNDANCY: leave-one-out measures individual necessity, but minimality is a JOINT
@@ -320,6 +347,7 @@
 !(add-atom &self (clamp-mint CL_dup skeleton-match sm 2))
 !(add-atom &self (clamp-scope CL_dup CH_dup))
 !(add-atom &self (qa-task DUP))
+!(add-atom &self (task-graph DUP dupg))          ; the synthetic task's own text
 !(add-atom &self (qa-question DUP Q_dup))
 !(add-atom &self (answer-skeleton Q_dup GAS_dup))
 !(add-atom &self (sem-graph GAS_dup))
@@ -327,10 +355,14 @@
 !(add-atom &self (sem-edge GAS_dup dqc1 ReasonFor (var w) (var z)))
 !(bind! &ws_dup (new-space))
 !(bind! &abl_dup (new-space))
+!(set-task &ws_dup DUP)
+!(set-cycle &ws_dup 1)
 !(copy-molecules &ws_dup)
 !(restore-snapshot &ws_dup SNAP_dup)
 !(run-chamber &ws_dup CH_dup)
-!(test (msort (fired-rules &ws_dup)) (R_dup1 R_dup2))                                        ; both fire
+; only ONE of them fires: the second finds its product already present and skips, so a
+; duplicate derivation now costs nothing rather than paying twice for the same edge
+!(test (msort (fired-rules &ws_dup)) (R_dup1))
 !(test (total-reward &ws_dup CL_dup) 2)                                                      ; baseline: the answer is minted
 !(test (ablated-reward &abl_dup CH_dup SNAP_dup CL_dup (R_dup1)) 2)                          ; either ALONE is droppable...
 !(test (ablated-reward &abl_dup CH_dup SNAP_dup CL_dup (R_dup2)) 2)

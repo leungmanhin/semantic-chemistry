@@ -111,8 +111,13 @@
 (= (question-income $ws $q $cl $tok)
    (foldall + (match &self (answer-skeleton $q $gas) (skeleton-income $ws $gas $cl $tok)) 0))
 
-(= (chamber-income $ws $cl $tok)
-   (foldall + (match &self (qa-question $v $q) (question-income $ws $q $cl $tok)) 0))
+; the chamber's income = what the POSED questions mint; a retired task earns nothing more
+(= (chamber-income $ws $cl $tok) (sum-question-income $ws $cl $tok (posed-questions $ws)))
+(= (sum-question-income $ws $cl $tok $qs)
+   (case $qs
+         ((() 0)
+          ($ne (+ (question-income $ws (car-atom $qs) $cl $tok)
+                  (sum-question-income $ws $cl $tok (cdr-atom $qs)))))))
 
 ; --- crediting: each minted (tok n) goes to the organism whose rule DERIVED the cite ---
 
@@ -166,11 +171,11 @@
 (= (credit-question $ws $q $cl)
    (credit-skels $ws $cl (skeletons-of $q)))
 
-; --- MINT every question in $ws under clamp $cl (the evaluator's per-cycle income): run
-; credit-question over the whole task set. A context-chamber worker fills $ws first; the
+; --- MINT every POSED question in $ws under clamp $cl (the evaluator's per-cycle income): run
+; credit-question over the posed task's questions. A context-chamber worker fills $ws first; the
 ; evaluator reads that output graph and mints — it never derives. ---
 (= (credit-all-questions $ws $cl)
-   (credit-each $ws (collapse (match &self (qa-question $v $q) $q)) $cl))
+   (credit-each $ws (posed-questions $ws) $cl))
 
 (= (credit-each $ws $qs $cl)
    (case $qs

@@ -32,7 +32,7 @@
 ; caller-bound ISOLATED space with the ACS members suppressed; if the answer count drops
 ; below the baseline, the loop causally produces those answers. Assumes util + fuel +
 ; compiler + reaction + grounder + evaluator + epoch + worker loaded (epoch supplies the
-; set-cycle/decay the multi-cycle do-influence replay runs on); the event log + derived layer
+; set-cycle/refresh-pool the multi-task do-influence replay runs on); the event log + derived layer
 ; of one chamber run supply the log + income (the log reads take the run space $ws — &self on
 ; a bare run, the worker's own space via `run-as`, which CONSUMES the log a prior context-
 ; chamber worker left there rather than re-deriving — MSC §6.4 P2 "scan event logs"); the
@@ -163,12 +163,24 @@
                         (try-cover $p $rest $products (cdr-atom $pool))))))))
 
 ; --- the fired rules + firing counts (from the cycle-tagged event log in run space $ws).
-; fired-rules spans ALL cycles (structure / membership); rule-firings counts only the CURRENT
-; cycle — eq-19 surplus is per-cycle, so on a multi-cycle log the spend must align with the
-; current cycle's income (a no-op on a single-cycle log). ---
+; fired-rules spans the WHOLE log (structure / membership); rule-firings counts the cycles of
+; the POSED TASK — eq-19 surplus is measured per task, since a task's income arrives when its
+; questions are answered and its spend is whatever the cycles working it cost. A run that was
+; never task-tagged falls back to the current cycle, which is what a bare run means. ---
 (= (fired-rules $ws) (dedup (collapse (match $ws (event $c $s $r $k) $r))))
-(= (rule-firings $ws $r)
-   (let $cyc (current-cycle $ws) (foldall + (match $ws (event $cyc $s $r $k) 1) 0)))
+
+; the cycles the posed task's spend is measured over (the current cycle on an untagged run)
+(= (spend-cycles $ws)
+   (let $cs (cycles-of-task $ws (current-task $ws))
+        (if (== $cs ()) (cons-atom (current-cycle $ws) ()) $cs)))
+
+(= (rule-firings $ws $r) (firings-in-cycles $ws $r (spend-cycles $ws)))
+(= (firings-in-cycles $ws $r $cs)
+   (case $cs
+         ((() 0)
+          ($ne (let $c (car-atom $cs)
+                    (+ (foldall + (match $ws (event $c $s $r $k) 1) 0)
+                       (firings-in-cycles $ws $r (cdr-atom $cs))))))))
 
 ; --- the food-supply (external-reward) ingredients (clamp-independent, for membership) ---
 
@@ -466,7 +478,8 @@
 ; re-run, not the structural "a member names an answer-queried relation" proxy. ---
 
 ; WIPE all mutable state from replay space $abl (molecules, derived layer, tvs, events, fuel,
-; cycle) so it can be freshly re-materialized — leave-one-out reuses one $abl across many replays
+; cycle + task markers) so it can be freshly re-materialized — leave-one-out reuses one $abl
+; across many replays
 (= (wipe-space $abl)
    (let* (($z1 (remove-all $abl (collapse (match $abl (sem-edge $g $i $r $a) (sem-edge $g $i $r $a)))))
           ($z2 (remove-all $abl (collapse (match $abl (sem-edge $g $i $r $a $b) (sem-edge $g $i $r $a $b)))))
@@ -474,21 +487,27 @@
           ($z4 (remove-all $abl (collapse (match $abl (sem-edge-tv $g $i $tv) (sem-edge-tv $g $i $tv)))))
           ($z5 (remove-all $abl (collapse (match $abl (event $c $s $r $k) (event $c $s $r $k)))))
           ($z6 (remove-all $abl (collapse (match $abl (fuel $O $t $n) (fuel $O $t $n)))))
-          ($z7 (remove-all $abl (collapse (match $abl (cycle-now $k) (cycle-now $k))))))
+          ($z7 (remove-all $abl (collapse (match $abl (cycle-now $k) (cycle-now $k)))))
+          ($z8 (remove-all $abl (collapse (match $abl (cycle-task $k2 $t2) (cycle-task $k2 $t2)))))
+          ($z9 (remove-all $abl (collapse (match $abl (task-now $t3) (task-now $t3))))))
      done))
 
-; run the chamber in the isolated space $abl with the rules $skip suppressed (space WIPED then
-; molecules + snapshot fuel re-materialized), and return the resulting answer count
-(= (ablated-answers $abl $ch $snap $skip)
+; run the chamber in the isolated space $abl with the rules $skip suppressed, POSING task $t —
+; the space is wiped, $t is posed (so its text arrives), snapshot fuel is restored — and return
+; the resulting answer count. Posing the same task the baseline was measured under is what makes
+; the two sides a pair; `all` replays every task's text at once (an untagged run).
+(= (ablated-answers $abl $ch $snap $t $skip)
    (let* (($z0 (wipe-space $abl))
-          ($z1 (copy-molecules $abl))
-          ($z2 (restore-snapshot $abl $snap))
-          ($z3 (run-chamber-ablate $abl $ch $skip)))
+          ($z1 (set-task $abl $t))
+          ($z2 (copy-molecules $abl))
+          ($z3 (restore-snapshot $abl $snap))
+          ($z4 (run-chamber-ablate $abl $ch $skip)))
      (total-answers $abl)))
 
-; does suppressing the members in $abl drop the answer count below the $ws baseline?
+; does suppressing the members in $abl drop the answer count below the $ws baseline? Both sides
+; are read under the task $ws currently poses.
 (= (causal-influence? $ws $abl $ch $snap $members)
-   (> (total-answers $ws) (ablated-answers $abl $ch $snap $members)))
+   (> (total-answers $ws) (ablated-answers $abl $ch $snap (current-task $ws) $members)))
 
 ; --- RULE-LEVEL CAUSAL CODING (SC §3, per-rule do-influence): the finer, per-member breakdown
 ; of the ACS-level causal influence above. do-influence is measured by a LEAVE-ONE-OUT paired
@@ -507,70 +526,81 @@
 (= (sum-token-incomes $ws $cl $toks)
    (case $toks ((() 0) ($ne (+ (chamber-income $ws $cl (car-atom $toks)) (sum-token-incomes $ws $cl (cdr-atom $toks)))))))
 
-; --- the measurement WINDOW. A rule whose product survives decay acts on the NEXT cycle, so a
-; one-cycle replay cannot see it at all: the control rules of a self-priming loop each measure 0
-; there — true of one cycle, false of the loop. The fix is to widen the window, NOT to special-case
-; the rule; every member is still measured identically. The replay runs as many cycles as the log
-; being certified spans, so the ablated run is exactly as long as the run it is compared against
-; (the doc's same-snapshot / same-budget paired replay, extended to the cycle count).
+; --- the measurement WINDOW, in TASKS. A rule whose contribution only tells on a LATER arrival
+; cannot be seen by a single-task replay at all — it would measure 0 there, which is true of that
+; task and false of the loop. The fix is to widen the
+; window, NOT to special-case the rule; every member is still measured identically. The replay
+; re-poses exactly the task SEQUENCE the certified log served, so the ablated run does the same
+; work as the run it is compared against (the doc's same-snapshot paired replay).
 
-; the replay CAP (config `(acs-window-max n)`, default 3). Past the cycle where the ablated and
-; unablated trajectories separate, each further cycle adds a constant — so a longer window rescales
-; the delta without telling us anything new, while costing (members + 1) x cycles epochs. On a log
-; thousands of cycles long that is the whole cost and none of the information. The cap is also what
-; keeps a 0 honest: it reads "no difference within n cycles", which is exactly what the window
-; recorded in the fact claims. Raise it for a chamber whose loops take longer to reach steady state.
+; the replay CAP in tasks (config `(acs-window-max n)`, default 3). Past the task where the
+; ablated and unablated trajectories separate, each further task adds a constant — so a longer
+; window rescales the delta without telling us anything new, while costing (members + 1) x tasks
+; replays. On a log thousands of tasks long that is the whole cost and none of the information.
+; The cap is also what keeps a 0 honest: it reads "no difference within n tasks", which is exactly
+; what the window recorded in the fact claims. Raise it where loops take longer to pay off.
 (= (window-max)
    (case (collapse (match &self (acs-window-max $n) $n)) ((() 3) ($ns (car-atom $ns)))))
 
-; the certification window: how many distinct cycles the observed log spans, capped (at least 1)
-(= (window-of $ws)
-   (let* (($n (len (log-cycles $ws)))
-          ($m (window-max)))
-     (if (== $n 0) 1 (if (> $n $m) $m $n))))
+; the first $n elements of $l
+(= (take-n $n $l)
+   (if (== $n 0) () (if (== $l ()) () (cons-atom (car-atom $l) (take-n (- $n 1) (cdr-atom $l))))))
 
-; ONE ablated epoch in $sp: re-derive with $skip suppressed -> read the reward it minted ->
-; credit it -> decay. The crediting step is what makes a multi-cycle ablation mean anything:
-; without income the organism cannot afford cycle 2, so ablated and unablated runs alike
-; collapse to the first cycle and every difference vanishes.
-(= (ablate-epoch $sp $ch $cl $k $skip)
-   (let* (($z0 (set-cycle $sp $k))
-          ($z1 (run-chamber-ablate $sp $ch $skip))
+; the TASK SEQUENCE a paired replay re-poses: the tasks the observed log served, in order, capped.
+; A log with no task tags replays a single `all` task — one epoch over every text, which is what
+; an untagged bare run did.
+(= (replay-tasks $ws)
+   (let $ts (log-tasks $ws) (if (== $ts ()) (cons-atom all ()) (take-n (window-max) $ts))))
+
+; the certification window: how many TASKS the replay spans (at least 1)
+(= (window-of $ws) (len (replay-tasks $ws)))
+
+; ONE ablated TASK in $sp: pose it (its text arrives) -> re-derive with $skip suppressed -> read
+; the reward it minted -> credit it -> decay. The crediting step is what makes a multi-task
+; ablation mean anything: without income the organism cannot afford the second task, so ablated
+; and unablated runs alike collapse to the first and every difference vanishes.
+(= (ablate-task $sp $ch $cl $t $k $skip)
+   (let* (($z0 (set-task $sp $t))
+          ($z1 (refresh-pool $sp))
+          ($z2 (copy-molecules $sp))
+          ($z3 (set-cycle $sp $k))
+          ($z4 (run-chamber-ablate $sp $ch $skip))
           ($r (total-reward $sp $cl))
-          ($z2 (credit-all-questions $sp $cl))
-          ($z3 (decay $sp)))
+          ($z5 (credit-all-questions $sp $cl)))
      $r))
 
-; the cumulative reward of cycles $k..$n with $skip suppressed
-(= (ablate-epochs $sp $ch $cl $k $n $skip $acc)
-   (if (> $k $n)
-       $acc
-       (ablate-epochs $sp $ch $cl (+ $k 1) $n $skip (+ $acc (ablate-epoch $sp $ch $cl $k $skip)))))
+; the cumulative reward of the task list $ts, one task per cycle from $k, with $skip suppressed
+(= (ablate-tasks $sp $ch $cl $ts $k $skip $acc)
+   (case $ts
+         ((() $acc)
+          ($ne (let $r (ablate-task $sp $ch $cl (car-atom $ts) $k $skip)
+                    (ablate-tasks $sp $ch $cl (cdr-atom $ts) (+ $k 1) $skip (+ $acc $r)))))))
 
-; the reward a fresh $n-cycle run mints in $abl with $skip suppressed — the space is wiped and
-; re-materialized from the snapshot first, so every measurement starts from the same state
-(= (windowed-reward $abl $ch $snap $cl $n $skip)
+; the reward a fresh replay of task sequence $ts mints in $abl with $skip suppressed — the space
+; is wiped and re-fuelled from the snapshot first, so every measurement starts from the same state
+(= (windowed-reward $abl $ch $snap $cl $ts $skip)
    (let* (($z0 (wipe-space $abl))
-          ($z1 (copy-molecules $abl))
-          ($z2 (restore-snapshot $abl $snap))
-          ($r (ablate-epochs $abl $ch $cl 1 $n $skip 0)))
+          ($z1 (restore-snapshot $abl $snap))
+          ($r (ablate-tasks $abl $ch $cl $ts 1 $skip 0)))
      $r))
 
-; the single-cycle case, kept as its own name (the plain one-run intervention)
-(= (ablated-reward $abl $ch $snap $cl $skip) (windowed-reward $abl $ch $snap $cl 1 $skip))
+; the single-shot case, kept as its own name: one replay with nothing in particular posed, so
+; the whole corpus is worked at once (the plain one-run intervention)
+(= (ablated-reward $abl $ch $snap $cl $skip)
+   (windowed-reward $abl $ch $snap $cl (cons-atom all ()) $skip))
 
 ; the do-influence of each member over the observed window = the drop in cumulative minted reward
 ; when that ONE member is suppressed, against an unablated run of the SAME length; returns a list
 ; of (rule delta) pairs. The baseline is itself a replay, so both sides are paired.
 (= (member-do-influences $ws $abl $ch $snap $cl $members)
-   (let $n (window-of $ws)
-        (do-inf-each $abl $ch $snap $cl $n $members (windowed-reward $abl $ch $snap $cl $n ()))))
-(= (do-inf-each $abl $ch $snap $cl $n $members $base)
+   (let $ts (replay-tasks $ws)
+        (do-inf-each $abl $ch $snap $cl $ts $members (windowed-reward $abl $ch $snap $cl $ts ()))))
+(= (do-inf-each $abl $ch $snap $cl $ts $members $base)
    (case $members
          ((() ())
           ($ne (let $r (car-atom $members)
-                    (cons-atom ($r (- $base (windowed-reward $abl $ch $snap $cl $n (cons-atom $r ()))))
-                               (do-inf-each $abl $ch $snap $cl $n (cdr-atom $members) $base)))))))
+                    (cons-atom ($r (- $base (windowed-reward $abl $ch $snap $cl $ts (cons-atom $r ()))))
+                               (do-inf-each $abl $ch $snap $cl $ts (cdr-atom $members) $base)))))))
 
 ; the §3.7 causal-coding facts from the (rule delta) list, each carrying the window $n it was
 ; measured over: one (rule-do-influence R target answer-reward n delta) + one
@@ -600,55 +630,65 @@
 ; product only pays off next cycle, so a self-priming loop would be "minimized" to a set that no
 ; longer closes. The window is what makes it sound, not a special case for control rules.
 (= (minimal-acs $ws $abl $ch $snap $cl $members)
-   (let $n (window-of $ws)
-        (greedy-minimize $abl $ch $snap $cl $n $members () (windowed-reward $abl $ch $snap $cl $n ()))))
+   (let $ts (replay-tasks $ws)
+        (greedy-minimize $abl $ch $snap $cl $ts $members () (windowed-reward $abl $ch $snap $cl $ts ()))))
 
 ; walk $todo threading the committed $skip set (see minimal-acs): drop a member iff ablating it
 ; on top of $skip still pays the baseline reward $base
-(= (greedy-minimize $abl $ch $snap $cl $n $todo $skip $base)
+(= (greedy-minimize $abl $ch $snap $cl $ts $todo $skip $base)
    (case $todo
          ((() ())
           ($ne (let* (($r (car-atom $todo))
                       ($try (cons-atom $r $skip))
-                      ($rew (windowed-reward $abl $ch $snap $cl $n $try)))
+                      ($rew (windowed-reward $abl $ch $snap $cl $ts $try)))
                  (if (== $rew $base)
-                     (greedy-minimize $abl $ch $snap $cl $n (cdr-atom $todo) $try $base)
-                     (cons-atom $r (greedy-minimize $abl $ch $snap $cl $n (cdr-atom $todo) $skip $base))))))))
+                     (greedy-minimize $abl $ch $snap $cl $ts (cdr-atom $todo) $try $base)
+                     (cons-atom $r (greedy-minimize $abl $ch $snap $cl $ts (cdr-atom $todo) $skip $base))))))))
 
 ; --- RECURRENCE (§4.5 "sustains itself in an event log" / §6.4 P2 "recurrent" loops): a
-; genuine ACS is not a one-off closed loop — it must RECUR across cycles. The loop recurs iff
-; its members all fire in >= (recurrence-min) distinct cycles of $ws's cycle-tagged event log.
-; ONE epoch is a single cycle, so a single-epoch scan reports a structural CANDIDATE; recurrence
-; (+ heritability, cond 5) is the P3 / multi-epoch upgrade. ---
+; genuine ACS is not a one-off closed loop — it must RECUR. The unit is the TASK, not the cycle:
+; what the docs measure is "recurrence of useful motifs ACROSS TASKS" (the MSC and SC metric
+; lists) by a genome that "repeatedly solves variants of the same question type" (MSC §7.1), so
+; a loop recurs when it turns AGAIN on newly arrived material — not when the same question is
+; re-answered. The loop is recurrent iff every member fires somewhere within each of
+; >= (recurrence-min) distinct tasks in $ws's log. One task is a structural CANDIDATE;
+; heritability (cond 5) is the P3 upgrade.
+; Distinct from STRUCTURAL recurrence — a recurrent COMPONENT in the rule-motif graph — which is
+; the closure check above. Both are called "recurrent" in the docs and they are different tests:
+; one is a property of the genome's shape, this one of its history. ---
 
-; the recurrence threshold (present in >= this many cycles = recurrent); config, default 2
+; the recurrence threshold (turned in >= this many tasks = recurrent); config, default 2
 (= (recurrence-min)
    (case (collapse (match &self (acs-recurrence-min $n) $n)) ((() 2) ($ns (car-atom $ns)))))
-
-; the distinct cycle tags in $ws's event log
-(= (log-cycles $ws) (dedup (collapse (match $ws (event $c $s $r $key) $c))))
 
 ; did rule $r fire in cycle $c of $ws's event log?
 (= (fired-in-cycle? $ws $r $c)
    (case (collapse (match $ws (event $c $s $r $key) yes)) ((() False) ($x True))))
 
-; did EVERY member fire in cycle $c (the loop closed that cycle)?
-(= (loop-in-cycle? $ws $members $c)
+; did rule $r fire in ANY cycle of task $t?
+(= (fired-in-task? $ws $r $t) (fired-in-any? $ws $r (cycles-of-task $ws $t)))
+(= (fired-in-any? $ws $r $cs)
+   (case $cs
+         ((() False)
+          ($ne (if (fired-in-cycle? $ws $r (car-atom $cs)) True (fired-in-any? $ws $r (cdr-atom $cs)))))))
+
+; did EVERY member fire within task $t (the loop turned once on that task's material)?
+(= (loop-in-task? $ws $members $t)
    (case $members
          ((() True)
-          ($ne (if (fired-in-cycle? $ws (car-atom $members) $c)
-                   (loop-in-cycle? $ws (cdr-atom $members) $c)
+          ($ne (if (fired-in-task? $ws (car-atom $members) $t)
+                   (loop-in-task? $ws (cdr-atom $members) $t)
                    False)))))
 
-; the number of distinct cycles in which the whole loop is present
-(= (recurrence-count $ws $members) (count-loop-cycles $ws $members (log-cycles $ws)))
-(= (count-loop-cycles $ws $members $cycles)
-   (case $cycles
+; the number of distinct TASKS in which the whole loop turned
+(= (recurrence-count $ws $members) (count-loop-tasks $ws $members (log-tasks $ws)))
+(= (count-loop-tasks $ws $members $ts)
+   (case $ts
          ((() 0)
-          ($ne (+ (if (loop-in-cycle? $ws $members (car-atom $cycles)) 1 0)
-                  (count-loop-cycles $ws $members (cdr-atom $cycles)))))))
+          ($ne (+ (if (loop-in-task? $ws $members (car-atom $ts)) 1 0)
+                  (count-loop-tasks $ws $members (cdr-atom $ts)))))))
 
-; recurrent iff the loop is present in >= $min distinct cycles
+; recurrent iff the loop turned in >= $min distinct tasks
 (= (recurrent? $ws $members $min) (>= (recurrence-count $ws $members) $min))
 
 ; --- the §2.9 verdict facts for ACS $A on the (already-built) graph $g under clamp $cl ---

@@ -1,117 +1,108 @@
 ; ===========================================================================
-; EPOCH LOOP — the metabolic-closure cycle, $ws-parameterized: a REDUCED form of a TECAN
-; epoch (Alg 5.1 = score -> fire affordable ops -> evaluator-mint -> charge rent). Here each
-; cycle re-derives the genome (fuel-gated), grounds the answer-skeletons, mints + credits
-; typed fuel under the clamp, then DECAYS the derived layer. TECAN's rent + shadow-prices +
-; scored gate are NOT built; the decay + single-task re-posing are OURS (see the DECAY note).
-; The fuel purse persists across cycles; the derived explanatory layer does not — so an
-; organism must keep earning to keep answering: dead by starvation (permanent deadlock) once
-; it can afford to fire nothing, alive while income >= spend so its typed fuel never runs out
-; (thriving at surplus > 0, MSC eq 19). Re-posing the one task each cycle stands in for a
-; stream of tasks. Runs in &self or a worker's space (the grounder binds the space). Assumes
-; util + fuel + reaction + grounder + evaluator are loaded.
+; EPOCH LOOP — the task-working cycle, $ws-parameterized: a REDUCED form of a TECAN epoch
+; (Alg 5.1 = score -> fire affordable ops -> evaluator-mint -> charge rent). A TASK is one
+; arriving corpus item — a text and the questions asked of it. Working it means: pose it, let
+; its text arrive into a FRESH hot pool, then run cycles until it is solved, stuck, or out of
+; cycles; then mint + credit under the clamp. TECAN's rent + shadow-prices + scored gate are
+; NOT built.
+; ---------------------------------------------------------------------------
+; What survives a task boundary is what MSC eq 8 puts inside the organism, O = (@R, X, F, C, L):
+; the purse F and the event log L ride with the soma, while the hot pool X turns over. So an
+; organism carries its metabolic position across arrivals — dead by starvation once it can
+; afford to fire nothing, alive while income >= spend (thriving at surplus > 0, MSC eq 19,
+; an expectation over REPEATED operation) — but carries no working material, because a task's
+; text and everything derived from it retire with the task.
+; Within a task, products PERSIST across cycles: a chain needs its intermediates to survive to
+; the cycle that consumes them, and a rule whose products are already present does not re-fire
+; (the guard is in `reaction.metta`), so a settled task stops spending.
+; Runs in &self or a worker's space (the grounder binds the space). Assumes util + fuel +
+; reaction + grounder + evaluator + worker are loaded — and worker.metta must be imported
+; BEFORE this module, since `open-task` calls its `copy-molecules`: the transpiler binds a call
+; to what is already defined, so a later import leaves the call silently inert.
 ; ===========================================================================
 
-; --- DECAY: drop the derived explanatory layer each cycle, keep the molecules + fuel + the
-; event log + any relation declared `(persistent R)` (a persistent molecule, exempt from the
-; forgetting — our stand-in for TECAN importance-graded retention: a consolidated motif is
-; retained across cycles so a control loop can close through it). This is our device to make
-; the eq-19 metabolic accounting VISIBLE: by forgetting
-; the products, an organism must RE-DERIVE them each cycle, so a rule whose token income < its
-; firing spend eventually can't afford to re-fire and its answers vanish (starvation / permanent
-; deadlock). It is NOT the maintenance cost: cmaint is TECAN's RENT — a per-cycle fuel charge
-; that kills IDLE loops (a separate, unbuilt mechanism). Decay charges NO fuel, so an idle
-; organism keeps its purse and does NOT starve here (it just goes silent); the death in the demo
-; is eq-19 starvation via forced re-spend, not rent. Loosely a "forgetting" (atom removal, TECAN
-; §4.6). Molecules = the given environment (re-supplied); the derived edges = the organism's
-; own products, not kept for free.
-
-; the derived (compound-id) explanatory edges in $ws to forget, across relation arities
-; (unary / binary / ternary — the arities the grounder handles): any sem-edge with a
-; derived id whose relation is NOT persistent
-(= (derived-edges-1 $ws)
-   (collapse (match $ws (sem-edge $g $id $r $a)
-                    (if (derived-id? $id) (if (persistent-rel? $r) skip (sem-edge $g $id $r $a)) skip))))
-(= (derived-edges-2 $ws)
-   (collapse (match $ws (sem-edge $g $id $r $a $b)
-                    (if (derived-id? $id) (if (persistent-rel? $r) skip (sem-edge $g $id $r $a $b)) skip))))
-(= (derived-edges-3 $ws)
-   (collapse (match $ws (sem-edge $g $id $r $a $b $c)
-                    (if (derived-id? $id) (if (persistent-rel? $r) skip (sem-edge $g $id $r $a $b $c)) skip))))
-(= (derived-edges $ws)
-   (filter-out skip (concat-lists (derived-edges-1 $ws)
-                                  (concat-lists (derived-edges-2 $ws) (derived-edges-3 $ws)))))
-
-; the ids of the PERSISTENT edges in $ws — their TVs are exempt too, so a kept edge never
-; dangles a forgotten TV
-(= (persistent-ids-1 $ws)
-   (collapse (match $ws (sem-edge $g $id $r $a) (if (persistent-rel? $r) $id skip))))
-(= (persistent-ids-2 $ws)
-   (collapse (match $ws (sem-edge $g $id $r $a $b) (if (persistent-rel? $r) $id skip))))
-(= (persistent-ids-3 $ws)
-   (collapse (match $ws (sem-edge $g $id $r $a $b $c) (if (persistent-rel? $r) $id skip))))
-(= (persistent-ids $ws)
-   (filter-out skip (concat-lists (persistent-ids-1 $ws)
-                                  (concat-lists (persistent-ids-2 $ws) (persistent-ids-3 $ws)))))
-
-; the TVs of the derived edges to forget: a derived id that is NOT a persistent edge's
-(= (derived-tvs $ws)
-   (let $pids (persistent-ids $ws)
-        (filter-out skip
-                    (collapse (match $ws (sem-edge-tv $g $id $tv)
-                                     (if (derived-id? $id)
-                                         (if (in-list? $id $pids) skip (sem-edge-tv $g $id $tv))
-                                         skip))))))
-
-; decay: drop the derived edges + their TVs (NOT the event log). Each list is collapsed
-; BEFORE removal, so the space is not matched while it is being mutated.
-(= (decay $ws)
-   (let* (($z1 (remove-all $ws (derived-edges $ws)))
-          ($z2 (remove-all $ws (derived-tvs $ws))))
+; --- REFRESH the hot pool for an arriving task: drop the working material — every sem-graph
+; edge, TV and graph-kind pin, surface and derived alike — while leaving the purse, the event
+; log and the cycle/task markers untouched. This is X turning over; F and L belong to the soma.
+; Each list is collapsed BEFORE removal, so the space is not matched while it is being mutated.
+(= (refresh-pool $ws)
+   (let* (($z1 (remove-all $ws (collapse (match $ws (sem-edge $g $i $r $a) (sem-edge $g $i $r $a)))))
+          ($z2 (remove-all $ws (collapse (match $ws (sem-edge $g $i $r $a $b) (sem-edge $g $i $r $a $b)))))
+          ($z3 (remove-all $ws (collapse (match $ws (sem-edge $g $i $r $a $b $c) (sem-edge $g $i $r $a $b $c)))))
+          ($z4 (remove-all $ws (collapse (match $ws (sem-edge-tv $g $i $tv) (sem-edge-tv $g $i $tv)))))
+          ($z5 (remove-all $ws (collapse (match $ws (sem-graph-kind $g $k) (sem-graph-kind $g $k))))))
      done))
 
-; --- set the current cycle marker in $ws (drop the old, add the new) — so `fire`/`fired?`
-; scope to this cycle; the single event log then accumulates cycle-tagged, in place.
-(= (set-cycle $ws $k)
-   (let $z (remove-all $ws (collapse (match $ws (cycle-now $old) (cycle-now $old))))
-        (add-atom $ws (cycle-now $k))))
+; --- reading the log's dating: which cycles ran at all, which TASKS they served, and which
+; cycles served a given task. The detector counts turns per task off these.
+(= (log-cycles $ws) (dedup (collapse (match $ws (event $c $s $r $key) $c))))
+(= (log-tasks $ws) (dedup (collapse (match $ws (cycle-task $k $t) $t))))
+(= (cycles-of-task $ws $t) (collapse (match $ws (cycle-task $k $t) $k)))
 
-; --- ONE EPOCH (cycle $k): tag the cycle -> re-derive (fuel-gated) -> count -> mint+credit
-; -> decay the derived layer. Returns the answer count; the purse change across the call is
-; the eq-19 realized surplus. The cycle-tagged event log persists across cycles.
-(= (run-epoch $ws $ch $cl $k)
-   (let* (($z0 (set-cycle $ws $k))
-          ($z1 (run-chamber $ws $ch))
-          ($answers (total-answers $ws))
-          ($z2 (credit-all-questions $ws $cl))
-          ($z3 (decay $ws)))
+; the number of firings logged in cycle $k
+(= (cycle-firings $ws $k) (foldall + (match $ws (event $k $s $r $key) 1) 0))
+
+; --- set the current cycle marker in $ws (drop the old, add the new) — so `fire`/`fired?`
+; scope to this cycle; the single event log then accumulates cycle-tagged, in place. The cycle
+; is also DATED to the task it served (`(cycle-task K T)`, `all` when none is posed), which is
+; what lets the detector count turns per task instead of per cycle.
+(= (set-cycle $ws $k)
+   (let* (($z0 (remove-all $ws (collapse (match $ws (cycle-now $old) (cycle-now $old)))))
+          ($z1 (remove-all $ws (collapse (match $ws (cycle-task $k $oldt) (cycle-task $k $oldt)))))
+          ($t (current-task $ws))
+          ($z2 (add-atom $ws (cycle-task $k $t))))
+     (add-atom $ws (cycle-now $k))))
+
+; --- WORK the posed task from cycle $k, for at most $left more cycles. Each cycle tags itself
+; and runs the chamber's admitted rules; the loop halts when a whole cycle fires NOTHING (the
+; chamber has settled — nothing further is derivable from what it holds) or the cycle allowance
+; runs out. Returns the answer count reached.
+; Halting on SETTLED rather than on "an answer appeared" is deliberate: a control loop does its
+; consolidating AFTER the answer — the success trace and the re-priming come last — so stopping
+; at the first grounding would cut the loop off mid-turn. A derivation needs as many cycles as
+; its chain is deep, which is why this is a loop and not a single pass; how many belongs to the
+; task, not to the engine.
+(= (work-task $ws $ch $cl $k $left)
+   (if (== $left 0)
+       (total-answers $ws)
+       (let* (($z0 (set-cycle $ws $k))
+              ($z1 (run-chamber $ws $ch)))
+         (if (== (cycle-firings $ws $k) 0)
+             (total-answers $ws)
+             (work-task $ws $ch $cl (+ $k 1) (- $left 1))))))
+
+; --- ONE TASK: pose it -> refresh the hot pool -> its text arrives -> work it (up to $max
+; cycles from cycle $k) -> mint + credit. Returns the answer count; the purse change across the
+; call is that task's eq-19 realized surplus. The task stays POSED afterwards, so the finished
+; run is inspectable; posing the next task replaces it, and `retire-task` ends the stream.
+(= (run-task $ws $ch $cl $t $k $max)
+   (let* (($z0 (open-task $ws $t))
+          ($answers (work-task $ws $ch $cl $k $max))
+          ($z1 (credit-all-questions $ws $cl)))
      $answers))
 
-; --- run epochs $k..$n; return the answer-count trajectory, one per cycle ---
-(= (run-epochs $ws $ch $cl $k $n)
-   (if (> $k $n)
-       ()
-       (let $a (run-epoch $ws $ch $cl $k)
-            (cons-atom $a (run-epochs $ws $ch $cl (+ $k 1) $n)))))
+; pose $t and hand the chamber a fresh pool holding just that task's text
+(= (open-task $ws $t)
+   (let* (($z0 (set-task $ws $t))
+          ($z1 (refresh-pool $ws)))
+     (copy-molecules $ws)))
 
-(= (epochs $ws $ch $cl $n) (run-epochs $ws $ch $cl 1 $n))
+; --- run a STREAM of tasks $ts, each allowed $max cycles, numbering cycles from $k; returns the
+; answer count per task. The stream itself is the caller's — a chamber is handed the tasks that
+; arrive, it does not decide what arrives.
+(= (run-tasks $ws $ch $cl $ts $k $max)
+   (case $ts
+         ((() ())
+          ($ne (let* (($t (car-atom $ts))
+                      ($a (run-task $ws $ch $cl $t $k $max))
+                      ($next (+ $k (len (cycles-of-task $ws $t)))))
+                 (cons-atom $a (run-tasks $ws $ch $cl (cdr-atom $ts) $next $max)))))))
 
-; --- TRACED run: per cycle collect (answers surplus) for organism $O's token $tok, where
-; surplus = the purse change across the cycle (−spend +mint) = the eq-19 realized surplus.
-(= (run-epochs-traced $ws $ch $cl $k $n $O $tok)
-   (if (> $k $n)
-       ()
-       (let* (($before (fuel-of $ws $O $tok))
-              ($a (run-epoch $ws $ch $cl $k))
-              ($after (fuel-of $ws $O $tok)))
-         (cons-atom ($a (- $after $before))
-                    (run-epochs-traced $ws $ch $cl (+ $k 1) $n $O $tok)))))
-
-(= (epochs-traced $ws $ch $cl $n $O $tok) (run-epochs-traced $ws $ch $cl 1 $n $O $tok))
-
-; --- harness reset: clear the purses + the cycle-tagged event log + the cycle marker in $ws
-; so the loop can be re-run fresh (e.g. under another clamp)
+; --- harness reset: clear the purses + the cycle-tagged event log + the cycle/task markers in
+; $ws so the loop can be re-run fresh (e.g. under another clamp)
 (= (reset-run $ws)
    (let* (($z1 (remove-all $ws (collapse (match $ws (event $c $s $r $key) (event $c $s $r $key)))))
-          ($z2 (remove-all $ws (collapse (match $ws (cycle-now $k) (cycle-now $k))))))
+          ($z2 (remove-all $ws (collapse (match $ws (cycle-now $k) (cycle-now $k)))))
+          ($z3 (remove-all $ws (collapse (match $ws (cycle-task $k2 $t2) (cycle-task $k2 $t2)))))
+          ($z4 (remove-all $ws (collapse (match $ws (task-now $t3) (task-now $t3))))))
      (remove-all $ws (collapse (match $ws (fuel $o $t $n) (fuel $o $t $n))))))

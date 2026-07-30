@@ -21,6 +21,8 @@ verbatim -- Implication is promoted to the sem-rule schema when the rules layer 
 
 Questions: each query pattern (And c1 c2 ...) -> an answer-skeleton sem-graph (conjuncts as
 sem-edges with (var _) slots). Multiple alternative queries -> multiple answer-skeletons.
+A corpus item is one TASK: (qa-task V) with (task-graph V Vg) naming the molecule graph its
+questions are asked against, so posing the task admits exactly that text.
 
 Usage:  to_semgraph.py <parsed.json> [ID,ID,...] [mol|task]
 """
@@ -105,7 +107,7 @@ def reshape_molecule(v):
     return '\n'.join(L)
 
 def reshape_tasks(v):
-    vid = v['id']; L = [f'; --- {vid} questions', f'(qa-task {vid})']
+    vid = v['id']; L = [f'; --- {vid} questions', f'(qa-task {vid})', f'(task-graph {vid} {vid}g)']
     for qi, qtext in enumerate(v['questions'], 1):
         q = f'{vid}_q{qi}'
         L.append(f'(qa-question {vid} {q})')

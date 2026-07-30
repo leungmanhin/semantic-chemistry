@@ -36,8 +36,42 @@
    (let (both $clauses $out) (to-vars (both (skel-clauses $gas) (skel-clauses $gas)))
         (clause-join $ws $clauses $out)))
 
-; --- ANSWER COUNT: the system's OUTPUT in space $ws = total groundings summed over every
-; question's answer-skeletons. The epoch loop reads it as the per-cycle fitness proxy; the
+; --- THE POSED TASK. A task is one arriving corpus item — a text together with the questions
+; asked of it — and tasks are posed ONE AT A TIME, then retire. That is the unit the docs
+; measure reuse in: a genome earns by "repeatedly solving variants of the same question type"
+; (MSC §7.1), so what recurs is a strategy re-applied to NEW material.
+; The run space carries `(task-now T)` while T is posed; with no marker every task
+; counts as posed, which is what a bare single-task run wants.
+
+; the task posed in $ws, or `all` when none is
+(= (current-task $ws)
+   (case (collapse (match $ws (task-now $t) $t)) ((() all) ($ts (car-atom $ts)))))
+
+; pose task $t in $ws, replacing whatever was posed (posing `all` widens to the whole corpus)
+(= (set-task $ws $t)
+   (let $z (remove-all $ws (collapse (match $ws (task-now $old) (task-now $old))))
+        (add-atom $ws (task-now $t))))
+
+; retire the posed task: with nothing posed there is nothing to answer and nothing to earn
+(= (retire-task $ws)
+   (remove-all $ws (collapse (match $ws (task-now $t) (task-now $t)))))
+
+; the questions posed right now — the current task's, or every task's when none is posed
+(= (posed-questions $ws)
+   (let $t (current-task $ws)
+        (if (== $t all)
+            (collapse (match &self (qa-question $v $q) $q))
+            (collapse (match &self (qa-question $t $q) $q)))))
+
+; the molecule graphs the posed task supplies (its text) — every graph when none is posed
+(= (posed-graphs $ws)
+   (let $t (current-task $ws)
+        (if (== $t all)
+            (collapse (match &self (task-graph $v $g) $g))
+            (collapse (match &self (task-graph $t $g) $g)))))
+
+; --- ANSWER COUNT: the system's OUTPUT in space $ws = total groundings summed over the POSED
+; questions' answer-skeletons. The epoch loop reads it as the per-cycle fitness proxy; the
 ; ACS replay-ablation reads it as the baseline / ablated answer count. The skeleton STRUCTURE
 ; + the question index live in &self; only the join hits $ws.
 
@@ -48,6 +82,7 @@
 (= (question-answers $ws $q)
    (foldall + (match &self (answer-skeleton $q $gas) (skeleton-answers $ws $gas)) 0))
 
-; # groundings summed over every question (the system's total output this run)
-(= (total-answers $ws)
-   (foldall + (match &self (qa-question $v $q) (question-answers $ws $q)) 0))
+; # groundings summed over every POSED question (the system's total output this run)
+(= (total-answers $ws) (sum-answers $ws (posed-questions $ws)))
+(= (sum-answers $ws $qs)
+   (case $qs ((() 0) ($ne (+ (question-answers $ws (car-atom $qs)) (sum-answers $ws (cdr-atom $qs)))))))

@@ -30,6 +30,7 @@
 !(add-atom &self (worker W_qa))
 !(add-atom &self (worker-kind W_qa context-chamber))
 !(add-atom &self (worker-chamber W_qa CH_expt1))
+!(add-atom &self (worker-task W_qa V3))          ; the arriving task this worker is given
 !(add-atom &self (worker-snapshot W_qa SNAP_qa))
 !(bind! &ws_qa (new-space))
 !(add-atom &self (worker-space W_qa &ws_qa))

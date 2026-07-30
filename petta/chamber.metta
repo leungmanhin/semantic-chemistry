@@ -1,9 +1,9 @@
 ; ===========================================================================
 ; CHAMBER — the CONTEXT-CHAMBER worker body.
-; `run-cc` runs a bounded, isolated unit of chamber DERIVATION: own hot-pool space ->
-; materialize the molecules (the shared envelope in `worker.metta`) -> restore snapshot
-; fuel -> run the chamber's admitted rules on it, bounded by the worker's step budget ->
-; emit the summary. Deriving only; minting (the ecan-epoch kind) is a separate body.
+; `run-cc` runs a bounded, isolated unit of chamber DERIVATION: own hot-pool space -> pose the
+; worker's task and materialize that task's text (the shared envelope in `worker.metta`) ->
+; restore snapshot fuel -> run the chamber's admitted rules on it, bounded by the worker's step
+; budget -> emit the summary. Deriving only; minting (the ecan-epoch kind) is a separate body.
 ; Dispatched by `dispatch.metta`. Assumes util + fuel + reaction + worker (the envelope)
 ; are loaded.
 ; ===========================================================================
@@ -14,7 +14,7 @@
    (let* (($ws (match &self (worker-space $w $sp) $sp))
           ($ch (match &self (worker-chamber $w $c) $c))
           ($snap (match &self (worker-snapshot $w $s) $s))
-          ($z0 (copy-molecules $ws))
+          ($z0 (open-hot-pool $ws $w))
           ($z1 (restore-snapshot $ws $snap))
           ($z2 (run-chamber-b $ws $ch (worker-budget $w))))
      (emit-summary $w $ws)))

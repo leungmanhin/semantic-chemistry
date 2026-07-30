@@ -39,6 +39,11 @@
 ; the length of list $l
 (= (len $l) (if (== $l ()) 0 (+ 1 (len (cdr-atom $l)))))
 
+; list $l back to front. NOT named `reverse` — that collides with the SWI-Prolog builtin
+; `reverse/2` the transpiler would emit, which silently kills every def after it in this file.
+(= (rev-list $l) (rev-onto $l ()))
+(= (rev-onto $l $acc) (if (== $l ()) $acc (rev-onto (cdr-atom $l) (cons-atom (car-atom $l) $acc))))
+
 ; is $x a member of list $l?
 (= (in-list? $x $l) (case $l ((() False) ($ne (if (== (car-atom $l) $x) True (in-list? $x (cdr-atom $l)))))))
 
@@ -65,8 +70,3 @@
 ; provenance ids like (norm e) / (trans e1 e2) (Expression), so a compound id marks a product.
 (= (derived-id? $id) (== (get-metatype $id) Expression))
 
-; a relation declared `(persistent R)` (in &self) is a PERSISTENT molecule: its derived edges
-; are decay-exempt (they carry across cycles) and count as a self-sustaining anchor for closure.
-; Shared by decay (epoch) and the ACS self-sustains guard (acs). No such fact for classic V3.
-(= (persistent-rel? $r)
-   (case (collapse (match &self (persistent $r) $r)) ((() False) ($x True))))

@@ -33,5 +33,77 @@
         "(: $prf (And (Member $e spoil) (Patient $e $f) (Member $f food) (Past $e) (ReasonFor $w $e)) $tv)"
       ]
     ]
+  },
+  {
+    "id": "V4",
+    "sentences": [
+      "The bridge closed during the repairs, so the traffic diverted through town, and as a result the shops had lost business by evening."
+    ],
+    "questions": [
+      "Why did the shops lose business?"
+    ],
+    "statements": [
+      "(: v4_close_m (Member sk_close_1 close) (STV 1.0 0.99))",
+      "(: v4_close_pat (Patient sk_close_1 sk_bridge_1) (STV 1.0 0.99))",
+      "(: v4_bridge_m (Member sk_bridge_1 bridge) (STV 1.0 0.99))",
+      "(: v4_close_past (Past sk_close_1) (STV 1.0 0.99))",
+      "(: v4_close_during (During sk_close_1 sk_repair_1) (STV 1.0 0.99))",
+      "(: v4_repair_m (Member sk_repair_1 repair) (STV 1.0 0.99))",
+      "(: v4_divert_m (Member sk_divert_1 divert) (STV 1.0 0.99))",
+      "(: v4_divert_ag (Agent sk_divert_1 sk_traffic_1) (STV 1.0 0.99))",
+      "(: v4_traffic_m (Member sk_traffic_1 traffic) (STV 1.0 0.99))",
+      "(: v4_divert_th (Theme sk_divert_1 sk_town_1) (STV 1.0 0.99))",
+      "(: v4_town_m (Member sk_town_1 town) (STV 1.0 0.99))",
+      "(: v4_divert_past (Past sk_divert_1) (STV 1.0 0.99))",
+      "(: v4_lose_m (Member sk_lose_1 lose) (STV 1.0 0.99))",
+      "(: v4_lose_ag (Agent sk_lose_1 sk_shop_1) (STV 1.0 0.99))",
+      "(: v4_shop_m (Member sk_shop_1 shop) (STV 1.0 0.99))",
+      "(: v4_lose_th (Theme sk_lose_1 sk_business_1) (STV 1.0 0.99))",
+      "(: v4_business_m (Member sk_business_1 business) (STV 1.0 0.99))",
+      "(: v4_lose_past (Past sk_lose_1) (STV 1.0 0.99))",
+      "(: v4_lose_time (TimeAtMost sk_lose_1 evening) (STV 1.0 0.99))",
+      "(: v4_conn1 (So sk_close_1 sk_divert_1) (STV 1.0 0.99))",
+      "(: v4_conn2 (AsAResult sk_divert_1 sk_lose_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e lose) (Agent $e $f) (Member $f shop) (Past $e) (ReasonFor $w $e)) $tv)"
+      ]
+    ]
+  },
+  {
+    "id": "V5",
+    "sentences": [
+      "The river rose during the thaw, so the ferry suspended service, and as a result the market had emptied by noon."
+    ],
+    "questions": [
+      "Why did the market empty?"
+    ],
+    "statements": [
+      "(: v5_rise_m (Member sk_rise_1 rise) (STV 1.0 0.99))",
+      "(: v5_rise_ag (Agent sk_rise_1 sk_river_1) (STV 1.0 0.99))",
+      "(: v5_river_m (Member sk_river_1 river) (STV 1.0 0.99))",
+      "(: v5_rise_past (Past sk_rise_1) (STV 1.0 0.99))",
+      "(: v5_rise_during (During sk_rise_1 sk_thaw_1) (STV 1.0 0.99))",
+      "(: v5_thaw_m (Member sk_thaw_1 thaw) (STV 1.0 0.99))",
+      "(: v5_suspend_m (Member sk_suspend_1 suspend) (STV 1.0 0.99))",
+      "(: v5_suspend_ag (Agent sk_suspend_1 sk_ferry_1) (STV 1.0 0.99))",
+      "(: v5_ferry_m (Member sk_ferry_1 ferry) (STV 1.0 0.99))",
+      "(: v5_suspend_th (Theme sk_suspend_1 sk_service_1) (STV 1.0 0.99))",
+      "(: v5_service_m (Member sk_service_1 service) (STV 1.0 0.99))",
+      "(: v5_suspend_past (Past sk_suspend_1) (STV 1.0 0.99))",
+      "(: v5_empty_m (Member sk_empty_1 empty) (STV 1.0 0.99))",
+      "(: v5_empty_pat (Patient sk_empty_1 sk_market_1) (STV 1.0 0.99))",
+      "(: v5_market_m (Member sk_market_1 market) (STV 1.0 0.99))",
+      "(: v5_empty_past (Past sk_empty_1) (STV 1.0 0.99))",
+      "(: v5_empty_time (TimeAtMost sk_empty_1 noon) (STV 1.0 0.99))",
+      "(: v5_conn1 (So sk_rise_1 sk_suspend_1) (STV 1.0 0.99))",
+      "(: v5_conn2 (AsAResult sk_suspend_1 sk_empty_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e empty) (Patient $e $f) (Member $f market) (Past $e) (ReasonFor $w $e)) $tv)"
+      ]
+    ]
   }
 ]
