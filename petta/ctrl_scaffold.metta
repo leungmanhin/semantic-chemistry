@@ -219,3 +219,110 @@
                                      (rule-facts (learn $s) $ctx (+ $n 3) $cost
                                                  (cons-atom (sem-edge $cg (var w) Worked $s) ())
                                                  (cons-atom (sem-edge $cg (hb $s) Habit $s) ()))))))))))))
+
+; ===========================================================================
+; REPRODUCTION — who pays, and what the offspring starts with.
+; ---------------------------------------------------------------------------
+; The wrapper is not an edit to anyone's genome: the chain's members belong to DIFFERENT
+; organisms (in Exp-1 two of them), so there is no single genome to extend. §4.5's heritability
+; condition names the operation instead — a genome can be "copied, mutated, RECOMBINED, and
+; re-expressed" — so the wrapper is the recombinant OFFSPRING of the organisms that contributed
+; the chain, and eq 20 puts the bill on them: `crep` is "copying and mutating the genome plus
+; endowing offspring".
+; Costs are declared PER CONTRIBUTED MEMBER, which makes the split exactly proportional with no
+; fractional tokens: a parent that gave two rules pays twice what one that gave one pays, and
+; endows twice as much. The consequence is the point of doing it this way — a parent too poor to
+; endow CANNOT reproduce, so consolidation is something only a solvent organism can afford, and
+; mortality gates learning.
+; ===========================================================================
+
+(= (scaffold-mutate-cost) (collapse (match &self (scaffold-mutate-cost $t $n) ($t $n))))
+(= (scaffold-endowment) (collapse (match &self (scaffold-endowment $t $n) ($t $n))))
+
+; --- cost-vector arithmetic ---
+(= (tokens-of $c) (if (== $c ()) () (let ($t $n) (car-atom $c) (cons-atom $t (tokens-of (cdr-atom $c))))))
+(= (cost-of-token $t $c)
+   (case $c ((() 0) ($ne (let ($t2 $n) (car-atom $c) (if (== $t2 $t) $n (cost-of-token $t (cdr-atom $c))))))))
+(= (scale-cost $c $k)
+   (case $c ((() ()) ($ne (let ($t $n) (car-atom $c) (cons-atom ($t (* $n $k)) (scale-cost (cdr-atom $c) $k)))))))
+(= (cost-plus $a $b) (sum-tokens $a $b (dedup (concat-lists (tokens-of $a) (tokens-of $b)))))
+(= (sum-tokens $a $b $ts)
+   (if (== $ts ()) ()
+       (let $t (car-atom $ts)
+            (cons-atom ($t (+ (cost-of-token $t $a) (cost-of-token $t $b)))
+                       (sum-tokens $a $b (cdr-atom $ts))))))
+
+; --- the parents and what each owes ---
+
+; the organisms whose genomes contributed the chain's members
+(= (chain-parents $chain) (dedup (owners-of $chain)))
+(= (owners-of $rs) (if (== $rs ()) () (cons-atom (rule-organism (car-atom $rs)) (owners-of (cdr-atom $rs)))))
+
+; how many of the chain's members $o contributed
+(= (contribution $o $rs)
+   (case $rs ((() 0) ($ne (+ (if (== (rule-organism (car-atom $rs)) $o) 1 0) (contribution $o (cdr-atom $rs)))))))
+
+; what $o owes: (mutate + endowment) once per member it contributed
+(= (parent-due $o $chain)
+   (scale-cost (cost-plus (scaffold-mutate-cost) (scaffold-endowment)) (contribution $o $chain)))
+
+; can EVERY parent pay its share? All-or-nothing: a half-built wrapper is worse than none, and a
+; parent that cannot endow has no business reproducing
+(= (parents-can-pay? $ws $parents $chain)
+   (case $parents
+         ((() True)
+          ($ne (let $o (car-atom $parents)
+                    (if (afford? $ws $o (parent-due $o $chain))
+                        (parents-can-pay? $ws (cdr-atom $parents) $chain)
+                        False))))))
+
+; credit a whole cost vector to $o's purse
+(= (credit-all $ws $o $c)
+   (case $c
+         ((() done)
+          ($ne (let* ((($t $n) (car-atom $c))
+                      ($z (credit $ws $o $t $n)))
+                 (credit-all $ws $o (cdr-atom $c)))))))
+
+; debit each parent and move its share of the endowment into the offspring's purse
+(= (charge-parents $ws $parents $chain $o2)
+   (case $parents
+         ((() done)
+          ($ne (let* (($o (car-atom $parents))
+                      ($k (contribution $o $chain))
+                      ($z1 (debit-all $ws $o (parent-due $o $chain)))
+                      ($z2 (credit-all $ws $o2 (scale-cost (scaffold-endowment) $k))))
+                 (charge-parents $ws (cdr-atom $parents) $chain $o2))))))
+
+; ===========================================================================
+; THE ctrl-scaffold WORKER BODY (worker-kind `ctrl-scaffold`). It performs the operation; the
+; ORGANISMS hold and spend the fuel — the same separation the evaluator worker has, where the
+; worker mints but the purses belong to somas. Genome facts go to &self (read-only shared IR);
+; the debits and the endowment are per-space state.
+; Returns a status: `scaffolded` | `not-scaffoldable` | `no-wrapper` | `unaffordable`.
+; ===========================================================================
+
+; the domain's declared routing cue — which arriving relation marks a task (data, per domain)
+(= (task-cue)
+   (case (collapse (match &self (task-cue-relation $r) $r)) ((() none) ($rs (car-atom $rs)))))
+
+; the context a chamber runs in
+(= (chamber-ctx $ch)
+   (case (collapse (match &self (chamber-context $ch $c) $c)) ((() none) ($cs (car-atom $cs)))))
+
+(= (run-cs $w)
+   (let* (($ws (match &self (worker-space $w $sp) $sp))
+          ($a (match &self (worker-acs $w $x) $x))
+          ($ch (match &self (worker-chamber $w $c) $c))
+          ($chain (acs-chain $a))
+          ($facts (scaffold-facts $a $chain (task-cue) (chamber-ctx $ch))))
+     (if (scaffoldable? $a)
+         (if (== $facts ())
+             no-wrapper
+             (if (parents-can-pay? $ws (chain-parents $chain) $chain)
+                 (let* (($z1 (charge-parents $ws (chain-parents $chain) $chain (org (strat $a))))
+                        ($z2 (add-all &self $facts))
+                        ($z3 (add-atom &self (scaffold-of $a (strat $a)))))
+                   scaffolded)
+                 unaffordable))
+         not-scaffoldable)))

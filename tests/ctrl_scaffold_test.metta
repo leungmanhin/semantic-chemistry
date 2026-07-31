@@ -23,6 +23,7 @@
 !(import! &self "petta/epoch.metta")
 !(import! &self "petta/acs.metta")
 !(import! &self "petta/ctrl_scaffold.metta")
+!(import! &self "petta/dispatch.metta")
 
 ; --- TWO arrivals under the clamp that funds chaining: the scan certifies a candidate that
 ; recurs and does not close — which is exactly the wrapping trigger --------------------------
@@ -165,3 +166,81 @@
 !(test (match &self (strategy-cue (strat A_qa) $c) $c) WhyQuestion)
 !(test (match &self (strategy-context (strat A_qa) $c) $c) causal-qa)
 !(test (match &self (strategy-chain (strat A_qa) $c) $c) A_qa)
+
+; ===========================================================================
+; STEP 3 — THE WORKER: who pays for the wrapper, and what the offspring starts with.
+; ---------------------------------------------------------------------------
+; The chain's members belong to DIFFERENT organisms, so there is no single genome to extend —
+; §4.5 names the operation instead ("copied, mutated, RECOMBINED, and re-expressed"), and eq 20
+; puts the bill on the parents (`crep` = "copying and mutating the genome plus endowing
+; offspring"). Costs are declared PER CONTRIBUTED MEMBER, which makes the split exactly
+; proportional with no fractional tokens.
+; ===========================================================================
+!(add-atom &self (scaffold-mutate-cost sm 1))
+!(add-atom &self (scaffold-endowment sm 2))
+!(add-atom &self (scaffold-endowment dq 1))     ; the offspring must be able to express itself
+!(add-atom &self (task-cue-relation WhyQuestion))
+
+; the parents are the organisms that contributed the chain, and each owes per member it gave
+!(test (msort (chain-parents (R_so R_result R_trans))) (O_base O_chain))
+!(test (contribution O_base (R_so R_result R_trans)) 2)
+!(test (contribution O_chain (R_so R_result R_trans)) 1)
+!(test (parent-due O_base (R_so R_result R_trans)) ((sm 6) (dq 2)))   ; (1+2) sm and 1 dq, x2
+!(test (parent-due O_chain (R_so R_result R_trans)) ((sm 3) (dq 1)))  ; ...x1 — exactly 2:1
+
+; --- A PARENT TOO POOR TO ENDOW CANNOT REPRODUCE. This is the point of billing the parents:
+; consolidation is something only a solvent organism can afford, so mortality gates learning.
+!(bind! &wpoor (new-space))
+!(add-atom &wpoor (fuel O_base sm 6))
+!(add-atom &wpoor (fuel O_base dq 2))
+!(add-atom &wpoor (fuel O_chain sm 1))                    ; O_chain cannot cover its share
+!(add-atom &wpoor (fuel O_chain dq 1))
+!(test (parents-can-pay? &wpoor (O_base O_chain) (R_so R_result R_trans)) False)
+
+; all-or-nothing: the solvent parent is NOT charged for a wrapper that never gets built
+!(add-atom &self (worker W_poor))
+!(add-atom &self (worker-kind W_poor ctrl-scaffold))
+!(add-atom &self (worker-space W_poor &wpoor))
+!(add-atom &self (worker-acs W_poor A_qa))
+!(add-atom &self (worker-chamber W_poor CH_expt1))
+!(test (dispatch W_poor) unaffordable)
+!(test (fuel-of &wpoor O_base sm) 6)                      ; untouched
+
+; --- a candidate that is not scaffoldable is refused before any of that ------------------
+!(bind! &wsh (new-space))
+!(add-atom &self (worker W_sh))
+!(add-atom &self (worker-kind W_sh ctrl-scaffold))
+!(add-atom &self (worker-space W_sh &wsh))
+!(add-atom &self (worker-acs W_sh A_sh))                  ; the starved candidate: no track record
+!(add-atom &self (worker-chamber W_sh CH_expt1))
+!(test (dispatch W_sh) not-scaffoldable)
+
+; --- SOLVENT PARENTS: the wrapper is minted and the bill is split proportionally ---------
+!(bind! &wrich (new-space))
+!(add-atom &wrich (fuel O_base sm 20))
+!(add-atom &wrich (fuel O_base dq 5))
+!(add-atom &wrich (fuel O_chain sm 20))
+!(add-atom &wrich (fuel O_chain dq 5))
+!(add-atom &self (worker W_cs))
+!(add-atom &self (worker-kind W_cs ctrl-scaffold))
+!(add-atom &self (worker-space W_cs &wrich))
+!(add-atom &self (worker-acs W_cs A_qa))
+!(add-atom &self (worker-chamber W_cs CH_expt1))
+!(test (dispatch W_cs) scaffolded)
+
+; the parents paid 2:1, exactly what they contributed
+!(test (fuel-of &wrich O_base sm) 14)                     ; 20 − 6
+!(test (fuel-of &wrich O_chain sm) 17)                    ; 20 − 3
+!(test (fuel-of &wrich O_base dq) 3)                      ; 5 − 2
+!(test (fuel-of &wrich O_chain dq) 4)                     ; 5 − 1
+
+; ...and the ENDOWMENT landed in the offspring's purse, not nowhere: 2 sm per member, 1 dq per
+; member, pooled from both parents
+!(test (fuel-of &wrich (org (strat A_qa)) sm) 6)          ; 2 x 3 members
+!(test (fuel-of &wrich (org (strat A_qa)) dq) 3)
+; which is enough for it to express itself — an offspring that could not would be stillborn
+!(test (afford? &wrich (org (strat A_qa)) (genome-cost (gnm (strat A_qa)))) True)
+
+; the wrapper's genome is now real, and the candidate records what wraps it
+!(test (match &self (scaffold-of A_qa $s) $s) (strat A_qa))
+!(test (len (collapse (match &self (ruleset-member (rs (strat A_qa)) $r) $r))) 7)
