@@ -24,10 +24,12 @@
 ; --- two synthetic organisms, each a genome quoting a one-rule ruleset -----------
 !(add-atom &self (organism O_a))
 !(add-atom &self (genome-of O_a GNM_a))
+!(add-atom &self (genome-token-cost GNM_a dq 1))
 !(add-atom &self (quoted-ruleset GNM_a RS_a))
 !(add-atom &self (ruleset-member RS_a R_a))
 !(add-atom &self (organism O_b))
 !(add-atom &self (genome-of O_b GNM_b))
+!(add-atom &self (genome-token-cost GNM_b dq 1))
 !(add-atom &self (quoted-ruleset GNM_b RS_b))
 !(add-atom &self (ruleset-member RS_b R_b))
 

@@ -36,11 +36,13 @@
 ; it (this test owns its organism — it does not depend on the experiment's org config)
 !(add-atom &self (organism O_ctx))
 !(add-atom &self (genome-of O_ctx GNM_ctx))
+!(add-atom &self (genome-token-cost GNM_ctx dq 1))
 !(add-atom &self (quoted-ruleset GNM_ctx RS_ctx))
 !(add-atom &self (ruleset-member RS_ctx R_ctxok))
 !(add-atom &self (ruleset-member RS_ctx R_ctxbad))
 
 !(add-atom &self (fuel O_ctx sm 100))
+!(add-atom &self (fuel O_ctx dq 1))
 !(add-atom &self (fuel O_ctx tr 100))
 !(run-chamber &self CH_expt1)
 

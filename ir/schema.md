@@ -62,7 +62,7 @@ A rule is the fuel-aware form `C ^ G1 ^ HasFuel(O,R) ==> G2 ^ ConsumeFuel(O,R) ^
 | `(quoted-ruleset GNM RS)` | The genome `GNM` quotes ruleset `RS` (the heritable `@R`). |
 | `(ruleset-member RS R)` | Rule `R` is in ruleset `RS`. **One fact per rule.** |
 | `(fuel O token-type n)` | The organism currently holds `n` of `token-type` (a component of fuel vector `F_O`). **One fact per token type held.** Debited on firing (the firing organism resolved by `rule-organism`). A token with no fact reads as `0`. |
-| `(genome-token-cost GNM token-type n)` | What genome `GNM` costs to **dequote into a soma** (MSC eq 20 `cexpr`). **One fact per token type.** Undeclared ⇒ expression is free. |
+| `(genome-token-cost GNM token-type n)` | What genome `GNM` costs to **dequote into a soma** (MSC eq 20 `cexpr`). **One fact per token type. Required:** a genome with no declared cost cannot be expressed at all — expression is never free by omission. |
 | `(expressed O)` | *Run-space state.* `O` has a soma in this hot pool. Written once, when the dequote cost is paid; the organism's rules do not run until it is present. |
 
 > **Note:** `afford?`/`debit` (`petta/fuel.metta`) read and write the *firing organism's own* purse; a rule's organism is resolved from `ruleset-member` · `quoted-ruleset` · `genome-of` by `rule-organism`. Exp-1 declares two organisms — `O_base` owning the cue-normalizers, `O_chain` owning the transitive chainer (`experiments/expt1-causal-qa/configs.metta`) — each with its own independent purse, so `O_chain` can starve to death while `O_base` lives. Inter-organism token flow (splitter/joiner, shadow prices Λ) is not modelled here.

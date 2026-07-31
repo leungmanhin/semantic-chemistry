@@ -28,7 +28,8 @@
 !(test (genome-cost GNM_base) ((dq 1)))
 !(test (genome-cost GNM_chain) ((dq 1)))
 !(test (organism-genome O_base) GNM_base)
-; an undeclared genome expresses for FREE, so every config opts in rather than breaking
+; `()` from genome-cost means UNDECLARED, and undeclared is refused — never free (see the
+; closing block)
 !(test (genome-cost GNM_nosuch) ())
 
 ; a purse holds ZERO of a token it has no fact for — not "empty". `afford?` has to be able to
@@ -107,3 +108,21 @@
 !(test (msort (collapse (match &wp (event $c $s $r $k) $r))) (R_result R_so))  ; R_trans is O_chain's
 !(test (total-answers &wp) 1)                      ; the proximate answer only
 !(test (fuel-of &wp O_chain tr) 100)               ; untouched: it never got to try
+
+; --- NEVER FREE BY OMISSION -------------------------------------------------------------
+; A genome with no declared dequote cost cannot be expressed AT ALL. Expression must not be
+; free just because someone forgot to price it: a missing declaration then shows up at once as
+; an organism that does not run, rather than as one that quietly runs unpriced — which is the
+; failure that would go unnoticed. This organism is rich in every token and still refused.
+!(add-atom &self (organism O_unpriced))
+!(add-atom &self (genome-of O_unpriced GNM_unpriced))
+!(bind! &wu (new-space))
+!(add-atom &wu (fuel O_unpriced sm 100))
+!(add-atom &wu (fuel O_unpriced dq 100))
+!(test (genome-cost GNM_unpriced) ())
+!(test (express-organism &wu O_unpriced) undeclared)
+!(test (expressed? &wu O_unpriced) False)
+; ...and an organism with no genome at all is likewise inert, not free
+!(add-atom &self (organism O_genomeless))
+!(test (organism-genome O_genomeless) none)
+!(test (express-organism &wu O_genomeless) undeclared)

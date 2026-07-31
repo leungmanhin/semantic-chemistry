@@ -114,27 +114,32 @@
 ; (charging per cycle would re-implement rent, which is `cmaint`, under the wrong name).
 ; An organism that cannot afford to dequote has NO SOMA: it is marked nowhere, and none of its
 ; rules run. That is a death mode PRIOR to being unable to afford a firing.
-; A genome with no declared cost expresses for free, so a config opts in by declaring one.
+; Expression is NEVER free by omission: a genome with no declared cost cannot be expressed at
+; all. A forgotten declaration then shows up at once as an organism that does not run, rather
+; than as one that quietly runs unpriced — the failure that would be invisible.
 
-; the genome of organism $o
-(= (organism-genome $o) (match &self (genome-of $o $gnm) $gnm))
+; the genome of organism $o, or `none` when it has none declared
+(= (organism-genome $o)
+   (case (collapse (match &self (genome-of $o $gnm) $gnm)) ((() none) ($gs (car-atom $gs)))))
 
-; the dequote cost of genome $gnm as a (token n) list — empty when undeclared (free)
+; the dequote cost of genome $gnm as a (token n) list; `()` means UNDECLARED, not free
 (= (genome-cost $gnm) (collapse (match &self (genome-token-cost $gnm $t $n) ($t $n))))
 
 ; does organism $o have a soma in $ws?
 (= (expressed? $ws $o)
    (case (collapse (match $ws (expressed $o) yes)) ((() False) ($x True))))
 
-; express $o into $ws: already expressed -> nothing owed; affordable -> debit and mark;
-; otherwise it stays unexpressed and stays silent
+; express $o into $ws: already expressed -> nothing owed; cost undeclared -> refused; affordable
+; -> debit and mark; otherwise it stays unexpressed and stays silent
 (= (express-organism $ws $o)
    (if (expressed? $ws $o)
        done
        (let $c (genome-cost (organism-genome $o))
-            (if (afford? $ws $o $c)
-                (let $z (debit-all $ws $o $c) (add-atom $ws (expressed $o)))
-                starved))))
+            (if (== $c ())
+                undeclared
+                (if (afford? $ws $o $c)
+                    (let $z (debit-all $ws $o $c) (add-atom $ws (expressed $o)))
+                    starved)))))
 
 (= (express-each $ws $os)
    (if (== $os ()) done (let $z (express-organism $ws (car-atom $os)) (express-each $ws (cdr-atom $os)))))
