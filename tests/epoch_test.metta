@@ -31,6 +31,7 @@
 !(set-task &wr V3)
 !(copy-molecules &wr)
 !(add-atom &wr (fuel O_base sm 6))
+!(add-atom &wr (fuel O_base dq 1))
 !(set-cycle &wr 1)
 !(run-chamber &wr CH_expt1)
 !(test (foldall + (match &wr (sem-edge V3g $e ReasonFor $x $y) 1) 0) 2)   ; derived layer present
@@ -47,7 +48,9 @@
 !(set-task &wk V3)
 !(copy-molecules &wk)
 !(add-atom &wk (fuel O_base sm 6))
+!(add-atom &wk (fuel O_base dq 1))
 !(add-atom &wk (fuel O_chain sm 4))
+!(add-atom &wk (fuel O_chain dq 1))
 !(add-atom &wk (fuel O_chain tr 1))
 !(test (work-task &wk CH_expt1 CL_deep 1 9) 2)     ; settles with both answers
 !(test (log-cycles &wk) (1))                       ; only cycle 1 logged a firing...
@@ -59,7 +62,9 @@
 ; CL_shallow: O_chain earns no tr, so the second arrival cannot be chained (2 -> 1).
 !(bind! &wst (new-space))
 !(add-atom &wst (fuel O_base sm 6))
+!(add-atom &wst (fuel O_base dq 1))
 !(add-atom &wst (fuel O_chain sm 4))
+!(add-atom &wst (fuel O_chain dq 1))
 !(add-atom &wst (fuel O_chain tr 1))
 !(test (run-tasks &wst CH_expt1 CL_shallow (V3 V4) 1 9) (2 1))
 !(test (fuel-of &wst O_chain tr) 0)           ; never replenished under the shallow clamp
@@ -76,7 +81,9 @@
 ; CL_deep: the chain funds itself, so every arrival gets both answers.
 !(bind! &wdt (new-space))
 !(add-atom &wdt (fuel O_base sm 6))
+!(add-atom &wdt (fuel O_base dq 1))
 !(add-atom &wdt (fuel O_chain sm 4))
+!(add-atom &wdt (fuel O_chain dq 1))
 !(add-atom &wdt (fuel O_chain tr 1))
 !(test (run-tasks &wdt CH_expt1 CL_deep (V3 V4 V5) 1 9) (2 2 2))
 !(test (fuel-of &wdt O_chain tr) 4)           ; tr grows: +1 per arrival (income 2 − draw 1)

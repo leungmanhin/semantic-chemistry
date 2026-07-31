@@ -489,7 +489,8 @@
           ($z6 (remove-all $abl (collapse (match $abl (fuel $O $t $n) (fuel $O $t $n)))))
           ($z7 (remove-all $abl (collapse (match $abl (cycle-now $k) (cycle-now $k)))))
           ($z8 (remove-all $abl (collapse (match $abl (cycle-task $k2 $t2) (cycle-task $k2 $t2)))))
-          ($z9 (remove-all $abl (collapse (match $abl (task-now $t3) (task-now $t3))))))
+          ($z9 (remove-all $abl (collapse (match $abl (task-now $t3) (task-now $t3)))))
+          ($za (remove-all $abl (collapse (match $abl (expressed $o) (expressed $o))))))
      done))
 
 ; run the chamber in the isolated space $abl with the rules $skip suppressed, POSING task $t —

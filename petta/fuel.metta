@@ -7,8 +7,11 @@
 ; ===========================================================================
 
 ; the balance of token $t that organism $O holds in space $ws
+; $O's balance of token $t — ZERO when it holds no such fact. A bare `match` would return
+; EMPTY there, and the emptiness propagates through `afford?` instead of deciding it, so an
+; organism that has simply never held a token would neither afford nor fail to.
 (= (fuel-of $ws $O $t)
-   (match $ws (fuel $O $t $n) $n))
+   (case (collapse (match $ws (fuel $O $t $n) $n)) ((() 0) ($ns (car-atom $ns)))))
 
 ; can $O pay the whole cost vector? — True iff every (token n) is affordable componentwise
 (= (afford? $ws $O $cost)

@@ -106,6 +106,42 @@
                     ($z (add-atom &self (crule $r $prods $clauses $cost $prods))))
                done)))))
 
-; express the whole genome: convert every rule that has a rule-lhs
-(= (express) (express-rules (collapse (match &self (rule-lhs $r $lhs) $r))))
+; --- EXPRESSION (MSC eq 20 `cexpr`, "expression (gated dequoting)"). Compiling a quoted rule
+; into a crule is a SHARED, idempotent build artifact and stays free; what costs is having a
+; SOMA — a running instance of a genome in a particular hot pool. MSC is explicit that the two
+; differ in kind ("a dequoted process ∗@P actually runs"; "if the act of dequoting is itself
+; token-gated…"), so an organism pays its genome's dequote cost ONCE per hot pool, not per cycle
+; (charging per cycle would re-implement rent, which is `cmaint`, under the wrong name).
+; An organism that cannot afford to dequote has NO SOMA: it is marked nowhere, and none of its
+; rules run. That is a death mode PRIOR to being unable to afford a firing.
+; A genome with no declared cost expresses for free, so a config opts in by declaring one.
+
+; the genome of organism $o
+(= (organism-genome $o) (match &self (genome-of $o $gnm) $gnm))
+
+; the dequote cost of genome $gnm as a (token n) list — empty when undeclared (free)
+(= (genome-cost $gnm) (collapse (match &self (genome-token-cost $gnm $t $n) ($t $n))))
+
+; does organism $o have a soma in $ws?
+(= (expressed? $ws $o)
+   (case (collapse (match $ws (expressed $o) yes)) ((() False) ($x True))))
+
+; express $o into $ws: already expressed -> nothing owed; affordable -> debit and mark;
+; otherwise it stays unexpressed and stays silent
+(= (express-organism $ws $o)
+   (if (expressed? $ws $o)
+       done
+       (let $c (genome-cost (organism-genome $o))
+            (if (afford? $ws $o $c)
+                (let $z (debit-all $ws $o $c) (add-atom $ws (expressed $o)))
+                starved))))
+
+(= (express-each $ws $os)
+   (if (== $os ()) done (let $z (express-organism $ws (car-atom $os)) (express-each $ws (cdr-atom $os)))))
+
+; express the genome into hot pool $ws: give every organism that can pay a soma there, then
+; compile every rule that has a rule-lhs (shared, idempotent, free)
+(= (express $ws)
+   (let $z (express-each $ws (organisms))
+        (express-rules (collapse (match &self (rule-lhs $r $lhs) $r)))))
 (= (express-rules $l) (if (== $l ()) done (let $z (convert-rule (car-atom $l)) (express-rules (cdr-atom $l)))))

@@ -40,10 +40,18 @@
 (clamp-mint CL_deep transitive-explanation tr 2)
 (clamp-scope CL_deep CH_expt1)
 
+; --- EXPRESSION cost (MSC eq 20 cexpr, "expression (gated dequoting)"): what each genome costs
+; to dequote into a soma, charged once per hot pool. An organism that cannot pay has no soma and
+; none of its rules run — inert code rather than a running process.
+(genome-token-cost GNM_base dq 1)
+(genome-token-cost GNM_chain dq 1)
+
 ; --- the shared fuel SNAPSHOT (MSC §6.4): the canonical initial endowment a worker restores
-; into its isolated hot-pool space — enough for one chamber run (R_so/R_result spend sm,
-; R_trans spends sm + tr, seed tr = 1). Each worker instance (declared by its runner, in the
-; test that exercises its kind) restores this via (worker-snapshot W SNAP_qa).
+; into its isolated hot-pool space — enough to dequote (dq 1 each) and for one chamber run
+; (R_so/R_result spend sm, R_trans spends sm + tr, seed tr = 1). Each worker instance (declared
+; by its runner, in the test that exercises its kind) restores this via (worker-snapshot W SNAP_qa).
 (snapshot-fuel SNAP_qa O_base sm 10)
+(snapshot-fuel SNAP_qa O_base dq 1)
 (snapshot-fuel SNAP_qa O_chain sm 10)
 (snapshot-fuel SNAP_qa O_chain tr 1)
+(snapshot-fuel SNAP_qa O_chain dq 1)

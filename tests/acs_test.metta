@@ -46,7 +46,9 @@
 !(set-cycle &ws0 1)          ; dates the log to the task, so a paired replay re-poses the same one
 !(copy-molecules &ws0)
 !(add-atom &ws0 (fuel O_base sm 10))
+!(add-atom &ws0 (fuel O_base dq 1))
 !(add-atom &ws0 (fuel O_chain sm 10))
+!(add-atom &ws0 (fuel O_chain dq 1))
 !(add-atom &ws0 (fuel O_chain tr 1))
 !(run-chamber &ws0 CH_expt1)
 !(test (msort (fired-rules &ws0)) (R_result R_so R_trans))                   ; all three fired

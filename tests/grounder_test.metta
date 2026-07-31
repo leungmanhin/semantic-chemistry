@@ -33,7 +33,9 @@
 ; --- the reaction: seed each organism's purse, run the genome (all firings fuel-gated).
 ; O_base owns R_so/R_result (cost sm); O_chain owns R_trans (costs sm + tr).
 !(add-atom &self (fuel O_base sm 10))
+!(add-atom &self (fuel O_base dq 1))
 !(add-atom &self (fuel O_chain sm 10))
+!(add-atom &self (fuel O_chain dq 1))
 !(add-atom &self (fuel O_chain tr 5))
 !(run-rules &self)
 

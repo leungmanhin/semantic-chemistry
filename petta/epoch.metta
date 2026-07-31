@@ -104,5 +104,6 @@
    (let* (($z1 (remove-all $ws (collapse (match $ws (event $c $s $r $key) (event $c $s $r $key)))))
           ($z2 (remove-all $ws (collapse (match $ws (cycle-now $k) (cycle-now $k)))))
           ($z3 (remove-all $ws (collapse (match $ws (cycle-task $k2 $t2) (cycle-task $k2 $t2)))))
-          ($z4 (remove-all $ws (collapse (match $ws (task-now $t3) (task-now $t3))))))
+          ($z4 (remove-all $ws (collapse (match $ws (task-now $t3) (task-now $t3)))))
+          ($z5 (remove-all $ws (collapse (match $ws (expressed $o2) (expressed $o2))))))
      (remove-all $ws (collapse (match $ws (fuel $o $t $n) (fuel $o $t $n))))))

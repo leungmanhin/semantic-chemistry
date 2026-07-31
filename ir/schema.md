@@ -13,7 +13,7 @@ The facts below are the canonical IR. They are stored as **bare portable S-expre
 - **Relation name first, grounded keys next, variables/values at the suffix** (MORK prefix-friendly schema discipline — keeps the trie prefix-shared and matches fast).
 - One fact = one tuple. Multi-valued attributes (a fuel vector, a rule's token costs) are **expanded into one fact per element**, never packed into a list — so they index and diff cleanly.
 - **IDs are opaque symbols** with a type prefix by convention: `G_*` graph, `N_*`/`n_*` node, `E_*`/`e_*` edge, `R*` rule, `O*` organism, `GNM*` genome, `RS*` ruleset, `CH_*` chamber, `W*` worker, `SNAP*` snapshot, `SEED*` seed, `LOG*` event log, `B*` binding. IDs are globally unique within a run.
-- **Token-type symbols** follow the **TECAN typed alphabet** (TECAN §4.1 general + §8.4 semantic): `τ_graph_match`, `τ_causal`, `τ_pln_deduction`, `τ_compression`, `τ_paraphrase`, `τ_dequote`, … — written **ASCII** as `tau_graph_match`, `tau_causal`, … (literal `τ` avoided for MORK byte-safety). The set is extensible; domain clamps/chambers add more. (Exp-1 uses two tokens; the **PeTTa executor names them `sm` (skeleton-match, = `tau_graph_match`) and `tr` (transitive-explanation)** in its fact files + engine — each symbol is the achievement it rewards. A backend may use any symbol, since the engine is generic over the token.)
+- **Token-type symbols** follow the **TECAN typed alphabet** (TECAN §4.1 general + §8.4 semantic): `τ_graph_match`, `τ_causal`, `τ_pln_deduction`, `τ_compression`, `τ_paraphrase`, `τ_dequote`, … — written **ASCII** as `tau_graph_match`, `tau_causal`, … (literal `τ` avoided for MORK byte-safety). The set is extensible; domain clamps/chambers add more. (Exp-1 uses two tokens; the **PeTTa executor names them `sm` (skeleton-match, = `tau_graph_match`) and `tr` (transitive-explanation)** in its fact files + engine, plus `dq` (= `tau_dequote`, what a genome costs to express into a soma) — each symbol is the achievement it rewards or the operation it pays for. A backend may use any symbol, since the engine is generic over the token.)
 - Truth values are two trailing reals `<strength> <confidence>` (PLN `stv`), each in `[0,1]`.
 
 ---
@@ -61,9 +61,13 @@ A rule is the fuel-aware form `C ^ G1 ^ HasFuel(O,R) ==> G2 ^ ConsumeFuel(O,R) ^
 | `(genome-of O GNM)` | `O`'s genome is `GNM`. |
 | `(quoted-ruleset GNM RS)` | The genome `GNM` quotes ruleset `RS` (the heritable `@R`). |
 | `(ruleset-member RS R)` | Rule `R` is in ruleset `RS`. **One fact per rule.** |
-| `(fuel O token-type n)` | The organism currently holds `n` of `token-type` (a component of fuel vector `F_O`). **One fact per token type held.** Debited on firing (the firing organism resolved by `rule-organism`). |
+| `(fuel O token-type n)` | The organism currently holds `n` of `token-type` (a component of fuel vector `F_O`). **One fact per token type held.** Debited on firing (the firing organism resolved by `rule-organism`). A token with no fact reads as `0`. |
+| `(genome-token-cost GNM token-type n)` | What genome `GNM` costs to **dequote into a soma** (MSC eq 20 `cexpr`). **One fact per token type.** Undeclared ⇒ expression is free. |
+| `(expressed O)` | *Run-space state.* `O` has a soma in this hot pool. Written once, when the dequote cost is paid; the organism's rules do not run until it is present. |
 
 > **Note:** `afford?`/`debit` (`petta/fuel.metta`) read and write the *firing organism's own* purse; a rule's organism is resolved from `ruleset-member` · `quoted-ruleset` · `genome-of` by `rule-organism`. Exp-1 declares two organisms — `O_base` owning the cue-normalizers, `O_chain` owning the transitive chainer (`experiments/expt1-causal-qa/configs.metta`) — each with its own independent purse, so `O_chain` can starve to death while `O_base` lives. Inter-organism token flow (splitter/joiner, shadow prices Λ) is not modelled here.
+
+> **Expression vs firing.** Compiling a quoted rule into a runnable form is a shared, idempotent build artifact and is free. What costs is *having a soma*: an organism pays `genome-token-cost` once per hot pool and is then marked `(expressed O)`. This gives a death mode prior to starvation-by-firing — an organism that cannot afford to dequote runs nothing at all, however much firing fuel it holds. The charge is once per pool rather than per cycle because eq 20 keeps `cmaint` (being alive) separate from `cexpr` (the act of dequoting); a per-cycle charge would be rent under the wrong name.
 
 ### 2.4 Chambers (the contexts / reaction environments)
 

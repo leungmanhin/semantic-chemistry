@@ -82,16 +82,19 @@
                                     $seq)))))))))
 
 ; walk every rule in priority order (halting at the step budget $b), resolving each rule's
-; firing organism, threading $seq
+; firing organism, threading $seq. A rule whose organism has NO SOMA in $ws is skipped without
+; enumerating candidates: an unexpressed genome is inert code, not a running process.
 (= (walk-rules $ws $rules $seq $b)
    (if (budget-reached? $seq $b)
        $seq
        (case $rules
              ((() $seq)
               ($ne (let* (($r (car-atom $rules))
-                          ($O (rule-organism $r))
-                          ($seq2 (walk $ws $O $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq $b)))
-                     (walk-rules $ws (cdr-atom $rules) $seq2 $b)))))))
+                          ($O (rule-organism $r)))
+                     (if (expressed? $ws $O)
+                         (let $seq2 (walk $ws $O $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq $b)
+                              (walk-rules $ws (cdr-atom $rules) $seq2 $b))
+                         (walk-rules $ws (cdr-atom $rules) $seq $b))))))))
 
 ; run from a given seq (raw: ALL rules, no context filter; unbounded)
 (= (run-rules-from $ws $seq)
@@ -99,7 +102,7 @@
 
 ; the raw run: express the genome, then walk ALL rules from seq 0 (no context admission)
 (= (run-rules $ws)
-   (let $z (express)
+   (let $z (express $ws)
         (run-rules-from $ws 0)))
 
 ; a chamber run from a given seq (only $ch's admitted rules; used by the epoch loop to
@@ -110,13 +113,13 @@
 ; a CHAMBER run: express the genome, then walk only chamber $ch's admitted rules (MSC §3
 ; step 1 context admission) — the contextual run a context-chamber worker performs
 (= (run-chamber $ws $ch)
-   (let $z (express)
+   (let $z (express $ws)
         (run-chamber-from $ws $ch 0)))
 
 ; a BUDGETED chamber run (MSC §6.4 worker-budget-steps): express, then walk chamber $ch's
 ; admitted rules from seq 0, halting when the firing seq reaches $b (`none` = unbounded)
 (= (run-chamber-b $ws $ch $b)
-   (let $z (express)
+   (let $z (express $ws)
         (walk-rules $ws (chamber-rules $ch) 0 $b)))
 
 ; --- FIXPOINT run (prototype for the execution-model question). A single pass is ORDER-DEPENDENT:
@@ -144,7 +147,7 @@
 ; express the genome, then iterate a CALLER-GIVEN rule order to fixpoint (any order reaches the
 ; same closure — that is the point)
 (= (run-fix-order $ws $rules)
-   (let $z (express)
+   (let $z (express $ws)
         (run-rules-fix $ws $rules 0)))
 
 ; a chamber run to fixpoint, in the default priority order
@@ -153,7 +156,7 @@
 ; ONE pass in a caller-given order (the current cascade, exposed so the order-sensitivity
 ; contrast is testable)
 (= (run-once-order $ws $rules)
-   (let $z (express)
+   (let $z (express $ws)
         (walk-rules $ws $rules 0 none)))
 
 ; --- generic ABLATION run (P2 paired-replay / P3 genome-by-membership): a run that SKIPS
@@ -168,19 +171,21 @@
           ($ne (let $r (car-atom $rules)
                     (if (in-list? $r $skip)
                         (walk-rules-skip $ws (cdr-atom $rules) $seq $skip)
-                        (let* (($O (rule-organism $r))
-                               ($seq2 (walk $ws $O $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq none)))
-                          (walk-rules-skip $ws (cdr-atom $rules) $seq2 $skip))))))))
+                        (let $O (rule-organism $r)
+                             (if (expressed? $ws $O)
+                                 (let $seq2 (walk $ws $O $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq none)
+                                      (walk-rules-skip $ws (cdr-atom $rules) $seq2 $skip))
+                                 (walk-rules-skip $ws (cdr-atom $rules) $seq $skip)))))))))
 
 ; the raw ablation run: express the genome, then walk ALL rules skipping $skip (no context
 ; filter — the structural assay runs the given genome)
 (= (run-ablate $ws $skip)
-   (let $z (express)
+   (let $z (express $ws)
         (walk-rules-skip $ws (all-sorted-rules) 0 $skip)))
 
 ; the CHAMBER-scoped ablation run (the counterfactual for the ACS condition-4 replay):
 ; express, then walk only chamber $ch's admitted rules skipping $skip — the same contextual
 ; run `run-chamber` performs, minus the suppressed rules, so the two are paired
 (= (run-chamber-ablate $ws $ch $skip)
-   (let $z (express)
+   (let $z (express $ws)
         (walk-rules-skip $ws (chamber-rules $ch) 0 $skip)))

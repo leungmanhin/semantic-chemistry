@@ -46,6 +46,8 @@
 ; The sm headroom also has to absorb the re-derivation the between-task decay forces: forgetting
 ; the derived layer means an already-explained text is normalized again while the next task is
 ; worked, so spend grows with the number of arrivals while income stays flat.
+(genome-token-cost GNM_ctrl dq 1)
 (snapshot-fuel SNAP_ctrl O_ctrl sm 12)
+(snapshot-fuel SNAP_ctrl O_ctrl dq 1)
 (snapshot-fuel SNAP_ctrl O_ctrl tr 1)
 (snapshot-fuel SNAP_ctrl O_ctrl ex 1)
