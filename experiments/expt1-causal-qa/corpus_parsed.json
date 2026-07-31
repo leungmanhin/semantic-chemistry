@@ -32,6 +32,9 @@
       [
         "(: $prf (And (Member $e spoil) (Patient $e $f) (Member $f food) (Past $e) (ReasonFor $w $e)) $tv)"
       ]
+    ],
+    "question_types": [
+      "WhyQuestion"
     ]
   },
   {
@@ -69,6 +72,9 @@
       [
         "(: $prf (And (Member $e lose) (Agent $e $f) (Member $f shop) (Past $e) (ReasonFor $w $e)) $tv)"
       ]
+    ],
+    "question_types": [
+      "WhyQuestion"
     ]
   },
   {
@@ -104,6 +110,9 @@
       [
         "(: $prf (And (Member $e empty) (Patient $e $f) (Member $f market) (Past $e) (ReasonFor $w $e)) $tv)"
       ]
+    ],
+    "question_types": [
+      "WhyQuestion"
     ]
   }
 ]

@@ -55,3 +55,22 @@
 (snapshot-fuel SNAP_qa O_chain sm 10)
 (snapshot-fuel SNAP_qa O_chain tr 1)
 (snapshot-fuel SNAP_qa O_chain dq 1)
+
+; --- CTRL-SCAFFOLD: what it costs to wrap a recurring chain in a control level, and where the
+; offspring lives. The routing cue is the arriving question-type marker the parser emits; the
+; costs are PER CONTRIBUTED MEMBER, so parents split them in proportion to what they gave.
+(task-cue-relation WhyQuestion)
+(scaffold-rule-cost sm 1)
+(scaffold-dequote-cost dq 1)
+(scaffold-mutate-cost sm 1)
+(scaffold-endowment sm 4)
+(scaffold-endowment tr 1)
+(scaffold-endowment dq 1)
+
+; the offspring's own chamber: its context admits the GENERATED rules only, so the wrapper runs
+; as itself rather than interleaved with the originals it copied
+(chamber CH_scaffold)
+(chamber-context CH_scaffold scaffold-qa)
+(chamber-life-history CH_scaffold K-like)
+(clamp-scope CL_deep CH_scaffold)
+(clamp-scope CL_shallow CH_scaffold)

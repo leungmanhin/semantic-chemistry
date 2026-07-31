@@ -7,6 +7,5 @@
 ; + the grounder — is imported by the consumer; fuel comes from the snapshot.
 !(import! &self "experiments/expt1-causal-qa/molecules.metta")
 !(import! &self "experiments/expt1-causal-qa/tasks.metta")
-!(import! &self "experiments/expt1-causal-qa/control-tasks.metta")
 !(import! &self "experiments/expt1-causal-qa/control-configs.metta")
 !(import! &self "experiments/expt1-causal-qa/control-rules.metta")

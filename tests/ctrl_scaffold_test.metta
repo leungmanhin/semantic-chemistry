@@ -91,26 +91,24 @@
 ; ===========================================================================
 ; STEP 2 — THE GENERATOR: a pure function from a scaffoldable candidate to the wrapper's facts.
 ; ===========================================================================
-!(add-atom &self (scaffold-rule-cost sm 1))
-!(add-atom &self (scaffold-dequote-cost dq 1))
 
 ; it is PURE — building the list stores nothing, so the wrapper is inspectable before it exists
-!(test (len (scaffold-facts A_qa (R_so R_result R_trans) WhyQuestion causal-qa)) 57)
+!(test (len (scaffold-facts A_qa (R_so R_result R_trans) WhyQuestion scaffold-qa)) 57)
 !(test (collapse (match &self (organism (org (strat A_qa))) yes)) ())
 ; and DETERMINISTIC: names are functions of the candidate, never gensym, so a replay rebuilds
 ; the identical wrapper
-!(test (== (scaffold-facts A_qa (R_so R_result R_trans) WhyQuestion causal-qa)
-           (scaffold-facts A_qa (R_so R_result R_trans) WhyQuestion causal-qa)) True)
+!(test (== (scaffold-facts A_qa (R_so R_result R_trans) WhyQuestion scaffold-qa)
+           (scaffold-facts A_qa (R_so R_result R_trans) WhyQuestion scaffold-qa)) True)
 
 ; it FAILS CLOSED like expression does: no declared rule cost, or nothing delivered, means no
 ; wrapper — a control rule that fires free, or one with no success to trace, is not worth minting
-!(test (scaffold-facts A_qa (R_so R_result) WhyQuestion causal-qa) ())
+!(test (scaffold-facts A_qa (R_so R_result) WhyQuestion scaffold-qa) ())
 !(remove-atom &self (scaffold-rule-cost sm 1))
-!(test (scaffold-facts A_qa (R_so R_result R_trans) WhyQuestion causal-qa) ())
-!(add-atom &self (scaffold-rule-cost sm 1))
+!(test (scaffold-facts A_qa (R_so R_result R_trans) WhyQuestion scaffold-qa) ())
+!(add-atom &self (scaffold-rule-cost sm 1))                 ; put the domain's declaration back
 
 ; --- now mint it and read the wrapper back ----------------------------------------------
-!(add-all &self (scaffold-facts A_qa (R_so R_result R_trans) WhyQuestion causal-qa))
+!(add-all &self (scaffold-facts A_qa (R_so R_result R_trans) WhyQuestion scaffold-qa))
 
 ; a GATED COPY: the activation premise is prepended, the RHS is untouched — so product ids, and
 ; with them the evaluator's depth-based achievement typing, are exactly as before
@@ -154,7 +152,7 @@
         (learn (strat A_qa)) (prime (strat A_qa)) (recall (strat A_qa)) (worked R_trans (strat A_qa))))
 !(test (organism-genome (org (strat A_qa))) (gnm (strat A_qa)))
 !(test (genome-cost (gnm (strat A_qa))) ((dq 1)))
-!(test (match &self (organism-chamber (org (strat A_qa)) $c) $c) CH_expt1)   ; derived from context
+!(test (match &self (organism-chamber (org (strat A_qa)) $c) $c) CH_scaffold) ; derived from context
 
 ; the control vocabulary the wrapper introduces is declared, which is what lets the closure
 ; classifier read the resulting closure as control-level rather than substrate
@@ -164,7 +162,7 @@
 !(test (control-rel? ReasonFor) False)
 ; and the strategy carries its routing key + scope as attributes rather than in its name
 !(test (match &self (strategy-cue (strat A_qa) $c) $c) WhyQuestion)
-!(test (match &self (strategy-context (strat A_qa) $c) $c) causal-qa)
+!(test (match &self (strategy-context (strat A_qa) $c) $c) scaffold-qa)
 !(test (match &self (strategy-chain (strat A_qa) $c) $c) A_qa)
 
 ; ===========================================================================
@@ -176,24 +174,22 @@
 ; offspring"). Costs are declared PER CONTRIBUTED MEMBER, which makes the split exactly
 ; proportional with no fractional tokens.
 ; ===========================================================================
-!(add-atom &self (scaffold-mutate-cost sm 1))
-!(add-atom &self (scaffold-endowment sm 2))
-!(add-atom &self (scaffold-endowment dq 1))     ; the offspring must be able to express itself
-!(add-atom &self (task-cue-relation WhyQuestion))
 
 ; the parents are the organisms that contributed the chain, and each owes per member it gave
 !(test (msort (chain-parents (R_so R_result R_trans))) (O_base O_chain))
 !(test (contribution O_base (R_so R_result R_trans)) 2)
 !(test (contribution O_chain (R_so R_result R_trans)) 1)
-!(test (parent-due O_base (R_so R_result R_trans)) ((sm 6) (dq 2)))   ; (1+2) sm and 1 dq, x2
-!(test (parent-due O_chain (R_so R_result R_trans)) ((sm 3) (dq 1)))  ; ...x1 — exactly 2:1
+!(test (parent-due O_base (R_so R_result R_trans)) ((sm 10) (tr 2) (dq 2)))  ; per-member x2
+!(test (parent-due O_chain (R_so R_result R_trans)) ((sm 5) (tr 1) (dq 1)))  ; ...x1 — exactly 2:1
 
 ; --- A PARENT TOO POOR TO ENDOW CANNOT REPRODUCE. This is the point of billing the parents:
 ; consolidation is something only a solvent organism can afford, so mortality gates learning.
 !(bind! &wpoor (new-space))
-!(add-atom &wpoor (fuel O_base sm 6))
+!(add-atom &wpoor (fuel O_base sm 10))
+!(add-atom &wpoor (fuel O_base tr 2))
 !(add-atom &wpoor (fuel O_base dq 2))
 !(add-atom &wpoor (fuel O_chain sm 1))                    ; O_chain cannot cover its share
+!(add-atom &wpoor (fuel O_chain tr 1))
 !(add-atom &wpoor (fuel O_chain dq 1))
 !(test (parents-can-pay? &wpoor (O_base O_chain) (R_so R_result R_trans)) False)
 
@@ -204,7 +200,7 @@
 !(add-atom &self (worker-acs W_poor A_qa))
 !(add-atom &self (worker-chamber W_poor CH_expt1))
 !(test (dispatch W_poor) unaffordable)
-!(test (fuel-of &wpoor O_base sm) 6)                      ; untouched
+!(test (fuel-of &wpoor O_base sm) 10)                     ; untouched
 
 ; --- a candidate that is not scaffoldable is refused before any of that ------------------
 !(bind! &wsh (new-space))
@@ -217,26 +213,29 @@
 
 ; --- SOLVENT PARENTS: the wrapper is minted and the bill is split proportionally ---------
 !(bind! &wrich (new-space))
-!(add-atom &wrich (fuel O_base sm 20))
+!(add-atom &wrich (fuel O_base sm 30))
+!(add-atom &wrich (fuel O_base tr 5))
 !(add-atom &wrich (fuel O_base dq 5))
-!(add-atom &wrich (fuel O_chain sm 20))
+!(add-atom &wrich (fuel O_chain sm 30))
+!(add-atom &wrich (fuel O_chain tr 5))
 !(add-atom &wrich (fuel O_chain dq 5))
 !(add-atom &self (worker W_cs))
 !(add-atom &self (worker-kind W_cs ctrl-scaffold))
 !(add-atom &self (worker-space W_cs &wrich))
 !(add-atom &self (worker-acs W_cs A_qa))
-!(add-atom &self (worker-chamber W_cs CH_expt1))
+!(add-atom &self (worker-chamber W_cs CH_scaffold))
 !(test (dispatch W_cs) scaffolded)
 
 ; the parents paid 2:1, exactly what they contributed
-!(test (fuel-of &wrich O_base sm) 14)                     ; 20 − 6
-!(test (fuel-of &wrich O_chain sm) 17)                    ; 20 − 3
+!(test (fuel-of &wrich O_base sm) 20)                     ; 30 − 10
+!(test (fuel-of &wrich O_chain sm) 25)                    ; 30 − 5
 !(test (fuel-of &wrich O_base dq) 3)                      ; 5 − 2
 !(test (fuel-of &wrich O_chain dq) 4)                     ; 5 − 1
 
 ; ...and the ENDOWMENT landed in the offspring's purse, not nowhere: 2 sm per member, 1 dq per
 ; member, pooled from both parents
-!(test (fuel-of &wrich (org (strat A_qa)) sm) 6)          ; 2 x 3 members
+!(test (fuel-of &wrich (org (strat A_qa)) sm) 12)         ; 4 x 3 members
+!(test (fuel-of &wrich (org (strat A_qa)) tr) 3)
 !(test (fuel-of &wrich (org (strat A_qa)) dq) 3)
 ; which is enough for it to express itself — an offspring that could not would be stillborn
 !(test (afford? &wrich (org (strat A_qa)) (genome-cost (gnm (strat A_qa)))) True)
@@ -244,3 +243,75 @@
 ; the wrapper's genome is now real, and the candidate records what wraps it
 !(test (match &self (scaffold-of A_qa $s) $s) (strat A_qa))
 !(test (len (collapse (match &self (ruleset-member (rs (strat A_qa)) $r) $r))) 7)
+
+; ===========================================================================
+; STEP 4 — THE DELIVERABLE: does the derived wrapper actually CLOSE the loop?
+; ---------------------------------------------------------------------------
+; The chain the scanner handed us recurs and earns but is a food-fed feed-forward DAG: semantic
+; content flows question → answer and never reconstructs the question, so there is no substrate
+; closure to find. The wrapper was generated to supply what the chain cannot — an activation the
+; chain's own success regenerates. Running the offspring and re-certifying it is the only thing
+; that shows the wrapper did its job; everything before this is machinery.
+; The offspring runs in ITS OWN chamber: `scaffold-qa` admits the generated rules and not the
+; originals they were copied from, so a gated copy and its original never race for the same
+; product (they mint identical ids, so in one chamber the settle guard would let whichever ran
+; first silently win — genuine in-chamber competition needs the scored gate).
+; ===========================================================================
+!(test (match &self (rule-context (gated R_so (strat A_qa)) $c) $c) scaffold-qa)
+!(test (msort (chamber-rules CH_scaffold))
+       ((gated R_result (strat A_qa)) (gated R_so (strat A_qa)) (gated R_trans (strat A_qa))
+        (learn (strat A_qa)) (prime (strat A_qa)) (recall (strat A_qa)) (worked R_trans (strat A_qa))))
+
+; --- the offspring works a stream of arrivals on the endowment its parents gave it ---------
+!(test (run-tasks &wrich CH_scaffold CL_deep (V3 V4) 1 9) (2 2))
+!(test (log-tasks &wrich) (V3 V4))
+; it paid to express itself out of the endowment, and is still solvent after two arrivals
+!(test (expressed? &wrich (org (strat A_qa))) True)
+!(test (> (fuel-of &wrich (org (strat A_qa)) sm) 0) True)
+
+; THE RING TURNS, and it turns because of what the wrapper added: the arriving cue lets `recall`
+; ignite the strategy on a cold pool, and from the second cycle of each task it is `prime` —
+; fed by the habit the chain's OWN success laid down — that re-activates it.
+!(test (foldall + (match &wrich (event 1 $s (recall (strat A_qa)) $k) 1) 0) 1)
+!(test (foldall + (match &wrich (event 1 $s (prime (strat A_qa)) $k) 1) 0) 0)   ; nothing to prime from yet
+!(test (foldall + (match &wrich (event 2 $s (prime (strat A_qa)) $k) 1) 0) 1)   ; the closing edge fires
+
+; --- CERTIFY: the same detector, unchanged, on the generated set --------------------------
+!(bind! &gw (new-space))
+!(bind! &aw (new-space))
+!(build-graph &gw (fired-rules &wrich))
+
+; membership is the closed ring; `recall` eats food (an arriving cue no rule makes) and peels out,
+; exactly as the hand-written genome's intake rules do
+!(test (msort (acs-member-set &gw (fired-rules &wrich)))
+       ((gated R_result (strat A_qa)) (gated R_so (strat A_qa)) (gated R_trans (strat A_qa))
+        (learn (strat A_qa)) (prime (strat A_qa)) (worked R_trans (strat A_qa))))
+!(test (in-list? (recall (strat A_qa)) (acs-member-set &gw (fired-rules &wrich))) False)
+
+; CONDITION 1 — the chain that could not close now DOES, and at the HYBRID level: the ring
+; regenerates control motifs (Primed / Worked / Habit) and a semantic one (ReasonFor)
+!(test (msort (closure-rels (acs-member-set &gw (fired-rules &wrich)))) (Habit Primed ReasonFor Worked))
+!(test (structurally-closed? (acs-member-set &gw (fired-rules &wrich))) True)
+!(test (closure-kind (acs-member-set &gw (fired-rules &wrich))) hybrid)
+
+; CONDITION 2 — autocatalysis
+!(test (autocatalytic? &gw (acs-member-set &gw (fired-rules &wrich))) True)
+
+; CONDITION 4 — it matters: suppress the ring and the arriving task goes unanswered
+!(add-atom &self (snapshot-fuel SNAP_wrap (org (strat A_qa)) sm 12))
+!(add-atom &self (snapshot-fuel SNAP_wrap (org (strat A_qa)) tr 3))
+!(add-atom &self (snapshot-fuel SNAP_wrap (org (strat A_qa)) dq 3))
+!(test (ablated-answers &aw CH_scaffold SNAP_wrap V4 (acs-member-set &gw (fired-rules &wrich))) 0)
+!(test (causal-influence? &wrich &aw CH_scaffold SNAP_wrap (acs-member-set &gw (fired-rules &wrich))) True)
+
+; RECURRENCE — the ring turns for BOTH arrivals, so the wrapper is not a one-off either
+!(test (loop-in-task? &wrich (acs-member-set &gw (fired-rules &wrich)) V3) True)
+!(test (loop-in-task? &wrich (acs-member-set &gw (fired-rules &wrich)) V4) True)
+!(test (recurrence-count &wrich (acs-member-set &gw (fired-rules &wrich))) 2)
+!(test (recurrent? &wrich (acs-member-set &gw (fired-rules &wrich)) 2) True)
+
+; --- AND THE POINT: the wrapped set is scaffoldable no longer, because it now closes ------
+!(add-all &self (acs-verdicts A_wrap &gw &wrich &aw CH_scaffold SNAP_wrap CL_deep))
+!(test (verdict-recurrent? A_wrap) True)
+!(test (verdict-closed? A_wrap) True)          ; the chain it was made from was not
+!(test (scaffoldable? A_wrap) False)           ; nothing left for a control level to supply

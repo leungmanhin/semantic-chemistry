@@ -22,7 +22,9 @@ verbatim -- Implication is promoted to the sem-rule schema when the rules layer 
 Questions: each query pattern (And c1 c2 ...) -> an answer-skeleton sem-graph (conjuncts as
 sem-edges with (var _) slots). Multiple alternative queries -> multiple answer-skeletons.
 A corpus item is one TASK: (qa-task V) with (task-graph V Vg) naming the molecule graph its
-questions are asked against, so posing the task admits exactly that text.
+questions are asked against, so posing the task admits exactly that text. Each question also gets
+a question-TYPE marker as an edge on that graph -- the parser classifies the question to build its
+skeleton, so the type is parser output, and it arrives with the task as food no rule regenerates.
 
 Usage:  to_semgraph.py <parsed.json> [ID,ID,...] [mol|task]
 """
@@ -108,10 +110,13 @@ def reshape_molecule(v):
 
 def reshape_tasks(v):
     vid = v['id']; L = [f'; --- {vid} questions', f'(qa-task {vid})', f'(task-graph {vid} {vid}g)']
+    types = v.get('question_types', [])
     for qi, qtext in enumerate(v['questions'], 1):
         q = f'{vid}_q{qi}'
         L.append(f'(qa-question {vid} {q})')
         L.append(f'(question-surface {q} {json.dumps(qtext)})')
+        if qi <= len(types):                       # the question-TYPE marker, on the task's graph
+            L.append(f'(sem-edge {vid}g qt_{q} {types[qi-1]} {q})')
         for aj, query in enumerate(v['queries'][qi-1], 1):
             gas = f'{q}_as{aj}'
             L.append(f'(answer-skeleton {q} {gas})')
