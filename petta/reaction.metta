@@ -11,15 +11,10 @@
 ; products, events) in $ws. A candidate is `(cand KEY COST PRODS)`: KEY = unique
 ; firing key, COST = a list of `(token n)` costs, PRODS = a list of product facts.
 ; ---------------------------------------------------------------------------
-; TWO EXECUTION MODELS, selected by `(execution-model M)` in &self and dispatched by
-; `rules-pass`, which every run entry point goes through:
-;   `cascade`           — the within-cycle priority cascade (the default): each firing's
-;                         products are visible to rules walked after it, so a whole chain
-;                         can run in one cycle, and `rule-priority` has to encode the
-;                         genome's dependency order for that to work.
-;   `collect-then-fire` — TECAN Alg 5.1: the whole candidate queue is assembled against the
-;                         epoch-start state before anything fires, so a chain advances one
-;                         hop per cycle and walk order stops deciding what is enabled.
+; The execution model is TECAN Alg 5.1 COLLECT-THEN-FIRE: `rules-pass` assembles the whole
+; candidate queue against the epoch-start state and only then fires it, so a chain advances one
+; hop per cycle and enumeration order stops deciding what is enabled. One pass is ONE EPOCH; the
+; task loop in `epoch.metta` is what runs a derivation to completion.
 ; ===========================================================================
 
 ; --- set-semantics add: the doc's X ⊕ θ(G2) is set-union, so per-match firing that
@@ -70,52 +65,14 @@
          ((() True)
           ($ne (if (present? $ws (car-atom $ps)) (all-present? $ws (cdr-atom $ps)) False)))))
 
-; walk a rule's candidate list for organism $O: halt at the step budget $b; else skip
-; already-fired candidates, skip those whose whole product set is ALREADY PRESENT (work already
-; done — a settled rule stops paying to re-derive what it has derived; forgetting the products
-; re-enables it, so the guard tracks the STATE rather than the log), and fire the next iff the
-; gate passes (continue at seq+1); a shut gate halts this rule (cold / unaffordable — later
-; same-cost candidates would fail too).
-(= (walk $ws $O $rule $cands $seq $b)
-   (if (budget-reached? $seq $b)
-       $seq
-       (case $cands
-             ((() $seq)
-              ($ne (let (cand $key $cost $prods) (car-atom $cands)
-                        (if (fired? $ws $rule $key)
-                            (walk $ws $O $rule (cdr-atom $cands) $seq $b)
-                            (if (all-present? $ws $prods)
-                                (walk $ws $O $rule (cdr-atom $cands) $seq $b)
-                                (if (gate? $ws $O $rule $cost)
-                                    (let $z (fire $ws $O $rule $key $cost $prods $seq)
-                                         (walk $ws $O $rule (cdr-atom $cands) (+ $seq 1) $b))
-                                    $seq)))))))))
-
-; walk every rule in priority order (halting at the step budget $b), resolving each rule's
-; firing organism, threading $seq. A rule whose organism has NO SOMA in $ws is skipped without
-; enumerating candidates: an unexpressed genome is inert code, not a running process.
-(= (walk-rules $ws $rules $seq $b)
-   (if (budget-reached? $seq $b)
-       $seq
-       (case $rules
-             ((() $seq)
-              ($ne (let* (($r (car-atom $rules))
-                          ($O (rule-organism $r)))
-                     (if (expressed? $ws $O)
-                         (let $seq2 (walk $ws $O $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq $b)
-                              (walk-rules $ws (cdr-atom $rules) $seq2 $b))
-                         (walk-rules $ws (cdr-atom $rules) $seq $b))))))))
-
 ; ---------------------------------------------------------------------------
-; COLLECT-THEN-FIRE (TECAN Alg 5.1) — the other engine. The candidate queue is assembled in
-; full (line 10) BEFORE the first rewrite (line 16), so every precondition is evaluated
-; against the EPOCH-START state: nothing in the queue was enabled by anything else in it, and
-; a chain therefore advances ONE HOP PER CYCLE. That is deliberate in the doc — a pool cannot
-; be ranked while it is being mutated.
-
-; the configured execution model (`cascade` when undeclared)
-(= (exec-model)
-   (case (collapse (match &self (execution-model $m) $m)) ((() cascade) ($ms (car-atom $ms)))))
+; COLLECT-THEN-FIRE (TECAN Alg 5.1) — the engine. The candidate queue is assembled in full
+; (line 10) BEFORE the first rewrite (line 16), so every precondition is evaluated against the
+; EPOCH-START state: nothing in the queue was enabled by anything else in it, and a chain
+; therefore advances ONE HOP PER CYCLE. That is deliberate in the doc — a pool cannot be ranked
+; while it is being mutated. So ONE CHAMBER RUN IS ONE EPOCH, not a finished derivation: a
+; caller that wants the whole chain works a task (`epoch.metta`), which runs cycles until the
+; chamber settles.
 
 ; may this candidate fire NOW? not already fired this cycle, products not all already present
 ; (the settle guard), gate open. Evaluated at COLLECTION (Alg 5.1 line 5) and AGAIN at firing
@@ -157,9 +114,9 @@
                      $rest))))))
 
 ; fire the queue in order from $seq, halting at the step budget $b (Alg 5.1 line 12, b < B). An
-; entry whose re-check fails is DROPPED and the queue continues — unlike the cascade, where a
-; shut gate halts that rule, because the queue is mixed-rule and a later entry may be cheaper or
-; independent.
+; entry whose re-check fails is DROPPED and the queue continues rather than halting the run: the
+; queue is mixed-rule and mixed-organism, so a later entry may be cheaper, or independent of
+; whatever the earlier one exhausted.
 (= (fire-queue $ws $q $seq $b)
    (if (budget-reached? $seq $b)
        $seq
@@ -171,76 +128,62 @@
                                  (fire-queue $ws (cdr-atom $q) (+ $seq 1) $b))
                             (fire-queue $ws (cdr-atom $q) $seq $b))))))))
 
-; ONE PASS over $rules from $seq, bounded by $b, under the configured execution model. Every run
-; entry point goes through here — including the ablation replays, since a counterfactual is only
-; paired with its real run if both use the same engine.
+; ONE EPOCH over $rules from $seq, bounded by $b: collect the whole queue, then fire it. Every
+; run entry point goes through here, ablation replays included, so a counterfactual always runs
+; the same engine as the run it is paired against.
 (= (rules-pass $ws $rules $seq $b)
-   (if (== (exec-model) collect-then-fire)
-       (fire-queue $ws (collect-rules $ws $rules) $seq $b)
-       (walk-rules $ws $rules $seq $b)))
+   (fire-queue $ws (collect-rules $ws $rules) $seq $b))
 
-; run from a given seq (raw: ALL rules, no context filter; unbounded)
+; run ONE epoch from a given seq (raw: ALL rules, no context filter; unbounded)
 (= (run-rules-from $ws $seq)
    (rules-pass $ws (all-sorted-rules) $seq none))
 
-; the raw run: express the genome, then walk ALL rules from seq 0 (no context admission)
+; the raw run: express the genome, then ONE epoch over ALL rules (no context admission)
 (= (run-rules $ws)
    (let $z (express $ws)
         (run-rules-from $ws 0)))
 
-; a chamber run from a given seq (only $ch's admitted rules; used by the epoch loop to
-; re-enter after crediting fuel)
+; ONE epoch over chamber $ch's admitted rules from a given seq (used by the task loop, which
+; runs one of these per cycle)
 (= (run-chamber-from $ws $ch $seq)
    (rules-pass $ws (chamber-rules $ch) $seq none))
 
-; a CHAMBER run: express the genome, then walk only chamber $ch's admitted rules (MSC §3
-; step 1 context admission) — the contextual run a context-chamber worker performs
+; a CHAMBER run: express the genome, then ONE epoch over chamber $ch's admitted rules (MSC §3
+; step 1 context admission) — one cycle of the task loop
 (= (run-chamber $ws $ch)
    (let $z (express $ws)
         (run-chamber-from $ws $ch 0)))
 
-; a BUDGETED chamber run (MSC §6.4 worker-budget-steps): express, then walk chamber $ch's
-; admitted rules from seq 0, halting when the firing seq reaches $b (`none` = unbounded)
+; a BUDGETED chamber epoch (MSC §6.4 worker-budget-steps): express, then one epoch over chamber
+; $ch's admitted rules from seq 0, halting when the firing seq reaches $b (`none` = unbounded)
 (= (run-chamber-b $ws $ch $b)
    (let $z (express $ws)
         (rules-pass $ws (chamber-rules $ch) 0 $b)))
 
-; --- FIXPOINT run (prototype for the execution-model question). A single pass is ORDER-DEPENDENT:
-; each firing adds its products immediately, so a rule walked before its premises are produced sees
-; nothing and is not revisited — which is the only reason `rule-priority` has to encode a
-; topological order of the genome's dependencies. Iterating the pass to a fixpoint removes that
-; dependence: rules only ADD (⊕ is set-union) and `fired?` blocks re-firing a (rule,key) within a
-; cycle, so each pass can only fire what earlier passes enabled, the iteration terminates at the
-; genome's closure over the state, and that closure is the same whatever order the rules are walked
-; in. Termination is by the finite (rule,key) set; the doc's budget B is what bounds an expensive
-; closure (a transitively-closing rule over a large graph), and is not modelled here.
-; This is NOT TECAN Alg 5.1 — there the candidate queue is collected against the EPOCH-START state
-; and fired once, so a chain advances one hop per epoch. This is an honest within-epoch settle:
-; it buys order-independence without changing what one cycle means.
-; NOTE it runs the genome to CLOSURE, where a single pass does one level: identical on data whose
-; chains are one deep, more complete on data where they are not.
+; --- running to SETTLE. One epoch advances any chain by one hop, so a caller that wants a whole
+; derivation runs epochs until one fires nothing. `epoch.metta`'s task loop is the form with the
+; metabolic bookkeeping — a cycle per epoch, dated to the task it serves; these are the BARE
+; assays, for running a genome with no task posed, so every firing lands in the same default
+; cycle and only the firing seq is threaded to keep the log well-formed.
 
-; iterate $rules to a fixpoint from $seq: stop when a whole pass fires nothing new
-(= (run-rules-fix $ws $rules $seq)
-   (let $seq2 (walk-rules $ws $rules $seq none)
+; run epochs over $rules from $seq until one fires nothing, or the step budget $b is reached
+(= (settle-from $ws $rules $seq $b)
+   (let $seq2 (rules-pass $ws $rules $seq $b)
         (if (== $seq2 $seq)
             $seq2
-            (run-rules-fix $ws $rules $seq2))))
+            (settle-from $ws $rules $seq2 $b))))
 
-; express the genome, then iterate a CALLER-GIVEN rule order to fixpoint (any order reaches the
-; same closure — that is the point)
-(= (run-fix-order $ws $rules)
+; the raw run to settle: express, then run ALL rules to a standstill (bounded by $b)
+(= (run-rules-settle $ws $b)
    (let $z (express $ws)
-        (run-rules-fix $ws $rules 0)))
+        (settle-from $ws (all-sorted-rules) 0 $b)))
 
-; a chamber run to fixpoint, in the default priority order
-(= (run-chamber-fix $ws $ch) (run-fix-order $ws (chamber-rules $ch)))
-
-; ONE pass in a caller-given order (the current cascade, exposed so the order-sensitivity
-; contrast is testable)
-(= (run-once-order $ws $rules)
+; a CHAMBER run to settle: express, then run chamber $ch's admitted rules to a standstill —
+; the unit of chamber computation a context-chamber worker performs (MSC §6.4), with $b its
+; deterministic step budget over the whole run
+(= (run-chamber-settle $ws $ch $b)
    (let $z (express $ws)
-        (walk-rules $ws $rules 0 none)))
+        (settle-from $ws (chamber-rules $ch) 0 $b)))
 
 ; --- generic ABLATION run (P2 paired-replay / P3 genome-by-membership): a run that SKIPS
 ; every rule in the $skip list. The ACS replay-ablation (condition 4) suppresses the ACS

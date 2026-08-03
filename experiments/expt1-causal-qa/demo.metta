@@ -34,25 +34,43 @@
        (if (afford? $ws $O (rule-cost (car-atom $rs))) True (can-fire? $ws $O (cdr-atom $rs)))))
 ;; alive iff it can still fire >= 1 of its rules; else starved to death (permanent deadlock)
 (= (life $ws $O) (if (can-fire? $ws $O (org-rules $O)) alive DEAD))
-;; the per-rule do-influence measured over an $n-cycle window. $n must arrive as an ARGUMENT:
+;; the per-rule do-influence measured over an $n-task window. $n must arrive as an ARGUMENT:
 ;; a call left inside the match pattern is matched structurally, not evaluated, so it never binds.
 (= (do-inf-win $n) (collapse (match &self (rule-do-influence $r target answer-reward $n $d) ($r $d))))
+;; the ids of the ReasonFor edges derived on graph $g -- (norm E) is a one-hop normalization of
+;; one cue, (trans E1 E2) a chained explanation, so the provenance names the derivation
+(= (reasons $ws $g) (collapse (match $ws (sem-edge $g $i ReasonFor $x $y) $i)))
+;; which rules fired in cycle $k of space $ws, in firing order
+(= (cycle-rules $ws $k) (collapse (match $ws (event $k $s $r $key) $r)))
+;; print one line per cycle the task $t occupied
+(= (show-cycles $ws $ks)
+   (if (== $ks ()) done
+       (let $k (car-atom $ks)
+            (let $z (pp ("  cycle " $k ": " (repr (cycle-rules $ws $k))))
+                 (show-cycles $ws (cdr-atom $ks))))))
 
-;; the context-chamber worker
+!(pp ("Initial endowment: " (repr (collapse (match &self (snapshot-fuel SNAP_qa $O $tok $n) ($O $tok $n))))))
+
+;; ============================================================================
+!(pp ("=============== STAGE 1: one arrival, through the worker layer ==============="))
+;; ============================================================================
+;; A context-chamber worker derives in its own space, an evaluator worker mints on what it
+;; derived, an acs-scan worker certifies the log both left behind. Three §6.4 worker kinds,
+;; one sequential handoff, nothing shared but the space they are handed.
+
 !(add-atom &self (worker W_qa))
 !(add-atom &self (worker-kind W_qa context-chamber))
 !(add-atom &self (worker-chamber W_qa CH_expt1))
 !(add-atom &self (worker-snapshot W_qa SNAP_qa))
+!(add-atom &self (worker-task W_qa V3))
 !(bind! &ws_qa (new-space))
 !(add-atom &self (worker-space W_qa &ws_qa))
 
-;; the evaluator worker
 !(add-atom &self (worker W_eval))
 !(add-atom &self (worker-kind W_eval evaluator))
 !(add-atom &self (worker-clamp W_eval CL_deep))
 !(add-atom &self (worker-space W_eval &ws_qa))
 
-;; the ACS scanner worker
 !(add-atom &self (worker W_scan))
 !(add-atom &self (worker-kind W_scan acs-scan))
 !(add-atom &self (worker-chamber W_scan CH_expt1))
@@ -65,124 +83,81 @@
 !(add-atom &self (worker-graph-space W_scan &g_acs))
 !(add-atom &self (worker-ablate-space W_scan &abl_acs))
 
-!(pp ("Initial endowment: " (repr (collapse (match &self (snapshot-fuel SNAP_qa $O $tok $n) ($O $tok $n))))))
-
-;; running the workers -- cycle 1
 !(run-cc W_qa)
-!(pp ("After running the chamber (cycle 1):"))
-!(pp ((len (fired-rules &ws_qa)) " rules fired = " (repr (fired-rules &ws_qa))))
-!(pp ((len (collapse (ground-skeleton &ws_qa V3_q1_as1))) " answers found:"))
-!(pp ("- answer: " (repr (ground-skeleton &ws_qa V3_q1_as1))))
-!(pp ("- ['power went out', 'fridge stopped running']"))
-!(pp ("Chamber used: sm " (members-spend &ws_qa (fired-rules &ws_qa) sm) " | tr " (members-spend &ws_qa (fired-rules &ws_qa) tr)))
+!(pp ("Chamber worker on task V3 -- runs the chamber to a standstill:"))
+!(pp ("  " (len (fired-rules &ws_qa)) " rules fired = " (repr (fired-rules &ws_qa))))
+!(pp ("  " (len (collapse (ground-skeleton &ws_qa V3_q1_as1))) " answers, citing " (repr (reasons &ws_qa V3g))))
+!(pp ("  -- the proximate cause ['fridge stopped running'] and, via the chain, the root ['power went out']"))
+!(pp ("  spent: sm " (members-spend &ws_qa (fired-rules &ws_qa) sm) " | tr " (members-spend &ws_qa (fired-rules &ws_qa) tr)))
 
 !(run-eval W_eval)
-!(pp ("Evaluator minted (CL_deep): sm " (chamber-income &ws_qa CL_deep sm) " | tr " (chamber-income &ws_qa CL_deep tr)))
-!(pp ("- O_base purse: " (repr (purse &ws_qa O_base)) " -> " (life &ws_qa O_base)))
-!(pp ("- O_chain purse: " (repr (purse &ws_qa O_chain)) " -> " (life &ws_qa O_chain)))
+!(pp ("Evaluator worker mints under CL_deep: sm " (chamber-income &ws_qa CL_deep sm) " | tr " (chamber-income &ws_qa CL_deep tr)))
+!(pp ("  O_base purse: " (repr (purse &ws_qa O_base)) " -> " (life &ws_qa O_base)))
+!(pp ("  O_chain purse: " (repr (purse &ws_qa O_chain)) " -> " (life &ws_qa O_chain)))
 
 !(run-as W_scan)
-!(pp ("ACS scanning identified:"))
-!(pp ("- R_A: " (repr (collapse (match &self (acs-member A_qa $r) $r)))))
-;; !(pp ("- M_A: " (repr (collapse (match &self (acs-motif A_qa $m) $m)))))
-!(pp ("- loop closure? " (closure-of A_qa)))
-!(pp ("- loop autocatalytic? " (match &self (acs-autocatalytic A_qa $b) $b)))
-!(pp ("- loop surplus? sm " (match &self (acs-surplus A_qa CL_deep sm $ns) $ns) " | tr " (match &self (acs-surplus A_qa CL_deep tr $nt) $nt)))
-!(pp ("- loop causal-influence? " (match &self (acs-causal-influence A_qa $ci) $ci)))
-!(pp ("- per-rule do-influence (over " (window-of &ws_qa) " cycle(s)): " (repr (do-inf-win (window-of &ws_qa)))))
-!(pp ("- loop recurrent? " (match &self (acs-recurrent A_qa $rb) $rb)))
+!(pp ("ACS scanner certifies the log:"))
+!(pp ("  R_A: " (repr (collapse (match &self (acs-member A_qa $r) $r)))))
+!(pp ("  closure? " (closure-of A_qa) "  (the minting edge is FOOD, so this set is subsidized)"))
+!(pp ("  autocatalytic? " (match &self (acs-autocatalytic A_qa $b) $b)))
+!(pp ("  surplus? sm " (match &self (acs-surplus A_qa CL_deep sm $ns) $ns) " | tr " (match &self (acs-surplus A_qa CL_deep tr $nt) $nt)))
+!(pp ("  causally load-bearing? " (match &self (acs-causal-influence A_qa $ci) $ci)))
+!(pp ("  per-rule do-influence over " (window-of &ws_qa) " task(s): " (repr (do-inf-win (window-of &ws_qa)))))
+!(pp ("  recurrent? " (match &self (acs-recurrent A_qa $rb) $rb) "  (one arrival is a candidate, not a track record)"))
 
-;; running the workers -- cycle 2
-!(pp ("Decay removes " (len (derived-edges &ws_qa)) " derived edges + " (len (derived-tvs &ws_qa)) " TVs:"))
-!(pp ((repr (derived-edges &ws_qa))))
-!(pp ((repr (derived-tvs &ws_qa))))
-!(decay &ws_qa)
-!(set-cycle &ws_qa 2)
+;; ============================================================================
+!(pp ("=============== STAGE 2: a stream of arrivals, under CL_deep ==============="))
+;; ============================================================================
+;; Recurrence is counted across TASKS: a strategy recurs when it turns again on NEWLY ARRIVED
+;; material, not when one question is re-asked. Each task lands in a FRESH hot pool -- only the
+;; purse and the event log cross the boundary (MSC eq 8) -- and runs cycles until the chamber
+;; settles. The chain advances one hop per cycle (TECAN Alg 5.1), so a task takes three: two to
+;; derive, one to discover there is nothing left to do.
 
-!(run-chamber &ws_qa CH_expt1)
-!(pp ("After running the chamber (cycle 2):"))
-!(pp ((len (collapse (ground-skeleton &ws_qa V3_q1_as1))) " answers found:"))
-!(pp ("- answer: " (repr (ground-skeleton &ws_qa V3_q1_as1))))
-!(pp ("- ['power went out', 'fridge stopped running']"))
-!(pp ("Chamber used: sm " (members-spend &ws_qa (fired-rules &ws_qa) sm) " | tr " (members-spend &ws_qa (fired-rules &ws_qa) tr)))
+!(bind! &ws_st (new-space))
+!(restore-snapshot &ws_st SNAP_qa)
+!(pp ("Arrivals V3, V4, V5 -- answers per task: " (repr (run-tasks &ws_st CH_expt1 CL_deep (V3 V4 V5) 1 9))))
+!(pp ("V3 occupied cycles " (repr (cycles-of-task &ws_st V3)) ":"))
+!(show-cycles &ws_st (cycles-of-task &ws_st V3))
+!(pp ("Tasks served: " (repr (log-tasks &ws_st))))
+!(pp ("  O_base purse: " (repr (purse &ws_st O_base)) " -> " (life &ws_st O_base)))
+!(pp ("  O_chain purse: " (repr (purse &ws_st O_chain)) " -> " (life &ws_st O_chain) "  (tr grows: earns 2, spends 1, per arrival)"))
 
-!(run-eval W_eval)
-!(pp ("Evaluator minted (CL_deep): sm " (chamber-income &ws_qa CL_deep sm) " | tr " (chamber-income &ws_qa CL_deep tr)))
-!(pp ("- O_base purse: " (repr (purse &ws_qa O_base)) " -> " (life &ws_qa O_base)))
-!(pp ("- O_chain purse: " (repr (purse &ws_qa O_chain)) " -> " (life &ws_qa O_chain)))
-
-;; a 2nd ACS scanner worker -- reads the SAME &ws_qa log (now 2 cycles) so the loop RECURS;
-;; its own acs name (A_qa2) + graph/ablation spaces keep its verdicts separate from scan 1
 !(add-atom &self (worker W_scan2))
 !(add-atom &self (worker-kind W_scan2 acs-scan))
 !(add-atom &self (worker-chamber W_scan2 CH_expt1))
 !(add-atom &self (worker-clamp W_scan2 CL_deep))
 !(add-atom &self (worker-snapshot W_scan2 SNAP_qa))
 !(add-atom &self (worker-acs W_scan2 A_qa2))
-!(add-atom &self (worker-space W_scan2 &ws_qa))
+!(add-atom &self (worker-space W_scan2 &ws_st))
 !(bind! &g_acs2 (new-space))
 !(bind! &abl_acs2 (new-space))
 !(add-atom &self (worker-graph-space W_scan2 &g_acs2))
 !(add-atom &self (worker-ablate-space W_scan2 &abl_acs2))
 
 !(run-as W_scan2)
-!(pp ("ACS scanning identified:"))
-!(pp ("- R_A: " (repr (collapse (match &self (acs-member A_qa2 $r) $r)))))
-;; !(pp ("- M_A: " (repr (collapse (match &self (acs-motif A_qa2 $m) $m)))))
-!(pp ("- loop closure? " (closure-of A_qa)))
-!(pp ("- loop autocatalytic? " (match &self (acs-autocatalytic A_qa2 $b) $b)))
-!(pp ("- loop surplus? sm " (match &self (acs-surplus A_qa2 CL_deep sm $ns) $ns) " | tr " (match &self (acs-surplus A_qa2 CL_deep tr $nt) $nt)))
-!(pp ("- loop causal-influence? " (match &self (acs-causal-influence A_qa2 $ci) $ci)))
-!(pp ("- per-rule do-influence (over " (window-of &ws_qa) " cycle(s)): " (repr (do-inf-win (window-of &ws_qa)))))
-!(pp ("- loop recurrent? " (match &self (acs-recurrent A_qa2 $rb) $rb)))
+!(pp ("ACS scanner over the stream:"))
+!(pp ("  R_A: " (repr (collapse (match &self (acs-member A_qa2 $r) $r)))))
+!(pp ("  surplus? sm " (match &self (acs-surplus A_qa2 CL_deep sm $ns) $ns) " | tr " (match &self (acs-surplus A_qa2 CL_deep tr $nt) $nt)))
+!(pp ("  causally load-bearing? " (match &self (acs-causal-influence A_qa2 $ci) $ci)))
+!(pp ("  per-rule do-influence over " (window-of &ws_st) " task(s): " (repr (do-inf-win (window-of &ws_st)))))
+!(pp ("  recurrent? " (match &self (acs-recurrent A_qa2 $rb) $rb) "  (the same strategy turned for every arrival)"))
 
-!(pp ("Event log:"))
-!(pp ((repr (match &ws_qa (event $cycle $seq $rule $key) (event $cycle $seq $rule $key)))))
+;; ============================================================================
+!(pp ("=============== STAGE 3: the clamp switch -- typed starvation ==============="))
+;; ============================================================================
+;; The same genome, the same arrivals, a different reward regime. CL_shallow pays for a matched
+;; answer skeleton but not for a transitive explanation, so O_chain earns no `tr` -- and `tr` is
+;; what R_trans spends to chain. Its seed covers exactly one arrival. From the second, the root
+;; cause is out of reach: not a wrong answer, an unaffordable one.
 
-!(pp ("------------ chamber switch to CL_shallow ------------"))
-
-;; the context-chamber worker
-!(add-atom &self (worker W_qa_s))
-!(add-atom &self (worker-kind W_qa_s context-chamber))
-!(add-atom &self (worker-chamber W_qa_s CH_expt1))
-!(add-atom &self (worker-snapshot W_qa_s SNAP_qa))
 !(bind! &ws_s (new-space))
-!(add-atom &self (worker-space W_qa_s &ws_s))
-
-;; the evaluator worker
-!(add-atom &self (worker W_eval_s))
-!(add-atom &self (worker-kind W_eval_s evaluator))
-!(add-atom &self (worker-clamp W_eval_s CL_shallow))
-!(add-atom &self (worker-space W_eval_s &ws_s))
-
-;; running the workers -- cycle 1
-!(run-cc W_qa_s)
-!(pp ("After running the chamber (cycle 1):"))
-!(pp ((len (collapse (ground-skeleton &ws_s V3_q1_as1))) " answer(s) found (cycle 1):"))
-!(pp ("- answer: " (repr (ground-skeleton &ws_s V3_q1_as1))))
-!(pp ("- ['power went out', 'fridge stopped running']"))
-!(pp ("Chamber used: sm " (members-spend &ws_s (fired-rules &ws_s) sm) " | tr " (members-spend &ws_s (fired-rules &ws_s) tr)))
-
-!(run-eval W_eval_s)
-!(pp ("Evaluator minted (CL_shallow): sm " (chamber-income &ws_s CL_shallow sm) " | tr " (chamber-income &ws_s CL_shallow tr)))
-!(pp ("- O_base purse: " (repr (purse &ws_s O_base)) " -> " (life &ws_s O_base)))
-!(pp ("- O_chain purse: " (repr (purse &ws_s O_chain)) " -> " (life &ws_s O_chain)))
-
-;; running the workers -- cycle 2
-!(decay &ws_s)
-!(set-cycle &ws_s 2)
-
-!(run-chamber &ws_s CH_expt1)
-!(pp ("After running the chamber (cycle 2):"))
-!(pp ((len (collapse (ground-skeleton &ws_s V3_q1_as1))) " answer(s) found (cycle 2):"))
-!(pp ("- answer: " (repr (ground-skeleton &ws_s V3_q1_as1))))
-!(pp ("- ['fridge stopped running']"))
-!(pp ("Chamber used: sm " (members-spend &ws_s (fired-rules &ws_s) sm) " | tr " (members-spend &ws_s (fired-rules &ws_s) tr)))
-
-!(run-eval W_eval_s)
-!(pp ("Evaluator minted (CL_shallow): sm " (chamber-income &ws_s CL_shallow sm) " | tr " (chamber-income &ws_s CL_shallow tr)))
-!(pp ("- O_base purse: " (repr (purse &ws_s O_base)) " -> " (life &ws_s O_base)))
-!(pp ("- O_chain purse: " (repr (purse &ws_s O_chain)) " -> " (life &ws_s O_chain)))
-
-!(pp ("Event log:"))
-!(pp ((repr (match &ws_s (event $cycle $seq $rule $key) (event $cycle $seq $rule $key)))))
+!(restore-snapshot &ws_s SNAP_qa)
+!(pp ("Arrivals V3, V4, V5 -- answers per task: " (repr (run-tasks &ws_s CH_expt1 CL_shallow (V3 V4 V5) 1 9))))
+!(pp ("  minted under CL_shallow: sm " (chamber-income &ws_s CL_shallow sm) " | tr " (chamber-income &ws_s CL_shallow tr)))
+!(pp ("  O_base purse: " (repr (purse &ws_s O_base)) " -> " (life &ws_s O_base) "  (lives on sm alone)"))
+!(pp ("  O_chain purse: " (repr (purse &ws_s O_chain)) " -> " (life &ws_s O_chain)))
+!(pp ("V5, the last arrival, occupied cycles " (repr (cycles-of-task &ws_s V5)) ":"))
+!(show-cycles &ws_s (cycles-of-task &ws_s V5))
+!(pp ("  -- R_trans never enters the queue again: no tr, so it is never an affordable candidate."))
+!(pp ("  -- V5's derived layer is now just " (repr (reasons &ws_s V5g)) ": the proximate cause, unchained."))

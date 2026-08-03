@@ -28,7 +28,7 @@
 !(add-atom &self (fuel O_chain sm 10))
 !(add-atom &self (fuel O_chain dq 1))
 !(add-atom &self (fuel O_chain tr 5))
-!(run-rules &self)
+!(run-rules-settle &self none)
 
 ; all three corpus texts are loaded into &self, so each rule fires once per text
 !(test (foldall + (match &self (event $c $s $r $k) 1) 0) 9)              ; (R_so + R_result + R_trans) x 3

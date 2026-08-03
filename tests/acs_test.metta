@@ -50,7 +50,7 @@
 !(add-atom &ws0 (fuel O_chain sm 10))
 !(add-atom &ws0 (fuel O_chain dq 1))
 !(add-atom &ws0 (fuel O_chain tr 1))
-!(run-chamber &ws0 CH_expt1)
+!(run-chamber-settle &ws0 CH_expt1 none)
 !(test (msort (fired-rules &ws0)) (R_result R_so R_trans))                   ; all three fired
 
 ; --- motifs are whole reactant/product PATTERNS (composite, shared vars kept), matched by
@@ -241,7 +241,7 @@
 !(set-task &ws_scan V3)
 !(copy-molecules &ws_scan)
 !(restore-snapshot &ws_scan SNAP_qa)
-!(run-chamber &ws_scan CH_expt1)
+!(run-chamber-settle &ws_scan CH_expt1 none)
 !(dispatch W_scan)
 
 ; the acs worker consumed the pre-populated run space (isolation): it answers the question
@@ -277,7 +277,7 @@
 !(set-task &ws_scanS V3)
 !(copy-molecules &ws_scanS)
 !(restore-snapshot &ws_scanS SNAP_qa)
-!(run-chamber &ws_scanS CH_expt1)
+!(run-chamber-settle &ws_scanS CH_expt1 none)
 !(dispatch W_scanS)
 !(test (match &self (acs-surplus A_qa CL_shallow tr $n) $n) -1)
 
@@ -363,7 +363,7 @@
 !(set-cycle &ws_dup 1)
 !(copy-molecules &ws_dup)
 !(restore-snapshot &ws_dup SNAP_dup)
-!(run-chamber &ws_dup CH_dup)
+!(run-chamber-settle &ws_dup CH_dup none)
 ; only ONE of them fires: the second finds its product already present and skips, so a
 ; duplicate derivation now costs nothing rather than paying twice for the same edge
 !(test (msort (fired-rules &ws_dup)) (R_dup1))

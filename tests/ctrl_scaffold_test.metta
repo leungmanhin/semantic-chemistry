@@ -270,11 +270,18 @@
 !(test (> (fuel-of &wrich (org (strat A_qa)) sm) 0) True)
 
 ; THE RING TURNS, and it turns because of what the wrapper added: the arriving cue lets `recall`
-; ignite the strategy on a cold pool, and from the second cycle of each task it is `prime` —
-; fed by the habit the chain's OWN success laid down — that re-activates it.
-!(test (foldall + (match &wrich (event 1 $s (recall (strat A_qa)) $k) 1) 0) 1)
+; ignite the strategy on a cold pool, and once the chain has delivered it is `prime` — fed by the
+; habit that success laid down — that re-activates it. One hop per cycle, so the generated ring
+; is legible in the log exactly as the hand-written one is.
+!(test (collapse (match &wrich (event 1 $s $r $k) $r)) ((recall (strat A_qa))))
+!(test (collapse (match &wrich (event 2 $s $r $k) $r)) ((gated R_so (strat A_qa)) (gated R_result (strat A_qa))))
+!(test (collapse (match &wrich (event 3 $s $r $k) $r)) ((gated R_trans (strat A_qa))))
+!(test (collapse (match &wrich (event 4 $s $r $k) $r)) ((worked R_trans (strat A_qa))))
+!(test (collapse (match &wrich (event 5 $s $r $k) $r)) ((learn (strat A_qa))))
 !(test (foldall + (match &wrich (event 1 $s (prime (strat A_qa)) $k) 1) 0) 0)   ; nothing to prime from yet
-!(test (foldall + (match &wrich (event 2 $s (prime (strat A_qa)) $k) 1) 0) 1)   ; the closing edge fires
+!(test (collapse (match &wrich (event 6 $s $r $k) $r)) ((prime (strat A_qa))))  ; the closing edge fires
+!(test (cycles-of-task &wrich V3) (1 2 3 4 5 6 7))
+!(test (cycles-of-task &wrich V4) (8 9 10 11 12 13 14))                        ; and turns again
 
 ; --- CERTIFY: the same detector, unchanged, on the generated set --------------------------
 !(bind! &gw (new-space))

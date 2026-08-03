@@ -37,7 +37,7 @@
 !(add-atom &self (fuel O_chain sm 10))
 !(add-atom &self (fuel O_chain dq 1))
 !(add-atom &self (fuel O_chain tr 5))
-!(run-rules &self)
+!(run-rules-settle &self none)
 
 ; the genome is TEXT-GENERIC: loaded straight into &self, all three corpus texts are present,
 ; so each of the three rules fires once per text — the same strategy applied to new material.

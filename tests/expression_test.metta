@@ -46,7 +46,7 @@
 !(test (expressed? &we O_base) False)              ; no soma yet
 !(test (fuel-of &we O_base dq) 1)
 !(set-cycle &we 1)
-!(run-chamber &we CH_expt1)
+!(run-chamber-settle &we CH_expt1 none)
 !(test (expressed? &we O_base) True)               ; dequoted...
 !(test (fuel-of &we O_base dq) 0)                  ; ...and paid for
 !(test (fuel-of &we O_chain dq) 0)                 ; each genome pays its own
@@ -77,7 +77,7 @@
 !(add-atom &wn (fuel O_chain sm 100))
 !(add-atom &wn (fuel O_chain tr 100))
 !(set-cycle &wn 1)                                 ; ...but no dq at all
-!(run-chamber &wn CH_expt1)
+!(run-chamber-settle &wn CH_expt1 none)
 !(test (expressed? &wn O_base) False)
 !(test (collapse (match &wn (event $c $s $r $k) $r)) ())          ; nothing ran
 !(test (total-answers &wn) 0)
@@ -86,7 +86,7 @@
 ; give it just enough to dequote and the same genome comes alive unchanged
 !(add-atom &wn (fuel O_base dq 1))
 !(add-atom &wn (fuel O_chain dq 1))
-!(run-chamber &wn CH_expt1)
+!(run-chamber-settle &wn CH_expt1 none)
 !(test (expressed? &wn O_base) True)
 !(test (total-answers &wn) 2)
 !(test (fuel-of &wn O_base dq) 0)
@@ -102,7 +102,7 @@
 !(add-atom &wp (fuel O_chain sm 100))
 !(add-atom &wp (fuel O_chain tr 100))
 !(set-cycle &wp 1)
-!(run-chamber &wp CH_expt1)
+!(run-chamber-settle &wp CH_expt1 none)
 !(test (expressed? &wp O_base) True)
 !(test (expressed? &wp O_chain) False)
 !(test (msort (collapse (match &wp (event $c $s $r $k) $r))) (R_result R_so))  ; R_trans is O_chain's

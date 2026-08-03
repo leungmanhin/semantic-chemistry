@@ -7,10 +7,13 @@
 ; OUTSIDE that ring — R_detect turns the arriving why-question into an attempt, R_explore spends
 ; the one-off `ex` exploration endowment to prime the strategy cold.
 ;
-; Because a task now runs cycles until the chamber settles, the ring closes inside a single
-; task: cycle 1 ignites the strategy and derives the answers, and cycle 2 is R_prime firing off
-; the habit that cycle 1 consolidated — the closing edge, paid for by the loop's own product.
-; Cycle 3 finds every product already present and fires nothing, which ends the task.
+; Because a task runs cycles until the chamber settles, the ring closes inside a single task —
+; and because each epoch collects its candidates against the state as it stood when the epoch
+; began, it turns ONE HOP PER CYCLE, so the log spells the strategy out in order: the question
+; type is noticed, the ex endowment ignites the strategy, the gated cue-normalizers fire, the
+; chainer answers and the success trace is laid down, the habit is consolidated, and only then
+; does that habit re-prime the strategy — the closing edge, paid for by the loop's own product.
+; The seventh cycle finds every product already present and fires nothing, which ends the task.
 ;
 ; ⚠️ WHAT THIS GENOME NO LONGER DOES is carry across arrivals. A task's working material retires
 ; with the task, so the habit goes with it, and `ex` is spent — the second arrival cannot be
@@ -41,19 +44,21 @@
 !(restore-snapshot &wc SNAP_ctrl)
 !(test (run-task &wc CH_ctrl CL_ctrl V3 1 9) 2)          ; the arriving question is answered
 
-; cycle 1 — the cold start: R_explore ignites the strategy out of the ex endowment, the
-; substrate rules derive, and R_worked/R_learn consolidate the success
-!(test (msort (collapse (match &wc (event 1 $s $r $k) $r)))
-       (R_detect R_explore R_learn R_result_rf R_so_rf R_trans_rf R_worked))
-!(test (foldall + (match &wc (event 1 $s R_prime $k) 1) 0) 0)   ; no habit to prime from yet
+; the ring turns ONE HOP PER CYCLE, because each epoch's candidates are collected against the
+; state as it stood when the epoch began — so the log spells the strategy out in order
+!(test (collapse (match &wc (event 1 $s $r $k) $r)) (R_detect))            ; the question type is noticed
+!(test (collapse (match &wc (event 2 $s $r $k) $r)) (R_explore))           ; the ex endowment ignites it
+!(test (collapse (match &wc (event 3 $s $r $k) $r)) (R_so_rf R_result_rf)) ; the gated cue-normalizers
+!(test (collapse (match &wc (event 4 $s $r $k) $r)) (R_trans_rf R_worked)) ; chained, and it worked
+!(test (collapse (match &wc (event 5 $s $r $k) $r)) (R_learn))             ; the habit is consolidated
+!(test (foldall + (match &wc (event 1 $s R_prime $k) 1) 0) 0)              ; no habit to prime from yet
 
-; cycle 2 — THE CLOSING EDGE: the habit cycle 1 made re-primes the strategy, and nothing else
-; needs doing because its products are all still present
-!(test (collapse (match &wc (event 2 $s $r $k) $r)) (R_prime))
+; cycle 6 — THE CLOSING EDGE: the habit the loop's own success laid down re-primes the strategy
+!(test (collapse (match &wc (event 6 $s $r $k) $r)) (R_prime))
 
-; cycle 3 — settled: every product present, nothing fires, the task ends
-!(test (cycle-firings &wc 3) 0)
-!(test (cycles-of-task &wc V3) (1 2 3))
+; cycle 7 — settled: every product present, nothing fires, the task ends
+!(test (cycle-firings &wc 7) 0)
+!(test (cycles-of-task &wc V3) (1 2 3 4 5 6 7))
 
 !(test (fuel-of &wc O_ctrl ex) 0)                        ; the whole endowment is spent
 !(test (fuel-of &wc O_ctrl sm) 11)                       ; 12 − 7 fired + 6 minted
@@ -93,23 +98,25 @@
 ; The habit retired with task 1's pool and `ex` is spent, so R_explore is silent, R_prime has
 ; nothing to read, and the gated substrate rules never fire. The strategy is solvent — it simply
 ; has no way to reach itself across the boundary.
-!(test (run-task &wc CH_ctrl CL_ctrl V4 4 9) 0)
-!(test (foldall + (match &wc (event 4 $s R_explore $k) 1) 0) 0)   ; no endowment left
-!(test (foldall + (match &wc (event 4 $s R_prime $k) 1) 0) 0)     ; nothing to prime from
-!(test (foldall + (match &wc (event 4 $s R_so_rf $k) 1) 0) 0)     ; so the gated rules stay shut
-!(test (foldall + (match &wc (event 4 $s R_detect $k) 1) 0) 1)    ; only the food intake fires
+!(test (run-task &wc CH_ctrl CL_ctrl V4 8 9) 0)
+!(test (foldall + (match &wc (event 8 $s R_explore $k) 1) 0) 0)   ; no endowment left
+!(test (foldall + (match &wc (event 8 $s R_prime $k) 1) 0) 0)     ; nothing to prime from
+!(test (foldall + (match &wc (event 8 $s R_so_rf $k) 1) 0) 0)     ; so the gated rules stay shut
+!(test (foldall + (match &wc (event 8 $s R_detect $k) 1) 0) 1)    ; only the food intake fires
 !(test (> (fuel-of &wc O_ctrl sm) 0) True)                        ; not dead — just unreachable
 !(test (log-tasks &wc) (V3 V4))
 
-; --- ORDER-INDEPENDENCE (the execution-model prototype). The single-pass engine REQUIRES
-; R_prime at priority 0 within a cycle. Iterating a pass to a fixpoint removes that: walked LAST,
-; in reverse priority order, the ring still closes. ---
+; --- ORDER-INDEPENDENCE, now a property of the engine rather than of the rule order. Each
+; epoch collects its candidates against the state as it stood when the epoch began, so nothing in
+; a queue was enabled by anything else in it and enumeration order cannot decide what fires. Run
+; in REVERSE priority order the ring closes exactly as before. ---
 !(bind! &wo (new-space))
 !(set-task &wo V3)
 !(set-cycle &wo 1)
 !(copy-molecules &wo)
 !(restore-snapshot &wo SNAP_ctrl)
 !(test (rev-list (chamber-rules CH_ctrl)) (R_learn R_worked R_trans_rf R_result_rf R_so_rf R_explore R_detect R_prime))
-!(run-fix-order &wo (rev-list (chamber-rules CH_ctrl)))
+!(express &wo)
+!(settle-from &wo (rev-list (chamber-rules CH_ctrl)) 0 none)
 !(test (total-answers &wo) 2)
-!(test (foldall + (match &wo (event 1 $s R_prime $k) 1) 0) 1)     ; fires though walked LAST
+!(test (foldall + (match &wo (event 1 $s R_prime $k) 1) 0) 1)     ; fires though enumerated LAST

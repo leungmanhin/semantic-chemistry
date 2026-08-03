@@ -40,13 +40,14 @@
 !(test (fuel-of &ws_ep O_chain tr) 0)                           ; the seed is spent, and CL_shallow
                                                                 ; mints none back — the next arrival
                                                                 ; would go unchained
-; --- the chamber SETTLES: cycle 1 does the work, cycle 2 finds every product already present
-; and fires nothing, which is what ends the task ---
+; --- the chamber SETTLES: the chain advances a hop per cycle, and the cycle that finds every
+; product already present fires nothing, which is what ends the task ---
 !(test (foldall + (match &ws_ep (event $c $s $r $key) 1) 0) 3)
 !(test (match &self (worker-firings W_ep $n) $n) 3)
-!(test (foldall + (match &ws_ep (event 1 $s $r $key) 1) 0) 3)   ; R_so + R_result + R_trans
-!(test (foldall + (match &ws_ep (event 2 $s $r $key) 1) 0) 0)   ; settled
-!(test (cycles-of-task &ws_ep V3) (1 2))                        ; both cycles are dated to the task
+!(test (foldall + (match &ws_ep (event 1 $s $r $key) 1) 0) 2)   ; R_so + R_result
+!(test (foldall + (match &ws_ep (event 2 $s $r $key) 1) 0) 1)   ; R_trans, on what cycle 1 derived
+!(test (foldall + (match &ws_ep (event 3 $s $r $key) 1) 0) 0)   ; settled
+!(test (cycles-of-task &ws_ep V3) (1 2 3))                      ; all three are dated to the task
 !(test (log-tasks &ws_ep) (V3))
 
 ; --- ISOLATION: the derivation happened in the worker's space, not &self ---

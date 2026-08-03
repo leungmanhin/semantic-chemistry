@@ -53,8 +53,8 @@
 !(add-atom &wk (fuel O_chain dq 1))
 !(add-atom &wk (fuel O_chain tr 1))
 !(test (work-task &wk CH_expt1 CL_deep 1 9) 2)     ; settles with both answers
-!(test (log-cycles &wk) (1))                       ; only cycle 1 logged a firing...
-!(test (cycles-of-task &wk V3) (1 2))              ; ...though cycle 2 ran and found nothing to do
+!(test (log-cycles &wk) (1 2))                     ; the chain took a cycle per hop...
+!(test (cycles-of-task &wk V3) (1 2 3))            ; ...and cycle 3 found nothing left to do
 !(test (fuel-of &wk O_base sm) 4)                  ; spent once, not once per cycle
 !(test (fuel-of &wk O_chain tr) 0)
 
@@ -72,8 +72,8 @@
                                               ; per task now, not per text ever seen
 !(test (current-task &wst) V4)                ; the last arrival is still posed
 !(test (log-tasks &wst) (V3 V4))              ; the log is dated by task, not just by cycle
-!(test (cycles-of-task &wst V3) (1 2))
-!(test (cycles-of-task &wst V4) (3 4))
+!(test (cycles-of-task &wst V3) (1 2 3))
+!(test (cycles-of-task &wst V4) (4 5))
 ; the retired task's text is gone from the pool, but its firings stay in the log
 !(test (foldall + (match &wst (sem-edge V3g v3_conn1 So $x $y) 1) 0) 0)
 !(test (foldall + (match &wst (event 1 $s R_so $k) 1) 0) 1)
