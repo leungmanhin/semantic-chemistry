@@ -22,6 +22,7 @@
 !(import! &self "petta/grounder.metta")
 !(import! &self "petta/evaluator.metta")
 !(import! &self "petta/worker.metta")
+!(import! &self "petta/epoch.metta")
 !(import! &self "petta/chamber.metta")
 !(import! &self "experiments/expt1-causal-qa/load.metta")
 

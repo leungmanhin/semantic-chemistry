@@ -52,7 +52,7 @@
 !(add-atom &wk (fuel O_chain sm 4))
 !(add-atom &wk (fuel O_chain dq 1))
 !(add-atom &wk (fuel O_chain tr 1))
-!(test (work-task &wk CH_expt1 CL_deep 1 9) 2)     ; settles with both answers
+!(test (work-task &wk CH_expt1 1 9 none) 2)     ; settles with both answers
 !(test (log-cycles &wk) (1 2))                     ; the chain took a cycle per hop...
 !(test (cycles-of-task &wk V3) (1 2 3))            ; ...and cycle 3 found nothing left to do
 !(test (fuel-of &wk O_base sm) 4)                  ; spent once, not once per cycle

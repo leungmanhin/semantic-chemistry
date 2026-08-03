@@ -126,7 +126,7 @@
 ;; the habit is consolidated -- and only then does that habit re-prime the strategy. That last
 ;; step is the closing edge, and the loop paid for it out of its own product.
 !(open-task &ws_c V3)
-!(pp ("Answers: " (work-task &ws_c CH_ctrl CL_ctrl 1 9)))
+!(pp ("Answers: " (work-task &ws_c CH_ctrl 1 9 none)))
 !(pp ("- 'Why did the food spoil?' -> ['fridge stopped running', 'power went out']"))
 !(pp ("The task occupied cycles " (repr (cycles-of-task &ws_c V3)) ":"))
 !(show-cycles &ws_c (cycles-of-task &ws_c V3))
@@ -156,7 +156,7 @@
 ;; the boundary.
 !(open-task &ws_c V4)
 !(pp ("Control state carried over: " (repr (ctrl-state &ws_c)) "  (nothing -- the pool is fresh)"))
-!(pp ("Answers: " (work-task &ws_c CH_ctrl CL_ctrl 8 9)))
+!(pp ("Answers: " (work-task &ws_c CH_ctrl 8 9 none)))
 !(pp ("The task occupied cycles " (repr (cycles-of-task &ws_c V4)) ":"))
 !(show-cycles &ws_c (cycles-of-task &ws_c V4))
 !(pp ("  -- only the food intake fires: R_explore has no endowment, R_prime has no habit to read,"))

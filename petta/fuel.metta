@@ -10,6 +10,11 @@
 ; $O's balance of token $t — ZERO when it holds no such fact. A bare `match` would return
 ; EMPTY there, and the emptiness propagates through `afford?` instead of deciding it, so an
 ; organism that has simply never held a token would neither afford nor fail to.
+; does organism $O hold a balance FACT in token $t? (distinct from `fuel-of` = 0, which is what a
+; spent purse also reads: this asks whether the purse exists at all)
+(= (has-fuel? $ws $O $t)
+   (case (collapse (match $ws (fuel $O $t $n) yes)) ((() False) ($x True))))
+
 (= (fuel-of $ws $O $t)
    (case (collapse (match $ws (fuel $O $t $n) $n)) ((() 0) ($ns (car-atom $ns)))))
 

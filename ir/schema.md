@@ -93,7 +93,8 @@ A worker runs one bounded, replayable unit of chamber computation (MSC §6.4 con
 | `(worker-chamber W C)` | The chamber this worker advances. |
 | `(worker-snapshot W SNAP)` | Initial state handle (see below). |
 | `(worker-seed W SEED)` | PRNG seed handle. |
-| `(worker-budget-steps W n)` | **Deterministic** budget: max kernel steps (ticks) to run. Governs replay. |
+| `(worker-budget-steps W n)` | **Deterministic** budget: max kernel steps (firings) to run, carried across the **whole task** rather than reset per cycle. Governs replay. |
+| `(worker-cycles W n)` | Cycle allowance for the task the worker works (default 20). A task halts when its chamber settles, so this is a runaway guard, not a tuning dial. |
 | `(worker-budget-ms W n)` | *Optional* wall-clock soft-cap for orchestration (P4). **Must NOT influence the logical event log** — see §4. |
 | `(worker-output-log W LOG)` | The event log this worker writes. |
 | `(snapshot SNAP C)` | A captured initial state of chamber `C`. Its *contents* = the set of `chamber-graph`, `sem-*`, `fuel`, `ruleset-member` facts scoped to `C` at capture time. Restore = re-assert exactly those. |

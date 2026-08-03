@@ -16,7 +16,7 @@
           ($ch (match &self (worker-chamber $w $c) $c))
           ($cl (match &self (worker-clamp $w $c2) $c2))
           ($snap (match &self (worker-snapshot $w $s) $s))
-          ($n (match &self (worker-cycles $w $cyc) $cyc))
+          ($n (worker-cycles-of $w))
           ($z1 (restore-snapshot $ws $snap))
           ($traj (cons-atom (run-task $ws $ch $cl (worker-task-of $w) 1 $n) ()))
           ($firings (foldall + (match $ws (event $k $s2 $r $key) 1) 0))

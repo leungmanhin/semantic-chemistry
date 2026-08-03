@@ -16,22 +16,10 @@
 ; the cycle that consumes them, and a rule whose products are already present does not re-fire
 ; (the guard is in `reaction.metta`), so a settled task stops spending.
 ; Runs in &self or a worker's space (the grounder binds the space). Assumes util + fuel +
-; reaction + grounder + evaluator + worker are loaded — and worker.metta must be imported
-; BEFORE this module, since `open-task` calls its `copy-molecules`: the transpiler binds a call
-; to what is already defined, so a later import leaves the call silently inert.
+; reaction + grounder + evaluator + worker are loaded — and worker.metta must be imported BEFORE
+; this module, since the loop calls its hot-pool management (`open-task`): the transpiler binds a
+; call to what is already defined, so a later import leaves the call silently inert.
 ; ===========================================================================
-
-; --- REFRESH the hot pool for an arriving task: drop the working material — every sem-graph
-; edge, TV and graph-kind pin, surface and derived alike — while leaving the purse, the event
-; log and the cycle/task markers untouched. This is X turning over; F and L belong to the soma.
-; Each list is collapsed BEFORE removal, so the space is not matched while it is being mutated.
-(= (refresh-pool $ws)
-   (let* (($z1 (remove-all $ws (collapse (match $ws (sem-edge $g $i $r $a) (sem-edge $g $i $r $a)))))
-          ($z2 (remove-all $ws (collapse (match $ws (sem-edge $g $i $r $a $b) (sem-edge $g $i $r $a $b)))))
-          ($z3 (remove-all $ws (collapse (match $ws (sem-edge $g $i $r $a $b $c) (sem-edge $g $i $r $a $b $c)))))
-          ($z4 (remove-all $ws (collapse (match $ws (sem-edge-tv $g $i $tv) (sem-edge-tv $g $i $tv)))))
-          ($z5 (remove-all $ws (collapse (match $ws (sem-graph-kind $g $k) (sem-graph-kind $g $k))))))
-     done))
 
 ; --- reading the log's dating: which cycles ran at all, which TASKS they served, and which
 ; cycles served a given task. The detector counts turns per task off these.
@@ -53,23 +41,31 @@
           ($z2 (add-atom $ws (cycle-task $k $t))))
      (add-atom $ws (cycle-now $k))))
 
-; --- WORK the posed task from cycle $k, for at most $left more cycles. Each cycle tags itself
-; and runs the chamber's admitted rules; the loop halts when a whole cycle fires NOTHING (the
-; chamber has settled — nothing further is derivable from what it holds) or the cycle allowance
-; runs out. Returns the answer count reached.
+; --- WORK the posed task from cycle $k, for at most $left more cycles, within a total firing
+; budget $b (`none` = unbounded; MSC §6.4 worker-budget-steps, the doc's epoch bound B carried
+; across the whole task rather than per cycle). Each cycle tags itself and runs the chamber's
+; admitted rules; the loop halts when a whole cycle fires NOTHING (the chamber has settled —
+; nothing further is derivable from what it holds), or the budget is spent, or the cycle
+; allowance runs out. Returns the answer count reached.
+; This IS what a context-chamber worker does (`chamber.metta`); the worker is the doc's §6.4
+; unit and this is the loop underneath it.
 ; Halting on SETTLED rather than on "an answer appeared" is deliberate: a control loop does its
 ; consolidating AFTER the answer — the success trace and the re-priming come last — so stopping
 ; at the first grounding would cut the loop off mid-turn. A derivation needs as many cycles as
 ; its chain is deep, which is why this is a loop and not a single pass; how many belongs to the
 ; task, not to the engine.
-(= (work-task $ws $ch $cl $k $left)
+(= (work-task $ws $ch $k $left $b)
    (if (== $left 0)
        (total-answers $ws)
        (let* (($z0 (set-cycle $ws $k))
-              ($z1 (run-chamber $ws $ch)))
-         (if (== (cycle-firings $ws $k) 0)
+              ($z1 (run-chamber-b $ws $ch $b))
+              ($n (cycle-firings $ws $k)))
+         (if (== $n 0)
              (total-answers $ws)
-             (work-task $ws $ch $cl (+ $k 1) (- $left 1))))))
+             (work-task $ws $ch (+ $k 1) (- $left 1) (budget-left $b $n))))))
+
+; what is left of a task's firing budget after a cycle fired $n times (`none` = unbounded)
+(= (budget-left $b $n) (if (== $b none) none (- $b $n)))
 
 ; --- WORK the posed task with the rules in $skip SUPPRESSED: the ablating twin of `work-task`,
 ; and it has to stay a twin. A counterfactual is only paired with its real run if both are given
@@ -90,15 +86,9 @@
 ; run is inspectable; posing the next task replaces it, and `retire-task` ends the stream.
 (= (run-task $ws $ch $cl $t $k $max)
    (let* (($z0 (open-task $ws $t))
-          ($answers (work-task $ws $ch $cl $k $max))
+          ($answers (work-task $ws $ch $k $max none))
           ($z1 (credit-all-questions $ws $cl)))
      $answers))
-
-; pose $t and hand the chamber a fresh pool holding just that task's text
-(= (open-task $ws $t)
-   (let* (($z0 (set-task $ws $t))
-          ($z1 (refresh-pool $ws)))
-     (copy-molecules $ws)))
 
 ; --- run a STREAM of tasks $ts, each allowed $max cycles, numbering cycles from $k; returns the
 ; answer count per task. The stream itself is the caller's — a chamber is handed the tasks that
