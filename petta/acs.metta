@@ -493,16 +493,23 @@
           ($za (remove-all $abl (collapse (match $abl (expressed $o) (expressed $o))))))
      done))
 
-; run the chamber in the isolated space $abl with the rules $skip suppressed, POSING task $t —
-; the space is wiped, $t is posed (so its text arrives), snapshot fuel is restored — and return
-; the resulting answer count. Posing the same task the baseline was measured under is what makes
-; the two sides a pair; `all` replays every task's text at once (an untagged run).
+; the cycle allowance one replayed task gets (config `(acs-replay-cycles n)`, default 20). A
+; replay halts as soon as it settles, so this is a runaway guard rather than a tuning dial — but
+; it has to be at least as generous as the run being replayed, or the counterfactual is measured
+; over less of the derivation than the baseline was.
+(= (replay-cycles)
+   (case (collapse (match &self (acs-replay-cycles $n) $n)) ((() 20) ($ns (car-atom $ns)))))
+
+; WORK task $t in the isolated space $abl with the rules $skip suppressed — the space is wiped,
+; $t is posed (so its text arrives), snapshot fuel is restored, and the chamber runs to settle —
+; and return the resulting answer count. Posing the same task the baseline was measured under is
+; what makes the two sides a pair; `all` replays every task's text at once (an untagged run).
 (= (ablated-answers $abl $ch $snap $t $skip)
    (let* (($z0 (wipe-space $abl))
           ($z1 (set-task $abl $t))
           ($z2 (copy-molecules $abl))
           ($z3 (restore-snapshot $abl $snap))
-          ($z4 (run-chamber-ablate $abl $ch $skip)))
+          ($z4 (work-task-ablate $abl $ch 1 (replay-cycles) $skip)))
      (total-answers $abl)))
 
 ; does suppressing the members in $abl drop the answer count below the $ws baseline? Both sides
@@ -556,26 +563,29 @@
 ; the certification window: how many TASKS the replay spans (at least 1)
 (= (window-of $ws) (len (replay-tasks $ws)))
 
-; ONE ablated TASK in $sp: pose it (its text arrives) -> re-derive with $skip suppressed -> read
-; the reward it minted -> credit it -> decay. The crediting step is what makes a multi-task
-; ablation mean anything: without income the organism cannot afford the second task, so ablated
-; and unablated runs alike collapse to the first and every difference vanishes.
+; ONE ablated TASK in $sp: pose it into a fresh pool (its text arrives) -> work it to settle with
+; $skip suppressed -> read the reward it minted -> credit it. The crediting step is what makes a
+; multi-task ablation mean anything: without income the organism cannot afford the second task, so
+; ablated and unablated runs alike collapse to the first and every difference vanishes.
 (= (ablate-task $sp $ch $cl $t $k $skip)
    (let* (($z0 (set-task $sp $t))
           ($z1 (refresh-pool $sp))
           ($z2 (copy-molecules $sp))
-          ($z3 (set-cycle $sp $k))
-          ($z4 (run-chamber-ablate $sp $ch $skip))
+          ($z3 (work-task-ablate $sp $ch $k (replay-cycles) $skip))
           ($r (total-reward $sp $cl))
-          ($z5 (credit-all-questions $sp $cl)))
+          ($z4 (credit-all-questions $sp $cl)))
      $r))
 
-; the cumulative reward of the task list $ts, one task per cycle from $k, with $skip suppressed
+; the cumulative reward of the task list $ts from cycle $k, with $skip suppressed. The next task
+; starts after the cycles this one actually used, so replayed tasks never share a cycle number —
+; a shared number would merge their logs and make each rule look already-fired.
 (= (ablate-tasks $sp $ch $cl $ts $k $skip $acc)
    (case $ts
          ((() $acc)
-          ($ne (let $r (ablate-task $sp $ch $cl (car-atom $ts) $k $skip)
-                    (ablate-tasks $sp $ch $cl (cdr-atom $ts) (+ $k 1) $skip (+ $acc $r)))))))
+          ($ne (let* (($t (car-atom $ts))
+                      ($r (ablate-task $sp $ch $cl $t $k $skip))
+                      ($next (+ $k (len (cycles-of-task $sp $t)))))
+                 (ablate-tasks $sp $ch $cl (cdr-atom $ts) $next $skip (+ $acc $r)))))))
 
 ; the reward a fresh replay of task sequence $ts mints in $abl with $skip suppressed — the space
 ; is wiped and re-fuelled from the snapshot first, so every measurement starts from the same state

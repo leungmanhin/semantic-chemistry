@@ -1,12 +1,12 @@
 ; ===========================================================================
 ; ECAN — the ECAN-EPOCH worker body (worker-kind `ecan-epoch`): the MINTING worker kind
-; (vs context-chamber's deriving-only). `run-ee` runs the metabolic-closure epoch loop
-; (TECAN Alg 5.1) in the worker's ISOLATED space: pose its task and open the hot pool ->
-; restore snapshot fuel -> loop the cycle (tag the cycle -> re-derive -> mint+credit -> decay the
-; derived layer) for the worker's `worker-cycles` cycles under its `worker-clamp`. The purse
-; persists in the space across cycles; the single event log accumulates cycle-tagged, in
-; place. Emits the answer trajectory + total firings + final purse. Dispatched
-; by dispatch.metta. Assumes util + fuel + reaction + grounder + evaluator + epoch + worker.
+; (vs context-chamber's deriving-only). `run-ee` works ONE arriving task (TECAN Alg 5.1) in the
+; worker's ISOLATED space: restore snapshot fuel -> pose its task into a fresh hot pool -> run
+; cycles until the chamber settles or its `worker-cycles` allowance runs out -> mint + credit
+; under its `worker-clamp`. The purse persists in the space; the single event log accumulates
+; cycle-tagged, in place. Emits the answer trajectory + total firings + final purse. A worker is
+; handed one task — a stream of them is the harness's business. Dispatched by dispatch.metta.
+; Assumes util + fuel + reaction + grounder + evaluator + epoch + worker.
 ; ===========================================================================
 
 ; the ecan-epoch worker body: own space -> hot pool -> restore fuel -> run the epoch loop

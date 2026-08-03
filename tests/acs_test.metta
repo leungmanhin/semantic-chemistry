@@ -21,9 +21,9 @@
 ; (§4.5 cond 1-2). Finally the acs-scan
 ; WORKER (worker-kind acs-scan): `dispatch` → `run-as` runs the SAME certification in ISOLATED
 ; spaces and emits the §2.9 verdicts to &self; a second worker under CL_shallow flips the
-; promotion — the clamp-switch through the worker layer. Finally RECURRENCE: one epoch is a
-; structural candidate (a single cycle); adding a second cycle to the cycle-tagged event log
-; makes the loop recurrent (>= recurrence-min).
+; promotion — the clamp-switch through the worker layer. Finally RECURRENCE, counted across
+; TASKS: one arrival leaves a structural candidate; a second task on which the same loop turns
+; makes it recurrent (>= recurrence-min).
 ;
 ; Run:  sh ../PeTTa/run.sh tests/acs_test.metta < /dev/null 2>&1 | grep should  # ninety-four ✅
 ; ===========================================================================

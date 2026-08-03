@@ -10,6 +10,16 @@
 ; read-only IR + domain mappings live in &self, mutable per-worker state (fuel,
 ; products, events) in $ws. A candidate is `(cand KEY COST PRODS)`: KEY = unique
 ; firing key, COST = a list of `(token n)` costs, PRODS = a list of product facts.
+; ---------------------------------------------------------------------------
+; TWO EXECUTION MODELS, selected by `(execution-model M)` in &self and dispatched by
+; `rules-pass`, which every run entry point goes through:
+;   `cascade`           — the within-cycle priority cascade (the default): each firing's
+;                         products are visible to rules walked after it, so a whole chain
+;                         can run in one cycle, and `rule-priority` has to encode the
+;                         genome's dependency order for that to work.
+;   `collect-then-fire` — TECAN Alg 5.1: the whole candidate queue is assembled against the
+;                         epoch-start state before anything fires, so a chain advances one
+;                         hop per cycle and walk order stops deciding what is enabled.
 ; ===========================================================================
 
 ; --- set-semantics add: the doc's X ⊕ θ(G2) is set-union, so per-match firing that
@@ -96,9 +106,82 @@
                               (walk-rules $ws (cdr-atom $rules) $seq2 $b))
                          (walk-rules $ws (cdr-atom $rules) $seq $b))))))))
 
+; ---------------------------------------------------------------------------
+; COLLECT-THEN-FIRE (TECAN Alg 5.1) — the other engine. The candidate queue is assembled in
+; full (line 10) BEFORE the first rewrite (line 16), so every precondition is evaluated
+; against the EPOCH-START state: nothing in the queue was enabled by anything else in it, and
+; a chain therefore advances ONE HOP PER CYCLE. That is deliberate in the doc — a pool cannot
+; be ranked while it is being mutated.
+
+; the configured execution model (`cascade` when undeclared)
+(= (exec-model)
+   (case (collapse (match &self (execution-model $m) $m)) ((() cascade) ($ms (car-atom $ms)))))
+
+; may this candidate fire NOW? not already fired this cycle, products not all already present
+; (the settle guard), gate open. Evaluated at COLLECTION (Alg 5.1 line 5) and AGAIN at firing
+; (line 14), because an earlier firing from the same queue may since have supplied the products
+; or spent the fuel.
+(= (admissible? $ws $O $rule $key $cost $prods)
+   (if (fired? $ws $rule $key)
+       False
+       (if (all-present? $ws $prods)
+           False
+           (gate? $ws $O $rule $cost))))
+
+; collect $rule's admissible candidates for organism $O as queue entries
+; `(qcand RULE ORG KEY COST PRODS)`. Read-only: nothing fires here.
+(= (collect-cands $ws $O $rule $cands)
+   (case $cands
+         ((() ())
+          ($ne (let (cand $key $cost $prods) (car-atom $cands)
+                    (if (admissible? $ws $O $rule $key $cost $prods)
+                        (cons-atom (qcand $rule $O $key $cost $prods)
+                                   (collect-cands $ws $O $rule (cdr-atom $cands)))
+                        (collect-cands $ws $O $rule (cdr-atom $cands))))))))
+
+; assemble the whole queue: every rule in $rules, enumerated against the state as it stands. A
+; rule whose organism has NO SOMA is skipped without enumerating (Alg 5.1 line 3 collects from
+; the organisms ACTIVE in the chamber — an unexpressed genome is inert code).
+; QUEUE ORDER IS A PLACEHOLDER: Alg 5.1 pops BEST first, keyed by TECANScore, which allocates a
+; scarce budget across affordable acts. We have no score yet, so the queue comes out in
+; `rule-priority` order — a topological sort, not a value judgement. Deterministic, and
+; immaterial while fuel covers every candidate; arbitrary the moment it does not.
+(= (collect-rules $ws $rules)
+   (case $rules
+         ((() ())
+          ($ne (let* (($r (car-atom $rules))
+                      ($O (rule-organism $r))
+                      ($rest (collect-rules $ws (cdr-atom $rules))))
+                 (if (expressed? $ws $O)
+                     (concat-lists (collect-cands $ws $O $r (msort (filter-out skip (collapse (rule-cands $ws $r))))) $rest)
+                     $rest))))))
+
+; fire the queue in order from $seq, halting at the step budget $b (Alg 5.1 line 12, b < B). An
+; entry whose re-check fails is DROPPED and the queue continues — unlike the cascade, where a
+; shut gate halts that rule, because the queue is mixed-rule and a later entry may be cheaper or
+; independent.
+(= (fire-queue $ws $q $seq $b)
+   (if (budget-reached? $seq $b)
+       $seq
+       (case $q
+             ((() $seq)
+              ($ne (let (qcand $rule $O $key $cost $prods) (car-atom $q)
+                        (if (admissible? $ws $O $rule $key $cost $prods)
+                            (let $z (fire $ws $O $rule $key $cost $prods $seq)
+                                 (fire-queue $ws (cdr-atom $q) (+ $seq 1) $b))
+                            (fire-queue $ws (cdr-atom $q) $seq $b))))))))
+
+; ONE PASS over $rules from $seq, bounded by $b, under the configured execution model. Every run
+; entry point goes through here — including the ablation replays, since a counterfactual is only
+; paired with its real run if both use the same engine.
+(= (rules-pass $ws $rules $seq $b)
+   (if (== (exec-model) collect-then-fire)
+       (fire-queue $ws (collect-rules $ws $rules) $seq $b)
+       (walk-rules $ws $rules $seq $b)))
+
 ; run from a given seq (raw: ALL rules, no context filter; unbounded)
 (= (run-rules-from $ws $seq)
-   (walk-rules $ws (all-sorted-rules) $seq none))
+   (rules-pass $ws (all-sorted-rules) $seq none))
 
 ; the raw run: express the genome, then walk ALL rules from seq 0 (no context admission)
 (= (run-rules $ws)
@@ -108,7 +191,7 @@
 ; a chamber run from a given seq (only $ch's admitted rules; used by the epoch loop to
 ; re-enter after crediting fuel)
 (= (run-chamber-from $ws $ch $seq)
-   (walk-rules $ws (chamber-rules $ch) $seq none))
+   (rules-pass $ws (chamber-rules $ch) $seq none))
 
 ; a CHAMBER run: express the genome, then walk only chamber $ch's admitted rules (MSC §3
 ; step 1 context admission) — the contextual run a context-chamber worker performs
@@ -120,7 +203,7 @@
 ; admitted rules from seq 0, halting when the firing seq reaches $b (`none` = unbounded)
 (= (run-chamber-b $ws $ch $b)
    (let $z (express $ws)
-        (walk-rules $ws (chamber-rules $ch) 0 $b)))
+        (rules-pass $ws (chamber-rules $ch) 0 $b)))
 
 ; --- FIXPOINT run (prototype for the execution-model question). A single pass is ORDER-DEPENDENT:
 ; each firing adds its products immediately, so a rule walked before its premises are produced sees
@@ -164,28 +247,15 @@
 ; member set chamber-scoped (`run-chamber-ablate`); selection suppresses the non-member
 ; genes raw (`run-ablate`).
 
-; like walk-rules but skip any rule in $skip
-(= (walk-rules-skip $ws $rules $seq $skip)
-   (case $rules
-         ((() $seq)
-          ($ne (let $r (car-atom $rules)
-                    (if (in-list? $r $skip)
-                        (walk-rules-skip $ws (cdr-atom $rules) $seq $skip)
-                        (let $O (rule-organism $r)
-                             (if (expressed? $ws $O)
-                                 (let $seq2 (walk $ws $O $r (msort (filter-out skip (collapse (rule-cands $ws $r)))) $seq none)
-                                      (walk-rules-skip $ws (cdr-atom $rules) $seq2 $skip))
-                                 (walk-rules-skip $ws (cdr-atom $rules) $seq $skip)))))))))
-
-; the raw ablation run: express the genome, then walk ALL rules skipping $skip (no context
+; the raw ablation run: express the genome, then run ALL rules minus $skip (no context
 ; filter — the structural assay runs the given genome)
 (= (run-ablate $ws $skip)
    (let $z (express $ws)
-        (walk-rules-skip $ws (all-sorted-rules) 0 $skip)))
+        (rules-pass $ws (filter-out-all $skip (all-sorted-rules)) 0 none)))
 
 ; the CHAMBER-scoped ablation run (the counterfactual for the ACS condition-4 replay):
-; express, then walk only chamber $ch's admitted rules skipping $skip — the same contextual
-; run `run-chamber` performs, minus the suppressed rules, so the two are paired
+; express, then run only chamber $ch's admitted rules minus $skip — the same contextual run
+; `run-chamber` performs, minus the suppressed rules, so the two are paired
 (= (run-chamber-ablate $ws $ch $skip)
    (let $z (express $ws)
-        (walk-rules-skip $ws (chamber-rules $ch) 0 $skip)))
+        (rules-pass $ws (filter-out-all $skip (chamber-rules $ch)) 0 none)))

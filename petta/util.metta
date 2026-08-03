@@ -22,6 +22,11 @@
    (case $a ((() $b)
              ($ne (cons-atom (car-atom $a) (concat-lists (cdr-atom $a) $b))))))
 
+; drop every element of list $xs from list $l
+(= (filter-out-all $xs $l)
+   (case $xs ((() $l)
+              ($ne (filter-out-all (cdr-atom $xs) (filter-out (car-atom $xs) $l))))))
+
 ; remove the FIRST occurrence of $x from list $l (leaving any later duplicates)
 (= (remove-one $x $l)
    (case $l ((() ())

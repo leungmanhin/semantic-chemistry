@@ -71,6 +71,19 @@
              (total-answers $ws)
              (work-task $ws $ch $cl (+ $k 1) (- $left 1))))))
 
+; --- WORK the posed task with the rules in $skip SUPPRESSED: the ablating twin of `work-task`,
+; and it has to stay a twin. A counterfactual is only paired with its real run if both are given
+; the same chance to settle — a replay cut short at one cycle understates what the suppressed
+; rules were worth, by exactly the part of the chain it never reached.
+(= (work-task-ablate $ws $ch $k $left $skip)
+   (if (== $left 0)
+       done
+       (let* (($z0 (set-cycle $ws $k))
+              ($z1 (run-chamber-ablate $ws $ch $skip)))
+         (if (== (cycle-firings $ws $k) 0)
+             done
+             (work-task-ablate $ws $ch (+ $k 1) (- $left 1) $skip)))))
+
 ; --- ONE TASK: pose it -> refresh the hot pool -> its text arrives -> work it (up to $max
 ; cycles from cycle $k) -> mint + credit. Returns the answer count; the purse change across the
 ; call is that task's eq-19 realized surplus. The task stays POSED afterwards, so the finished
