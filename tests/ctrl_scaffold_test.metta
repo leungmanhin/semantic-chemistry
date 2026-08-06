@@ -100,7 +100,7 @@
 ; ===========================================================================
 
 ; it is PURE — building the list stores nothing, so the wrapper is inspectable before it exists
-!(test (len (scaffold-facts A_qa (R_so R_result R_trans) WhyQuestion scaffold-qa)) 57)
+!(test (len (scaffold-facts A_qa (R_so R_result R_trans) WhyQuestion scaffold-qa)) 50)
 !(test (collapse (match &self (organism (org (strat A_qa))) yes)) ())
 ; and DETERMINISTIC: names are functions of the candidate, never gensym, so a replay rebuilds
 ; the identical wrapper
@@ -136,16 +136,17 @@
 !(test (match &self (rule-lhs (worked R_trans (strat A_qa)) $l) $l)
        ((sem-edge (var g) (trans (var e1) (var e2)) ReasonFor (var x) (var z))))
 
-; THE RING the chain could not form on its own: Primed → (the chain's work) → Worked → Habit →
-; Primed, with `recall` as the way in from an arriving cue
+; THE RING the chain could not form on its own: Primed → (the chain's work) → Worked → Primed,
+; with `recall` as the way in from an arriving cue. `Worked` is the success trace Ben's notes
+; name; nothing sits between it and re-activation, because the state that used to (a `Habit`
+; relayed by a `learn` rule) existed only to be the one relation exempt from a decay step that
+; no longer exists.
 !(test (match &self (rule-lhs (recall (strat A_qa)) $l) $l)
        ((sem-edge (var g) (var e) WhyQuestion (var q))))
 !(test (match &self (rule-rhs (worked R_trans (strat A_qa)) $l) $l)
        ((sem-edge (ctrlg (strat A_qa)) (wk (strat A_qa)) Worked (strat A_qa))))
-!(test (match &self (rule-rhs (learn (strat A_qa)) $l) $l)
-       ((sem-edge (ctrlg (strat A_qa)) (hb (strat A_qa)) Habit (strat A_qa))))
 !(test (match &self (rule-lhs (prime (strat A_qa)) $l) $l)
-       ((sem-edge (ctrlg (strat A_qa)) (var h) Habit (strat A_qa))))
+       ((sem-edge (ctrlg (strat A_qa)) (var w) Worked (strat A_qa))))
 !(test (match &self (rule-rhs (prime (strat A_qa)) $l) $l)
        ((sem-edge (ctrlg (strat A_qa)) (pr (strat A_qa)) Primed (strat A_qa))))
 ; `recall` and `prime` mint DIFFERENT ids, so the way in and the closing edge can both fire
@@ -156,7 +157,7 @@
 ; required, since expression fails closed and an unpriced genome could never be expressed
 !(test (msort (collapse (match &self (ruleset-member (rs (strat A_qa)) $r) $r)))
        ((gated R_result (strat A_qa)) (gated R_so (strat A_qa)) (gated R_trans (strat A_qa))
-        (learn (strat A_qa)) (prime (strat A_qa)) (recall (strat A_qa)) (worked R_trans (strat A_qa))))
+        (prime (strat A_qa)) (recall (strat A_qa)) (worked R_trans (strat A_qa))))
 !(test (organism-genome (org (strat A_qa))) (gnm (strat A_qa)))
 !(test (genome-cost (gnm (strat A_qa))) ((dq 1)))
 !(test (match &self (organism-chamber (org (strat A_qa)) $c) $c) CH_scaffold) ; derived from context
@@ -165,7 +166,7 @@
 ; classifier read the resulting closure as control-level rather than substrate
 !(test (control-rel? Primed) True)
 !(test (control-rel? Worked) True)
-!(test (control-rel? Habit) True)
+!(test (control-rel? Habit) False)                       ; collapsed out: `Worked` re-primes directly
 !(test (control-rel? ReasonFor) False)
 ; and the strategy carries its routing key + scope as attributes rather than in its name
 !(test (match &self (strategy-cue (strat A_qa) $c) $c) WhyQuestion)
@@ -249,7 +250,7 @@
 
 ; the wrapper's genome is now real, and the candidate records what wraps it
 !(test (match &self (scaffold-of A_qa $s) $s) (strat A_qa))
-!(test (len (collapse (match &self (ruleset-member (rs (strat A_qa)) $r) $r))) 7)
+!(test (len (collapse (match &self (ruleset-member (rs (strat A_qa)) $r) $r))) 6)
 
 ; ===========================================================================
 ; STEP 4 — THE DELIVERABLE: does the derived wrapper actually CLOSE the loop?
@@ -267,7 +268,7 @@
 !(test (match &self (rule-context (gated R_so (strat A_qa)) $c) $c) scaffold-qa)
 !(test (msort (chamber-rules CH_scaffold))
        ((gated R_result (strat A_qa)) (gated R_so (strat A_qa)) (gated R_trans (strat A_qa))
-        (learn (strat A_qa)) (prime (strat A_qa)) (recall (strat A_qa)) (worked R_trans (strat A_qa))))
+        (prime (strat A_qa)) (recall (strat A_qa)) (worked R_trans (strat A_qa))))
 
 ; --- the offspring works a stream of arrivals on the endowment its parents gave it ---------
 !(test (run-tasks &wrich CH_scaffold CL_deep (V3 V4) 1 9) (2 2))
@@ -278,17 +279,16 @@
 
 ; THE RING TURNS, and it turns because of what the wrapper added: the arriving cue lets `recall`
 ; ignite the strategy on a cold pool, and once the chain has delivered it is `prime` — fed by the
-; habit that success laid down — that re-activates it. One hop per cycle, so the generated ring
-; is legible in the log exactly as the hand-written one is.
+; success trace the chain's own work laid down — that re-activates it. One hop per cycle, so the
+; generated ring is legible in the log.
 !(test (collapse (match &wrich (event 1 $s $r $k) $r)) ((recall (strat A_qa))))
 !(test (collapse (match &wrich (event 2 $s $r $k) $r)) ((gated R_so (strat A_qa)) (gated R_result (strat A_qa))))
 !(test (collapse (match &wrich (event 3 $s $r $k) $r)) ((gated R_trans (strat A_qa))))
 !(test (collapse (match &wrich (event 4 $s $r $k) $r)) ((worked R_trans (strat A_qa))))
-!(test (collapse (match &wrich (event 5 $s $r $k) $r)) ((learn (strat A_qa))))
 !(test (foldall + (match &wrich (event 1 $s (prime (strat A_qa)) $k) 1) 0) 0)   ; nothing to prime from yet
-!(test (collapse (match &wrich (event 6 $s $r $k) $r)) ((prime (strat A_qa))))  ; the closing edge fires
-!(test (cycles-of-task &wrich V3) (1 2 3 4 5 6 7))
-!(test (cycles-of-task &wrich V4) (8 9 10 11 12 13 14))                        ; and turns again
+!(test (collapse (match &wrich (event 5 $s $r $k) $r)) ((prime (strat A_qa))))  ; the closing edge fires
+!(test (cycles-of-task &wrich V3) (1 2 3 4 5 6))
+!(test (cycles-of-task &wrich V4) (7 8 9 10 11 12))                            ; and turns again
 
 ; --- CERTIFY: the same detector, unchanged, on the generated set --------------------------
 !(bind! &gw (new-space))
@@ -299,12 +299,12 @@
 ; exactly as the hand-written genome's intake rules do
 !(test (msort (acs-member-set &gw (fired-rules &wrich)))
        ((gated R_result (strat A_qa)) (gated R_so (strat A_qa)) (gated R_trans (strat A_qa))
-        (learn (strat A_qa)) (prime (strat A_qa)) (worked R_trans (strat A_qa))))
+        (prime (strat A_qa)) (worked R_trans (strat A_qa))))
 !(test (in-list? (recall (strat A_qa)) (acs-member-set &gw (fired-rules &wrich))) False)
 
 ; CONDITION 1 — the chain that could not close now DOES, and at the HYBRID level: the ring
-; regenerates control motifs (Primed / Worked / Habit) and a semantic one (ReasonFor)
-!(test (msort (closure-rels (acs-member-set &gw (fired-rules &wrich)))) (Habit Primed ReasonFor Worked))
+; regenerates control motifs (Primed / Worked) and a semantic one (ReasonFor)
+!(test (msort (closure-rels (acs-member-set &gw (fired-rules &wrich)))) (Primed ReasonFor Worked))
 !(test (structurally-closed? (acs-member-set &gw (fired-rules &wrich))) True)
 !(test (closure-kind (acs-member-set &gw (fired-rules &wrich))) hybrid)
 

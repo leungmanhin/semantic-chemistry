@@ -78,7 +78,7 @@
 ;; shape the hand-written genome is written in -- so a generated rule is readable, storable and
 ;; heritable exactly as an authored one is, with nothing engine-private about it.
 (= (show-rule $r)
-   (let* (($z1 (pp ("    " (repr $r) "  costs " (repr (collapse (match &self (rule-token-cost $r $tk $tn) ($tk $tn)))))))
+   (let* (($z1 (pp ("    " (repr $r) " | costs " (repr (collapse (match &self (rule-token-cost $r $tk $tn) ($tk $tn)))))))
           ($z2 (pp ("        lhs " (repr (match &self (rule-lhs $r $l) $l))))))
      (pp ("        rhs " (repr (match &self (rule-rhs $r $pr) $pr))))))
 (= (show-rules $rs) (if (== $rs ()) done (let $z (show-rule (car-atom $rs)) (show-rules (cdr-atom $rs)))))
@@ -249,12 +249,13 @@
 ;; wrote ourselves. It is admitted to the offspring's OWN chamber, because a gated copy keeps its
 ;; original's RHS verbatim and so mints identical product ids -- in one chamber the settle guard
 ;; would let whichever fired first silently win, and telling them apart needs the scored gate.
-;; The ring: recall -> the gated copies -> worked -> learn -> prime, and prime does from then on
+;; The ring: recall -> the gated copies -> worked -> prime, and prime does from then on
 ;; what recall did once. Only `recall` eats food; the rest feed each other.
 ;; Note what reproduction cost the parents: O_base is down to its last few sm and has NO dq left,
 ;; so it keeps the soma it already has but could never express itself into a new chamber again.
 
 !(show-rules (msort (chamber-rules CH_scaffold)))
+!(pp ("  [control-scaffold high-level loop: Primed -> (the chain's own work) -> Worked -> Primed]"))
 !(ppnl)
 
 ;; ============================================================================
@@ -348,7 +349,7 @@
 ;; `recall` is absent from the members: it eats an arriving cue no rule makes,
 ;; so it peels out as food intake, exactly as the hand-written genome's intake rules do.
 ;; THE CHAIN THAT COULD NOT CLOSE NOW DOES, at the hybrid level -- the ring regenerates its
-;; own control motifs (Primed / Worked / Habit) AND the semantic one (ReasonFor) -- and it is
+;; own control motifs (Primed / Worked) AND the semantic one (ReasonFor) -- and it is
 ;; viable while it does: every costed component runs a surplus, so the organism is not living
 ;; off its endowment. All five conditions we detect are satisfied at once.
 

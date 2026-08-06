@@ -52,7 +52,7 @@ A why-question's semantic content flows from question to answer and does not rec
 What closes it is a control level the system **builds for itself**: `petta/ctrl_scaffold.metta` reads the scan's own verdicts, and where a chain recurs and does not close it generates gated copies of each member plus an activator, a success trace, a consolidation and the edge that feeds success back into activation —
 
 ```
-Primed -> ReasonFor -> Worked -> Habit -> Primed
+Primed -> ReasonFor -> Worked -> Primed
 ```
 
 — under a recombinant offspring organism its parents pay for. That ring regenerates control motifs *and* a semantic one, so it classifies as **hybrid** closure. The wrapper is ordinary portable IR, so the derived rules are as readable and as heritable as authored ones; `demo.metta` prints them.

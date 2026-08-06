@@ -89,7 +89,7 @@
 ; What gets generated, following Ben's control-level loop — detect a question type, activate the
 ; strategy, derive, leave a success trace, and thereby make the strategy easier to activate next
 ; time — is a ring the chain cannot form on its own:
-;     Primed -> (the chain's own work) -> Worked -> Habit -> Primed
+;     Primed -> (the chain's own work) -> Worked -> Primed
 ; The chain's members are copied with an activation premise added; their RHS is untouched, so
 ; product ids and the evaluator's depth-based typing are unaffected. All generated names are
 ; FUNCTIONS of the candidate's name, so no gensym and replay-equivalence holds.
@@ -158,7 +158,7 @@
 (= (gated-ids $rs $s) (if (== $rs ()) () (cons-atom (gated (car-atom $rs) $s) (gated-ids (cdr-atom $rs) $s))))
 (= (worked-ids $ans $s) (if (== $ans ()) () (cons-atom (worked (car-atom $ans) $s) (worked-ids (cdr-atom $ans) $s))))
 (= (generated-rule-ids $chain $ans $s)
-   (concat-lists (cons-atom (prime $s) (cons-atom (recall $s) (cons-atom (learn $s) ())))
+   (concat-lists (cons-atom (prime $s) (cons-atom (recall $s) ()))
                  (concat-lists (gated-ids $chain $s) (worked-ids $ans $s))))
 
 ; --- the offspring: an organism owning the wrapper, with its own genome and dequote price ---
@@ -191,8 +191,7 @@
            (cons-atom (sem-graph $cg)
              (cons-atom (sem-graph-kind $cg control)
                (cons-atom (control-relation Primed)
-                 (cons-atom (control-relation Worked)
-                   (cons-atom (control-relation Habit) ()))))))))))
+                 (cons-atom (control-relation Worked) ())))))))))
 
 ; --- THE GENERATOR. Returns () when a cost knob is undeclared or the chain delivers nothing:
 ; a wrapper whose rules fire free, or one with no success to trace, is not worth minting.
@@ -209,16 +208,13 @@
              (concat-lists (strategy-facts $a $s $cg $cue $ctx)
                (concat-lists (organism-facts $s $ctx (generated-rule-ids $chain $ans $s))
                  (concat-lists (rule-facts (prime $s) $ctx 0 $cost
-                                           (cons-atom (sem-edge $cg (var h) Habit $s) ())
+                                           (cons-atom (sem-edge $cg (var w) Worked $s) ())
                                            (cons-atom (sem-edge $cg (pr $s) Primed $s) ()))
                    (concat-lists (rule-facts (recall $s) $ctx 1 $cost
                                              (cons-atom (sem-edge (var g) (var e) $cue (var q)) ())
                                              (cons-atom (sem-edge $cg (rc $s) Primed $s) ()))
                      (concat-lists (gated-facts $chain $s $cg $ctx 2)
-                       (concat-lists (worked-facts $ans $s $cg $ctx $cost (+ $n 2))
-                                     (rule-facts (learn $s) $ctx (+ $n 3) $cost
-                                                 (cons-atom (sem-edge $cg (var w) Worked $s) ())
-                                                 (cons-atom (sem-edge $cg (hb $s) Habit $s) ()))))))))))))
+                                   (worked-facts $ans $s $cg $ctx $cost (+ $n 2)))))))))))
 
 ; ===========================================================================
 ; REPRODUCTION — who pays, and what the offspring starts with.
