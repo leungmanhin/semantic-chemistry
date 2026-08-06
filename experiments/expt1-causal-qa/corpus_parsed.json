@@ -114,5 +114,41 @@
     "question_types": [
       "WhyQuestion"
     ]
+  },
+  {
+    "id": "V6",
+    "sentences": [
+      "The bridge closed during the repairs, so the deliveries ceased, and as a result the bakery had shut by Friday."
+    ],
+    "questions": [
+      "Why did the bakery shut?"
+    ],
+    "statements": [
+      "(: v6_close_m (Member sk_close_1 close) (STV 1.0 0.99))",
+      "(: v6_close_ag (Agent sk_close_1 sk_bridge_1) (STV 1.0 0.99))",
+      "(: v6_bridge_m (Member sk_bridge_1 bridge) (STV 1.0 0.99))",
+      "(: v6_close_past (Past sk_close_1) (STV 1.0 0.99))",
+      "(: v6_close_during (During sk_close_1 sk_repair_1) (STV 1.0 0.99))",
+      "(: v6_repair_m (Member sk_repair_1 repair) (STV 1.0 0.99))",
+      "(: v6_cease_m (Member sk_cease_1 cease) (STV 1.0 0.99))",
+      "(: v6_cease_ag (Agent sk_cease_1 sk_delivery_1) (STV 1.0 0.99))",
+      "(: v6_delivery_m (Member sk_delivery_1 delivery) (STV 1.0 0.99))",
+      "(: v6_cease_past (Past sk_cease_1) (STV 1.0 0.99))",
+      "(: v6_shut_m (Member sk_shut_1 shut) (STV 1.0 0.99))",
+      "(: v6_shut_pat (Patient sk_shut_1 sk_bakery_1) (STV 1.0 0.99))",
+      "(: v6_bakery_m (Member sk_bakery_1 bakery) (STV 1.0 0.99))",
+      "(: v6_shut_past (Past sk_shut_1) (STV 1.0 0.99))",
+      "(: v6_shut_time (TimeAtMost sk_shut_1 friday) (STV 1.0 0.99))",
+      "(: v6_conn1 (So sk_close_1 sk_cease_1) (STV 1.0 0.99))",
+      "(: v6_conn2 (AsAResult sk_cease_1 sk_shut_1) (STV 1.0 0.99))"
+    ],
+    "queries": [
+      [
+        "(: $prf (And (Member $e shut) (Patient $e $f) (Member $f bakery) (Past $e) (ReasonFor $w $e)) $tv)"
+      ]
+    ],
+    "question_types": [
+      "WhyQuestion"
+    ]
   }
 ]

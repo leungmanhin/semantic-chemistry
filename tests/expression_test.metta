@@ -44,19 +44,19 @@
 !(copy-molecules &we)
 !(restore-snapshot &we SNAP_qa)
 !(test (expressed? &we O_base) False)              ; no soma yet
-!(test (fuel-of &we O_base dq) 1)
+!(test (fuel-of &we O_base dq) 3)
 !(set-cycle &we 1)
 !(run-chamber-settle &we CH_expt1 none)
 !(test (expressed? &we O_base) True)               ; dequoted...
-!(test (fuel-of &we O_base dq) 0)                  ; ...and paid for
-!(test (fuel-of &we O_chain dq) 0)                 ; each genome pays its own
+!(test (fuel-of &we O_base dq) 2)                  ; ...and paid for, one dq of the three
+!(test (fuel-of &we O_chain dq) 1)                 ; each genome pays its own
 !(test (total-answers &we) 2)
 
 ; a second cycle does NOT re-charge: the soma is already running, and staying alive is rent
 ; (`cmaint`), which is a different line of eq 20 and not built here
 !(set-cycle &we 2)
 !(run-chamber &we CH_expt1)
-!(test (fuel-of &we O_base dq) 0)
+!(test (fuel-of &we O_base dq) 2)
 !(test (foldall + (match &we (fuel O_base dq $n) 1) 0) 1)   ; one balance fact, not a debt
 
 ; the soma outlives the task's working material: refresh-pool turns X over, F and L and the

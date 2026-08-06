@@ -77,8 +77,25 @@
 !(test (cycles-of-task &wt V3) (1 2 3))            ; two working cycles, then the settle
 !(test (cycles-of-task &wt V4) (4 5 6))            ; and the next task starts after them
 !(test (cycles-of-task &wt V5) (7 8 9))
-!(test (fuel-of &wt O_base sm) 6)                  ; breaks even on each arrival
+!(test (fuel-of &wt O_base sm) 12)                 ; earns 4 and spends 2 on each arrival
 !(test (fuel-of &wt O_chain tr) 4)                 ; and tr grows +1 per arrival
+
+; --- ORDER-INDEPENDENCE, a property of the engine rather than of the rule order. Each epoch
+; collects its candidates against the state as it stood when the epoch began, so nothing in a
+; queue was enabled by anything else in it and enumeration order cannot decide what fires. Run
+; the genome in REVERSE priority order and it derives exactly the same thing. Under a cascade
+; this fails: the chainer walked first would see no ReasonFor edge and never be revisited, which
+; is the only reason `rule-priority` ever had to encode the genome's dependency order. ------
+!(bind! &wo (new-space))
+!(set-task &wo V3)
+!(copy-molecules &wo)
+!(restore-snapshot &wo SNAP_qa)
+!(set-cycle &wo 1)
+!(test (rev-list (chamber-rules CH_expt1)) (R_trans R_result R_so))
+!(express &wo)
+!(settle-from &wo (rev-list (chamber-rules CH_expt1)) 0 none)
+!(test (msort (dedup (collapse (match &wo (event $c $s $r $k) $r)))) (R_result R_so R_trans))
+!(test (total-answers &wo) 2)                      ; the chained answer survives the reversal
 
 ; --- THE EPOCH BUDGET B (Alg 5.1 line 12, b < B): the queue stops being popped at the
 ; step bound, so only the first entry fires -----------------------------------------------

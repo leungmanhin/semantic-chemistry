@@ -65,8 +65,8 @@
 !(test (len (collapse (ground-skeleton &ws_lean V3_q1_as1))) 1)
 
 ; --- ISOLATION: the two workers did not interfere ---
-!(test (fuel-of &ws_full O_chain tr) 0)   ; W_full fired R_trans -> tr spent
-!(test (fuel-of &ws_lean O_chain tr) 1)   ; W_lean never reached R_trans -> tr untouched
+!(test (fuel-of &ws_full O_chain tr) 1)   ; W_full fired R_trans -> one tr spent
+!(test (fuel-of &ws_lean O_chain tr) 2)   ; W_lean never reached R_trans -> tr untouched
 
 ; --- the REDUCER merged the summaries: total firings = 3 + 2 = 5 ---
 !(test (match &self (reduced total-firings PG_qa $n) $n) 5)

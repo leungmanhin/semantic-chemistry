@@ -11,7 +11,7 @@
 ; is not injectively covered once the converters peel away, so the CLOSED component is EMPTY and
 ; the member set falls back to the food-fed candidate — its subsidy read off as surplus-but-no-
 ; closure. Membership + closure are clamp-independent; only the metabolic SURPLUS flips — CL_deep
-; (sm +1, tr +1) is viable; CL_shallow (sm +1, tr −1) fails condition 3 on the tr component. Food
+; (sm +5, tr +1) is viable; CL_shallow (sm +5, tr −1) fails condition 3 on the tr component. Food
 ; = the cues (R_so/R_result consume So/AsAResult, which no rule produces). Condition 4 (causal
 ; influence) is a REPLAY
 ; ablation: re-derive with the members suppressed in an isolated space → the 2 answers drop
@@ -130,9 +130,9 @@
 !(test (closure-kind (R_ring1 R_ring2)) substrate)
 
 ; --- per-token surplus (eq 19), componentwise; only the tr component flips with the clamp ---
-!(test (token-surplus &ws0 (acs-members &g (fired-rules &ws0)) CL_deep sm) 1)     ; income 4 − spend 3
+!(test (token-surplus &ws0 (acs-members &g (fired-rules &ws0)) CL_deep sm) 5)     ; income 8 − spend 3
 !(test (token-surplus &ws0 (acs-members &g (fired-rules &ws0)) CL_deep tr) 1)     ; income 2 − spend 1
-!(test (token-surplus &ws0 (acs-members &g (fired-rules &ws0)) CL_shallow sm) 1)  ; income 4 − spend 3
+!(test (token-surplus &ws0 (acs-members &g (fired-rules &ws0)) CL_shallow sm) 5)  ; income 8 − spend 3
 !(test (token-surplus &ws0 (acs-members &g (fired-rules &ws0)) CL_shallow tr) -1) ; income 0 − spend 1
 
 ; --- causal influence (condition 4): a REPLAY ablation in an isolated space. Suppressing the
@@ -151,7 +151,7 @@
 ; (none redundant): R_result produces the base ReasonFor both answers need (ablating it → 0 reward,
 ; do-influence = the full baseline 6); R_so and R_trans are each required for the 2-hop chain
 ; answer (do-influence 4). So the minimal ACS is all three. ---
-!(test (member-do-influences &ws0 &abl CH_expt1 SNAP_qa CL_deep (R_so R_result R_trans)) ((R_so 4) (R_result 6) (R_trans 4)))
+!(test (member-do-influences &ws0 &abl CH_expt1 SNAP_qa CL_deep (R_so R_result R_trans)) ((R_so 6) (R_result 10) (R_trans 6)))
 !(test (minimal-acs &ws0 &abl CH_expt1 SNAP_qa CL_deep (R_so R_result R_trans)) (R_so R_result R_trans))   ; all load-bearing
 ; the redundancy + minimal-ACS logic on a synthetic (rule delta) list: a delta-0 member is
 ; REDUNDANT and dropped from the minimal ACS
@@ -190,7 +190,7 @@
 !(add-atom &ws_untagged (event 1 0 R_so k))
 !(test (replay-tasks &ws_untagged) (all))
 ; the do-influence facts appear in the verdict list (per member, keyed on the rule)
-!(test (in-list? (rule-do-influence R_trans target answer-reward 1 4) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (rule-do-influence R_trans target answer-reward 1 6) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
 !(test (in-list? (rule-redundancy R_result 1 False) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
 
 ; --- the clamp-switch lives ENTIRELY in the componentwise surplus (tested above): membership +
@@ -239,6 +239,7 @@
 ; run-as CONSUMES a chamber's log, so a chamber run must populate its space first (a context-
 ; chamber worker does this in the pipeline; here we materialize that output directly)
 !(set-task &ws_scan V3)
+!(set-cycle &ws_scan 1)      ; date the log, so the replay re-poses V3 rather than the whole corpus
 !(copy-molecules &ws_scan)
 !(restore-snapshot &ws_scan SNAP_qa)
 !(run-chamber-settle &ws_scan CH_expt1 none)
@@ -257,7 +258,7 @@
 !(test (closure-of A_qa) none)                                                     ; the display reader shows none
 !(test (match &self (acs-autocatalytic A_qa $b) $b) True)
 !(test (match &self (acs-surplus A_qa CL_deep tr $n) $n) 1)
-!(test (match &self (rule-do-influence R_trans target answer-reward 1 $d) $d) 4)      ; the worker emitted the per-rule do-influence
+!(test (match &self (rule-do-influence R_trans target answer-reward 1 $d) $d) 6)      ; the worker emitted the per-rule do-influence
 
 ; --- a SECOND acs-scan worker over the SAME ACS under CL_shallow: membership + closure clamp-
 ; independent, but the tr surplus FLIPS to −1 (the loop starves under this clamp) — the clamp-
@@ -275,6 +276,7 @@
 !(add-atom &self (worker-graph-space W_scanS &g_scanS))
 !(add-atom &self (worker-ablate-space W_scanS &abl_scanS))
 !(set-task &ws_scanS V3)
+!(set-cycle &ws_scanS 1)
 !(copy-molecules &ws_scanS)
 !(restore-snapshot &ws_scanS SNAP_qa)
 !(run-chamber-settle &ws_scanS CH_expt1 none)

@@ -49,16 +49,23 @@
 
 ; --- a candidate that does NOT recur is not worth wrapping. Under CL_shallow the chainer earns
 ; no tr, cannot chain the second arrival, and the loop is absent from that task — so the same
-; three rules, with the same structure, fail the trigger on their record alone. ---------------
+; three rules, with the same structure, fail the trigger on their record alone. The seed is a
+; LOCAL snapshot holding exactly ONE tr: the shared SNAP_qa carries reproduction headroom, which
+; would fund a second chaining and hand this candidate the very track record it is meant to lack.
+!(add-atom &self (snapshot-fuel SNAP_onechain O_base sm 12))
+!(add-atom &self (snapshot-fuel SNAP_onechain O_base dq 3))
+!(add-atom &self (snapshot-fuel SNAP_onechain O_chain sm 12))
+!(add-atom &self (snapshot-fuel SNAP_onechain O_chain tr 1))
+!(add-atom &self (snapshot-fuel SNAP_onechain O_chain dq 2))
 !(bind! &ws (new-space))
-!(restore-snapshot &ws SNAP_qa)
+!(restore-snapshot &ws SNAP_onechain)
 !(bind! &gs (new-space))
 !(bind! &as (new-space))
 !(test (run-tasks &ws CH_expt1 CL_shallow (V3 V4) 1 9) (2 1))
 !(build-graph &gs (fired-rules &ws))
 !(test (msort (acs-member-set &gs (fired-rules &ws))) (R_result R_so R_trans))   ; same members...
 !(test (recurrent? &ws (acs-member-set &gs (fired-rules &ws)) 2) False)          ; ...no record
-!(add-all &self (acs-verdicts A_sh &gs &ws &as CH_expt1 SNAP_qa CL_shallow))
+!(add-all &self (acs-verdicts A_sh &gs &ws &as CH_expt1 SNAP_onechain CL_shallow))
 !(test (verdict-recurrent? A_sh) False)
 !(test (scaffoldable? A_sh) False)
 

@@ -4,7 +4,7 @@ The reusable, **facts-free logic** of the Mortal Semantic Chemistry stack on the
 
 The clean cut across the repo:
 - **`petta/` = logic** — the engine (`util`/`fuel`/`compiler`/`gate`/`reaction`), the solve layer (`grounder`/`evaluator`), the metabolic-closure `epoch` loop, the `acs` detector, and the worker layer (`worker` envelope + `chamber`/`ecan`/`reducer` bodies + `dispatch`), imported by the suite (this directory).
-- **`../tests/` = the suite** — each file demonstrates + verifies a slice of the stack with its own `!(test …)` assertions (run with `sh tests/run_suite.sh`; 425 tests green).
+- **`../tests/` = the suite** — each file demonstrates + verifies a slice of the stack with its own `!(test …)` assertions (run with `sh tests/run_suite.sh`; 391 tests green).
 - **`../experiments/<expt>/` = facts** — molecules · tasks · configs · the genome `rules.metta`.
 
 A rule's **source of truth** is the backend-neutral **canonical IR** in `../experiments/expt1-causal-qa/rules.metta` — separate `rule-lhs`/`rule-rhs` facts with `(var Name)` markers, in pure per-match `C ^ G1 ==> G2` form (MSC §2.1, §4.3 eq 12–16: one firing per match θ, `X' = X ⊕ θ(G2)` set-union). The engine converts this to a runnable form at genome-expression time and runs the rules in `rule-priority` order, fuel-gating each firing.

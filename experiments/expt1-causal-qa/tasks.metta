@@ -5,7 +5,7 @@
 ; answer plurality and depth come from the genome, never from the query shape. No gold
 ; answer content is stored: answering = grounding a skeleton against the derived graph.
 
-; --- V3 questions
+; --- V3 questions: Why did the food spoil?
 (qa-task V3)
 (task-graph V3 V3g)
 (qa-question V3 V3_q1)
@@ -21,7 +21,7 @@
 (sem-edge V3_q1_as1 V3_q1_as1_c4 Past (var e))
 (sem-edge V3_q1_as1 V3_q1_as1_c5 ReasonFor (var w) (var e))
 
-; --- V4 questions
+; --- V4 questions: Why did the shops lose business?
 (qa-task V4)
 (task-graph V4 V4g)
 (qa-question V4 V4_q1)
@@ -37,7 +37,7 @@
 (sem-edge V4_q1_as1 V4_q1_as1_c4 Past (var e))
 (sem-edge V4_q1_as1 V4_q1_as1_c5 ReasonFor (var w) (var e))
 
-; --- V5 questions
+; --- V5 questions: Why did the market empty?
 (qa-task V5)
 (task-graph V5 V5g)
 (qa-question V5 V5_q1)
@@ -52,3 +52,19 @@
 (sem-edge V5_q1_as1 V5_q1_as1_c3 Member (var f) market)
 (sem-edge V5_q1_as1 V5_q1_as1_c4 Past (var e))
 (sem-edge V5_q1_as1 V5_q1_as1_c5 ReasonFor (var w) (var e))
+
+; --- V6 questions: Why did the bakery shut?
+(qa-task V6)
+(task-graph V6 V6g)
+(qa-question V6 V6_q1)
+(question-surface V6_q1 "Why did the bakery shut?")
+(sem-edge V6g qt_V6_q1 WhyQuestion V6_q1)
+(answer-skeleton V6_q1 V6_q1_as1)
+(sem-graph V6_q1_as1)
+(sem-graph-kind V6_q1_as1 answer-skeleton)
+(answer-skeleton-tv V6_q1_as1 (var tv))
+(sem-edge V6_q1_as1 V6_q1_as1_c1 Member (var e) shut)
+(sem-edge V6_q1_as1 V6_q1_as1_c2 Patient (var e) (var f))
+(sem-edge V6_q1_as1 V6_q1_as1_c3 Member (var f) bakery)
+(sem-edge V6_q1_as1 V6_q1_as1_c4 Past (var e))
+(sem-edge V6_q1_as1 V6_q1_as1_c5 ReasonFor (var w) (var e))

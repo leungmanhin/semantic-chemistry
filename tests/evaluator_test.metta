@@ -30,11 +30,11 @@
 !(add-atom &self (fuel O_chain tr 5))
 !(run-rules-settle &self none)
 
-; all three corpus texts are loaded into &self, so each rule fires once per text
-!(test (foldall + (match &self (event $c $s $r $k) 1) 0) 9)              ; (R_so + R_result + R_trans) x 3
-!(test (fuel-of &self O_base sm) 4)                                   ; O_base: R_so + R_result @ sm 1, x3
-!(test (fuel-of &self O_chain sm) 7)                                  ; O_chain: R_trans @ sm 1, x3
-!(test (fuel-of &self O_chain tr) 2)                                  ; only R_trans costs tr
+; all four corpus texts are loaded into &self, so each rule fires once per text
+!(test (foldall + (match &self (event $c $s $r $k) 1) 0) 12)             ; (R_so + R_result + R_trans) x 4
+!(test (fuel-of &self O_base sm) 2)                                   ; O_base: R_so + R_result @ sm 1, x4
+!(test (fuel-of &self O_chain sm) 6)                                  ; O_chain: R_trans @ sm 1, x4
+!(test (fuel-of &self O_chain tr) 1)                                  ; only R_trans costs tr
 !(test (foldall + (match &self (sem-edge V3g $e ReasonFor $x $y) 1) 0) 3)  ; 2 normalized + 1 chained
 
 ; --- depth is read structurally off the provenance ids ---------------------------
@@ -43,22 +43,22 @@
 !(test (msort (depths-of (collapse (ground-skeleton &self V3_q1_as1)))) (1 2))
 
 ; --- achievements -> typed income under each clamp --------------------------------
-!(test (question-income &self V3_q1 CL_shallow sm) 4)   ; 2 groundings x skeleton-match @ sm 2
+!(test (question-income &self V3_q1 CL_shallow sm) 8)   ; 2 groundings x skeleton-match @ sm 4
 !(test (question-income &self V3_q1 CL_shallow tr) 0)   ; the chain earns NOTHING extra
 !(test (question-income &self V3_q1 CL_deep tr) 2)      ; the chain grounding = transitive-explanation @ tr 2
 
 ; chamber income is what the POSED task's questions mint — pose V3 and it is V3's alone;
 ; sm is EQUAL under both clamps, so the clamp-switch is purely the TOKEN TYPE
 !(add-atom &self (task-now V3))
-!(test (chamber-income &self CL_shallow sm) 4)
-!(test (chamber-income &self CL_deep sm) 4)
+!(test (chamber-income &self CL_shallow sm) 8)
+!(test (chamber-income &self CL_deep sm) 8)
 !(test (chamber-income &self CL_shallow tr) 0)
 !(test (chamber-income &self CL_deep tr) 2)
 
 ; retire it and nothing is posed, so every task's questions count — the whole corpus's income
 !(remove-atom &self (task-now V3))
-!(test (chamber-income &self CL_deep sm) 12)
-!(test (chamber-income &self CL_deep tr) 6)
+!(test (chamber-income &self CL_deep sm) 32)
+!(test (chamber-income &self CL_deep tr) 8)
 !(add-atom &self (task-now V3))
 
 ; --- provenance-based crediting: each grounding credits the organism whose rule DERIVED
@@ -69,9 +69,9 @@
 ; the two groundings credit the two organisms respectively
 !(test (msort (dedup (collapse (let $s (superpose (collapse (ground-skeleton &self V3_q1_as1))) (solution-earner &self $s))))) (O_base O_chain))
 
-; credit the why-question under the deep clamp: proximate sm 2 -> O_base; root sm 2 + tr 2
-; -> O_chain; 6 tokens minted in total
-!(test (credit-question &self V3_q1 CL_deep) 6)
-!(test (fuel-of &self O_base sm) 6)               ; 10 seeded - 6 spent + 2 minted (proximate)
-!(test (fuel-of &self O_chain sm) 9)              ; 10 seeded - 3 spent + 2 minted (root)
-!(test (fuel-of &self O_chain tr) 4)              ;  5 seeded - 3 spent + 2 minted (root)
+; credit the why-question under the deep clamp: proximate sm 4 -> O_base; root sm 4 + tr 2
+; -> O_chain; 10 tokens minted in total
+!(test (credit-question &self V3_q1 CL_deep) 10)
+!(test (fuel-of &self O_base sm) 6)               ; 10 seeded - 8 spent + 4 minted (proximate)
+!(test (fuel-of &self O_chain sm) 10)             ; 10 seeded - 4 spent + 4 minted (root)
+!(test (fuel-of &self O_chain tr) 3)              ;  5 seeded - 4 spent + 2 minted (root)

@@ -39,12 +39,12 @@
 !(add-atom &self (fuel O_chain tr 5))
 !(run-rules-settle &self none)
 
-; the genome is TEXT-GENERIC: loaded straight into &self, all three corpus texts are present,
+; the genome is TEXT-GENERIC: loaded straight into &self, all four corpus texts are present,
 ; so each of the three rules fires once per text — the same strategy applied to new material.
-!(test (foldall + (match &self (event $c $s $r $k) 1) 0) 9)              ; (R_so + R_result + R_trans) x 3
-!(test (fuel-of &self O_base sm) 4)                                   ; O_base: R_so + R_result @ sm 1, x3
-!(test (fuel-of &self O_chain sm) 7)                                  ; O_chain: R_trans @ sm 1, x3
-!(test (fuel-of &self O_chain tr) 2)                                  ; only R_trans costs tr
+!(test (foldall + (match &self (event $c $s $r $k) 1) 0) 12)             ; (R_so + R_result + R_trans) x 4
+!(test (fuel-of &self O_base sm) 2)                                   ; O_base: R_so + R_result @ sm 1, x4
+!(test (fuel-of &self O_chain sm) 6)                                  ; O_chain: R_trans @ sm 1, x4
+!(test (fuel-of &self O_chain tr) 1)                                  ; only R_trans costs tr
 !(test (foldall + (match &self (sem-edge V3g $e ReasonFor $x $y) 1) 0) 3)  ; 2 normalized + 1 chained
 !(test (foldall + (match &self (sem-edge V4g $e ReasonFor $x $y) 1) 0) 3)  ; and the same shape on V4
 
@@ -64,7 +64,7 @@
 !(test (total-answers &self) 2)
 !(remove-atom &self (task-now V4))
 !(test (current-task &self) all)
-!(test (total-answers &self) 6)                                       ; nothing posed: every question counts
+!(test (total-answers &self) 8)                                       ; nothing posed: every question counts
 
 ; the proximate cause (the normalized as-a-result cue)...
 !(test (cites? (collapse (ground-skeleton &self V3_q1_as1))

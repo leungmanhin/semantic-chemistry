@@ -37,9 +37,9 @@
 
 ; --- the task is answered both ways; the seeded tr covers its one chaining ---
 !(test (match &self (worker-trajectory W_ep $t) $t) (2))
-!(test (fuel-of &ws_ep O_chain tr) 0)                           ; the seed is spent, and CL_shallow
-                                                                ; mints none back — the next arrival
-                                                                ; would go unchained
+!(test (fuel-of &ws_ep O_chain tr) 1)                           ; a seeded tr went on the chaining,
+                                                                ; and CL_shallow mints none back — so
+                                                                ; the seed only ever shrinks
 ; --- the chamber SETTLES: the chain advances a hop per cycle, and the cycle that finds every
 ; product already present fires nothing, which is what ends the task ---
 !(test (foldall + (match &ws_ep (event $c $s $r $key) 1) 0) 3)

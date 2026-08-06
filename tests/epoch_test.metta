@@ -68,8 +68,8 @@
 !(add-atom &wst (fuel O_chain tr 1))
 !(test (run-tasks &wst CH_expt1 CL_shallow (V3 V4) 1 9) (2 1))
 !(test (fuel-of &wst O_chain tr) 0)           ; never replenished under the shallow clamp
-!(test (fuel-of &wst O_base sm) 6)            ; O_base breaks even on EACH arrival — spend is
-                                              ; per task now, not per text ever seen
+!(test (fuel-of &wst O_base sm) 10)           ; O_base earns 4 and spends 2 on EACH arrival —
+                                              ; spend is per task now, not per text ever seen
 !(test (current-task &wst) V4)                ; the last arrival is still posed
 !(test (log-tasks &wst) (V3 V4))              ; the log is dated by task, not just by cycle
 !(test (cycles-of-task &wst V3) (1 2 3))
@@ -87,9 +87,9 @@
 !(add-atom &wdt (fuel O_chain tr 1))
 !(test (run-tasks &wdt CH_expt1 CL_deep (V3 V4 V5) 1 9) (2 2 2))
 !(test (fuel-of &wdt O_chain tr) 4)           ; tr grows: +1 per arrival (income 2 − draw 1)
-!(test (fuel-of &wdt O_base sm) 6)            ; and O_base holds steady across all three
+!(test (fuel-of &wdt O_base sm) 12)           ; and sm grows +2 an arrival, across all three
 
 ; retiring the stream leaves nothing posed, so the scoping falls back to the whole corpus
 !(retire-task &wdt)
 !(test (current-task &wdt) all)
-!(test (msort (posed-questions &wdt)) (V3_q1 V4_q1 V5_q1))
+!(test (msort (posed-questions &wdt)) (V3_q1 V4_q1 V5_q1 V6_q1))

@@ -46,9 +46,9 @@
 !(test (foldall + (match &ws_qa (sem-edge V3g $e ReasonFor $x $y) 1) 0) 3)  ; 2 normalized + 1 chained
 !(test (foldall + (match &ws_qa (event $c $s $r $k) 1) 0) 3)                    ; append-only log: 3 firings
 !(test (foldall + (match &ws_qa (sem-edge V3g v3_conn1 So $x $y) 1) 0) 1)   ; molecules materialized into $ws
-!(test (fuel-of &ws_qa O_base sm) 8)                                         ; O_base: R_so + R_result @ sm 1
-!(test (fuel-of &ws_qa O_chain sm) 9)                                        ; O_chain: R_trans @ sm 1
-!(test (fuel-of &ws_qa O_chain tr) 0)                                        ; O_chain: R_trans @ tr 1 (seed 1)
+!(test (fuel-of &ws_qa O_base sm) 10)                                        ; O_base: R_so + R_result @ sm 1
+!(test (fuel-of &ws_qa O_chain sm) 11)                                       ; O_chain: R_trans @ sm 1
+!(test (fuel-of &ws_qa O_chain tr) 1)                                        ; O_chain: R_trans @ tr 1 (seed 2)
 
 ; --- grounding against the worker's space answers the question (2 ways) ---
 !(test (len (collapse (ground-skeleton &ws_qa V3_q1_as1))) 2)
@@ -69,8 +69,8 @@
 
 ; the evaluator minted for both groundings: the chain answer earns O_chain tr + sm, the
 ; direct answer earns O_base sm (each grounding credited to the organism that derived it)
-!(test (fuel-of &ws_qa O_chain tr) 2)     ; chamber left tr 0; the evaluator minted it (transitive-explanation)
-!(test (fuel-of &ws_qa O_chain sm) 11)    ; 9 + skeleton-match sm 2 (chain grounding)
-!(test (fuel-of &ws_qa O_base sm) 10)     ; 8 + skeleton-match sm 2 (direct grounding)
+!(test (fuel-of &ws_qa O_chain tr) 3)     ; chamber left tr 1; the evaluator minted 2 more (transitive-explanation)
+!(test (fuel-of &ws_qa O_chain sm) 15)    ; 11 + skeleton-match sm 4 (chain grounding)
+!(test (fuel-of &ws_qa O_base sm) 14)     ; 10 + skeleton-match sm 4 (direct grounding)
 ; the token delta emitted to &self (the evaluator's §6.4 output envelope)
-!(test (match &self (worker-purse W_eval O_chain tr $n) $n) 2)
+!(test (match &self (worker-purse W_eval O_chain tr $n) $n) 3)

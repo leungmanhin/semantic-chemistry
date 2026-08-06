@@ -28,15 +28,18 @@
 (ruleset-member RS_chain R_trans)
 
 ; --- clamps (MSC §4.4): the evaluator converts a grounding's ACHIEVEMENTS into typed
-; fuel — the clamp maps each achievement to the token + amount it mints. The shallow
-; clamp pays only the skeleton match, so O_chain earns no tr and starves; the deep clamp
-; additionally pays transitive-explanation in tr, so O_chain's chaining is self-sustaining.
+; fuel — the clamp maps each achievement to the token + amount it mints. The two differ in
+; ONE line: the shallow clamp pays only the skeleton match, so a chaining organism earns no tr
+; and starves; the deep clamp additionally pays transitive-explanation in tr, so chaining is
+; self-sustaining. The rate is set so that a derived CONTROL level can also pay for itself —
+; gating a strategy costs a firing per gated rule, so a regime that only just covers the
+; substrate leaves nothing for the control level on top of it.
 (clamp CL_shallow)
-(clamp-mint CL_shallow skeleton-match sm 2)
+(clamp-mint CL_shallow skeleton-match sm 4)
 (clamp-scope CL_shallow CH_expt1)
 
 (clamp CL_deep)
-(clamp-mint CL_deep skeleton-match sm 2)
+(clamp-mint CL_deep skeleton-match sm 4)
 (clamp-mint CL_deep transitive-explanation tr 2)
 (clamp-scope CL_deep CH_expt1)
 
@@ -47,14 +50,19 @@
 (genome-token-cost GNM_chain dq 1)
 
 ; --- the shared fuel SNAPSHOT (MSC §6.4): the canonical initial endowment a worker restores
-; into its isolated hot-pool space — enough to dequote (dq 1 each) and for one chamber run
-; (R_so/R_result spend sm, R_trans spends sm + tr, seed tr = 1). Each worker instance (declared
-; by its runner, in the test that exercises its kind) restores this via (worker-snapshot W SNAP_qa).
-(snapshot-fuel SNAP_qa O_base sm 10)
-(snapshot-fuel SNAP_qa O_base dq 1)
-(snapshot-fuel SNAP_qa O_chain sm 10)
-(snapshot-fuel SNAP_qa O_chain tr 1)
-(snapshot-fuel SNAP_qa O_chain dq 1)
+; into its isolated hot-pool space — enough to dequote, to work a stream of arrivals, and to
+; afford REPRODUCTION once a strategy has earned it. The `tr` and `dq` headroom is what makes
+; that last part possible and is a SUBSIDY: no clamp mints `dq`, so expression capacity is
+; non-renewable, the same standing the control genome's one-off `ex` endowment has. Earning it
+; instead — MSC §7.1's "reproduction tokens for rule genomes that repeatedly solve variants of
+; the same question type" — needs the evaluator to mint on RECURRENCE, which it cannot yet see.
+; Each worker instance (declared by its runner) restores this via (worker-snapshot W SNAP_qa).
+(snapshot-fuel SNAP_qa O_base sm 12)
+(snapshot-fuel SNAP_qa O_base tr 2)
+(snapshot-fuel SNAP_qa O_base dq 3)
+(snapshot-fuel SNAP_qa O_chain sm 12)
+(snapshot-fuel SNAP_qa O_chain tr 2)
+(snapshot-fuel SNAP_qa O_chain dq 2)
 
 ; --- CTRL-SCAFFOLD: what it costs to wrap a recurring chain in a control level, and where the
 ; offspring lives. The routing cue is the arriving question-type marker the parser emits; the

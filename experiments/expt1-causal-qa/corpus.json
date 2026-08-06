@@ -28,5 +28,15 @@
       "Why did the market empty?"
     ],
     "additional_info": []
+  },
+  {
+    "id": "V6",
+    "sentences": [
+      "The bridge closed during the repairs, so the deliveries ceased, and as a result the bakery had shut by Friday."
+    ],
+    "questions": [
+      "Why did the bakery shut?"
+    ],
+    "additional_info": []
   }
 ]
