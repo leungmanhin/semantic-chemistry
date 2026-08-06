@@ -352,6 +352,84 @@
 ;; own control motifs (Primed / Worked) AND the semantic one (ReasonFor) -- and it is
 ;; viable while it does: every costed component runs a surplus, so the organism is not living
 ;; off its endowment. All five conditions we detect are satisfied at once.
+;;
+;; !! READ CONDITION 4 NARROWLY. It is an ALL-OR-NOTHING assay on the whole set (TECAN Alg 5.5's
+;; AblationImpact(A)): suppress every member and the answers drop 2 -> 0. It does NOT say each
+;; member is load-bearing, and here they are not. The per-member leave-one-out (SC §3 rule-level
+;; causal coding, `member-do-influences`) splits the set in two:
+;;
+;;     gated R_so 12 | gated R_result 20 | gated R_trans 12 | worked 0 | prime 0
+;;
+;; and the ablation isolates it: suppressing only `worked` + `prime` still answers 2, while
+;; suppressing only the three gated copies gives 0. So the condition-4 verdict is carried
+;; ENTIRELY by the copied chain; `minimal-acs` accordingly drops both control members and hands
+;; back a set that no longer closes -- condition 1 and the minimality search disagreeing about
+;; the same rules.
+;;
+;; The control level contributes CLOSURE and nothing else. `recall` re-primes free on every
+;; arrival, so `prime` fires last, after everything needing `Primed` has already fired, and its
+;; product is never consumed; the fresh pool means it does not carry to the next task either.
+;; The closing edge is redundant with the food-intake rule. This is not a window artifact --
+;; Route B's hand-written `R_prime` read 0 over one cycle and 22 over three, whereas this reads
+;; 0 over any number of arrivals, because the alternative never falls silent. That is the trade
+;; the derived version makes: the hand-written ring was causally essential but could not cross
+;; arrivals; this one crosses arrivals and is causally idle. Making the control level earn its
+;; keep needs activation to be CONTESTED -- several strategies competing for a scarce gate,
+;; which is TECANScore and Exp 2 -- or `recall` priced in a token nothing mints, which is the
+;; `ex` welfare shape again.
+
+;; ============================================================================
+!(pp ("=============== WHAT THE WRAPPING BUYS ==============="))
+;; ============================================================================
+;; Exp 1's chamber holds only rules that help, so packaging a strategy saves nothing above --
+;; which is why the wrapper looked like pure overhead. Add rules that MATCH, FIRE, COST, and
+;; produce what no question ever asks for -- dead ends, the ordinary condition of a real rule
+;; base -- and the picture changes. An unpackaged chamber pays for every one of them on every
+;; task; the offspring's chamber admits the strategy and nothing else, so it pays for six.
+;; Matching is free in this engine (we charge the write, not the join), so the saving is not
+;; search: it is exactly the firings of rules that would have matched and led nowhere.
+;; !! The payoff is attributable to the GATED COPIES plus the chamber, not to the closing edge --
+;; `worked` and `prime` still read do-influence 0. Packaging and closing are separate
+;; justifications, and the ring should not borrow credit from the copies.
+
+!(add-atom &self (chamber CH_clutter))
+!(add-atom &self (chamber-context CH_clutter causal-qa))
+!(add-atom &self (chamber-context CH_clutter clutter-qa))
+!(add-atom &self (organism O_clutter))
+!(add-atom &self (genome-of O_clutter GNM_clutter))
+!(add-atom &self (quoted-ruleset GNM_clutter RS_clutter))
+!(add-atom &self (genome-token-cost GNM_clutter dq 1))
+
+;; two dead ends: one per tense mark, one per lemma membership
+!(add-atom &self (rule-context R_dead1 clutter-qa))
+!(add-atom &self (rule-priority R_dead1 20))
+!(add-atom &self (rule-lhs R_dead1 ((sem-edge (var g) (var e) Past (var ev)))))
+!(add-atom &self (rule-rhs R_dead1 ((sem-edge (var g) (dead1 (var e)) Settled (var ev)))))
+!(add-atom &self (rule-token-cost R_dead1 sm 1))
+!(add-atom &self (ruleset-member RS_clutter R_dead1))
+!(add-atom &self (rule-context R_dead2 clutter-qa))
+!(add-atom &self (rule-priority R_dead2 21))
+!(add-atom &self (rule-lhs R_dead2 ((sem-edge (var g) (var e) Member (var n) (var l)))))
+!(add-atom &self (rule-rhs R_dead2 ((sem-edge (var g) (dead2 (var e)) Named (var n) (var l)))))
+!(add-atom &self (rule-token-cost R_dead2 sm 1))
+!(add-atom &self (ruleset-member RS_clutter R_dead2))
+
+;; the same arrival, worked twice: once in a chamber that also admits the dead ends, once by
+;; the offspring in its own
+!(bind! &ws_x (new-space))
+!(restore-snapshot &ws_x SNAP_qa)
+!(add-atom &ws_x (fuel O_clutter sm 20))
+!(add-atom &ws_x (fuel O_clutter dq 1))
+!(open-task &ws_x V3)
+!(work-task &ws_x CH_clutter 1 9 none)
+!(bind! &ws_y (new-space))
+!(carry-purse &ws &ws_y (org (strat A_qa)))
+!(open-task &ws_y V3)
+!(work-task &ws_y CH_scaffold 1 9 none)
+!(pp ("  V3 unpackaged: " (foldall + (match &ws_x (event $c $s $r $k) 1) 0) " firings, "
+      (total-answers &ws_x) " answers  |  packaged: "
+      (foldall + (match &ws_y (event $c $s $r $k) 1) 0) " firings, " (total-answers &ws_y) " answers"))
+!(ppnl)
 
 ;; ============================================================================
 !(pp ("=============== THE CLAMP SWITCH ==============="))
