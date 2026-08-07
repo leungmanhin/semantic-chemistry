@@ -374,62 +374,9 @@
 ;; 0 over any number of arrivals, because the alternative never falls silent. That is the trade
 ;; the derived version makes: the hand-written ring was causally essential but could not cross
 ;; arrivals; this one crosses arrivals and is causally idle. Making the control level earn its
-;; keep needs activation to be CONTESTED -- several strategies competing for a scarce gate,
-;; which is TECANScore and Exp 2 -- or `recall` priced in a token nothing mints, which is the
-;; `ex` welfare shape again.
-
-;; ============================================================================
-!(pp ("=============== WHAT THE WRAPPING BUYS ==============="))
-;; ============================================================================
-;; Exp 1's chamber holds only rules that help, so packaging a strategy saves nothing above --
-;; which is why the wrapper looked like pure overhead. Add rules that MATCH, FIRE, COST, and
-;; produce what no question ever asks for -- dead ends, the ordinary condition of a real rule
-;; base -- and the picture changes. An unpackaged chamber pays for every one of them on every
-;; task; the offspring's chamber admits the strategy and nothing else, so it pays for six.
-;; Matching is free in this engine (we charge the write, not the join), so the saving is not
-;; search: it is exactly the firings of rules that would have matched and led nowhere.
-;; !! The payoff is attributable to the GATED COPIES plus the chamber, not to the closing edge --
-;; `worked` and `prime` still read do-influence 0. Packaging and closing are separate
-;; justifications, and the ring should not borrow credit from the copies.
-
-!(add-atom &self (chamber CH_clutter))
-!(add-atom &self (chamber-context CH_clutter causal-qa))
-!(add-atom &self (chamber-context CH_clutter clutter-qa))
-!(add-atom &self (organism O_clutter))
-!(add-atom &self (genome-of O_clutter GNM_clutter))
-!(add-atom &self (quoted-ruleset GNM_clutter RS_clutter))
-!(add-atom &self (genome-token-cost GNM_clutter dq 1))
-
-;; two dead ends: one per tense mark, one per lemma membership
-!(add-atom &self (rule-context R_dead1 clutter-qa))
-!(add-atom &self (rule-priority R_dead1 20))
-!(add-atom &self (rule-lhs R_dead1 ((sem-edge (var g) (var e) Past (var ev)))))
-!(add-atom &self (rule-rhs R_dead1 ((sem-edge (var g) (dead1 (var e)) Settled (var ev)))))
-!(add-atom &self (rule-token-cost R_dead1 sm 1))
-!(add-atom &self (ruleset-member RS_clutter R_dead1))
-!(add-atom &self (rule-context R_dead2 clutter-qa))
-!(add-atom &self (rule-priority R_dead2 21))
-!(add-atom &self (rule-lhs R_dead2 ((sem-edge (var g) (var e) Member (var n) (var l)))))
-!(add-atom &self (rule-rhs R_dead2 ((sem-edge (var g) (dead2 (var e)) Named (var n) (var l)))))
-!(add-atom &self (rule-token-cost R_dead2 sm 1))
-!(add-atom &self (ruleset-member RS_clutter R_dead2))
-
-;; the same arrival, worked twice: once in a chamber that also admits the dead ends, once by
-;; the offspring in its own
-!(bind! &ws_x (new-space))
-!(restore-snapshot &ws_x SNAP_qa)
-!(add-atom &ws_x (fuel O_clutter sm 20))
-!(add-atom &ws_x (fuel O_clutter dq 1))
-!(open-task &ws_x V3)
-!(work-task &ws_x CH_clutter 1 9 none)
-!(bind! &ws_y (new-space))
-!(carry-purse &ws &ws_y (org (strat A_qa)))
-!(open-task &ws_y V3)
-!(work-task &ws_y CH_scaffold 1 9 none)
-!(pp ("  V3 unpackaged: " (foldall + (match &ws_x (event $c $s $r $k) 1) 0) " firings, "
-      (total-answers &ws_x) " answers  |  packaged: "
-      (foldall + (match &ws_y (event $c $s $r $k) 1) 0) " firings, " (total-answers &ws_y) " answers"))
-!(ppnl)
+;; keep needs activation to be CONTESTED -- several strategies competing for a scarce gate
+;; (THE GATE section below is that gate; the contest is Exp 2's shape) -- or `recall` priced
+;; in a token nothing mints, which is the `ex` welfare shape again.
 
 ;; ============================================================================
 !(pp ("=============== THE CLAMP SWITCH ==============="))
@@ -474,3 +421,34 @@
 
 !(pp ("The same offspring's log, starving under CL_shallow:"))
 !(show-log (log-facts &ws_lean))
+!(ppnl)
+
+;; ============================================================================
+!(pp ("=============== THE GATE (MSC eq 24) ==============="))
+;; ============================================================================
+;; Where the certificate CASHES OUT. The mortal gate scores every candidate's firing
+;; propensity -- sigma over the rule's bookkeeping, each term weighted by its declared
+;; (gate-coeff k v) -- and its j-term reads the scan's certificate: "+j*ACSBoost(R) boosts
+;; rules that belong to an established ACS". That is the ACS notes' "thereby making the
+;; same question-answering strategy more likely to activate again", and it is why the
+;; causally idle closing edge above still buys something: closure is what CERTIFIES
+;; A_wrap, and every member -- `prime` included -- inherits the raised propensity. The
+;; parents' chain never closed, so no certificate and no boost, however useful the rules.
+;; With ample fuel and nothing competing, the boost decides nothing here; it decides which
+;; strategy gets a scarce gate when several contest it, which is Exp 2's shape.
+
+!(add-atom &self (gate-coeff j 2))
+!(pp ("Firing propensity under (gate-coeff j 2):"))
+!(pp ("  parent R_so (chain never closed, no certificate): " (gate-score &ws (rule-organism R_so) R_so)))
+!(pp ("  gated R_so copy (member of certified A_wrap):     " (gate-score &ws_off (rule-organism (gated R_so (strat A_qa))) (gated R_so (strat A_qa)))))
+!(pp ("  prime (causally idle -- the SAME certificate):    " (gate-score &ws_off (rule-organism (prime (strat A_qa))) (prime (strat A_qa)))))
+
+;; and the scheduler's admission bar (MSC eq 13, fire iff U < Gate_C): a threshold set
+;; between the two scores admits the packaged strategy and refuses the bare one outright.
+;; when no threshold fact exists, `gate-open?` simply imposes no admission bar
+;; (that's TECAN Alg 5.1's baseline, whose fire loop pops every affordable candidate — declaring a threshold is what activates MSC eq 13's `U < Gate_C` conjunct)
+;; threshold value 0.6 is picked for the demo purely because it sits between the two printed scores (0.5 and 0.881), making the refuse/admit contrast visible
+
+!(add-atom &self (gate-threshold 0.6))
+!(pp ("Admission at (gate-threshold 0.6): parent R_so " (gate-open? &ws (rule-organism R_so) R_so)
+      " | gated copy " (gate-open? &ws_off (rule-organism (gated R_so (strat A_qa))) (gated R_so (strat A_qa)))))

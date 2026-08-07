@@ -1,6 +1,7 @@
 ; ===========================================================================
 ; REACTION — the firing ENGINE, $ws-parameterized: set-union product add, the
-; fire step (+ cycle-tagged event log), fire-once-per-cycle, the per-rule `walk` (step-budgeted), and the
+; fire step (+ cycle-tagged event log), fire-once-per-cycle, the collect/rank/fire
+; epoch (`rules-pass`, step-budgeted), and the
 ; generic raw run (`run-rules`) / chamber run (`run-chamber`, budgeted `run-chamber-b`) /
 ; ablation runs (`run-ablate` raw, `run-chamber-ablate` chamber-scoped).
 ; Every stage runs its genome through this engine. Assumes util, fuel,
@@ -74,16 +75,20 @@
 ; caller that wants the whole chain works a task (`epoch.metta`), which runs cycles until the
 ; chamber settles.
 
-; may this candidate fire NOW? not already fired this cycle, products not all already present
-; (the settle guard), gate open. Evaluated at COLLECTION (Alg 5.1 line 5) and AGAIN at firing
-; (line 14), because an earlier firing from the same queue may since have supplied the products
-; or spent the fuel.
+; may this candidate fire NOW? our two guards — not already fired this cycle, products not
+; all already present (the settle guard) — then MSC eq 13's two non-match conjuncts:
+; affordability (F_O >= kappa_R) and the mortal gate (U < Gate_C). Evaluated at COLLECTION
+; (Alg 5.1 line 5) and AGAIN at firing (line 14), because an earlier firing from the same
+; queue may since have supplied the products or spent the fuel — the fire-time gate reads
+; the score against the CURRENT purse.
 (= (admissible? $ws $O $rule $key $cost $prods)
    (if (fired? $ws $rule $key)
        False
        (if (all-present? $ws $prods)
            False
-           (gate? $ws $O $rule $cost))))
+           (if (afford? $ws $O $cost)
+               (gate-open? $ws $O $rule)
+               False))))
 
 ; collect $rule's admissible candidates for organism $O as queue entries
 ; `(qcand RULE ORG KEY COST PRODS)`. Read-only: nothing fires here.
@@ -98,11 +103,9 @@
 
 ; assemble the whole queue: every rule in $rules, enumerated against the state as it stands. A
 ; rule whose organism has NO SOMA is skipped without enumerating (Alg 5.1 line 3 collects from
-; the organisms ACTIVE in the chamber — an unexpressed genome is inert code).
-; QUEUE ORDER IS A PLACEHOLDER: Alg 5.1 pops BEST first, keyed by TECANScore, which allocates a
-; scarce budget across affordable acts. We have no score yet, so the queue comes out in
-; `rule-priority` order — a topological sort, not a value judgement. Deterministic, and
-; immaterial while fuel covers every candidate; arbitrary the moment it does not.
+; the organisms ACTIVE in the chamber — an unexpressed genome is inert code). The queue comes
+; out in collection order — `rule-priority`, the deterministic tiebreak; `rank-queue` is what
+; orders it by its real key, the gate score.
 (= (collect-rules $ws $rules)
    (case $rules
          ((() ())
@@ -128,11 +131,31 @@
                                  (fire-queue $ws (cdr-atom $q) (+ $seq 1) $b))
                             (fire-queue $ws (cdr-atom $q) $seq $b))))))))
 
-; ONE EPOCH over $rules from $seq, bounded by $b: collect the whole queue, then fire it. Every
-; run entry point goes through here, ablation replays included, so a counterfactual always runs
-; the same engine as the run it is paired against.
+; Alg 5.1 line 10, "insert into priority queue keyed by TECANScore": order the assembled queue
+; BEST-FIRST by gate score, computed once against the epoch-start state (a pool is ranked
+; before it is mutated; the fire-time re-check is admission, not re-ranking). msort ascends, so
+; each entry is keyed (−score, collection index): ties keep collection order — rule-priority,
+; the deterministic tiebreak — and with no coefficients declared every score is the constant
+; 0.5, so the sort is skipped outright and the queue is unchanged.
+(= (rank-queue $ws $q)
+   (if (gate-coeffs-declared?)
+       (map-snd (msort (score-keyed $ws $q 0)))
+       $q))
+
+; key each queue entry as ((−score idx) entry) for the rank sort
+(= (score-keyed $ws $q $i)
+   (case $q
+         ((() ())
+          ($ne (let* (($e (car-atom $q))
+                      ((qcand $rule $O $key $cost $prods) $e))
+                 (cons-atom (((* -1 (gate-score $ws $O $rule)) $i) $e)
+                            (score-keyed $ws (cdr-atom $q) (+ $i 1))))))))
+
+; ONE EPOCH over $rules from $seq, bounded by $b: collect the whole queue, rank it, then fire
+; it. Every run entry point goes through here, ablation replays included, so a counterfactual
+; always runs the same engine as the run it is paired against.
 (= (rules-pass $ws $rules $seq $b)
-   (fire-queue $ws (collect-rules $ws $rules) $seq $b))
+   (fire-queue $ws (rank-queue $ws (collect-rules $ws $rules)) $seq $b))
 
 ; run ONE epoch from a given seq (raw: ALL rules, no context filter; unbounded)
 (= (run-rules-from $ws $seq)

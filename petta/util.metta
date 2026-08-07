@@ -3,14 +3,6 @@
 ; the other petta/ modules build on these.
 ; ===========================================================================
 
-; every value in the list $vs is >= $thr (vacuously True on the empty list)
-(= (all-at-least? $vs $thr)
-   (case $vs
-         ((() True)
-          ($ne (if (>= (car-atom $vs) $thr)
-                   (all-at-least? (cdr-atom $vs) $thr)
-                   False)))))
-
 ; drop every occurrence of $x from list $l
 (= (filter-out $x $l)
    (case $l
