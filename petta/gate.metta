@@ -51,9 +51,9 @@
 ; ---------------------------------------------------------------------------
 ; THE MORTAL GATE (MSC eq 24):
 ;
-;   Gate_C(R,O,X) = sigma( a·logit(s_R) + b·c_R + d·DoInf_C(R) + e·Novelty_C(R)
-;                          − f·Redundancy_C(R) − g·Cost(R)
-;                          + h·log(1+FuelMargin(O,R)) + j·ACSBoost(R) )
+;   Gate_C(R,O,X) = sigmoid( a·logit(s_R) + b·c_R + d·DoInf_C(R) + e·Novelty_C(R)
+;                            − f·Redundancy_C(R) − g·Cost(R)
+;                            + h·log(1+FuelMargin(O,R)) + j·ACSBoost(R) )
 ;
 ; Terms carried: d·DoInf + j·ACSBoost + h·log(1+FuelMargin) − g·Cost. Not carried,
 ; each awaiting its data or its semantics: plausibility a·logit(s_R) + b·c_R (the
