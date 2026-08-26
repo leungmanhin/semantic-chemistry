@@ -72,40 +72,40 @@
 !(test (> (gate-score &ws O_a R_a) 0.5) True)   ; sigma(1*3) — measured influence raises propensity
 
 ; (3) j-term: the five-condition CERTIFICATE decides the boost --------------------
-; A_t certifies on all five -> its member R_b is boosted
-!(add-atom &self (acs-member A_t R_b))
-!(add-atom &self (acs-closure A_t hybrid))
-!(add-atom &self (acs-autocatalytic A_t True))
-!(add-atom &self (acs-surplus A_t CL_t sm 2))
-!(add-atom &self (acs-surplus A_t CL_t tr 1))
-!(add-atom &self (acs-causal-influence A_t True))
-!(add-atom &self (acs-recurrent A_t True))
-!(test (established-acs? A_t) True)
+; ACS_t certifies on all five -> its member R_b is boosted
+!(add-atom &self (acs-member ACS_t R_b))
+!(add-atom &self (acs-closure ACS_t hybrid))
+!(add-atom &self (acs-autocatalytic ACS_t True))
+!(add-atom &self (acs-surplus ACS_t CL_t sm 2))
+!(add-atom &self (acs-surplus ACS_t CL_t tr 1))
+!(add-atom &self (acs-causal-influence ACS_t True))
+!(add-atom &self (acs-recurrent ACS_t True))
+!(test (established-acs? ACS_t) True)
 !(test (acs-boost R_b) 1)
 !(test (acs-boost R_a) 0)                  ; member of nothing
-; A_u fails ONE condition (not recurrent) -> its member is NOT boosted
-!(add-atom &self (acs-member A_u R_c))
-!(add-atom &self (acs-closure A_u substrate))
-!(add-atom &self (acs-autocatalytic A_u True))
-!(add-atom &self (acs-surplus A_u CL_t sm 2))
-!(add-atom &self (acs-causal-influence A_u True))
-!(add-atom &self (acs-recurrent A_u False))
+; ACS_u fails ONE condition (not recurrent) -> its member is NOT boosted
+!(add-atom &self (acs-member ACS_u R_c))
+!(add-atom &self (acs-closure ACS_u substrate))
+!(add-atom &self (acs-autocatalytic ACS_u True))
+!(add-atom &self (acs-surplus ACS_u CL_t sm 2))
+!(add-atom &self (acs-causal-influence ACS_u True))
+!(add-atom &self (acs-recurrent ACS_u False))
 !(test (acs-boost R_c) 0)
-; A_v carries every boolean verdict but NO surplus fact -> unmeasured viability is REFUSED
-!(add-atom &self (acs-member A_v R_d))
-!(add-atom &self (acs-closure A_v substrate))
-!(add-atom &self (acs-autocatalytic A_v True))
-!(add-atom &self (acs-causal-influence A_v True))
-!(add-atom &self (acs-recurrent A_v True))
-!(test (established-acs? A_v) False)
-; A_w runs a NEGATIVE surplus -> not viable, not established
-!(add-atom &self (acs-member A_w R_e))
-!(add-atom &self (acs-closure A_w substrate))
-!(add-atom &self (acs-autocatalytic A_w True))
-!(add-atom &self (acs-surplus A_w CL_t sm -1))
-!(add-atom &self (acs-causal-influence A_w True))
-!(add-atom &self (acs-recurrent A_w True))
-!(test (established-acs? A_w) False)
+; ACS_v carries every boolean verdict but NO surplus fact -> unmeasured viability is REFUSED
+!(add-atom &self (acs-member ACS_v R_d))
+!(add-atom &self (acs-closure ACS_v substrate))
+!(add-atom &self (acs-autocatalytic ACS_v True))
+!(add-atom &self (acs-causal-influence ACS_v True))
+!(add-atom &self (acs-recurrent ACS_v True))
+!(test (established-acs? ACS_v) False)
+; ACS_w runs a NEGATIVE surplus -> not viable, not established
+!(add-atom &self (acs-member ACS_w R_e))
+!(add-atom &self (acs-closure ACS_w substrate))
+!(add-atom &self (acs-autocatalytic ACS_w True))
+!(add-atom &self (acs-surplus ACS_w CL_t sm -1))
+!(add-atom &self (acs-causal-influence ACS_w True))
+!(add-atom &self (acs-recurrent ACS_w True))
+!(test (established-acs? ACS_w) False)
 
 ; (3) eq 25 FuelMargin: min purse/cost over the costed tokens ---------------------
 !(add-atom &self (rule-token-cost R_b sm 2))

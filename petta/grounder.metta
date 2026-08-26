@@ -1,7 +1,7 @@
 ; ===========================================================================
 ; GROUNDER — grounds an answer-skeleton sem-graph against the molecule sem-graphs:
-; the query-solving step of the pipeline (a MeTTa-match stand-in for a PLN
-; backward-chainer query). The skeleton's conjunct sem-edges become joinable clause
+; the query-solving step of the pipeline (SC §4.5 answer projection: the skeleton
+; IS the variable-bearing query pattern). The skeleton's conjunct sem-edges become joinable clause
 ; patterns — their (var …) markers co-refer by name, and each conjunct's matched
 ; molecule edge is exposed as a (var <conjunct-id>) binding — joined by the
 ; compiler's clause-join. A solution = the fully-grounded conjunct list: every

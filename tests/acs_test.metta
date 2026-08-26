@@ -77,7 +77,7 @@
 !(test (endo-cyclic? R_so (acs-members &g (fired-rules &ws0))) False)        ; So is food — feed-forward
 !(test (structurally-closed? (acs-members &g (fired-rules &ws0))) False)     ; a feed-forward member ⇒ not closed
 !(test (closure-kind (acs-members &g (fired-rules &ws0))) none)              ; not closed ⇒ no closure kind
-!(test (closure-facts A_qa (acs-members &g (fired-rules &ws0))) ())          ; ⇒ NO acs-closure fact emitted (not an ACS)
+!(test (closure-facts ACS_qa (acs-members &g (fired-rules &ws0))) ())          ; ⇒ NO acs-closure fact emitted (not an ACS)
 
 ; positive control: a synthetic 2-rule substrate ring (P→Q, Q→P) IS structurally closed — each
 ; rule's product regenerates the other's reactant, so both are endo-cyclic (the Exp-2 biomedical-
@@ -190,8 +190,8 @@
 !(add-atom &ws_untagged (event 1 0 R_so k))
 !(test (replay-tasks &ws_untagged) (all))
 ; the do-influence facts appear in the verdict list (per member, keyed on the rule)
-!(test (in-list? (rule-do-influence R_trans target answer-reward 1 6) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
-!(test (in-list? (rule-redundancy R_result 1 False) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (rule-do-influence R_trans target answer-reward 1 6) (acs-verdicts ACS_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (rule-redundancy R_result 1 False) (acs-verdicts ACS_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
 
 ; --- the clamp-switch lives ENTIRELY in the componentwise surplus (tested above): membership +
 ; closure + causal influence are clamp-independent; only token-surplus flips (tr +1 under CL_deep
@@ -199,10 +199,10 @@
 ; condition verdicts (acs-closure present ∧ every acs-surplus > 0 ∧ causal ∧ recurrent) itself. ---
 
 ; --- the §2.9 verdict facts ---
-!(test (in-list? (acs-member A_qa R_trans) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
-!(test (in-list? (acs-closure A_qa substrate) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) False)  ; V3 not closed ⇒ no acs-closure fact in the verdict list
-!(test (in-list? (acs-surplus A_qa CL_deep tr 1) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
-!(test (in-list? (acs-causal-influence A_qa True) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (acs-member ACS_qa R_trans) (acs-verdicts ACS_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (acs-closure ACS_qa substrate) (acs-verdicts ACS_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) False)  ; V3 not closed ⇒ no acs-closure fact in the verdict list
+!(test (in-list? (acs-surplus ACS_qa CL_deep tr 1) (acs-verdicts ACS_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (acs-causal-influence ACS_qa True) (acs-verdicts ACS_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
 
 ; --- A = (M_A, R_A): the verdict names both M_A (the cycle's motif species) and R_A (the
 ; rules), plus autocatalysis (cond 2). M_A now includes the COMPOSITE chain motif (R_trans's
@@ -212,10 +212,10 @@
 !(test (in-list? ((ReasonFor (mvar 0) (mvar 1))) (acs-motifs &g (acs-members &g (fired-rules &ws0)))) True)  ; the single ReasonFor motif
 !(test (in-list? ((ReasonFor (mvar 0) (mvar 1)) (ReasonFor (mvar 1) (mvar 2))) (acs-motifs &g (acs-members &g (fired-rules &ws0)))) True)  ; the CHAIN motif
 !(test (autocatalytic? &g (acs-members &g (fired-rules &ws0))) True)             ; cond 2 holds
-!(test (in-list? (acs-motif A_qa ((ReasonFor (mvar 0) (mvar 1)))) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
-!(test (in-list? (acs-motif A_qa ((ReasonFor (mvar 0) (mvar 1)) (ReasonFor (mvar 1) (mvar 2)))) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)  ; the chain motif is a verdict
-!(test (in-list? (acs-motif A_qa ((So (mvar 0) (mvar 1)))) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) False)  ; food motif excluded
-!(test (in-list? (acs-autocatalytic A_qa True) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (acs-motif ACS_qa ((ReasonFor (mvar 0) (mvar 1)))) (acs-verdicts ACS_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (acs-motif ACS_qa ((ReasonFor (mvar 0) (mvar 1)) (ReasonFor (mvar 1) (mvar 2)))) (acs-verdicts ACS_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)  ; the chain motif is a verdict
+!(test (in-list? (acs-motif ACS_qa ((So (mvar 0) (mvar 1)))) (acs-verdicts ACS_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) False)  ; food motif excluded
+!(test (in-list? (acs-autocatalytic ACS_qa True) (acs-verdicts ACS_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
 
 ; ===========================================================================
 ; --- the acs-scan WORKER (worker-kind acs-scan): the SAME certification hosted as a §6.4
@@ -229,7 +229,7 @@
 !(add-atom &self (worker-chamber W_scan CH_expt1))
 !(add-atom &self (worker-clamp W_scan CL_deep))
 !(add-atom &self (worker-snapshot W_scan SNAP_qa))
-!(add-atom &self (worker-acs W_scan A_qa))
+!(add-atom &self (worker-acs W_scan ACS_qa))
 !(bind! &ws_scan (new-space))
 !(bind! &g_scan (new-space))
 !(bind! &abl_scan (new-space))
@@ -250,14 +250,14 @@
 !(test (total-answers &ws_scan) 2)
 !(test (foldall + (match &ws_scan (event $c $s $r $k) 1) 0) 3)
 
-; the §2.9 verdicts were EMITTED to &self (keyed on the ACS name A_qa); under CL_deep the tr
+; the §2.9 verdicts were EMITTED to &self (keyed on the ACS name ACS_qa); under CL_deep the tr
 ; surplus is +1 (viable — the loop pays for itself under this clamp)
-!(test (match &self (acs-member A_qa R_trans) yes) yes)
-!(test (match &self (acs-motif A_qa ((ReasonFor (mvar 0) (mvar 1)))) yes) yes)
-!(test (collapse (match &self (acs-closure A_qa $c) $c)) ())                       ; V3 not closed ⇒ worker emits no acs-closure
-!(test (closure-of A_qa) none)                                                     ; the display reader shows none
-!(test (match &self (acs-autocatalytic A_qa $b) $b) True)
-!(test (match &self (acs-surplus A_qa CL_deep tr $n) $n) 1)
+!(test (match &self (acs-member ACS_qa R_trans) yes) yes)
+!(test (match &self (acs-motif ACS_qa ((ReasonFor (mvar 0) (mvar 1)))) yes) yes)
+!(test (collapse (match &self (acs-closure ACS_qa $c) $c)) ())                       ; V3 not closed ⇒ worker emits no acs-closure
+!(test (closure-of ACS_qa) none)                                                     ; the display reader shows none
+!(test (match &self (acs-autocatalytic ACS_qa $b) $b) True)
+!(test (match &self (acs-surplus ACS_qa CL_deep tr $n) $n) 1)
 !(test (match &self (rule-do-influence R_trans target answer-reward 1 $d) $d) 6)      ; the worker emitted the per-rule do-influence
 
 ; --- a SECOND acs-scan worker over the SAME ACS under CL_shallow: membership + closure clamp-
@@ -268,7 +268,7 @@
 !(add-atom &self (worker-chamber W_scanS CH_expt1))
 !(add-atom &self (worker-clamp W_scanS CL_shallow))
 !(add-atom &self (worker-snapshot W_scanS SNAP_qa))
-!(add-atom &self (worker-acs W_scanS A_qa))
+!(add-atom &self (worker-acs W_scanS ACS_qa))
 !(bind! &ws_scanS (new-space))
 !(bind! &g_scanS (new-space))
 !(bind! &abl_scanS (new-space))
@@ -281,7 +281,7 @@
 !(restore-snapshot &ws_scanS SNAP_qa)
 !(run-chamber-settle &ws_scanS CH_expt1 none)
 !(dispatch W_scanS)
-!(test (match &self (acs-surplus A_qa CL_shallow tr $n) $n) -1)
+!(test (match &self (acs-surplus ACS_qa CL_shallow tr $n) $n) -1)
 
 ; isolation, both directions: neither worker leaked derivation into &self (still the bare
 ; run's 2 answers, not 4)
@@ -303,7 +303,7 @@
 !(test (loop-in-task? &ws0 (acs-members &g (fired-rules &ws0)) V4) True)
 !(test (recurrence-count &ws0 (acs-members &g (fired-rules &ws0))) 2)   ; the loop turned for both
 !(test (recurrent? &ws0 (acs-members &g (fired-rules &ws0)) 2) True)    ; recurrent ACROSS TASKS
-!(test (in-list? (acs-recurrent A_qa True) (acs-verdicts A_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
+!(test (in-list? (acs-recurrent ACS_qa True) (acs-verdicts ACS_qa &g &ws0 &abl CH_expt1 SNAP_qa CL_deep)) True)
 
 ; a loop that turned for only ONE of the two tasks is NOT recurrent — the second arrival is what
 ; distinguishes a reusable strategy from a one-off derivation

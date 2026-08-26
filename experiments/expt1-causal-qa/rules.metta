@@ -6,8 +6,9 @@
 ; (SC §4.5) — the fuse-nf-normalizer's job expressed as selectable genes.
 ;
 ; Products carry deterministic, provenance-bearing edge-ids — (norm E) names its source
-; cue edge, (trans E1 E2) its two premise edges — and copy the premise TV (PLN TV
-; formulas arrive with the chainer). The IR convention the engine reads structurally:
+; cue edge, (trans E1 E2) its two premise edges — and copy the premise TV (applying
+; PLN TV formulas at derivation is unbuilt; rule TVs themselves come from §2.3
+; intensional-implication mining, also unbuilt). The IR convention the engine reads structurally:
 ; a DERIVED edge-id is a compound whose head names the deriving step and whose
 ; arguments are the premise edge-ids (so depth/provenance need no id vocabulary).
 ; Tokens: sm = skeleton-match fuel (tau_graph_match), tr = transitive-explanation fuel.

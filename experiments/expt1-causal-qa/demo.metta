@@ -198,7 +198,7 @@
 !(add-atom &self (worker-chamber W_scan CH_expt1))
 !(add-atom &self (worker-clamp W_scan CL_deep))
 !(add-atom &self (worker-snapshot W_scan SNAP_qa))
-!(add-atom &self (worker-acs W_scan A_qa))
+!(add-atom &self (worker-acs W_scan ACS_qa))
 !(add-atom &self (worker-space W_scan &ws))
 !(bind! &g_scan (new-space))
 !(bind! &abl_scan (new-space))
@@ -206,13 +206,13 @@
 !(add-atom &self (worker-ablate-space W_scan &abl_scan))
 !(pp ("  ACS scanner worker created: W_scan"))
 !(dispatch W_scan)
-!(show-acs A_qa CL_deep)
+!(show-acs ACS_qa CL_deep)
 
 ;; `none` is not a failing grade: a set that does not close emits no acs-closure fact at all,
 ;; because a subsidized candidate is not an ACS.
 
 ;; scaffoldable = recurs across arrivals AND does not close
-!(pp ("  scaffoldable? " (scaffoldable? A_qa)))
+!(pp ("  scaffoldable? " (scaffoldable? ACS_qa)))
 !(ppnl)
 
 ;; ============================================================================
@@ -226,12 +226,12 @@
 
 !(add-atom &self (worker W_cs))
 !(add-atom &self (worker-kind W_cs ctrl-scaffold))
-!(add-atom &self (worker-acs W_cs A_qa))
+!(add-atom &self (worker-acs W_cs ACS_qa))
 !(add-atom &self (worker-chamber W_cs CH_scaffold))
 !(add-atom &self (worker-space W_cs &ws))
 !(pp ("  control-scaffold worker created: W_scan"))
 
-!(pp ("  the chain to wrap: " (repr (msort (acs-chain A_qa)))))
+!(pp ("  the chain to wrap: " (repr (msort (acs-chain ACS_qa)))))
 
 ;; O_base contributed 2 of its 3 members, O_chain 1, so the bill splits 2:1
 !(pp ("  before -- O_base " (repr (purse &ws O_base)) " | O_chain " (repr (purse &ws O_chain))))
@@ -240,9 +240,9 @@
 !(ppnl)
 
 !(pp ("  === OFFSPRING ==="))
-!(pp ("  organism: " (repr (org (strat A_qa)))))
-!(pp ("  endowed:  " (repr (purse &ws (org (strat A_qa))))))
-!(pp ("  genome: " (repr (match &self (genome-of (org (strat A_qa)) $g) $g))))
+!(pp ("  organism: " (repr (org (strat ACS_qa)))))
+!(pp ("  endowed:  " (repr (purse &ws (org (strat ACS_qa))))))
+!(pp ("  genome: " (repr (match &self (genome-of (org (strat ACS_qa)) $g) $g))))
 
 ;; Its genome, as portable IR: GENERATED facts in the same rule-lhs/rule-rhs form the hand-written
 ;; genome is authored in, so a derived rule is as readable, as storable and as heritable as one we
@@ -269,14 +269,14 @@
 ;; ancestor chain has seen -- and the SAME detector, unchanged, reads the log it leaves.
 
 !(bind! &ws_off (new-space))
-!(carry-purse &ws &ws_off (org (strat A_qa)))
+!(carry-purse &ws &ws_off (org (strat ACS_qa)))
 
 ;; the offspring's own snapshot: what its parents actually endowed it with. Its purse is already
 ;; in the space, so restoring is a no-op here -- the fact is what the scanner's ablation replay
 ;; re-seeds from, and pairing needs it to be the real endowment.
-!(add-atom &self (snapshot-fuel SNAP_wrap (org (strat A_qa)) sm 12))
-!(add-atom &self (snapshot-fuel SNAP_wrap (org (strat A_qa)) tr 3))
-!(add-atom &self (snapshot-fuel SNAP_wrap (org (strat A_qa)) dq 3))
+!(add-atom &self (snapshot-fuel SNAP_wrap (org (strat ACS_qa)) sm 12))
+!(add-atom &self (snapshot-fuel SNAP_wrap (org (strat ACS_qa)) tr 3))
+!(add-atom &self (snapshot-fuel SNAP_wrap (org (strat ACS_qa)) dq 3))
 
 ;; a new evaluator worker
 !(add-atom &self (worker W_eval_off))
@@ -302,7 +302,7 @@
 !(pp ("  spent: sm " (spent &ws_off sm) " | tr " (spent &ws_off tr)))
 !(run-eval W_eval_off)
 !(pp ("  evaluator minted (CL_deep): sm " (chamber-income &ws_off CL_deep sm) " | tr " (chamber-income &ws_off CL_deep tr)))
-!(pp ("  offspring: " (repr (purse &ws_off (org (strat A_qa))))))
+!(pp ("  offspring: " (repr (purse &ws_off (org (strat ACS_qa))))))
 !(ppnl)
 
 ;; ============================================================================
@@ -322,7 +322,7 @@
 !(show-cycles &ws_off (cycles-of-task &ws_off V6))
 !(run-eval W_eval_off)
 !(pp ("  evaluator minted (CL_deep): sm " (chamber-income &ws_off CL_deep sm) " | tr " (chamber-income &ws_off CL_deep tr)))
-!(pp ("  offspring: " (repr (purse &ws_off (org (strat A_qa))))))  ;; -- it GREW
+!(pp ("  offspring: " (repr (purse &ws_off (org (strat ACS_qa))))))  ;; -- it GREW
 !(ppnl)
 
 ;; ============================================================================
@@ -333,7 +333,7 @@
 !(add-atom &self (worker-chamber W_scan2 CH_scaffold))
 !(add-atom &self (worker-clamp W_scan2 CL_deep))
 !(add-atom &self (worker-snapshot W_scan2 SNAP_wrap))
-!(add-atom &self (worker-acs W_scan2 A_wrap))
+!(add-atom &self (worker-acs W_scan2 ACS_wrap))
 !(add-atom &self (worker-space W_scan2 &ws_off))
 !(bind! &g_scan2 (new-space))
 !(bind! &abl_scan2 (new-space))
@@ -341,9 +341,9 @@
 !(add-atom &self (worker-ablate-space W_scan2 &abl_scan2))
 !(pp ("  ACS scanner worker created: W_scan2"))
 !(dispatch W_scan2)
-!(show-acs A_wrap CL_deep)
+!(show-acs ACS_wrap CL_deep)
 
-;; !(pp ("  scaffoldable? " (scaffoldable? A_wrap) "  -- nothing left to scaffold: it closes now."))
+;; !(pp ("  scaffoldable? " (scaffoldable? ACS_wrap) "  -- nothing left to scaffold: it closes now."))
 !(ppnl)
 
 ;; `recall` is absent from the members: it eats an arriving cue no rule makes,
@@ -391,11 +391,11 @@
 ;; organism can afford on the NEXT one. Here the offspring inherited three `tr`, so it chains
 ;; three more times and the fourth arrival is the first it cannot.
 !(bind! &ws_lean (new-space))
-!(carry-purse &ws &ws_lean (org (strat A_qa)))
+!(carry-purse &ws &ws_lean (org (strat ACS_qa)))
 
-!(pp ("The same offspring, same endowment " (repr (purse &ws_lean (org (strat A_qa)))) ", under CL_shallow:"))
+!(pp ("The same offspring, same endowment " (repr (purse &ws_lean (org (strat ACS_qa)))) ", under CL_shallow:"))
 !(pp ("  answers per arrival (V3, V4, V5, V6): " (repr (run-tasks &ws_lean CH_scaffold CL_shallow (V3 V4 V5 V6) 1 9))))
-!(pp ("  purse now: " (repr (purse &ws_lean (org (strat A_qa)))) " -- sm still grows, but tr is GONE"))
+!(pp ("  purse now: " (repr (purse &ws_lean (org (strat ACS_qa)))) " -- sm still grows, but tr is GONE"))
 !(pp ("  the last arrival got only this far:"))
 !(show-cycles &ws_lean (cycles-of-task &ws_lean V6))
 !(ppnl)
@@ -432,7 +432,7 @@
 ;; rules that belong to an established ACS". That is the ACS notes' "thereby making the
 ;; same question-answering strategy more likely to activate again", and it is why the
 ;; causally idle closing edge above still buys something: closure is what CERTIFIES
-;; A_wrap, and every member -- `prime` included -- inherits the raised propensity. The
+;; ACS_wrap, and every member -- `prime` included -- inherits the raised propensity. The
 ;; parents' chain never closed, so no certificate and no boost, however useful the rules.
 ;; With ample fuel and nothing competing, the boost decides nothing here; it decides which
 ;; strategy gets a scarce gate when several contest it, which is Exp 2's shape.
@@ -440,8 +440,8 @@
 !(add-atom &self (gate-coeff j 2))
 !(pp ("Firing propensity under (gate-coeff j 2):"))
 !(pp ("  parent R_so (chain never closed, no certificate): " (gate-score &ws (rule-organism R_so) R_so)))
-!(pp ("  gated R_so copy (member of certified A_wrap):     " (gate-score &ws_off (rule-organism (gated R_so (strat A_qa))) (gated R_so (strat A_qa)))))
-!(pp ("  prime (causally idle -- the SAME certificate):    " (gate-score &ws_off (rule-organism (prime (strat A_qa))) (prime (strat A_qa)))))
+!(pp ("  gated R_so copy (member of certified ACS_wrap):     " (gate-score &ws_off (rule-organism (gated R_so (strat ACS_qa))) (gated R_so (strat ACS_qa)))))
+!(pp ("  prime (causally idle -- the SAME certificate):    " (gate-score &ws_off (rule-organism (prime (strat ACS_qa))) (prime (strat ACS_qa)))))
 
 ;; and the scheduler's admission bar (MSC eq 13, fire iff U < Gate_C): a threshold set
 ;; between the two scores admits the packaged strategy and refuses the bare one outright.
@@ -451,4 +451,4 @@
 
 !(add-atom &self (gate-threshold 0.6))
 !(pp ("Admission at (gate-threshold 0.6): parent R_so " (gate-open? &ws (rule-organism R_so) R_so)
-      " | gated copy " (gate-open? &ws_off (rule-organism (gated R_so (strat A_qa))) (gated R_so (strat A_qa)))))
+      " | gated copy " (gate-open? &ws_off (rule-organism (gated R_so (strat ACS_qa))) (gated R_so (strat ACS_qa)))))
