@@ -11,11 +11,14 @@ The world is engineered around four overlapping causal cycles so that ACS (Activ
 | File | Purpose | Sentence count (approx) |
 |------|---------|-------------------------|
 | `world_premise.md` | One-page setup: geography, time, central tensions | ~50 |
-| `world_rules.md` | 30 explicit world rules, each expanded with 2-4 example sentences | ~150 |
-| `lore.md` | Background: places, people, customs, recurring objects, history | ~500 |
-| `events.md` | Specific event narratives demonstrating rule consequences | ~400 |
+| `world_rules.md` | 30 explicit world rules in the CONTROLLED LANGUAGE (`style_guide.md`): each a When-conditional + If-variant + generic/copular/negated-generic facts; `>` lines = design annotations, not corpus | 108 |
+| `world_rules.json` | **Machine-facing parse input** for the world rules — one entry per rule (`id`, `rule`, `texts`); the parser consumes exactly the `texts` arrays (annotations and headers excluded by construction). The `.md` is the annotated authoring view; the JSON is what the parse-gate admits. | 108 |
+| `lore.md` | Background: places, people, customs, recurring objects, history (free prose — controlled re-skin pending) | ~500 |
+| `events.md` | Specific event narratives demonstrating rule consequences (free prose — controlled re-skin pending) | ~400 |
 | `qa_pairs.md` | Evaluation: factual recall, why-questions, what-next, counterfactuals | ~105 QA pairs |
 | `cycle_map.md` | Reference diagram + rule-to-cycle index (NOT for parsing — design aid) | n/a |
+| `style_guide.md` | The controlled language: registers, sanctioned templates, banned constructions, entity registry, authored-TV dial, and the PARSE-GATE admission protocol (NOT for parsing — design aid) | n/a |
+| `expected_consolidation_map.md` | The enumerated paraphrase families and their expected merges — Tier-1 synonym merges, Tier-2 argument-structure alternations, Tier-3 negative controls — consolidation mining's grading key, as `cycle_map.md` is ACS detection's (NOT for parsing) | n/a |
 
 Total sentence count target: ≥ 1000 narrative sentences. QA pair count: ≥ 100.
 
@@ -29,7 +32,7 @@ Total sentence count target: ≥ 1000 narrative sentences. QA pair count: ≥ 10
 
 ## Reading order for ingestion (FUSE-NF input)
 
-The ingestion pipeline should treat `world_rules.md`, `lore.md`, and `events.md` as the parseable corpus. `world_premise.md` is mostly setup and can be included or excluded as a baseline experiment. `cycle_map.md` and this README are design metadata and should NOT be ingested.
+The parser reads the **JSON files** (`world_rules.json` now; JSON twins for `lore.md` and `events.md` after the pilot): each entry's `texts` array lists exactly the sentences to parse, so nothing else in the repo can be mistaken for corpus. The `.md` corpus files are the annotated authoring view (`>` lines = design annotations). `world_premise.md` is mostly setup and can be included or excluded as a baseline experiment. `cycle_map.md`, `style_guide.md`, `expected_consolidation_map.md`, and this README are design metadata and are NOT ingested.
 
 ## Canonical entities
 

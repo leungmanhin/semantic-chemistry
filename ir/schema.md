@@ -244,4 +244,4 @@ A change is IR-legal only if it keeps all of these true:
   - `../experiments/expt1-causal-qa/rules.metta` — the genome: the four causal-QA rules as canonical per-match `rule-lhs`/`rule-rhs` IR with `(var Name)` markers (§2.2).
 - **Reference engine** over these facts: `../petta/` — the engine (`util`/`fuel`/`compiler`/`gate`/`reaction`), the solve layer (`grounder`/`evaluator`), the metabolic `epoch` loop, the `acs` detector, and the worker layer (`worker` envelope + `chamber`/`ecan`/`reducer` bodies + `dispatch`); exercised by `../tests/` (`sh tests/run_suite.sh`).
 
-See the corpus these rules come from: `experiments/fiction-world-v0/` (world_rules R1–R5 = Cycle A).
+See the corpus these rules come from: `experiments/expt2-fiction-world/` (world_rules R1–R5 = Cycle A).
