@@ -16,7 +16,7 @@
       "When a lantern shows mist-light at night, the mist-light attracts nightmoths.",
       "Whenever a lantern shows mist-light at night, the mist-light draws nightmoths.",
       "Nightmoths do not see ordinary firelight.",
-      "When a night is cold, nightmoths rarely fly."
+      "Nightmoths rarely fly on a cold night."
     ]
   },
   {
@@ -24,7 +24,7 @@
     "rule": "Nightmoths landing on lanterns leave silken threads",
     "texts": [
       "When a nightmoth lands on a lantern, the nightmoth leaves silken threads on the lantern.",
-      "Whenever a nightmoth rests on a lantern, the nightmoth sheds silken threads onto the lantern.",
+      "Whenever a nightmoth is resting on a lantern, the nightmoth sheds silken threads onto the lantern.",
       "Every silken thread comes from the underside of a nightmoth."
     ]
   },
@@ -44,7 +44,7 @@
     "texts": [
       "When mire-essence forms in the cauldron, the Keepers store the mire-essence in clay vessels.",
       "Whenever mire-essence forms in the cauldron, the Keepers keep the mire-essence in clay vessels.",
-      "Each Keeper draws stored mire-essence when that Keeper tends a lantern.",
+      "Each Keeper draws the stored mire-essence when that Keeper tends a lantern.",
       "Stored mire-essence will feed lantern lighting."
     ]
   },
@@ -71,7 +71,7 @@
     "id": "R8",
     "rule": "Hunted nightmoths flee to dimmer lights",
     "texts": [
-      "When a sky-cat hunts at a lantern-row, the nightmoths that survive the hunt flee toward dim lanterns.",
+      "When a sky-cat hunts at a lantern-row, each nightmoth that survives the hunt flees to a dim lantern.",
       "Whenever a sky-cat hunts at a lantern-row, the nightmoths that survive the hunt move to the Hollows.",
       "When a nightmoth flees and reaches the Hollows, the lanterns at the Hollows gain silken threads."
     ]
@@ -89,8 +89,8 @@
     "id": "R10",
     "rule": "Sky-cats molt feathers to the cliff base",
     "texts": [
-      "When a sky-cat molts, feathers fall to the cliff base.",
-      "Whenever a sky-cat molts, the sky-cat sheds feathers onto the cliff base.",
+      "When a sky-cat molts, feathers fall to the base of the cliff.",
+      "Whenever a sky-cat molts, the sky-cat sheds feathers onto the base of the cliff.",
       "Apprentices collect the fallen feathers in the morning.",
       "The Keepers store the collected feathers in a bin at the Watch."
     ]
@@ -137,8 +137,8 @@
     "id": "R15",
     "rule": "Ground feathers ward lanterns from wraiths",
     "texts": [
-      "When a Keeper scatters ground feathers around a lit lantern, the feathers ward the lantern against wraiths.",
-      "Whenever a Keeper spreads ground feathers around a lit lantern, the feathers shield the lantern against wraiths.",
+      "When a Keeper grinds feathers and scatters the feathers around a lit lantern, the feathers ward the lantern against wraiths.",
+      "Whenever a Keeper grinds feathers and spreads the feathers around a lit lantern, the feathers shield the lantern against wraiths.",
       "Wraiths do not approach a warded lantern.",
       "Fresh ground feathers ward lanterns.",
       "Stale ground feathers do not ward lanterns."
@@ -157,19 +157,19 @@
     "id": "R17",
     "rule": "Salt-bloom in winter slows the burn",
     "texts": [
-      "When a Keeper adds salt-bloom to mire-essence in winter, that mire-essence burns slowly.",
+      "Whenever a Keeper adds salt-bloom to mire-essence in winter, that mire-essence burns slowly.",
       "Whenever a Keeper mixes salt-bloom into mire-essence in winter, that mire-essence burns slowly.",
-      "Salt-bloomed lanterns resist cold winds."
+      "When a cold wind strikes a salt-bloomed lantern, the lantern stays lit."
     ]
   },
   {
     "id": "R18",
     "rule": "Salt-bloom is harvested at new moon",
     "texts": [
-      "When a Keeper harvests salt-bloom at the new moon, that salt-bloom keeps its potency.",
+      "When a Keeper harvests salt-bloom at the new moon, that salt-bloom stays potent.",
       "Whenever a Keeper gathers salt-bloom at the new moon, that salt-bloom stays potent.",
-      "When a Keeper gathers salt-bloom at the full moon, that salt-bloom turns to chalky residue.",
-      "When a Keeper gathers salt-bloom at the half moon, that salt-bloom turns to chalky residue."
+      "Every time a Keeper gathers salt-bloom at the full moon, that salt-bloom turns to chalky residue.",
+      "Every time a Keeper gathers salt-bloom at the half moon, that salt-bloom turns to chalky residue."
     ]
   },
   {
@@ -186,8 +186,7 @@
     "id": "R20",
     "rule": "Spring tides occur near new moon and full moon",
     "texts": [
-      "Spring tides occur at new moon.",
-      "Spring tides occur at full moon.",
+      "Spring tides occur at new moon or at full moon.",
       "The Keepers time the salt-bloom harvest to the new-moon spring tide."
     ]
   },
@@ -196,7 +195,7 @@
     "rule": "Wintergloss repels nightmoths",
     "texts": [
       "Whenever a lantern burns wintergloss, the wintergloss repels nightmoths from that lantern.",
-      "When a lantern burns wintergloss alongside mire-essence, nightmoths avoid that lantern.",
+      "Whenever a lantern burns wintergloss alongside mire-essence, nightmoths avoid that lantern.",
       "The Keepers rarely burn wintergloss.",
       "The Keepers sometimes burn wintergloss at the Stilllight Lantern."
     ]
@@ -215,7 +214,7 @@
     "id": "R23",
     "rule": "Keepers inherit lantern-stations",
     "texts": [
-      "When a senior Keeper retires, an heir inherits that Keeper's lantern-station.",
+      "Whenever a senior Keeper retires, an heir inherits that Keeper's lantern-station.",
       "Whenever a senior Keeper dies, an heir inherits that Keeper's lantern-station.",
       "A Keeper's family keeps that Keeper's inherited station.",
       "The Council must approve any station transfer."
@@ -235,8 +234,8 @@
     "id": "R25",
     "rule": "Sustained solo tending completes apprenticeship",
     "texts": [
-      "Every apprentice who completes many solo nights of tending is invested as a Keeper by the Council.",
-      "When an apprentice's lantern fails, that apprentice's solo count resets.",
+      "When an apprentice's solo count is large, the Council invests the apprentice as a Keeper.",
+      "When a lantern of an apprentice fails, that apprentice's solo count resets.",
       "When an apprentice's lantern dims, that apprentice's solo count resets."
     ]
   },
@@ -264,7 +263,7 @@
     "rule": "Summer hunting yields the autumn feather store",
     "texts": [
       "Sky-cats hunt often through summer.",
-      "When a sky-cat hunts through summer, many feathers accumulate at the cliff base by autumn.",
+      "When a sky-cat hunts through summer, many feathers accumulate at the base of the cliff by autumn.",
       "Whenever a sky-cat hunts in summer, the autumn feather store grows."
     ]
   },
@@ -273,7 +272,7 @@
     "rule": "Large feather stores enable safe Sunken-Cove tending",
     "texts": [
       "When the feather store at the Watch is large, the Keepers tend the Sunken Cove lanterns safely in winter.",
-      "When the Watch's feather store is large, winter tending at the Sunken Cove stays safe.",
+      "When the Watch's feather store is large, the Keepers tend the Sunken Cove lanterns safely.",
       "The Council issues feather rations to the Sunken-Cove station in winter.",
       "When the feather store is small, wraith risk grows."
     ]

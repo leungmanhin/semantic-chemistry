@@ -54,7 +54,7 @@ control** (superficially similar, must NOT merge).
 | essence formation | "mire-essence **forms** in the cauldron" ↔ "the cauldron **yields** mire-essence" | R4 | intransitive theme-subject ↔ transitive source-subject |
 | feather fall | "feathers **fall** to the cliff base" ↔ "the sky-cat **sheds** feathers onto the cliff base" | R10 | inchoative ↔ causative (agent added) |
 | extinction | "that wind **extinguishes** unprepared lanterns" ↔ "unprepared lanterns **go out**" | R16 | causative ↔ inchoative (agent dropped) |
-| potency keeping | "that salt-bloom **keeps its potency**" ↔ "that salt-bloom **stays potent**" | R18 | possessed-attribute ↔ copular state |
+| ~~potency keeping~~ | ~~"keeps its potency" ↔ "stays potent"~~ | R18 | **RETIRED (run 2)**: the possessed-attribute side mis-parses ("its" link lost, spurious continuation added) — a tested-and-failed alternation; both variants now use "stays potent" |
 | shielding | "cliff-spires **shield** a cove from north winds" ↔ "a cove **is blocked** from the north wind **by** cliff-spires" | R22 | active ↔ passive |
 | stable burning | "lanterns **burn stably**" ↔ "lanterns **stay lit**" | R22 | manner adverb ↔ resultative copular |
 | safe tending | "the Keepers **tend** the lanterns **safely**" ↔ "winter tending **stays safe**" | R29 | manner adverb ↔ copular on the nominalized activity |
@@ -93,12 +93,28 @@ never sits inside a conditional's antecedent (split it into its own generic).
 - R8 "extra" (threads) · R12 "when they die" tail · R20 "near" (→ "at") ·
   R22 Northcove uniqueness → dropped or demoted to annotations.
 
+## Retired in v3 (run-2 driven)
+
+- R20's two per-phase laws → ONE disjunctive generic ("at new moon or at full
+  moon"): separately they jointly asserted every spring tide at both moons —
+  the first cross-sentence JOINT-consistency catch.
+- R18's "keeps its potency" → "stays potent" (Tier-2 pair retired, above).
+- R2 s4 restored to (essentially) its v1 shape — "Nightmoths rarely fly on a
+  cold night" — after the judge's own run-1 rewrite failed its run-2 audit.
+- R25 "many solo nights" → "solo count is large" (census-dead in run 2; the
+  large-store T-COND-STATE template is proven good twice at R29 s1).
+
 ## Watch list (kept on evidence, re-check at the next gate run)
 
-- R21 s3 vs s4: identical "The Keepers ⟨adv⟩ burn wintergloss…" shape parsed
-  differently across the two sentences in run 1 (habit rule vs bare name) —
-  exactly what the k-stability check exists to catch.
-- R25 s1: "many solo nights" as an OBJECT determiner inside a relative clause
-  survived run 1; the many/few ban is antecedent-scoped for now.
-- Bare-plural antecedent subjects judged good in run 1 and kept: R22 s1
+- "The Keepers ⟨adv⟩ …" habit sentences (R21 s3/s4, R5 s1/s2, R27 s5): the
+  same shape parses variably across sentences and runs (habit rule / bare
+  name / anonymous group) — k-stability's prey; kept as-is per the
+  convergence protocol (no reproduced complaint on any single sentence).
+- R25 s2 vs s3: identical possessive-in-trigger shape — s2 (fails) died the
+  census in run 2 while s3 (dims) passed; s2 rewritten to the of-phrase
+  form, s3 kept — same-shape parse variance on record.
+- Bare-plural antecedent subjects judged good in both runs and kept: R22 s1
   ("cliff-spires shield…"); all others were singularized.
+- Kept-verbatim sentences flagged only in run 2 (the 15 flips — e.g. R11 s1,
+  R12 s1's "the cove water", R30 s1/s4, R22 s1): untouched per the
+  convergence protocol; they rewrite only if the complaint reproduces.

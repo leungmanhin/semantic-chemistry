@@ -11,9 +11,9 @@ The world is engineered around four overlapping causal cycles so that ACS (Activ
 | File | Purpose | Sentence count (approx) |
 |------|---------|-------------------------|
 | `world_premise.md` | One-page setup: geography, time, central tensions | ~50 |
-| `world_rules.md` | 30 explicit world rules in the CONTROLLED LANGUAGE (`style_guide.md` v2): each a When-conditional + Whenever-variant + generic/copular/negated-generic facts; `>` lines = design annotations, not corpus | 109 |
-| `world_rules.json` | **Machine-facing parse input** for the world rules — one entry per rule (`id`, `rule`, `texts`); the parser consumes exactly the `texts` arrays (annotations, headers, and rule titles excluded by construction). The `.md` is the annotated authoring view; the JSON is what the parse-gate admits. | 109 |
-| `world_rules_parses.json` | Gate-run record (run 1 over the v1 corpus, 2026-08-29): per-sentence parses + fireability census + reviewer judgments — the evidence behind the v2 revision of the style guide and corpus. NOT ingested. | n/a |
+| `world_rules.md` | 30 explicit world rules in the CONTROLLED LANGUAGE (`style_guide.md` v3): each a When/Whenever-conditional + bounded variant + generic/copular/negated-generic facts; `>` lines = design annotations, not corpus | 108 |
+| `world_rules.json` | **Machine-facing parse input** for the world rules — one entry per rule (`id`, `rule`, `texts`); the parser consumes exactly the `texts` arrays (annotations, headers, and rule titles excluded by construction). The `.md` is the annotated authoring view; the JSON is what the parse-gate admits. | 108 |
+| `world_rules_parses.json` | Latest gate-run record (per-sentence parses + fireability census + reviewer judgments) — the evidence behind the guide/corpus revisions; earlier runs live in git history. NOT ingested. | n/a |
 | `lore.md` | Background: places, people, customs, recurring objects, history (free prose — controlled re-skin pending) | ~500 |
 | `events.md` | Specific event narratives demonstrating rule consequences (free prose — controlled re-skin pending) | ~400 |
 | `qa_pairs.md` | Evaluation: factual recall, why-questions, what-next, counterfactuals | ~105 QA pairs |

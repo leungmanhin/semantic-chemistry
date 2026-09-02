@@ -1,9 +1,9 @@
-# Aelmere Controlled-Language Style Guide (v2)
+# Aelmere Controlled-Language Style Guide (v3)
 
 Design metadata — **NOT part of the parseable corpus**. This guide defines the
 controlled language the corpus files are written in, derived from the parser's
 competence envelope (`semantic-parsing-hitl/prompt.txt`) and REVISED against
-the first real gate run (`world_rules_parses.json`): sentences use only the
+two real gate runs (`world_rules_parses.json`): sentences use only the
 construction families the parser handles robustly, so raw parses come out
 consistent without a mature FUSE-NF stage. Variation is not eliminated — it is
 **bounded**: each relation keeps a small enumerated set of surface variants,
@@ -33,7 +33,7 @@ sentences. Rule TITLES are display labels only — never parsed, never gated.
 
 | Template | Form | Parses to |
 |---|---|---|
-| T-COND | "When ⟨antecedent⟩, ⟨consequent⟩." / "Whenever ⟨antecedent⟩, ⟨consequent⟩." ("Every time" = synonym of Whenever) | `Implication` rule; Whenever/Every-time force the per-occurrence reading |
+| T-COND | "When ⟨antecedent⟩, ⟨consequent⟩." / "Whenever ⟨antecedent⟩, ⟨consequent⟩." ("Every time" = synonym of Whenever) | `Implication` rule; Whenever/Every-time force the per-occurrence reading and are PREFERRED for event antecedents (discipline rule 7) |
 | T-COND-STATE | "When ⟨NP⟩ is ⟨state/adjective⟩, ⟨consequent⟩." | rule over the state — the ONLY sanctioned stative antecedent (never an event verb of holding/staying) |
 | T-GEN | "⟨Kind-PLURAL⟩ ⟨verb phrase⟩." (optional frequency adverb) | generic rule, strength by adverb |
 | T-NEGGEN | "⟨Kind-plural/kind⟩ does/do not ⟨verb phrase⟩." | strength-0.0 rule |
@@ -71,6 +71,28 @@ the structural variant pair is **{When, Whenever}**.
    mire-essence", "that lantern-row"); prefer positive relation verbs
    (ward, resist, repel); express blocking as a positive law plus a separate
    T-NEGGEN — never a negated consequent or negated antecedent.
+7. **Prefer Whenever/Every-time for EVENT antecedents** (run-2 finding):
+   plain When can key the consequent to a participant instead of the
+   occasion, so repeated occasions collapse into one event. When remains
+   confidently correct for STATIVE antecedents (T-COND-STATE: "When the
+   feather store is large…").
+8. **Trigger participants carry no modifiers**: a participial or state
+   adjective on a mass/plural participant in a trigger ("ground feathers",
+   "stored mire-essence") is unstable — say the producing act as its own
+   finite clause ("grinds feathers and scatters the feathers…"), add an
+   article ("the stored mire-essence"), or use a registry-fused compound.
+9. **Position/state verbs are not triggers**: "rests on", "a night is cold"
+   name no happening. Use the progressive ("is resting on") or fold the
+   condition into the clause it restricts ("Nightmoths rarely fly on a cold
+   night").
+10. **Noun-noun compounds must be registry entries or of-phrases**: an
+    unregistered compound ("the cliff base", "the cove water") makes the
+    parser invent a link — write "the base of the cliff", "the cove's
+    water", or register the compound.
+11. **Adjectives never sit on bare-plural objects** ("dim lanterns", "cold
+    winds" invent witnesses or mis-attach to the set): use a singular
+    indefinite object ("flees to a dim lantern") or move the adjective into
+    a condition clause ("When a cold wind strikes…").
 
 ## Generic discipline
 
@@ -118,7 +140,10 @@ beliefs → drop or restate as neutral T-COP · requirement-on-things → positi
 law for the good case + T-NEGGEN for the bad case · "other ⟨kind⟩" →
 enumerate named representatives + a `>` annotation stating the general
 intent · uniqueness ("the ONLY shielded cove") → plain T-COP + a `>`
-annotation.
+annotation · unregistered compounds → of-phrases. Disjunction ("or") remains
+banned in ANTECEDENTS but is ALLOWED in a generic statement ("Spring tides
+occur at new moon or at full moon") — and is required when two separate
+exceptionless laws would jointly contradict.
 
 ## Entity registry (closed lexicon)
 
@@ -129,7 +154,10 @@ Stilllight Lantern, lantern-row, lantern-station. Things: lantern, wick,
 mire-essence, mist-light, ordinary oil, fresh water, sea-water, silken thread,
 clay vessel, copper cauldron, salt-bloom, chalky residue, wintergloss,
 feather, ground feathers, feather store, feather ration, central pool,
-ledger. Collectives: crowd (of nightmoths), handful (of nightmoths).
+ledger, solo count. Collectives: crowd (of nightmoths), handful (of
+nightmoths). Registry compounds ("ground feathers", "feather store",
+"mist-light" …) are the ONLY sanctioned noun-noun forms — any other
+noun-noun pairing must become an of-phrase or a possessive.
 Creatures: nightmoth, sky-cat, wraith. Times/tides: night, dawn, winter,
 summer, autumn, new moon, full moon, half moon, moon phase, spring tide, cold
 wind. Hyphenated compounds are fixed lexicon entries; use them verbatim.
@@ -161,6 +189,14 @@ this guide. Admission itself stays mechanical (checks 1–5); everything the
 judge proposes goes back through the gate. Its non-determinism is harmless in
 that position and catches what the mechanical checks cannot: stably-wrong
 parses.
+
+**The convergence protocol** (v3, from comparing runs 1–2): a judge complaint
+triggers a rewrite ONLY if it reproduces across ≥2 independent judge runs —
+the k-stability principle applied to the judge itself. Run 2 measured a ~35%
+flip rate on identical sentences and several reversals of the judge's own
+run-1 prescriptions, so single-run complaints are noise, not defects.
+ADMISSION = mechanical checks green. Residual judge commentary on admitted
+sentences is logged as advisory backlog, never rewrite fuel.
 
 ## What the controlled corpus knowingly gives up (and where it went)
 
