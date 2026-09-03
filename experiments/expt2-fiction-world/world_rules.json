@@ -34,7 +34,7 @@
     "texts": [
       "When a Keeper boils silken threads in sea-water, mire-essence forms in the cauldron.",
       "Whenever a Keeper boils silken threads in sea-water, the cauldron yields mire-essence.",
-      "The Keepers take the sea-water from the Salt-bloom Tide-pools.",
+      "Each Keeper takes the sea-water from the Salt-bloom Tide-pools.",
       "Fresh water does not yield mire-essence."
     ]
   },
@@ -72,7 +72,7 @@
     "rule": "Hunted nightmoths flee to dimmer lights",
     "texts": [
       "When a sky-cat hunts at a lantern-row, each nightmoth that survives the hunt flees to a dim lantern.",
-      "Whenever a sky-cat hunts at a lantern-row, the nightmoths that survive the hunt move to the Hollows.",
+      "Whenever a sky-cat hunts at a lantern-row, each nightmoth that survives the hunt moves to the Hollows.",
       "Whenever a nightmoth reaches the Hollows, the lanterns at the Hollows gain silken threads."
     ]
   },
@@ -92,7 +92,7 @@
       "When a sky-cat molts, feathers fall to the base of the cliff.",
       "Whenever a sky-cat molts, the sky-cat sheds feathers onto the base of the cliff.",
       "Apprentices collect the fallen feathers in the morning.",
-      "The Keepers store the collected feathers in a bin at the Watch."
+      "Each Keeper stores the collected feathers in a bin at the Watch."
     ]
   },
   {
@@ -187,7 +187,7 @@
     "rule": "Spring tides occur near new moon and full moon",
     "texts": [
       "Spring tides occur at new moon or at full moon.",
-      "The Keepers time the salt-bloom harvest to the new-moon spring tide."
+      "Each Keeper times the salt-bloom harvest to the new-moon spring tide."
     ]
   },
   {
@@ -204,8 +204,8 @@
     "id": "R22",
     "rule": "Cliff-spires shield the Northcove",
     "texts": [
-      "Whenever a cliff-spire shields a cove against north winds, lanterns in that cove burn stably through winter.",
-      "Whenever a cliff-spire shelters a cove, the lanterns in that cove stay lit through winter.",
+      "Whenever a cliff-spire shields a cove against north winds, each lantern in that cove burns stably through winter.",
+      "Whenever a cliff-spire shelters a cove, each lantern in that cove stays lit through winter.",
       "The Northcove is a shielded cove in Aelmere.",
       "Northcove lanterns never go out when cold winds blow."
     ]
@@ -271,7 +271,7 @@
     "id": "R29",
     "rule": "Large feather stores enable safe Sunken-Cove tending",
     "texts": [
-      "When the feather store at the Watch is large, the Keepers tend the Sunken Cove lanterns safely in winter.",
+      "When the feather store at the Watch is large, each Keeper tends the Sunken Cove lanterns safely in winter.",
       "The Council issues feather rations to the Sunken-Cove station in winter.",
       "When the feather store is small, wraith risk grows."
     ]
@@ -280,10 +280,10 @@
     "id": "R30",
     "rule": "Wraith activity prompts feather-ration requests",
     "texts": [
-      "Whenever wraith activity at the Sunken Cove increases, a station near the Sunken Cove requests feather rations from the Council.",
+      "Whenever a wraith drains a lantern at the Sunken Cove, a station near the Sunken Cove requests feather rations from the Council.",
       "Whenever wraith sightings at the Sunken Cove rise, the stations ask the Council for feather rations.",
       "The Council weighs the requests against the central feather store.",
-      "The Council usually prioritizes stations whose lanterns are drained."
+      "When a station reports a drained lantern, the Council prioritizes that station."
     ]
   }
 ]

@@ -60,8 +60,9 @@ the structural variant pair is **{When, Whenever}**.
    sentence, and (REPRODUCED across runs 2–3) capital-K "the Keepers" in a
    consequent parses as a bare PROPER NAME with no link to the keeper kind.
    Use "a Keeper" in conditionals (antecedent or consequent) and "Each
-   Keeper …" for habit generics. Plain habit sentences that have parsed
-   stable-good ("The Keepers take the sea-water…") are tolerated on watch.
+   Keeper …" for habit generics (v5 converted the thrice-reproduced cases).
+   The few remaining "The Keepers …" habits (R9 s3, R21 s3/s4, R27 s5) are
+   tolerated only while stable-good.
 4. **Every "that N" must be bound in-sentence** by an indefinite introduced
    in the antecedent clause ("…hunts at a lantern-row, … at that
    lantern-row…").
@@ -77,7 +78,9 @@ the structural variant pair is **{When, Whenever}**.
    plain When can key the consequent to a participant instead of the
    occasion, so repeated occasions collapse into one event. When remains
    confidently correct for STATIVE antecedents (T-COND-STATE: "When the
-   feather store is large…").
+   feather store is large…"). Caveat (run 4): Whenever does NOT reliably
+   cure occasion-keying — the parser's consequent keying varies on its own —
+   so this is a preference with partial evidence, not a guarantee.
 8. **Trigger participants carry no modifiers**: a participial or state
    adjective on a mass/plural participant in a trigger ("ground feathers",
    "stored mire-essence") is unstable — say the producing act as its own
@@ -212,6 +215,14 @@ flip rate on identical sentences and several reversals of the judge's own
 run-1 prescriptions, so single-run complaints are noise, not defects.
 ADMISSION = mechanical checks green. Residual judge commentary on admitted
 sentences is logged as advisory backlog, never rewrite fuel.
+
+**Incremental admission** (v5): parsing the full corpus every round is
+expensive, so accepted sentences are FROZEN and only edited sentences are
+re-parsed — `world_rules_pending.json` carries just those (same schema), and
+`assemble_parses.py` merges the returned `world_rules_pending_parses.json`
+into the accepted record by exact sentence match and reports the census.
+Where the pipeline offers an ADJUDICATOR, an adjudicator-confirmed complaint
+is the reproducibility signal.
 
 ## What the controlled corpus knowingly gives up (and where it went)
 

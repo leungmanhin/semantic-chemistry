@@ -1,0 +1,53 @@
+[
+  {
+    "id": "R4",
+    "rule": "Silken threads boiled in sea-water yield mire-essence",
+    "texts": [
+      "Each Keeper takes the sea-water from the Salt-bloom Tide-pools."
+    ]
+  },
+  {
+    "id": "R8",
+    "rule": "Hunted nightmoths flee to dimmer lights",
+    "texts": [
+      "Whenever a sky-cat hunts at a lantern-row, each nightmoth that survives the hunt moves to the Hollows."
+    ]
+  },
+  {
+    "id": "R10",
+    "rule": "Sky-cats molt feathers to the cliff base",
+    "texts": [
+      "Each Keeper stores the collected feathers in a bin at the Watch."
+    ]
+  },
+  {
+    "id": "R20",
+    "rule": "Spring tides occur near new moon and full moon",
+    "texts": [
+      "Each Keeper times the salt-bloom harvest to the new-moon spring tide."
+    ]
+  },
+  {
+    "id": "R22",
+    "rule": "Cliff-spires shield the Northcove",
+    "texts": [
+      "Whenever a cliff-spire shields a cove against north winds, each lantern in that cove burns stably through winter.",
+      "Whenever a cliff-spire shelters a cove, each lantern in that cove stays lit through winter."
+    ]
+  },
+  {
+    "id": "R29",
+    "rule": "Large feather stores enable safe Sunken-Cove tending",
+    "texts": [
+      "When the feather store at the Watch is large, each Keeper tends the Sunken Cove lanterns safely in winter."
+    ]
+  },
+  {
+    "id": "R30",
+    "rule": "Wraith activity prompts feather-ration requests",
+    "texts": [
+      "Whenever a wraith drains a lantern at the Sunken Cove, a station near the Sunken Cove requests feather rations from the Council.",
+      "When a station reports a drained lantern, the Council prioritizes that station."
+    ]
+  }
+]

@@ -13,6 +13,8 @@ The world is engineered around four overlapping causal cycles so that ACS (Activ
 | `world_premise.md` | One-page setup: geography, time, central tensions | ~50 |
 | `world_rules.md` | 30 explicit world rules in the CONTROLLED LANGUAGE (`style_guide.md` v4 — the admission pass): each a When/Whenever-conditional + bounded variant + generic/copular/negated-generic facts; `>` lines = design annotations, not corpus | 107 |
 | `world_rules.json` | **Machine-facing parse input** for the world rules — one entry per rule (`id`, `rule`, `texts`); the parser consumes exactly the `texts` arrays (annotations, headers, and rule titles excluded by construction). The `.md` is the annotated authoring view; the JSON is what the parse-gate admits. | 107 |
+| `world_rules_pending.json` | **The re-parse subset**: only the sentences edited since the last accepted run, in the same `{id, rule, texts}` schema — parse THIS, not the full corpus (incremental admission; everything else is frozen as accepted). | (varies) |
+| `assemble_parses.py` | Merges a pending-subset parse record (`world_rules_pending_parses.json`) into the accepted full record by exact sentence match, in corpus order; `--check` reports without writing. Prints the census summary — admission = every sentence `ok`. | n/a |
 | `world_rules_parses.json` | Latest gate-run record (per-sentence parses + fireability census + reviewer judgments) — the evidence behind the guide/corpus revisions; earlier runs live in git history. NOT ingested. | n/a |
 | `lore.md` | Background: places, people, customs, recurring objects, history (free prose — controlled re-skin pending) | ~500 |
 | `events.md` | Specific event narratives demonstrating rule consequences (free prose — controlled re-skin pending) | ~400 |
@@ -49,4 +51,4 @@ For consistency across files, the following entities are canonical:
 
 ## Status
 
-Hand-authored draft (no LLM-assisted expansion yet). Intended as a seed corpus that can later be expanded with LLM-generated paraphrase variations and additional event narratives once the FUSE-NF parser is wired up.
+`world_rules` is ADMITTED (2026-09-03): all 107 sentences pass the fireability census (five gate runs, incremental admission from run 5); `world_rules_parses.json` is the accepted parse record and the reviewer's residual remarks live in `expected_consolidation_map.md`'s advisory backlog. `lore.md` and `events.md` remain free prose pending their controlled re-skin (episodic register; sealed-rule tagging first). Later expansion with LLM-generated paraphrase variants goes through the same parse-gate.

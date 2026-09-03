@@ -1,8 +1,8 @@
 # World Rules
 
 Thirty load-bearing rules of the Lantern-Keepers' world, written in the
-controlled language of `style_guide.md` (LAW register, v4 — the admission pass
-after three parse-gate runs): each rule is stated as a When- or
+controlled language of `style_guide.md` (LAW register, v5 — incremental admission
+after four parse-gate runs): each rule is stated as a When- or
 Whenever-conditional, restated as a bounded variant, and completed by generic
 / copular / negated-generic facts. The designed paraphrase families are
 enumerated in `expected_consolidation_map.md`. Lines beginning with `>` are
@@ -33,7 +33,7 @@ of a nightmoth.
 
 When a Keeper boils silken threads in sea-water, mire-essence forms in the
 cauldron. Whenever a Keeper boils silken threads in sea-water, the cauldron
-yields mire-essence. The Keepers take the sea-water from the Salt-bloom
+yields mire-essence. Each Keeper takes the sea-water from the Salt-bloom
 Tide-pools. Fresh water does not yield mire-essence.
 
 ## R5 — Stored mire-essence feeds future lighting
@@ -65,8 +65,8 @@ harvest at that lantern-row falls.
 ## R8 — Hunted nightmoths flee to dimmer lights
 
 When a sky-cat hunts at a lantern-row, each nightmoth that survives the hunt
-flees to a dim lantern. Whenever a sky-cat hunts at a lantern-row, the
-nightmoths that survive the hunt move to the Hollows. Whenever a nightmoth
+flees to a dim lantern. Whenever a sky-cat hunts at a lantern-row, each
+nightmoth that survives the hunt moves to the Hollows. Whenever a nightmoth
 reaches the Hollows, the lanterns at the Hollows gain silken threads.
 
 ## R9 — Sky-cats roost on the cliff-spires by day
@@ -78,7 +78,7 @@ village. The Keepers tolerate sky-cats.
 
 When a sky-cat molts, feathers fall to the base of the cliff. Whenever a
 sky-cat molts, the sky-cat sheds feathers onto the base of the cliff.
-Apprentices collect the fallen feathers in the morning. The Keepers store the
+Apprentices collect the fallen feathers in the morning. Each Keeper stores the
 collected feathers in a bin at the Watch.
 
 ## R11 — Untended lanterns die before dawn
@@ -153,7 +153,7 @@ dissolves into the seawater.
 
 ## R20 — Spring tides occur near new moon and full moon
 
-Spring tides occur at new moon or at full moon. The Keepers time the
+Spring tides occur at new moon or at full moon. Each Keeper times the
 salt-bloom harvest to the new-moon spring tide.
 
 > Design notes: "at" approximates the original "near"; the two phases are one
@@ -169,10 +169,11 @@ Keepers sometimes burn wintergloss at the Stilllight Lantern.
 
 ## R22 — Cliff-spires shield the Northcove
 
-Whenever a cliff-spire shields a cove against north winds, lanterns in that
-cove burn stably through winter. Whenever a cliff-spire shelters a cove, the
-lanterns in that cove stay lit through winter. The Northcove is a shielded
-cove in Aelmere. Northcove lanterns never go out when cold winds blow.
+Whenever a cliff-spire shields a cove against north winds, each lantern in
+that cove burns stably through winter. Whenever a cliff-spire shelters a cove,
+each lantern in that cove stays lit through winter. The Northcove is a
+shielded cove in Aelmere. Northcove lanterns never go out when cold winds
+blow.
 
 > Design value (not corpus): the Northcove is Aelmere's ONLY shielded cove (a definite predicate nominal has no carrier).
 
@@ -223,8 +224,8 @@ sky-cat hunts in summer, the autumn feather store grows.
 
 ## R29 — Large feather stores enable safe Sunken-Cove tending
 
-When the feather store at the Watch is large, the Keepers tend the Sunken Cove
-lanterns safely in winter. The Council issues feather rations to the
+When the feather store at the Watch is large, each Keeper tends the Sunken
+Cove lanterns safely in winter. The Council issues feather rations to the
 Sunken-Cove station in winter. When the feather store is small, wraith risk
 grows.
 
@@ -232,8 +233,9 @@ grows.
 
 ## R30 — Wraith activity prompts feather-ration requests
 
-Whenever wraith activity at the Sunken Cove increases, a station near the
+Whenever a wraith drains a lantern at the Sunken Cove, a station near the
 Sunken Cove requests feather rations from the Council. Whenever wraith
 sightings at the Sunken Cove rise, the stations ask the Council for feather
 rations. The Council weighs the requests against the central feather store.
-The Council usually prioritizes stations whose lanterns are drained.
+When a station reports a drained lantern, the Council prioritizes that
+station.

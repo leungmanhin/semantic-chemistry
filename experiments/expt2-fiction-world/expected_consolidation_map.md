@@ -46,7 +46,6 @@ control** (superficially similar, must NOT merge).
 | shield (cove) | shield ↔ shelter | R22 |
 | redistribute | redistribute ↔ reallocate | R27 |
 | request | request ↔ ask for | R30 |
-| increase | increase ↔ rise | R30 |
 
 ## Tier 2 — argument-structure alternations (merge with slot re-mapping)
 
@@ -116,6 +115,37 @@ never sits inside a conditional's antecedent (split it into its own generic).
 - R20 stays the disjunctive generic despite run 3's request to split it back
   — a decided representation tradeoff (opacity to a when-question beats a
   joint contradiction); judge reversal #2 on record.
+
+## Retired in v5 (run-4 driven — the final micro-pass, 9 edits)
+
+- R22 s1/s2: definite-plural consequents ("lanterns in that cove") → "each
+  lantern in that cove" (the run-4 census death was a NESTED rule hung off a
+  minted lantern group in the conclusion).
+- The thrice-reproduced capital-K habits (R4 s3, R10 s4, R20 s2, R29 s1) →
+  "Each Keeper …"; R8 s2 → the each-form its sibling proved.
+- R30 s1 "wraith activity … increases" → the concrete trigger "a wraith
+  drains a lantern at the Sunken Cove" (ties Cycle D to the social loop);
+  the Tier-1 increase ↔ rise pair is therefore retired. R30 s4 → the event
+  form "When a station reports a drained lantern, the Council prioritizes
+  that station" after three failed wordings.
+
+## Advisory backlog (post-admission — reviewer remarks on admitted sentences)
+
+Logged, not acted on, per the convergence protocol; each earns a targeted
+edit only if it reproduces (adjudicator-confirmed) in a later run.
+
+- R4 s3: "the Salt-bloom Tide-pools" recorded as ONE named tide-pool (a
+  capitalised multi-word name loses plurality). Registry decision pending:
+  keep the proper name (accept singular) or lowercase the head noun.
+- R20 s2: "times X to Y" has no fitting slot — parsed as spatial destination.
+  Candidate: "Each Keeper harvests salt-bloom at the new-moon spring tide."
+- R22 s2: "stays lit" yields one shared lit-state across shelterings;
+  candidate = a plain finite verb as in s1 ("burns steadily").
+- R30 s1: "a station near the Sunken Cove" lifted out of the condition and
+  asserted to exist; "at the Sunken Cove" attached to the lantern, not the
+  draining. Candidate: "Whenever a wraith drains a lantern at the Sunken
+  Cove, each station near the Sunken Cove requests feather rations from the
+  Council."
 
 ## Watch list (kept on evidence, re-check at the next gate run)
 
