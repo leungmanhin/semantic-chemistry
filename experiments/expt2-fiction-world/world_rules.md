@@ -1,33 +1,33 @@
 # World Rules
 
 Thirty load-bearing rules of the Lantern-Keepers' world, written in the
-controlled language of `style_guide.md` (LAW register, v3 — revised against
-two parse-gate runs): each rule is stated as a When- or Whenever-conditional,
-restated as a bounded variant, and completed by generic / copular /
-negated-generic facts. The designed paraphrase families are enumerated in
-`expected_consolidation_map.md`. Lines beginning with `>` are design
-annotations and are not part of the parseable corpus; the machine-facing
-parse input is `world_rules.json`.
+controlled language of `style_guide.md` (LAW register, v4 — the admission pass
+after three parse-gate runs): each rule is stated as a When- or
+Whenever-conditional, restated as a bounded variant, and completed by generic
+/ copular / negated-generic facts. The designed paraphrase families are
+enumerated in `expected_consolidation_map.md`. Lines beginning with `>` are
+design annotations and are not part of the parseable corpus; the
+machine-facing parse input is `world_rules.json`.
 
 ## R1 — Lighting a lantern produces mist-light
 
-When a lantern burns mire-essence, the lantern produces mist-light. Whenever
-a lantern burns mire-essence, the lantern gives mist-light. Mist-light is a
-pale silver flame. Ordinary oil does not produce mist-light.
+When a lantern burns mire-essence, the lantern produces mist-light. Whenever a
+lantern burns mire-essence, the lantern gives mist-light. Mist-light is a pale
+silver flame. Ordinary oil does not produce mist-light.
 
 ## R2 — Mist-light attracts nightmoths
 
 When a lantern shows mist-light at night, the mist-light attracts nightmoths.
-Whenever a lantern shows mist-light at night, the mist-light draws
-nightmoths. Nightmoths do not see ordinary firelight. Nightmoths rarely fly
-on a cold night.
+Whenever a lantern shows mist-light at night, the mist-light draws nightmoths.
+Nightmoths do not see ordinary firelight. Nightmoths rarely fly on a cold
+night.
 
 ## R3 — Nightmoths landing on lanterns leave silken threads
 
 When a nightmoth lands on a lantern, the nightmoth leaves silken threads on
-the lantern. Whenever a nightmoth is resting on a lantern, the nightmoth
-sheds silken threads onto the lantern. Every silken thread comes from the
-underside of a nightmoth.
+the lantern. Whenever a nightmoth is resting on a lantern, the nightmoth sheds
+silken threads onto the lantern. Every silken thread comes from the underside
+of a nightmoth.
 
 ## R4 — Silken threads boiled in sea-water yield mire-essence
 
@@ -38,18 +38,17 @@ Tide-pools. Fresh water does not yield mire-essence.
 
 ## R5 — Stored mire-essence feeds future lighting
 
-When mire-essence forms in the cauldron, the Keepers store the mire-essence
-in clay vessels. Whenever mire-essence forms in the cauldron, the Keepers
-keep the mire-essence in clay vessels. Each Keeper draws the stored
-mire-essence when that Keeper tends a lantern. Stored mire-essence will feed
-lantern lighting.
+When mire-essence forms in the cauldron, a Keeper stores the mire-essence in
+clay vessels. Whenever mire-essence forms in the cauldron, a Keeper keeps the
+mire-essence in clay vessels. Whenever a Keeper tends a lantern, that Keeper
+draws the stored mire-essence. Stored mire-essence feeds lantern lighting.
 
 > Cycle A closes here: lantern → mist-light → moths → threads → mire-essence → lantern.
 
 ## R6 — A crowd of nightmoths brings sky-cats down
 
-When a crowd of nightmoths gathers at a lantern-row, sky-cats descend from
-the cliff-spires. Whenever a crowd of nightmoths settles on a lantern-row,
+When a crowd of nightmoths gathers at a lantern-row, sky-cats descend from the
+cliff-spires. Whenever a crowd of nightmoths settles on a lantern-row,
 sky-cats descend from the cliff-spires. When a handful of nightmoths gathers
 at a lantern-row, sky-cats stay on the cliff-spires.
 
@@ -67,8 +66,8 @@ harvest at that lantern-row falls.
 
 When a sky-cat hunts at a lantern-row, each nightmoth that survives the hunt
 flees to a dim lantern. Whenever a sky-cat hunts at a lantern-row, the
-nightmoths that survive the hunt move to the Hollows. When a nightmoth flees
-and reaches the Hollows, the lanterns at the Hollows gain silken threads.
+nightmoths that survive the hunt move to the Hollows. Whenever a nightmoth
+reaches the Hollows, the lanterns at the Hollows gain silken threads.
 
 ## R9 — Sky-cats roost on the cliff-spires by day
 
@@ -86,15 +85,15 @@ collected feathers in a bin at the Watch.
 
 When a Keeper leaves a lantern untended overnight, the lantern dies before
 dawn. When a lantern is untended through the night, the lantern goes out
-before dawn. A Keeper refreshes the mire-essence and trims the wick during
+before dawn. Each Keeper refreshes the mire-essence and trims the wick during
 the night.
 
 ## R12 — Dead lanterns at the Sunken Cove raise wraiths
 
-When a lantern at the Sunken Cove dies before dawn, a wraith emerges from the
-cove water. Whenever a lantern at the Sunken Cove goes out at night, a wraith
-rises from the cove's water. Lanterns away from the Sunken Cove do not raise
-wraiths. The Sunken Cove is the village's drowned graveyard.
+Whenever a lantern at the Sunken Cove dies before dawn, a wraith emerges from
+the cove's water. Whenever a lantern at the Sunken Cove goes out at night, a
+wraith rises from the cove's water. Lanterns away from the Sunken Cove do not
+raise wraiths. The Sunken Cove is the village's drowned graveyard.
 
 ## R13 — Wraiths drain mire-essence from lit lanterns
 
@@ -130,10 +129,10 @@ winds.
 
 ## R17 — Salt-bloom in winter slows the burn
 
-Whenever a Keeper adds salt-bloom to mire-essence in winter, that
-mire-essence burns slowly. Whenever a Keeper mixes salt-bloom into
-mire-essence in winter, that mire-essence burns slowly. When a cold wind
-strikes a salt-bloomed lantern, the lantern stays lit.
+Whenever a Keeper adds salt-bloom to mire-essence in winter, that mire-essence
+burns slowly. Whenever a Keeper mixes salt-bloom into mire-essence in winter,
+that mire-essence burns slowly. When a cold wind strikes a salt-bloomed
+lantern, the lantern stays lit.
 
 ## R18 — Salt-bloom is harvested at new moon
 
@@ -149,8 +148,8 @@ the half moon, that salt-bloom turns to chalky residue.
 
 When a spring tide fills the tide-pools, salt-bloom blooms in the tide-pools.
 Whenever a spring tide fills the tide-pools, salt-bloom grows in the
-tide-pools. Salt-bloom is a pale crystalline crust. Salt-bloom soon dissolves
-into the seawater.
+tide-pools. Salt-bloom is a pale crystalline crust. Salt-bloom quickly
+dissolves into the seawater.
 
 ## R20 — Spring tides occur near new moon and full moon
 
@@ -165,31 +164,30 @@ salt-bloom harvest to the new-moon spring tide.
 
 Whenever a lantern burns wintergloss, the wintergloss repels nightmoths from
 that lantern. Whenever a lantern burns wintergloss alongside mire-essence,
-nightmoths avoid that lantern. The Keepers rarely burn wintergloss. The
+every nightmoth avoids that lantern. The Keepers rarely burn wintergloss. The
 Keepers sometimes burn wintergloss at the Stilllight Lantern.
 
 ## R22 — Cliff-spires shield the Northcove
 
-When cliff-spires shield a cove from north winds, lanterns in that cove burn
-stably through winter. When a cove is blocked from the north wind by
-cliff-spires, the lanterns in that cove stay lit through winter. The
-Northcove is a shielded cove in Aelmere. Northcove lanterns never go out in
-cold winds.
+Whenever a cliff-spire shields a cove against north winds, lanterns in that
+cove burn stably through winter. Whenever a cliff-spire shelters a cove, the
+lanterns in that cove stay lit through winter. The Northcove is a shielded
+cove in Aelmere. Northcove lanterns never go out when cold winds blow.
 
 > Design value (not corpus): the Northcove is Aelmere's ONLY shielded cove (a definite predicate nominal has no carrier).
 
 ## R23 — Keepers inherit lantern-stations
 
 Whenever a senior Keeper retires, an heir inherits that Keeper's
-lantern-station. Whenever a senior Keeper dies, an heir inherits that
-Keeper's lantern-station. A Keeper's family keeps that Keeper's inherited
-station. The Council must approve any station transfer.
+lantern-station. Whenever a senior Keeper dies, an heir inherits that Keeper's
+lantern-station. A Keeper's family keeps that Keeper's inherited station. The
+Council must approve any station transfer.
 
 ## R24 — Newcomers apprentice under a senior Keeper
 
 Newcomers must apprentice. Each newcomer apprentices under a senior Keeper.
-New apprentices do not tend a lantern alone. The Council permits an
-apprentice to begin solo tending.
+New apprentices do not tend a lantern alone. The Council permits an apprentice
+to begin solo tending.
 
 ## R25 — Sustained solo tending completes apprenticeship
 
@@ -202,8 +200,8 @@ resets.
 
 ## R26 — The Council convenes at full moon
 
-When the moon is full, the Council convenes at the Watch. Whenever the moon
-is full, the Council meets at the Watch.
+When the moon is full, the Council convenes at the Watch. Whenever the moon is
+full, the Council meets at the Watch.
 
 > Design note: outside full moons the Council meets only in declared emergency (the "rarely meets at other times" sentence retired — "at other times" names no encodable occasion).
 
@@ -217,24 +215,25 @@ central pool. The Keepers record the redistribution in the Watch ledgers.
 
 ## R28 — Summer hunting yields the autumn feather store
 
-Sky-cats hunt often through summer. When a sky-cat hunts through summer, many
-feathers accumulate at the base of the cliff by autumn. Whenever a sky-cat
-hunts in summer, the autumn feather store grows.
+Sky-cats hunt often through summer. Whenever a sky-cat hunts through summer,
+many feathers accumulate at the base of the cliff by autumn. Whenever a
+sky-cat hunts in summer, the autumn feather store grows.
 
 > Design note (mechanism): more hunting → more molting → more fallen feathers. ("Frequent hunting causes frequent molting" retired — nominalized subjects yield an episode, not a law.)
 
 ## R29 — Large feather stores enable safe Sunken-Cove tending
 
-When the feather store at the Watch is large, the Keepers tend the Sunken
-Cove lanterns safely in winter. When the Watch's feather store is large, the
-Keepers tend the Sunken Cove lanterns safely. The Council issues feather
-rations to the Sunken-Cove station in winter. When the feather store is
-small, wraith risk grows.
+When the feather store at the Watch is large, the Keepers tend the Sunken Cove
+lanterns safely in winter. The Council issues feather rations to the
+Sunken-Cove station in winter. When the feather store is small, wraith risk
+grows.
+
+> Retired (v4): the possessive-store variant sentence — its slot failed in two wordings while the sibling passed three runs.
 
 ## R30 — Wraith activity prompts feather-ration requests
 
-When wraith activity at the Sunken Cove increases, the neighboring stations
-request feather rations from the Council. Whenever wraith sightings at the
-Sunken Cove rise, the stations ask the Council for feather rations. The
-Council weighs the requests against the central feather store. The Council
-prioritizes stations with drained lanterns.
+Whenever wraith activity at the Sunken Cove increases, a station near the
+Sunken Cove requests feather rations from the Council. Whenever wraith
+sightings at the Sunken Cove rise, the stations ask the Council for feather
+rations. The Council weighs the requests against the central feather store.
+The Council usually prioritizes stations whose lanterns are drained.

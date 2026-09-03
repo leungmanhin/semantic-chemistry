@@ -1,9 +1,9 @@
-# Aelmere Controlled-Language Style Guide (v3)
+# Aelmere Controlled-Language Style Guide (v4)
 
 Design metadata — **NOT part of the parseable corpus**. This guide defines the
 controlled language the corpus files are written in, derived from the parser's
 competence envelope (`semantic-parsing-hitl/prompt.txt`) and REVISED against
-two real gate runs (`world_rules_parses.json`): sentences use only the
+three real gate runs (`world_rules_parses.json` + git history): sentences use only the
 construction families the parser handles robustly, so raw parses come out
 consistent without a mature FUSE-NF stage. Variation is not eliminated — it is
 **bounded**: each relation keeps a small enumerated set of surface variants,
@@ -55,11 +55,13 @@ the structural variant pair is **{When, Whenever}**.
    constructed terms nothing asserts. Use finite verbs; restrictive relative
    clauses with finite verbs are sanctioned ("the nightmoths that survive
    the hunt").
-3. **No definite-plural group agents**: "the Keepers" in an antecedent mints
-   a private anonymous group witness per sentence, pinning the rule to an
-   unmatchable group. Use "a Keeper". (In habit generics, prefer "Each
-   Keeper …"; existing unflagged "The Keepers …" habit sentences are
-   tolerated on watch.)
+3. **No definite-plural group agents — anywhere in a conditional**: "the
+   Keepers" in an antecedent mints a private anonymous group witness per
+   sentence, and (REPRODUCED across runs 2–3) capital-K "the Keepers" in a
+   consequent parses as a bare PROPER NAME with no link to the keeper kind.
+   Use "a Keeper" in conditionals (antecedent or consequent) and "Each
+   Keeper …" for habit generics. Plain habit sentences that have parsed
+   stable-good ("The Keepers take the sea-water…") are tolerated on watch.
 4. **Every "that N" must be bound in-sentence** by an indefinite introduced
    in the antecedent clause ("…hunts at a lantern-row, … at that
    lantern-row…").
@@ -112,7 +114,8 @@ sentence).
 
 ## Bounded variation (the designed paraphrase families)
 
-Each law appears as a When-variant and a Whenever-variant, and each core
+Each law appears in two conditional variants (When/Whenever, or
+Whenever/Every-time where the occasion reading must be forced), and each core
 relation keeps at most two verb variants (produce/give, attract/draw,
 die/go-out …). The complete enumeration, with canonical targets and the
 expected merge tier, lives in `expected_consolidation_map.md`. Do not
@@ -178,10 +181,22 @@ failing sentence is **rewritten, not the parser patched**:
 4. **Expected-core conformance** (deterministic, template-driven): a T-COND
    must yield an `Implication` mentioning the intended participants; an
    episodic cue sentence must yield its surface connective head.
-5. **FIREABILITY census** (deterministic — added v2 from the first gate
-   run): no `Implication` premise may contain a Skolem-FUNCTION event term
-   or an event constant asserted nowhere — such a rule can never match
-   reported evidence and is dead on arrival.
+5. **FIREABILITY census** (deterministic — the exporter's own flag, no
+   agent involved): every `Implication` premise must be satisfiable — plain
+   variables, or Skolem constants asserted as facts elsewhere in the same
+   parse. The two failure flags are `sk-function-in-premise` (a term like
+   `(sk_die $l)` that no fact can ever bind) and
+   `unasserted-sk-constant-in-premise` (a dormant rule). Root cause is a
+   PARSER-side mistranslation class — premise existentials Skolemized when
+   they should be plain variables (Skolemization belongs in conclusions) —
+   so discipline rules 1, 8 and 9 are partly workarounds that route around
+   it; when the parser fix lands they relax to preferences. Because the
+   parse upstream is stochastic, the census must be `ok` on ALL k parses
+   (run 3: an identical sentence was fireable in one run and dead in the
+   next). Nuance: a SEALED rule (attitude, counterfactual — intentionally
+   inert) is flagged uniformly; none exist in the LAW register, but the
+   episodic register's counterfactual/belief sentences will need the
+   exporter to tag sealed rules or the gate to exempt them.
 
 **The judge layer**: an LLM reviewer (as in `world_rules_parses.json`) is an
 AUTHORING-TIME ADVISOR — it proposes rewrites and surfaces new patterns for

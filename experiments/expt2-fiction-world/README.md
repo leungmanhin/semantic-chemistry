@@ -1,6 +1,6 @@
-# Fiction-World v0 — The Lantern-Keepers of Aelmere
+# Experiment 2 — The Lantern-Keepers of Aelmere
 
-A small, custom fiction-world corpus designed as the v0 evaluation domain for the Semantic Chemistry minimal prototype (parent paper §10).
+A small, custom fiction-world corpus designed as the Experiment-2 evaluation domain for the Semantic Chemistry minimal prototype (parent paper §10.2).
 
 ## Why this world
 
@@ -11,8 +11,8 @@ The world is engineered around four overlapping causal cycles so that ACS (Activ
 | File | Purpose | Sentence count (approx) |
 |------|---------|-------------------------|
 | `world_premise.md` | One-page setup: geography, time, central tensions | ~50 |
-| `world_rules.md` | 30 explicit world rules in the CONTROLLED LANGUAGE (`style_guide.md` v3): each a When/Whenever-conditional + bounded variant + generic/copular/negated-generic facts; `>` lines = design annotations, not corpus | 108 |
-| `world_rules.json` | **Machine-facing parse input** for the world rules — one entry per rule (`id`, `rule`, `texts`); the parser consumes exactly the `texts` arrays (annotations, headers, and rule titles excluded by construction). The `.md` is the annotated authoring view; the JSON is what the parse-gate admits. | 108 |
+| `world_rules.md` | 30 explicit world rules in the CONTROLLED LANGUAGE (`style_guide.md` v4 — the admission pass): each a When/Whenever-conditional + bounded variant + generic/copular/negated-generic facts; `>` lines = design annotations, not corpus | 107 |
+| `world_rules.json` | **Machine-facing parse input** for the world rules — one entry per rule (`id`, `rule`, `texts`); the parser consumes exactly the `texts` arrays (annotations, headers, and rule titles excluded by construction). The `.md` is the annotated authoring view; the JSON is what the parse-gate admits. | 107 |
 | `world_rules_parses.json` | Latest gate-run record (per-sentence parses + fireability census + reviewer judgments) — the evidence behind the guide/corpus revisions; earlier runs live in git history. NOT ingested. | n/a |
 | `lore.md` | Background: places, people, customs, recurring objects, history (free prose — controlled re-skin pending) | ~500 |
 | `events.md` | Specific event narratives demonstrating rule consequences (free prose — controlled re-skin pending) | ~400 |

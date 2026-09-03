@@ -1,8 +1,8 @@
-# Expected-Consolidation Map (v2)
+# Expected-Consolidation Map (v4)
 
 Design metadata — **NOT part of the parseable corpus**. The closed enumeration
 of surface variation deliberately retained in the controlled corpus
-(`style_guide.md` v2), and what a consolidation/normalization miner is
+(`style_guide.md` v4), and what a consolidation/normalization miner is
 expected to do with each family. This is `cycle_map.md`'s counterpart one
 level down: cycle_map grades ACS detection against engineered loops; this
 file grades consolidation mining against engineered paraphrase families.
@@ -43,6 +43,7 @@ control** (superficially similar, must NOT merge).
 | harvest | harvest ↔ gather | R18 |
 | bloom | bloom ↔ grow | R19 |
 | convene | convene ↔ meet | R26, R27 |
+| shield (cove) | shield ↔ shelter | R22 |
 | redistribute | redistribute ↔ reallocate | R27 |
 | request | request ↔ ask for | R30 |
 | increase | increase ↔ rise | R30 |
@@ -55,9 +56,9 @@ control** (superficially similar, must NOT merge).
 | feather fall | "feathers **fall** to the cliff base" ↔ "the sky-cat **sheds** feathers onto the cliff base" | R10 | inchoative ↔ causative (agent added) |
 | extinction | "that wind **extinguishes** unprepared lanterns" ↔ "unprepared lanterns **go out**" | R16 | causative ↔ inchoative (agent dropped) |
 | ~~potency keeping~~ | ~~"keeps its potency" ↔ "stays potent"~~ | R18 | **RETIRED (run 2)**: the possessed-attribute side mis-parses ("its" link lost, spurious continuation added) — a tested-and-failed alternation; both variants now use "stays potent" |
-| shielding | "cliff-spires **shield** a cove from north winds" ↔ "a cove **is blocked** from the north wind **by** cliff-spires" | R22 | active ↔ passive |
+| ~~shielding~~ | ~~active "shield" ↔ passive "is blocked … by"~~ | R22 | **RETIRED (run 3)**: the passive antecedent Skolemizes non-deterministically (fireable in run 2, dead in run 3 on identical text) — tested-and-failed alternation #2; replaced by the Tier-1 shield ↔ shelter pair |
 | stable burning | "lanterns **burn stably**" ↔ "lanterns **stay lit**" | R22 | manner adverb ↔ resultative copular |
-| safe tending | "the Keepers **tend** the lanterns **safely**" ↔ "winter tending **stays safe**" | R29 | manner adverb ↔ copular on the nominalized activity |
+| ~~safe tending~~ | ~~"tend … safely" ↔ "winter tending stays safe"~~ | R29 | **RETIRED (v4)**: the nominalized side failed in two wordings (episode reading, then a collapsed conditional); the variant sentence was dropped, R29 s1 stands alone |
 
 ## Tier 3 — negative controls (must NOT merge)
 
@@ -104,16 +105,29 @@ never sits inside a conditional's antecedent (split it into its own generic).
 - R25 "many solo nights" → "solo count is large" (census-dead in run 2; the
   large-store T-COND-STATE template is proven good twice at R29 s1).
 
+## Retired in v4 (run-3 driven — the admission pass)
+
+- 16 edits from the REPRODUCED set (12) + pattern-level first-looks (4);
+  R29's variant sentence dropped (107 sentences). Occasion-keying (rule 7)
+  applied to every reproduced instance; "a Keeper"/"Each Keeper" replaces the
+  capital-K group reading in R5/R11; compounds → possessives ("the cove's
+  water"); slot fixes from the judge's stable suggestions ("against north
+  winds", "when cold winds blow", "whose lanterns are drained", "quickly").
+- R20 stays the disjunctive generic despite run 3's request to split it back
+  — a decided representation tradeoff (opacity to a when-question beats a
+  joint contradiction); judge reversal #2 on record.
+
 ## Watch list (kept on evidence, re-check at the next gate run)
 
-- "The Keepers ⟨adv⟩ …" habit sentences (R21 s3/s4, R5 s1/s2, R27 s5): the
-  same shape parses variably across sentences and runs (habit rule / bare
-  name / anonymous group) — k-stability's prey; kept as-is per the
-  convergence protocol (no reproduced complaint on any single sentence).
+- "The Keepers …" habit sentences still in the corpus (R4 s3, R9 s3, R10 s4,
+  R20 s2, R21 s3/s4, R27 s5): parse variably across runs (habit rule / bare
+  name / anonymous group); the capital-K-as-name reading is now a REPRODUCED
+  pattern (fixed in R5/R11), so any of these that reproduces a complaint
+  converts to "Each Keeper …".
 - R25 s2 vs s3: identical possessive-in-trigger shape — s2 (fails) died the
   census in run 2 while s3 (dims) passed; s2 rewritten to the of-phrase
   form, s3 kept — same-shape parse variance on record.
-- Bare-plural antecedent subjects judged good in both runs and kept: R22 s1
+- (v4) R22 s1's bare-plural antecedent was singularized in the admission pass; no bare-plural antecedent subjects remain. Former note: R22 s1
   ("cliff-spires shield…"); all others were singularized.
 - Kept-verbatim sentences flagged only in run 2 (the 15 flips — e.g. R11 s1,
   R12 s1's "the cove water", R30 s1/s4, R22 s1): untouched per the
