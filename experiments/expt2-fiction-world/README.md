@@ -13,10 +13,12 @@ The world is engineered around four overlapping causal cycles so that ACS (Activ
 | `world_premise.md` | One-page setup: geography, time, central tensions | ~50 |
 | `world_rules.md` | 30 explicit world rules in the CONTROLLED LANGUAGE (`style_guide.md` v4 — the admission pass): each a When/Whenever-conditional + bounded variant + generic/copular/negated-generic facts; `>` lines = design annotations, not corpus | 107 |
 | `world_rules.json` | **Machine-facing parse input** for the world rules — one entry per rule (`id`, `rule`, `texts`); the parser consumes exactly the `texts` arrays (annotations, headers, and rule titles excluded by construction). The `.md` is the annotated authoring view; the JSON is what the parse-gate admits. | 107 |
-| `world_rules_pending.json` | **The re-parse subset**: only the sentences edited since the last accepted run, in the same `{id, rule, texts}` schema — parse THIS, not the full corpus (incremental admission; everything else is frozen as accepted). | (varies) |
+| `world_rules_pending.json` | **The re-parse subset**: only the sentences edited since the last accepted run, in the same `{id, rule, texts}` schema — parse THIS, not the full corpus (incremental admission; everything else is frozen as accepted). Created per re-parse batch; absent when nothing is pending. | (varies) |
 | `assemble_parses.py` | Merges a pending-subset parse record (`world_rules_pending_parses.json`) into the accepted full record by exact sentence match, in corpus order; `--check` reports without writing. Prints the census summary — admission = every sentence `ok`. | n/a |
 | `world_rules_parses.json` | Latest gate-run record (per-sentence parses + fireability census + reviewer judgments) — the evidence behind the guide/corpus revisions; earlier runs live in git history. NOT ingested. | n/a |
-| `lore.md` | Background: places, people, customs, recurring objects, history (free prose — controlled re-skin pending) | ~500 |
+| `lore.md` | Background in the CONTROLLED LANGUAGE (LORE register, v1): 105 paragraph entries across the ten sections; generated from `lore.json` by `regen_lore_md.py` (`>` lines = design annotations from `lore_notes.json`) | 607 |
+| `lore.json` | **Machine-facing parse input** for the lore — entries `{id, rule, texts}` (`id` = section-paragraph, e.g. `L5-02`; `rule` = section label); the SOURCE OF TRUTH for lore text. Parse in section batches if cost matters (§V–§VI first: they hold the deliberate sealed sentences). | 607 |
+| `lore_notes.json` · `regen_lore_md.py` | Design annotations by paragraph id, and the md regenerator (edit `lore.json` → run the script). NOT ingested. | n/a |
 | `events.md` | Specific event narratives demonstrating rule consequences (free prose — controlled re-skin pending) | ~400 |
 | `qa_pairs.md` | Evaluation: factual recall, why-questions, what-next, counterfactuals | ~105 QA pairs |
 | `cycle_map.md` | Reference diagram + rule-to-cycle index (NOT for parsing — design aid) | n/a |
@@ -35,7 +37,7 @@ Total sentence count target: ≥ 1000 narrative sentences. QA pair count: ≥ 10
 
 ## Reading order for ingestion (FUSE-NF input)
 
-The parser reads the **JSON files** (`world_rules.json` now; JSON twins for `lore.md` and `events.md` after the pilot): each entry's `texts` array lists exactly the sentences to parse, so nothing else in the repo can be mistaken for corpus. The `.md` corpus files are the annotated authoring view (`>` lines = design annotations). `world_premise.md` is mostly setup and can be included or excluded as a baseline experiment. `cycle_map.md`, `style_guide.md`, `expected_consolidation_map.md`, and this README are design metadata and are NOT ingested.
+The parser reads the **JSON files** (`world_rules.json` and `lore.json` now; `events.json` after its re-skin): each entry's `texts` array lists exactly the sentences to parse, so nothing else in the repo can be mistaken for corpus. The `.md` corpus files are the annotated authoring view (`>` lines = design annotations). `world_premise.md` is mostly setup and can be included or excluded as a baseline experiment. `cycle_map.md`, `style_guide.md`, `expected_consolidation_map.md`, and this README are design metadata and are NOT ingested.
 
 ## Canonical entities
 

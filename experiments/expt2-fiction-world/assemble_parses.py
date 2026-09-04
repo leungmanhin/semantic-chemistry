@@ -2,6 +2,7 @@
 """Assemble a full parse record from the accepted record plus a pending-subset record.
 
 usage:  python3 assemble_parses.py [--check] [PENDING_PARSES=world_rules_pending_parses.json]
+        (lore:  python3 assemble_parses.py lore_pending_parses.json lore_parses.json lore.json)
                                    [FULL_PARSES=world_rules_parses.json]
                                    [CORPUS=world_rules.json]
 
@@ -17,7 +18,7 @@ CHECK = '--check' in sys.argv; sys.argv = [a for a in sys.argv if a != '--check'
 pend_p = sys.argv[1] if len(sys.argv) > 1 else 'world_rules_pending_parses.json'
 full_p = sys.argv[2] if len(sys.argv) > 2 else 'world_rules_parses.json'
 corp_p = sys.argv[3] if len(sys.argv) > 3 else 'world_rules.json'
-corpus = json.load(open(corp_p)); full = json.load(open(full_p))
+corpus = json.load(open(corp_p)); full = json.load(open(full_p)) if os.path.exists(full_p) else []
 pend = json.load(open(pend_p)) if os.path.exists(pend_p) else []
 KEYS = ('stmts', 'review', 'census')
 def index(rec):

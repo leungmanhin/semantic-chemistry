@@ -23,11 +23,38 @@ sentences. Rule TITLES are display labels only — never parsed, never gated.
   conditionals, generics, negated generics, categorical copulars, deontic
   norms. Parses to `Implication` rules, kind-level properties, and copular
   atoms — the law IS the rule-molecule; no connective atoms here.
-- **EPISODIC register** (`events.md`, `lore.md` narrative parts — future
-  re-skin): particular events with tense. Causal linkage uses the bounded
+- **LORE register** (`lore.md`): grounding facts about NAMED individuals,
+  places, customs, and history. Sentence forms: named copulars ("Meren
+  Tallowhand is the chief Keeper", "The Watch is a small stone hall"),
+  static location ("The Sunken Cove lies west of the village", "X stands at
+  Y" — `LocatedIn` is containment only; other prepositions are surface
+  heads), possession/parts ("The Watch holds the feather store"), habits as
+  "Each Keeper …" or bare-plural generics, exact counts in ONE template
+  ("The Cliff Path holds one hundred and twelve lanterns", "There are nine
+  cliff-spires" — QA-critical counts only), relative time as "N years ago"
+  (the parser's `BeforeBy … now` form; QA-critical dates only), and LAW
+  INSTANCES restating world rules in the When/Whenever templates (the
+  deliberate repeats mining needs). Beliefs are kept ONLY where the
+  belief-ness is the content (four deliberate sealed sentences: L2-20,
+  L5-02, L5-07 ×2, L10-05); everything else decorative became a plain fact or
+  a `>` annotation. Superlatives, ranges, ages, durations, and "only" were
+  demoted to annotations throughout.
+- **EPISODIC register** (`events.md` — future re-skin): particular events with tense. Causal linkage uses the bounded
   connective cues (because / so / as a result), which parse to surface heads —
   normalization to `ReasonFor` is downstream (genome) work, per the parser
   spec's own instruction not to normalize connectives.
+
+**Authoring policy (agreed 2026-09-03):** the corpus exists to study ACS
+discovery in the chemical soup, not to exercise linguistic coverage. A
+sentence that is hard for the parser is simply REWRITTEN in a simpler form
+that conveys the same meaning and serves the same purpose — never kept for
+coverage's sake. What "same purpose" protects: the four cycles' causal
+structure, enough episodic INSTANCES of each rule firing for recurrence and
+the §2.3 statistics, the facts the QA pairs depend on, and the bounded
+paraphrase families of the consolidation map (simplify freely, but do not
+collapse all designed variation). Decorative beliefs and reported speech may
+become plain facts or be dropped; sealing constructions are kept only where
+the content is the point (the counterfactual QA category).
 
 ## Sanctioned sentence templates (LAW register)
 
