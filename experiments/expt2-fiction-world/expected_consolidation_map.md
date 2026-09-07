@@ -147,6 +147,53 @@ edit only if it reproduces (adjudicator-confirmed) in a later run.
   Cove, each station near the Sunken Cove requests feather rations from the
   Council."
 
+## Advisory backlog — lore (deferred after gate run 2; single-instance
+## reviewer remarks with their worked rewrites, applied only if they reproduce)
+
+- Titles and offices: "Cauldron Hall Warden" / "Salt-bloom Warden" /
+  "Council speaker" → "the warden of Cauldron Hall", "the Salt-bloom
+  warden", "the speaker of the Council" (L1-07 s6/s7, L2-05 s2/s3, L2-06
+  s1/s2, L3-02 s5, L3-04 s3, L4-08 s9, L10-05 s5); "Tessa Brae is the
+  village's chief Feather-Collector" → two sentences (a Feather-Collector;
+  leads the feather-collectors of the village).
+- Coordinated object lists → one clause per item (L1-13 s3 boats, L1-15 s2
+  ledgers, L2-13 s2 the case, L9-06 s2 records); L2-22 s2 → "puts … into a
+  common pool"; L4-09 s8 → "Keeper children who do not apprentice often
+  fish / farm in the Hollows / trade on the coast".
+- Council membership idioms → "is a member of the Council" (L2-04 s1, L2-05
+  s1, L2-06 s3); "Old Vesh attends Council" → "attends the Council".
+- Comparatives without a standard → plain adjective (L1-15 s3/s5 "older"
+  ledgers, L2-03 s5 "older rituals"); L2-18 s3 → "have already become";
+  "The Watch ledgers go back many years" → "are old".
+- "There are no formal prayers" → "No prayer is formal."; "There is no
+  substitute for mire-essence" → "No material can replace mire-essence.";
+  "One apprentice serves …" → "A single apprentice serves …".
+- Postural and result-state verbs: "come to a slow boil" → "begin to boil
+  slowly"; "keeps the cauldrons at a steady simmer" → "keeps the cauldrons
+  simmering steadily"; "the cauldrons sit idle" → "are idle"; "sits at a
+  long oak table" → "meets at"; "stand at the front of the shelves" → "are
+  stored at"; "By late afternoon" → "By evening"; "at the end of the day" →
+  "in the evening"; "The slick is the precursor of mire-essence" →
+  "Mire-essence forms from the slick."
+- Single dropped words (flavor): "outward", "far" → "to distant waters",
+  "down the coast" → "from a village down the coast", "by heart" →
+  "memorize", "in that winter" → "Sixty-three years ago, in winter",
+  "between the harbor and the Watch" → two "beside" sentences, "leads
+  down"/"walks down" → "descends", "stay near" → "shelter near", "the
+  ashes" → "the ash", "The plan worked" → "was successful", "The village
+  rises late" → "The villagers wake at mid-morning".
+- Possessives inside kind claims: "A brass snuffer is a Keeper's personal
+  tool" → "A brass snuffer is a tool. Every Keeper owns a personal brass
+  snuffer." (same for the wick-trimmer); "Each lantern is fixed to its
+  station" → "has its own station, and … is fixed to that station";
+  "iron-lidded box" → "… and the bin has an iron lid"; "hold keys" → one
+  key each; cousin sentences → symmetric "X and Y are cousins".
+- Kept on precedent or by design: L5-05 s1 (= R15's plural feathers),
+  L7-04 s4 (= R16 s1), L6-04 s5 and L7-03's "After" (= R7 s4), L3-01 s5
+  (membership recorded as PartOf), the two seasonal-colour copulars (the
+  parser's own rule emits the unconditional half), the "first-year /
+  second-year" labels (translator over-unpacking).
+
 ## Watch list (kept on evidence, re-check at the next gate run)
 
 - "The Keepers …" habit sentences still in the corpus (R4 s3, R9 s3, R10 s4,

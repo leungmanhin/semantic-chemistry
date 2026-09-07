@@ -151,6 +151,24 @@ no link to the kind: write "Keepers …" (habit), "Each Keeper …" (per-station
 duty) or "Every Keeper believes/considers that …" (attitude). `lint_corpus.py`
 flags every one of these shapes before a parse.
 
+**LORE-register shapes that mis-parse silently (gate runs 1–2, pattern-level):**
+a mass or process noun as the subject of a verb ("Mire-essence smells …",
+"Distillation thins", "Salt-bloom slows the burn") yields one flat event about
+the kind — give the clause a countable bearer ("The smell of mire-essence is
+…", "The distillation yield thins", "The copper cauldrons produce
+mire-essence") or restate it as a Whenever-law. A recurring occasion phrase
+("at each full moon", "after each equinox", "on clear winter nights", "in
+autumn and early winter") has no carrier — write "Whenever the moon is full,
+…", "Whenever a winter night is clear, …", one sentence per season. A
+part-whole compound ("the cliff base", "the harbor mouth", "sky-cat
+feathers") and a proper-noun premodifier on a definite plural ("the Hollows
+lanterns") → "the base of the cliff", "feathers of sky-cats", "the lanterns
+at the Hollows". A container of a mass ("a vessel of mire-essence", "vessels
+full of mire-essence") loses the mass → "fill N vessels with mire-essence",
+"a vessel that is partly full of mire-essence". A definite witness inside an
+antecedent ("When the moth-count at … is low") only ever matches itself —
+bind an indefinite ("When a moth-count at the Stilllight Lantern is low").
+
 ## Authored truth values
 
 Frequency adverbs are the sanctioned strength dial (the parser maps them):

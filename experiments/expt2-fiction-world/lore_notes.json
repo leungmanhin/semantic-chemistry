@@ -20,10 +20,14 @@
   "L8-02": "Design value: stored mire-essence keeps for at least three years (QA C10).",
   "L8-09": "Design value: the feather bin holds about five years of feathers at full reserve.",
   "L10-01": "Design values: deep winter five to ten per lantern per night; summer twenty to thirty-five; autumn peak thirty to fifty.",
-  "L10-05": "Sealed (deliberate, factive): 'confirms that'. Design value: a fresh ledger every ten years.",
+  "L10-05": "Sealed (deliberate, factive): 'confirms that'. Design value: a fresh ledger every ten years. Design value: the Council opens a new ledger every year (the original 'periodically' has no carrier).",
   "L3-01": "'The Council' throughout — a 'Council of Keepers' form mints a separate named body.",
   "L4-08": "Design value: the Mid-summer feast is held for the Keepers.",
   "L4-09": "Design value: a Keeper who marries outside the Keeper families keeps the station (stated for the typical fisher-family case).",
   "L6-06": "Design intent (not corpus): the Keepers hold sky-cats sacred BECAUSE ground sky-cat feathers ward lanterns against wraiths (R15) — a reason between two generics has no carrier, so the link lives here and in the QA oracle (W5).",
-  "L10-02": "Design intent: the cold-threshold forecast combines both signs."
+  "L10-02": "Design intent: the cold-threshold forecast combines both signs.",
+  "L5-08": "The four wraiths of sixty-three years ago rose one after another ('in succession' has no carrier).",
+  "L6-08": "The low-moth-count law binds an indefinite moth-count so that a later count fact can fire it.",
+  "L8-08": "The duplicate 'iron bands' sentence lives in L1-05.",
+  "L7-01": "Neap-tide dryness is stated as a conditioned property of tide-pools (a result-state on a definite plural inside a generic never derives)."
 }
