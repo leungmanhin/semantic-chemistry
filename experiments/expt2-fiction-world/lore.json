@@ -62,8 +62,9 @@
       "The Stilllight Lantern burns through a full night on one filling.",
       "The Stilllight Keeper walks down the Cove Stair at midnight.",
       "The Stilllight Keeper checks the flame at midnight.",
-      "The Stilllight station is a demanding station.",
-      "The Keepers fear the Stilllight station."
+      "The Stilllight Station is the lantern-station at the Sunken Cove.",
+      "The Stilllight Station is a demanding station.",
+      "Every Keeper fears the Stilllight Station."
     ]
   },
   {
@@ -76,7 +77,7 @@
       "There are seven pools.",
       "Two pools at the south end never bloom.",
       "Whenever a spring tide comes, the tide-pools fill and overflow.",
-      "The Keepers visit the tide-pools at harvest time.",
+      "Keepers visit the tide-pools at harvest time.",
       "The Council surveys the tide-pools occasionally."
     ]
   },
@@ -118,7 +119,7 @@
       "The Hollows hold thirty-two lanterns.",
       "The Hollows lanterns stand along the forest paths.",
       "The Hollows lanterns burn dimly.",
-      "The Keepers keep the Hollows lanterns dim.",
+      "Keepers keep the lanterns at the Hollows dim.",
       "Whenever a nightmoth flees the Cliff Path, the nightmoth goes to a dim lantern in the Hollows.",
       "A small crew of Keepers tends the Hollows.",
       "The Hollows produce a thin thread harvest."
@@ -300,7 +301,7 @@
     "texts": [
       "Bevin Coombe is Brindle Coombe's brother.",
       "Bevin Coombe tends the Stilllight Lantern.",
-      "The Stilllight station is a hard station.",
+      "The Stilllight Station is a hard station.",
       "Bevin Coombe sleeps during the day.",
       "Bevin Coombe walks down the Cove Stair every evening at sunset."
     ]
@@ -322,9 +323,9 @@
       "Each Keeper tends a station alone.",
       "When a Keeper trains an apprentice, the Keeper and the apprentice tend the station together.",
       "During high-wraith weeks, two Keepers tend the Stilllight Lantern together.",
-      "A night shift begins at sundown.",
-      "A Keeper checks the lantern at midnight.",
-      "A Keeper checks the lantern at the third watch.",
+      "Night shifts begin at sundown.",
+      "Each Keeper checks the lantern at midnight.",
+      "Each Keeper checks the lantern at the third watch.",
       "The shift ends at dawn."
     ]
   },
@@ -343,15 +344,15 @@
       "Keepers wear long oilcloth coats.",
       "The coats protect against sea-spray.",
       "Mire-essence stains a Keeper's coat over time.",
-      "A first-year apprentice wears an unstained coat."
+      "Every first-year apprentice wears an unstained coat."
     ]
   },
   {
     "id": "L2-15",
     "rule": "II — Notebooks",
     "texts": [
-      "Some Keepers keep notebooks of moth-counts and weather notes.",
-      "A Keeper's notebook passes to the heir with the station."
+      "A few Keepers keep a notebook of moth-counts and weather notes.",
+      "Whenever an heir inherits a Keeper's lantern-station, that heir inherits that Keeper's notebook."
     ]
   },
   {
@@ -360,8 +361,8 @@
     "texts": [
       "Two Keepers have left the village.",
       "The two Keepers married outside Aelmere.",
-      "When a Keeper leaves a station, the Council assigns an apprentice to the station.",
-      "The Council assigns an apprentice who has completed thirty solo nights."
+      "Whenever a Keeper leaves a station, the Council assigns an apprentice to that station.",
+      "Whenever an apprentice completes thirty solo nights, the Council assigns that apprentice to a station."
     ]
   },
   {
@@ -379,7 +380,7 @@
     "id": "L2-18",
     "rule": "II — Outside apprentices",
     "texts": [
-      "The Keepers rarely take apprentices from outside Keeper families.",
+      "Keepers rarely take apprentices from outside Keeper families.",
       "The Council may accept an outside apprentice.",
       "Two earlier outside apprentices became senior Keepers."
     ]
@@ -388,7 +389,7 @@
     "id": "L2-19",
     "rule": "II — Habits",
     "texts": [
-      "The Keepers consider lantern-tending sacred.",
+      "Every Keeper considers that lantern-tending is sacred.",
       "Lantern-tending is not religious.",
       "There are no formal prayers.",
       "Meren Tallowhand counts moths aloud while Meren Tallowhand trims the wick.",
@@ -400,7 +401,9 @@
     "rule": "II — The saying",
     "texts": [
       "The villagers say that the lanterns must burn.",
-      "The Keepers repeat the phrase at births, at funerals, and at the close of every Council session.",
+      "Whenever a birth takes place, a Keeper repeats the phrase.",
+      "Whenever a funeral takes place, a Keeper repeats the phrase.",
+      "Whenever the Council closes a session, a Keeper repeats the phrase.",
       "The phrase appears in the earliest surviving Watch ledgers."
     ]
   },
@@ -413,14 +416,14 @@
       "The Council may assign penance duties.",
       "The Council may bar a Keeper from tending.",
       "The Council has barred two Keepers permanently.",
-      "The two barred Keepers neglected the Sunken Cove station repeatedly."
+      "The two barred Keepers often neglected the Stilllight Station."
     ]
   },
   {
     "id": "L2-22",
     "rule": "II — Pay",
     "texts": [
-      "The village pays the Keepers in food and shelter.",
+      "The village pays each Keeper in food and shelter.",
       "The village pools its fishing harvest, grain trade, and garden produce.",
       "Each Keeper draws a share from the pool.",
       "The villagers use coin for trade with outside merchants."
@@ -430,9 +433,9 @@
     "id": "L3-01",
     "rule": "III — The Council",
     "texts": [
-      "The Council of Keepers has seven elders.",
+      "The Council has seven elders.",
       "The Council appoints new members by consensus.",
-      "A Council member serves for life.",
+      "Council members serve permanently.",
       "A Council member may retire.",
       "The current Council includes Meren Tallowhand, Old Vesh, Brindle Coombe, Sailsworn, Aelis Brae, Norren, and Wynne Coombe.",
       "Wynne Coombe is Brindle Coombe's cousin."
@@ -457,7 +460,7 @@
     "texts": [
       "The Council usually decides by consensus.",
       "When consensus fails, the Council votes by a show of hands.",
-      "A simple majority decides a vote.",
+      "Every vote is decided by a simple majority.",
       "The speaker breaks a tied vote.",
       "Ties are rare."
     ]
@@ -477,7 +480,7 @@
     "rule": "III — The central pool",
     "texts": [
       "The Northcove contributes mire-essence to the central pool.",
-      "The Sunken Cove station draws mire-essence from the central pool.",
+      "The Stilllight Station draws mire-essence from the central pool.",
       "The exposed Cliff Path stations draw mire-essence from the central pool.",
       "The Council records each redistribution in the ledgers."
     ]
@@ -491,7 +494,7 @@
       "The Council hears salt-bloom harvest reports.",
       "When a Keeper retires, the Council re-staffs that Keeper's station.",
       "When a Keeper dies, the Council re-staffs that Keeper's station.",
-      "The Council reads letters from other villages aloud."
+      "The Council reads letters from neighbouring villages aloud."
     ]
   },
   {
@@ -532,12 +535,12 @@
       "Four wraiths emerged from the Sunken Cove sixty-three years ago.",
       "Old Vesh was a boy sixty-three years ago.",
       "Old Vesh's father was a Keeper sixty-three years ago.",
-      "Sixty-three years ago, Old Vesh's father walked the Cove Stair every evening with three other Keepers.",
+      "Sixty-three years ago, Old Vesh's father walked the Cove Stair every evening with three Keepers.",
       "The Council created the modern feather-ration system sixty-three years ago.",
       "A bad winter came twenty-six years ago.",
       "One wraith emerged twenty-six years ago.",
       "Twenty-six years ago, ground feathers around the Stilllight Lantern warded the wraith back.",
-      "The Council doubled the Stilllight feather ration for winter twenty-six years ago."
+      "The Council doubled the feather ration of the Stilllight Station twenty-six years ago."
     ]
   },
   {
@@ -553,9 +556,10 @@
     "id": "L3-11",
     "rule": "III — Other villages",
     "texts": [
-      "No other village on this coast keeps lanterns.",
+      "Villages on this coast do not keep lanterns.",
+      "Aelmere keeps lanterns.",
       "Faltern lies south of Aelmere.",
-      "Aelmere Keepers exchange letters with the lantern-keepers of Faltern."
+      "Keepers from Aelmere exchange letters with the lantern-keepers of Faltern."
     ]
   },
   {
@@ -580,13 +584,13 @@
     "id": "L4-01",
     "rule": "IV — The village day",
     "texts": [
-      "The Keepers sleep during the day.",
+      "Keepers sleep during the day.",
       "The village rises late.",
       "The market square is quiet before noon.",
       "The villagers eat a long midday meal.",
-      "The Keepers eat a small meal at sundown before the shift.",
+      "Each Keeper eats a small meal at sundown before the shift.",
       "Each Keeper carries the leather case to the station at sundown.",
-      "An apprentice walks with a senior Keeper to the station."
+      "Each apprentice walks to the station with a senior Keeper."
     ]
   },
   {
@@ -595,7 +599,7 @@
     "texts": [
       "The first lighting of a new lantern is a small ritual.",
       "Each Council member touches the vessel of mire-essence before the first lighting.",
-      "A replacement lantern needs no Council touch."
+      "Replacement lanterns need no Council touch."
     ]
   },
   {
@@ -617,7 +621,7 @@
       "At midnight the Keeper checks the flame.",
       "At midnight the Keeper refills the reservoir to the half-mark.",
       "At the third watch the Keeper trims the wick carefully.",
-      "A wick carbonizes over a long burn.",
+      "Wicks carbonize over a long burn.",
       "At dawn the Keeper extinguishes the flame with a brass snuffer.",
       "The Keeper walks home after dawn-out."
     ]
@@ -661,7 +665,7 @@
     "rule": "IV — Festivals",
     "texts": [
       "The village holds three festivals each year.",
-      "Mid-summer is a feast for the Keepers during peak moth-season.",
+      "The village holds a feast at Mid-summer during peak moth-season.",
       "Frost-eve is the night before the first hard frost.",
       "The village stockpiles salt-bloom at Frost-eve.",
       "Lantern-night falls at midwinter.",
@@ -679,9 +683,9 @@
       "Children learn the names of the lantern-stations by heart.",
       "Children chant the station names in games.",
       "Keepers often marry into fisher families.",
-      "A Keeper who marries outside a Keeper family keeps the station.",
+      "When a Keeper marries into a fisher family, that Keeper keeps the station.",
       "The children of any Keeper may apprentice.",
-      "A Keeper's child may decline apprenticeship.",
+      "Keeper children may decline apprenticeship.",
       "Some Keeper children do not apprentice.",
       "Those children often fish, farm in the Hollows, or trade down the coast."
     ]
@@ -734,19 +738,18 @@
     "texts": [
       "Wraiths are pale half-translucent figures.",
       "Wraiths rise from the water of the Sunken Cove.",
-      "Wraiths rise from no other water.",
-      "The Keepers believe that wraiths are the unsettled dead of the storm-surge."
+      "Every Keeper believes that the dead of the storm-surge became wraiths."
     ]
   },
   {
     "id": "L5-03",
     "rule": "V — What a wraith does",
     "texts": [
-      "A wraith does not harm a person.",
-      "A wraith drains mire-essence from a lit lantern.",
-      "A drained lantern burns dimly.",
+      "Wraiths do not harm people.",
+      "Wraiths drain mire-essence from lit lanterns.",
+      "Drained lanterns burn dimly.",
       "Whenever a lantern at the Sunken Cove dies before dawn, a wraith rises from the cove's water.",
-      "The Keepers have known the wraith rule for generations.",
+      "Keepers have known the wraith rule for generations.",
       "The Council enforces strict standards at the Stilllight Lantern."
     ]
   },
@@ -754,9 +757,9 @@
     "id": "L5-04",
     "rule": "V — Persistence",
     "texts": [
-      "A wraith fades back into the cove after several weeks.",
-      "A persisting wraith approaches a lit lantern each night.",
-      "A wraith drains many lanterns during its persistence."
+      "Wraiths persist for several weeks before they fade back into the cove.",
+      "Persisting wraiths approach lit lanterns each night.",
+      "Wraiths drain many lanterns while they persist."
     ]
   },
   {
@@ -764,7 +767,7 @@
     "rule": "V — Wraith-defense",
     "texts": [
       "When a Keeper scatters ground feathers around a lantern, the feathers ward the lantern against wraiths.",
-      "A feather warding lasts about a month.",
+      "Each feather warding lasts about a month.",
       "Feather warding is the village's primary wraith-defense.",
       "A wraith cannot enter the Watch.",
       "The feather store inside the Watch keeps wraiths out.",
@@ -779,9 +782,9 @@
     "texts": [
       "Twenty-six years ago the Council deliberately let the Stilllight Lantern dim for one night.",
       "The Council wanted to draw the wraith to one place.",
-      "The Keepers warded the wraith back with ground feathers.",
+      "Keepers warded the wraith back with ground feathers.",
       "The plan worked.",
-      "The Keepers call the plan dangerous."
+      "Every Keeper considers that the plan was dangerous."
     ]
   },
   {
@@ -790,7 +793,7 @@
     "texts": [
       "No wraith has risen in twenty-six years.",
       "The senior Keepers worry that complacency has crept into the village.",
-      "Some Keepers believe that a wraith remembers the Keeper who let that wraith rise.",
+      "A few Keepers believe that a wraith remembers the Keeper who let that wraith rise.",
       "The Council does not share the superstition."
     ]
   },
@@ -810,7 +813,7 @@
     "texts": [
       "Sky-cats have always lived on the cliff-spires.",
       "The old Watch ledgers mention sky-cats.",
-      "The Keepers tolerate sky-cats.",
+      "Keepers tolerate sky-cats.",
       "Sky-cats are wild animals."
     ]
   },
@@ -819,11 +822,11 @@
     "rule": "VI — Appearance",
     "texts": [
       "A sky-cat is a small winged animal.",
-      "A sky-cat has broad feathered wings.",
+      "Every sky-cat has broad feathered wings.",
       "Short feather-like fur covers a sky-cat's body.",
       "Sky-cat feathers are mottled grey and white.",
       "Sky-cats fly silently.",
-      "The Keepers rarely witness a sky-cat hunt."
+      "Keepers rarely witness a sky-cat hunt."
     ]
   },
   {
@@ -831,11 +834,10 @@
     "rule": "VI — Diet and roosting",
     "texts": [
       "Sky-cats eat nightmoths.",
-      "Sky-cats eat nothing else.",
       "Sky-cats hunt alone.",
       "Sky-cats roost together.",
       "A dozen sky-cats roost on the cliff-spires.",
-      "The Keepers cannot count the sky-cats exactly.",
+      "Keepers cannot count the sky-cats exactly.",
       "The cliff-spires are very high."
     ]
   },
@@ -845,7 +847,7 @@
     "texts": [
       "Whenever a crowd of nightmoths gathers at a lantern-row, sky-cats descend to hunt.",
       "When a handful of nightmoths gathers at a lantern-row, sky-cats stay on the cliff-spires.",
-      "The Keepers have used the crowd rule for generations.",
+      "Keepers have used the crowd rule for generations.",
       "One sky-cat eats many nightmoths in one night.",
       "After a sky-cat hunts at a lantern-row, the thread harvest at that lantern-row falls.",
       "The nightmoth crowd recovers slowly."
@@ -868,17 +870,17 @@
       "Whenever a sky-cat molts, feathers fall to the base of the cliff.",
       "Tessa Brae's collectors gather the fallen feathers each morning during molting weeks.",
       "Ground sky-cat feathers ward lanterns against wraiths.",
-      "The Keepers consider sky-cats sacred because sky-cat feathers ward lanterns against wraiths.",
-      "The Keepers never harm a sky-cat.",
-      "A sky-cat sometimes carries a nightmoth to the spires in flight."
+      "Every Keeper considers that sky-cats are sacred.",
+      "Keepers never harm a sky-cat.",
+      "Sky-cats sometimes carry a nightmoth to the spires in flight."
     ]
   },
   {
     "id": "L6-07",
     "rule": "VI — Counting sky-cats",
     "texts": [
-      "The Keepers count the visible sky-cats on the cliff-spires each morning.",
-      "The Keepers track the weight of the feather harvest."
+      "Keepers count the visible sky-cats on the cliff-spires each morning.",
+      "Keepers track the weight of the feather harvest."
     ]
   },
   {
@@ -888,8 +890,8 @@
       "Three sky-cats once hunted nightmoths at the Sunken Cove.",
       "The Council then ordered Bevin Coombe to burn wintergloss at the Stilllight Lantern.",
       "Wraiths sometimes harm sky-cats in the cove.",
-      "Low moth-counts at the Stilllight Lantern keep sky-cats out of the cove.",
-      "The Keepers do not feed sky-cats.",
+      "When the moth-count at the Stilllight Lantern is low, sky-cats stay on the cliff-spires.",
+      "Keepers do not feed sky-cats.",
       "Apprentices never approach the cliff-spires."
     ]
   },
@@ -903,7 +905,7 @@
       "Whenever a spring tide fills the Salt-bloom Tide-pools, salt-bloom blooms in the pools.",
       "Neap tides are the small tides.",
       "Neap tides occur at the quarter moons.",
-      "A neap tide leaves the tide-pools dry.",
+      "Neap tides leave the tide-pools dry.",
       "Salt-bloom needs a spring-tide fill."
     ]
   },
@@ -915,7 +917,7 @@
       "Whenever a Keeper harvests salt-bloom at the new-moon spring tide, that salt-bloom stays potent for the season.",
       "The Council observes the full-moon spring tide as a calendar marker.",
       "Salt-bloom from the full-moon tide turns to chalky residue.",
-      "The Keepers cannot explain the moon-phase rule.",
+      "Keepers cannot explain the moon-phase rule.",
       "The pattern is old and reliable."
     ]
   },
@@ -925,7 +927,7 @@
     "texts": [
       "After each spring tide, a Cauldron Hall apprentice refills the cisterns from the deep ebb.",
       "The apprentice walks the harbor pier to the deep-ebb point.",
-      "A first-year apprentice usually fills the cisterns."
+      "First-year apprentices usually fill the cisterns."
     ]
   },
   {
@@ -938,8 +940,8 @@
       "The cold-threshold wind extinguishes unprotected lanterns.",
       "The cold-threshold wind blows between the first hard frost and the spring equinox.",
       "Salt-bloom in mire-essence slows the burn.",
-      "A salt-bloomed lantern survives a cold-threshold night.",
-      "An unprepared Cliff Path lantern dies on a cold-threshold night.",
+      "Salt-bloomed lanterns survive cold-threshold nights.",
+      "Unprepared Cliff Path lanterns die on cold-threshold nights.",
       "The cold-threshold wind does not reach the Northcove."
     ]
   },
@@ -998,8 +1000,8 @@
     "texts": [
       "Silken threads are the deposits that nightmoths leave on lantern rims.",
       "Silken threads are fine, grey, and slightly sticky.",
-      "A Keeper scrapes the threads off the warm stone with a flat blade.",
-      "A well-attended lantern yields a small heap of threads each night in moth-season."
+      "Keepers scrape the threads off the warm stone with a flat blade.",
+      "Well-attended lanterns yield a small heap of threads each night in moth-season."
     ]
   },
   {
@@ -1048,8 +1050,8 @@
       "A coppersmith family in Faltern forged the cauldrons.",
       "The village cannot replace a lost cauldron.",
       "A brass snuffer is a Keeper's personal tool.",
-      "A Keeper extinguishes the lantern at dawn with the brass snuffer.",
-      "A Keeper often inherits the snuffer with the station.",
+      "Keepers extinguish the lantern at dawn with a brass snuffer.",
+      "Keepers often inherit the snuffer with the station.",
       "A wick-trimmer is a Keeper's personal tool."
     ]
   },
@@ -1059,9 +1061,9 @@
     "texts": [
       "A Cliff Path lantern is a heavy stone construction.",
       "Each lantern stands on a stone pedestal.",
-      "A lantern has a glass dome.",
+      "Every lantern has a glass dome.",
       "A southern glassworks supplies replacement domes.",
-      "A lantern has an iron reservoir for mire-essence.",
+      "Every lantern has an iron reservoir for mire-essence.",
       "Each lantern is fixed to its station.",
       "Iron bands reinforce the Stilllight Lantern.",
       "The reservoir of the Stilllight Lantern holds a full night of mire-essence.",
@@ -1102,8 +1104,8 @@
     "texts": [
       "The cauldrons come to a slow boil.",
       "Hesper keeps the cauldrons at a steady simmer.",
-      "A hard boil ruins the distillation.",
-      "A hard boil yields a thin slick of poor essence.",
+      "When a cauldron boils hard, the distillation in that cauldron fails.",
+      "When a cauldron boils hard, that cauldron yields a thin slick of poor essence.",
       "The threads dissolve slowly through the afternoon.",
       "By late afternoon a dark slick forms at the bottom of each cauldron.",
       "The slick is the precursor of mire-essence."
@@ -1130,18 +1132,18 @@
     "texts": [
       "Hesper pours the boiled sea-water into the harbor at the end of the day.",
       "Boiled sea-water does not serve for a second distillation.",
-      "An apprentice scrubs each cauldron with sand."
+      "Apprentices scrub the cauldrons with sand."
     ]
   },
   {
     "id": "L9-05",
     "rule": "IX — Yields",
     "texts": [
-      "A typical day yields several vessels of mire-essence.",
-      "A heavy-thread day yields four vessels.",
-      "A thin day yields one vessel.",
+      "Typical days yield several vessels full of mire-essence.",
+      "Heavy-thread days yield four vessels full of mire-essence.",
+      "Thin days yield a single vessel full of mire-essence.",
       "In deep winter the thread harvest is thin.",
-      "After a wraith drains the lanterns, the thread harvest is thin.",
+      "Whenever a wraith drains a lantern, the thread harvest at that lantern falls.",
       "When the thread basket is empty, the cauldrons sit idle.",
       "Distillation is heavy from early autumn to Lantern-night.",
       "Distillation thins through deep winter.",
@@ -1178,7 +1180,8 @@
     "texts": [
       "Cold-threshold nights come in stretches of several nights.",
       "Mild periods separate the cold stretches.",
-      "The Keepers forecast cold-threshold stretches by watching the spire weathercocks and the hearth smoke."
+      "Keepers forecast cold-threshold stretches from the spire weathercocks.",
+      "Keepers forecast cold-threshold stretches from the hearth smoke."
     ]
   },
   {
@@ -1188,8 +1191,8 @@
       "Sky-cats hunt often in summer and early autumn.",
       "Sky-cats hunt rarely in deep winter.",
       "Sky-cats resume hunting in spring.",
-      "When nightmoths are scarce, sky-cats sometimes hunt other insects.",
-      "Marra Tallowhand's logs record sky-cat hunts of other insects.",
+      "When nightmoths are scarce, sky-cats sometimes hunt insects.",
+      "Marra Tallowhand's logs record that sky-cats hunt insects.",
       "Nightmoths remain the sky-cats' main food."
     ]
   },
@@ -1201,9 +1204,9 @@
       "In deep winter the Hollows lanterns produce a small thread harvest.",
       "Through spring and summer the Hollows lanterns produce a steady thread harvest.",
       "Nine Keepers tend the Hollows.",
-      "The Hollows Keepers often tend lanterns in pairs.",
+      "Keepers at the Hollows often tend lanterns in pairs.",
       "The fog makes the inland paths confusing.",
-      "The Hollows Keepers meet each week at a shed at the forest edge."
+      "Keepers at the Hollows meet each week at a shed at the forest edge."
     ]
   },
   {

@@ -1,0 +1,1686 @@
+[
+ {
+  "id": "L1-05",
+  "rule": "I — Stilllight Lantern",
+  "texts": [
+   "The Stilllight Station is the lantern-station at the Sunken Cove.",
+   "The Stilllight Station is a demanding station.",
+   "Every Keeper fears the Stilllight Station."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: stilllight_station_name (Name stilllight_station \"Stilllight Station\") (STV 1.0 0.99))",
+     "(: stilllight_station_kind (Member stilllight_station station) (STV 1.0 0.99))",
+     "(: stilllight_station_type (Member stilllight_station lantern_station) (STV 1.0 0.99))",
+     "(: lantern_station_genus (Inheritance lantern_station station) (STV 1.0 0.99))",
+     "(: sunken_cove_name (Name sunken_cove \"Sunken Cove\") (STV 1.0 0.99))",
+     "(: sunken_cove_kind (Member sunken_cove cove) (STV 1.0 0.99))",
+     "(: stilllight_station_loc (LocatedIn stilllight_station sunken_cove) (STV 1.0 0.99))"
+    ],
+    [
+     "(: stilllight_station_name (Name stilllight_station \"Stilllight Station\") (STV 1.0 0.99))",
+     "(: stilllight_station_kind (Member stilllight_station station) (STV 1.0 0.99))",
+     "(: stilllight_station_demanding (Member stilllight_station demanding) (STV 1.0 0.99))"
+    ],
+    [
+     "(: keeper_fear_rule (Implication (Member $x keeper) (And (Member (sk_fear $x) fear) (Experiencer (sk_fear $x) $x) (Stimulus (sk_fear $x) stilllight_station))) (STV 1.0 0.9))",
+     "(: keeper_fear_q (QuantifierPhrase keeper fear \"every\") (STV 1.0 0.99))",
+     "(: stilllight_station_type (Member stilllight_station station) (STV 1.0 0.99))",
+     "(: stilllight_station_name (Name stilllight_station \"Stilllight Station\") (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the kind and the place come through (Stilllight Station is a lantern-station, located at the Sunken Cove), but the definite predicate 'the lantern-station' — the claim that it is the one and only lantern-station there — has no carrier in the instruction set, so the parse records only that it is *a* lantern-station. If that uniqueness is part of what you mean, write 'Only the Stilllight Station is a lantern-station at the Sunken Cove.'; if it is not, 'The Stilllight Station is a lantern-station at the Sunken Cove.' gives the same parse as now with nothing lost.",
+    "good. the name, the station kind and the evaluative 'demanding' each land as their own atom, with nothing invented.",
+    "good. parses as a fireable universal rule — one fearing state per Keeper, with the Stilllight Station as what is feared and the 'every' quantifier recorded."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L1-06",
+  "rule": "I — Salt-bloom Tide-pools",
+  "texts": [
+   "Keepers visit the tide-pools at harvest time."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: tide_pool_genus (Inheritance tide_pool pool) (STV 1.0 0.99))",
+     "(: tidepools_group (GroupOf sk_group_1 tide_pool) (STV 1.0 0.99))",
+     "(: keeper_visit_rule (Implication (Member $x keeper) (And (Member (sk_visit $x) visit) (Agent (sk_visit $x) $x) (Theme (sk_visit $x) sk_group_1) (Time (sk_visit $x) harvest_time))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. parses as a fireable generic rule — each Keeper gets their own visit, with the tide-pool group as what is visited and 'harvest time' kept as the time of the visit."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L1-09",
+  "rule": "I — The Hollows",
+  "texts": [
+   "Keepers keep the lanterns at the Hollows dim."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: lp5_lant_grp (GroupOf sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: lp5_lant_loc (LocatedIn sk_lantern_1 hollows) (STV 1.0 0.99))",
+     "(: lp5_hollows_name (Name hollows \"Hollows\") (STV 1.0 0.99))",
+     "(: lp5_dim_mem (Member sk_dim_1 dim) (STV 1.0 0.99))",
+     "(: lp5_dim_exp (Experiencer sk_dim_1 sk_lantern_1) (STV 1.0 0.99))",
+     "(: lp5_dim_still (Still sk_dim_1) (STV 1.0 0.99))",
+     "(: lp5_dim_distr (Implication (PartOf $x sk_lantern_1) (Member $x dim)) (STV 1.0 0.9))",
+     "(: lp5_keeper_rule (Implication (Member $x keeper) (And (Member (sk_keep $x) keep) (Agent (sk_keep $x) $x) (Theme (sk_keep $x) sk_lantern_1) (Result (sk_keep $x) sk_dim_1))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the maintenance reading comes through as a fireable generic about what Keepers do, plus the reified 'dim' state, its continuation tag and a per-lantern rule so an individual lantern still answers 'is it dim?'; the reviewer's one objection about the dimness being asserted too strongly was overruled on adjudication. Note only that 'at the Hollows' was attached to the lanterns (the lanterns that are at the Hollows), not to the keeping."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L2-10",
+  "rule": "II — Bevin Coombe",
+  "texts": [
+   "The Stilllight Station is a hard station."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: stilllight_station_name (Name stilllight_station \"Stilllight Station\") (STV 1.0 0.99))",
+     "(: stilllight_station_kind (Member stilllight_station station) (STV 1.0 0.99))",
+     "(: stilllight_station_hard (Member stilllight_station hard) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the multi-word name becomes one symbol with its name record, the kind word is stated once as the station's type, and \"hard\" is carried as a separate property of that station rather than being fused into a kind of its own — nothing in the sentence is dropped or added."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L2-12",
+  "rule": "II — Tending a station",
+  "texts": [
+   "Night shifts begin at sundown.",
+   "Each Keeper checks the lantern at midnight.",
+   "Each Keeper checks the lantern at the third watch."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: lp7_ns_genus (Inheritance night_shift shift) (STV 1.0 0.99))",
+     "(: lp7_rule (Implication (Member $x night_shift) (And (Member (sk_begin $x) begin) (Patient (sk_begin $x) $x) (Time (sk_begin $x) sundown))) (STV 0.9 0.9))"
+    ],
+    [
+     "(: lantern_1_type (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: keeper_check_rule (Implication (Member $x keeper) (And (Member (sk_check $x) check) (Agent (sk_check $x) $x) (Theme (sk_check $x) sk_lantern_1) (Time (sk_check $x) midnight))) (STV 1.0 0.9))",
+     "(: keeper_check_q (QuantifierPhrase keeper check \"each\") (STV 1.0 0.99))"
+    ],
+    [
+     "(: lantern_type (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: keeper_check_rule (Implication (Member $x keeper) (And (Member (sk_check $x) check) (Agent (sk_check $x) $x) (Theme (sk_check $x) sk_lantern_1) (Time (sk_check $x) third_watch))) (STV 1.0 0.9))",
+     "(: keeper_check_q (QuantifierPhrase keeper check \"each\") (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the bare plural reads as a generic and becomes a fireable rule that gives every night shift its own beginning, with \"shift\" exposed as the genus of night_shift and \"at sundown\" kept as that beginning's time.",
+    "good. \"each Keeper\" distributes into a fireable per-keeper rule, the quantifier word is recorded, the definite \"the lantern\" is one shared object asserted outside the rule, and \"at midnight\" is kept as the time of each check. keeping the singular kind word here (\"each Keeper\") is what lets the rule bind actual keepers.",
+    "good. same fireable per-keeper rule as the midnight version, with \"the third watch\" kept as a named time constant — the licensed route for an ordinal-named period — so no content is lost by the unusual time expression."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L2-14",
+  "rule": "II — Coats",
+  "texts": [
+   "Every first-year apprentice wears an unstained coat."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: fya_apprentice_genus (Inheritance first_year_apprentice apprentice) (STV 1.0 0.99))",
+     "(: fya_wear_rule (Implication (Member $x first_year_apprentice) (And (Member (sk_wear $x) wear) (Agent (sk_wear $x) $x) (Theme (sk_wear $x) (sk_coat $x)) (Member (sk_coat $x) coat) (Member (sk_coat $x) unstained))) (STV 1.0 0.9))",
+     "(: fya_wear_q (QuantifierPhrase first_year_apprentice wear \"every\") (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the universal becomes a fireable rule giving each first-year apprentice their own coat, \"unstained\" rides on that coat as a property rather than being fused into a kind, and the quantifier word is recorded alongside the rule."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L2-15",
+  "rule": "II — Notebooks",
+  "texts": [
+   "A few Keepers keep a notebook of moth-counts and weather notes.",
+   "Whenever an heir inherits a Keeper's lantern-station, that heir inherits that Keeper's notebook."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: keeper_grp (GroupOf sk_group_1 keeper) (STV 1.0 0.99))",
+     "(: keeper_card (CardinalityPhrase sk_group_1 \"a few\") (STV 1.0 0.99))",
+     "(: notebook_type (Member sk_notebook_1 notebook) (STV 1.0 0.99))",
+     "(: keep_ev (Member sk_keep_1 keep) (STV 1.0 0.99))",
+     "(: keep_ag (Agent sk_keep_1 sk_group_1) (STV 1.0 0.99))",
+     "(: keep_th (Theme sk_keep_1 sk_notebook_1) (STV 1.0 0.99))",
+     "(: keep_rule (Implication (PartOf $x sk_group_1) (And (Member (sk_keep $x) keep) (Agent (sk_keep $x) $x) (Theme (sk_keep $x) sk_notebook_1))) (STV 1.0 0.9))"
+    ],
+    [
+     "(: ls_genus (Inheritance lantern_station station) (STV 1.0 0.99))",
+     "(: nb_genus (Inheritance notebook book) (STV 1.0 0.99))",
+     "(: heir_inherit_whenever (Implication (And (Member $h heir) (Member $k keeper) (Member $e inherit) (Agent $e $h) (Theme $e $ls) (Member $ls lantern_station) (Possession $ls $k)) (And (Member (sk_inherit_notebook $h $k) inherit) (Agent (sk_inherit_notebook $h $k) $h) (Theme (sk_inherit_notebook $h $k) (sk_notebook $k)) (Member (sk_notebook $k) notebook) (Possession (sk_notebook $k) $k) (During (sk_inherit_notebook $h $k) $e))) (STV 1.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: two things go wrong. The parse hands every one of the few Keepers the *same single* notebook instead of one notebook each, and the whole \"of moth-counts and weather notes\" phrase is dropped, so nothing records what the notebook holds (an of-phrase naming a thing's contents has no carrier in our instruction set). Make the per-Keeper reading explicit and turn the contents into a finite clause: \"A few Keepers each keep a notebook that lists moth-counts and weather notes.\"",
+    "mixed: the rule is fireable and says the right thing for any one inheritance, but the derived notebook-inheritance is keyed to the heir and the Keeper rather than to the triggering occasion, so two separate station-inheritances by the same heir from the same Keeper would collapse into a single notebook-inheritance. The sentence is already in the shape we recommend (one finite clause per condition, explicit subjects, \"that heir\"/\"that Keeper\" pointing back cleanly), so no rewrite would help here — keep it as written; the fault is on our side and clears on a re-parse."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L2-16",
+  "rule": "II — Departures and re-staffing",
+  "texts": [
+   "Whenever a Keeper leaves a station, the Council assigns an apprentice to that station.",
+   "Whenever an apprentice completes thirty solo nights, the Council assigns that apprentice to a station."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: council_type (Member sk_council_1 council) (STV 1.0 0.99))",
+     "(: whenever_leave_assign (Implication (And (Member $e leave) (Agent $e $k) (Theme $e $s) (Member $k keeper) (Member $s station)) (And (Member (sk_assign $k $s) assign) (Agent (sk_assign $k $s) sk_council_1) (Theme (sk_assign $k $s) (sk_apprentice $k $s)) (Member (sk_apprentice $k $s) apprentice) (Goal (sk_assign $k $s) $s) (During (sk_assign $k $s) $e))) (STV 1.0 0.9))"
+    ],
+    [
+     "(: sn_genus (Inheritance solo_night night) (STV 1.0 0.99))",
+     "(: sn_mod (Inheritance solo_night solo) (STV 1.0 0.99))",
+     "(: council_type (Member sk_council_1 council) (STV 1.0 0.99))",
+     "(: apprentice_station_rule (Implication (And (Member $a apprentice) (Member $e complete) (Agent $e $a) (Theme $e $g) (GroupOf $g solo_night) (Cardinality $g 30)) (And (Member (sk_assign $e) assign) (Agent (sk_assign $e) sk_council_1) (Theme (sk_assign $e) $a) (Goal (sk_assign $e) (sk_station $e)) (Member (sk_station $e) station) (During (sk_assign $e) $e))) (STV 1.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: every participant and role is captured and the rule fires, but the assignment and the apprentice are keyed to the Keeper and the station rather than to the triggering departure, so two departures of the same Keeper from the same station would yield one assignment and one apprentice instead of one per occasion. The wording is already the recommended \"Whenever X, Y\" form with explicit subjects and one finite clause per event, so no rewrite would improve it — keep the sentence as written; the fix is on our side.",
+    "good. parses as a fireable rule keyed to each qualifying occasion, with the thirty solo nights counted as a group, the Council as the assigner, and a station supplied per occasion."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L2-18",
+  "rule": "II — Outside apprentices",
+  "texts": [
+   "Keepers rarely take apprentices from outside Keeper families."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: lp15_kf_genus (Inheritance keeper_family family) (STV 1.0 0.99))",
+     "(: lp15_rule (Implication (Member $x keeper) (And (Member (sk_take $x) take) (Agent (sk_take $x) $x) (Theme (sk_take $x) (sk_apprentice $x)) (Member (sk_apprentice $x) apprentice) (FromOutside (sk_apprentice $x) keeper_family))) (STV 0.1 0.9))",
+     "(: lp15_q (QuantifierPhrase keeper take \"rarely\") (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. parses as a fireable generic rule at the low strength \"rarely\" calls for, with the word itself recorded, and it keeps the \"from outside Keeper families\" restriction attached to the apprentice rather than dropping it."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L2-19",
+  "rule": "II — Habits",
+  "texts": [
+   "Every Keeper considers that lantern-tending is sacred."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: lt_genus (Inheritance lantern_tending tending) (STV 1.0 0.99))",
+     "(: keeper_considers_rule (Implication (Member $x keeper) (And (Member (sk_consider $x) consider) (Experiencer (sk_consider $x) $x) (Theme (sk_consider $x) (Inheritance lantern_tending sacred)))) (STV 1.0 0.9))",
+     "(: keeper_considers_q (QuantifierPhrase keeper consider \"every\") (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the universal over Keepers becomes a fireable rule that gives each Keeper a considering of its own, and the sacredness claim is held as a sealed opinion rather than asserted as a fact of the world, which is exactly what 'considers that' says. The only loose end is on our side (which base form the compound 'lantern-tending' should decompose to); no content of the sentence is lost."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L2-20",
+  "rule": "II — The saying",
+  "texts": [
+   "Whenever a birth takes place, a Keeper repeats the phrase.",
+   "Whenever a funeral takes place, a Keeper repeats the phrase.",
+   "Whenever the Council closes a session, a Keeper repeats the phrase."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: phrase_type (Member sk_phrase_1 phrase) (STV 1.0 0.99))",
+     "(: birth_repeat_whenever (Implication (Member $b birth) (And (Member (sk_repeat $b) repeat) (Agent (sk_repeat $b) (sk_keeper $b)) (Member (sk_keeper $b) keeper) (Theme (sk_repeat $b) sk_phrase_1) (During (sk_repeat $b) $b))) (STV 1.0 0.9))"
+    ],
+    [
+     "(: phrase_1_type (Member sk_phrase_1 phrase) (STV 1.0 0.99))",
+     "(: funeral_repeat_rule (Implication (Member $x funeral) (And (Member (sk_repeat $x) repeat) (Member (sk_keeper $x) keeper) (Agent (sk_repeat $x) (sk_keeper $x)) (Theme (sk_repeat $x) sk_phrase_1) (During (sk_repeat $x) $x))) (STV 1.0 0.9))"
+    ],
+    [
+     "(: lorep19_council_type (Member sk_council_1 council) (STV 1.0 0.99))",
+     "(: lorep19_phrase_type (Member sk_phrase_1 phrase) (STV 1.0 0.99))",
+     "(: lorep19_whenever_rule (Implication (And (Member $x close) (Agent $x sk_council_1) (Patient $x $s) (Member $s session)) (And (Member (sk_repeat $x) repeat) (Agent (sk_repeat $x) (sk_keeper $x)) (Member (sk_keeper $x) keeper) (Theme (sk_repeat $x) sk_phrase_1) (During (sk_repeat $x) $x))) (STV 1.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. 'takes place' correctly adds no separate happening of its own, and the rule fires on any birth, giving that occasion its own Keeper and its own repeating, timed to the birth.",
+    "good. same shape as the birth sentence and equally fireable: any funeral triggers a repeating by a Keeper on that occasion, with 'the phrase' kept as one shared thing across the item.",
+    "good. both halves of the trigger (the Council as the closer, a session as what is closed) are matched by open variables, so the rule fires on any recorded session-closing, and the response repeating is tied to it."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L2-21",
+  "rule": "II — Discipline",
+  "texts": [
+   "The two barred Keepers often neglected the Stilllight Station."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: keepers_grp (GroupOf sk_group_1 keeper) (STV 1.0 0.99))",
+     "(: keepers_card (Cardinality sk_group_1 2) (STV 1.0 0.99))",
+     "(: keepers_barred_rule (Implication (PartOf $x sk_group_1) (Member $x barred)) (STV 1.0 0.9))",
+     "(: station_type (Member stilllight_station station) (STV 1.0 0.99))",
+     "(: station_name (Name stilllight_station \"Stilllight Station\") (STV 1.0 0.99))",
+     "(: keepers_neglect_rule (Implication (PartOf $x sk_group_1) (And (Member (sk_neglect $x) neglect) (Agent (sk_neglect $x) $x) (Theme (sk_neglect $x) stilllight_station) (Past (sk_neglect $x)))) (STV 0.8 0.9))",
+     "(: keepers_neglect_q (QuantifierPhrase keeper neglect \"often\") (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: the parse gives each of the two barred Keepers a separate neglecting but drops the pair-level fact the sentence also states, so a question asked about the two Keepers together (rather than about one of them) finds nothing, and the group that carries the count of two never takes part in any event. Making the distribution explicit removes that double-record requirement, since an explicit universal is recorded only per member: 'Each of the two barred Keepers often neglected the Stilllight Station.' That keeps the count, the 'barred' restriction, the 'often', and the station's name intact, and leaves exactly the per-Keeper reading the original intends."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L2-22",
+  "rule": "II — Pay",
+  "texts": [
+   "The village pays each Keeper in food and shelter."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: village_type (Member sk_village_1 village) (STV 1.0 0.99))",
+     "(: village_pays_keeper (Implication (Member $x keeper) (And (Member (sk_pay $x) pay) (Agent (sk_pay $x) sk_village_1) (Recipient (sk_pay $x) $x) (Instrument (sk_pay $x) food) (Instrument (sk_pay $x) shelter))) (STV 1.0 0.9))",
+     "(: keeper_pay_q (QuantifierPhrase keeper pay \"each\") (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the sentence lands as one fireable rule that gives each Keeper their own payment, with the village as the payer, the Keeper as the one paid, and food and shelter both recorded as what the payment is made in; the 'each' is kept as an explicit quantifier, and no content is dropped or duplicated into two separate payment events."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L3-01",
+  "rule": "III — The Council",
+  "texts": [
+   "The Council has seven elders.",
+   "Council members serve permanently."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: council_type (Member sk_council_1 council) (STV 1.0 0.99))",
+     "(: council_have (Member sk_have_1 have) (STV 1.0 0.99))",
+     "(: council_holder (Holder sk_have_1 sk_council_1) (STV 1.0 0.99))",
+     "(: council_theme (Theme sk_have_1 sk_group_1) (STV 1.0 0.99))",
+     "(: elders_group (GroupOf sk_group_1 elder) (STV 1.0 0.99))",
+     "(: elders_card (Cardinality sk_group_1 7) (STV 1.0 0.99))"
+    ],
+    [
+     "(: cm_genus (Inheritance council_member member) (STV 1.0 0.99))",
+     "(: cm_serve_rule (Implication (Member $x council_member) (And (Member (sk_serve $x) serve) (Agent (sk_serve $x) $x) (Duration (sk_serve $x) permanently))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the Council is recorded as a specific body (correctly with no proper-name treatment), the seven elders as a counted group, and the having relation ties them together, so both 'what does the Council have?' and 'how many elders?' resolve.",
+    "good. parses as a fireable general rule that gives every council member a term of service marked as permanent, at the usual generic reliability. One note that needs no rewrite: 'Council members' becomes its own kind label, so it does not automatically join up with 'the Council' of the previous sentence; wording it as 'every member of the Council' would not fix that either, since each sentence is parsed on its own — the linking is a knowledge-base matter, not a fault of this sentence."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L3-03",
+  "rule": "III — Decisions",
+  "texts": [
+   "Every vote is decided by a simple majority."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: vote_decide_rule (Implication (Member $x vote) (And (Member (sk_decide $x) decide) (Patient (sk_decide $x) $x) (Agent (sk_decide $x) (sk_majority $x)) (Member (sk_majority $x) simple_majority))) (STV 1.0 0.9))",
+     "(: vote_decide_q (QuantifierPhrase vote decide \"every\") (STV 1.0 0.99))",
+     "(: simple_majority_genus (Inheritance simple_majority majority) (STV 1.0 0.99))",
+     "(: simple_majority_mod (Inheritance simple_majority simple) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. every vote gets its own deciding, with the vote as the thing decided and its own simple majority as what decides it, the 'every' kept as an explicit quantifier, and 'simple majority' unpacked as a kind of majority; the rule is fireable on any vote the knowledge base later mentions."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L3-05",
+  "rule": "III — The central pool",
+  "texts": [
+   "The Stilllight Station draws mire-essence from the central pool."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: ss_station_type (Member stilllight_station station) (STV 1.0 0.99))",
+     "(: ss_station_name (Name stilllight_station \"Stilllight Station\") (STV 1.0 0.99))",
+     "(: e1_draw (Member sk_draw_1 draw) (STV 1.0 0.99))",
+     "(: e1_agent (Agent sk_draw_1 stilllight_station) (STV 1.0 0.99))",
+     "(: e1_theme (Theme sk_draw_1 mire_essence) (STV 1.0 0.99))",
+     "(: mire_essence_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
+     "(: pool_type (Member sk_pool_1 pool) (STV 1.0 0.99))",
+     "(: pool_central (Member sk_pool_1 central) (STV 1.0 0.99))",
+     "(: e1_source (Source sk_draw_1 sk_pool_1) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the station comes through as one named entity with its kind, mire-essence stays a mass substance linked to essence, and the drawing event keeps the pool as its source, so \"what does the Stilllight Station draw, and where from?\" resolves."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L3-06",
+  "rule": "III — Other business",
+  "texts": [
+   "The Council reads letters from neighbouring villages aloud."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: council_type (Member sk_council_1 council) (STV 1.0 0.99))",
+     "(: read_ev (Member sk_read_1 read) (STV 1.0 0.99))",
+     "(: read_ag (Agent sk_read_1 sk_council_1) (STV 1.0 0.99))",
+     "(: letter_grp (GroupOf sk_letter_1 letter) (STV 1.0 0.99))",
+     "(: read_th (Theme sk_read_1 sk_letter_1) (STV 1.0 0.99))",
+     "(: village_grp (GroupOf sk_village_1 village) (STV 1.0 0.99))",
+     "(: letter_from (From sk_letter_1 sk_village_1) (STV 1.0 0.99))",
+     "(: village_neighbour_rule (Implication (PartOf $x sk_village_1) (Member $x neighbouring)) (STV 1.0 0.9))",
+     "(: read_manner (Manner sk_read_1 aloud) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: the clause has no tense marker, so it reads as a standing practice, and the two bare plurals then force the parse to invent one particular batch of letters and one particular set of villages that the sentence never claims exist; if the object instead falls back to the bare kind \"letter\", there is nowhere left to attach \"from neighbouring villages\" and the restriction is lost. Put the restricted plural in subject position so the restriction becomes part of the generalization itself: \"Letters from neighbouring villages are read aloud by the Council.\" That version says exactly the same thing (any letter whose origin is a neighbouring village gets read aloud by the Council) while keeping the Council, the reading-aloud manner and the origin restriction all encoded, and it posits no specific letters or villages."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L3-09",
+  "rule": "III — The bad winters",
+  "texts": [
+   "The Council doubled the feather ration of the Stilllight Station twenty-six years ago.",
+   "Sixty-three years ago, Old Vesh's father walked the Cove Stair every evening with three Keepers."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: council_m (Member sk_council_1 council) (STV 1.0 0.99))",
+     "(: station_name (Name stilllight_station \"Stilllight Station\") (STV 1.0 0.99))",
+     "(: station_m (Member stilllight_station station) (STV 1.0 0.99))",
+     "(: ration_m (Member sk_feather_ration_1 feather_ration) (STV 1.0 0.99))",
+     "(: ration_genus (Inheritance feather_ration ration) (STV 1.0 0.99))",
+     "(: ration_poss (Possession sk_feather_ration_1 stilllight_station) (STV 1.0 0.99))",
+     "(: e_double (Member sk_double_1 double) (STV 1.0 0.99))",
+     "(: e_agent (Agent sk_double_1 sk_council_1) (STV 1.0 0.99))",
+     "(: e_patient (Patient sk_double_1 sk_feather_ration_1) (STV 1.0 0.99))",
+     "(: e_past (Past sk_double_1) (STV 1.0 0.99))",
+     "(: e_time (BeforeBy sk_double_1 now 26 year) (STV 1.0 0.99))"
+    ],
+    [
+     "(: old_vesh_name (Name old_vesh \"Old Vesh\") (STV 1.0 0.99))",
+     "(: father_type (Member sk_father_1 father) (STV 1.0 0.99))",
+     "(: father_poss (Possession sk_father_1 old_vesh) (STV 1.0 0.99))",
+     "(: cove_stair_kind (Member cove_stair stair) (STV 1.0 0.99))",
+     "(: cove_stair_name (Name cove_stair \"Cove Stair\") (STV 1.0 0.99))",
+     "(: e_walk (Member sk_walk_1 walk) (STV 1.0 0.99))",
+     "(: e_agent (Agent sk_walk_1 sk_father_1) (STV 1.0 0.99))",
+     "(: e_theme (Theme sk_walk_1 cove_stair) (STV 1.0 0.99))",
+     "(: e_past (Past sk_walk_1) (STV 1.0 0.99))",
+     "(: e_time_evening (Time sk_walk_1 evening) (STV 1.0 0.99))",
+     "(: e_every (Every sk_walk_1 1 day) (STV 1.0 0.99))",
+     "(: e_beforeby (BeforeBy sk_walk_1 now 63 year) (STV 1.0 0.99))",
+     "(: keepers_group (GroupOf sk_group_1 keeper) (STV 1.0 0.99))",
+     "(: keepers_card (Cardinality sk_group_1 3) (STV 1.0 0.99))",
+     "(: e_coagent (CoAgent sk_walk_1 sk_group_1) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the Council stays an unnamed body, \"Stilllight Station\" is one named entity carrying its station kind, the feather ration is tied to that station, and \"twenty-six years ago\" is stored as a measured 26-year gap back from now, so the doubling is both past-tensed and datable.",
+    "good. every piece lands: the sixty-three-year gap, the father tied to Old Vesh, the Cove Stair as a named place, the walking as a past nightly habit (evening slot plus a daily cycle), and the three Keepers as a counted group of companions on the walk. Note only that the Keepers travel as one three-member companion group, so questions about a single named Keeper's walk will not resolve from this sentence alone."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L3-11",
+  "rule": "III — Other villages",
+  "texts": [
+   "Keepers from Aelmere exchange letters with the lantern-keepers of Faltern.",
+   "Villages on this coast do not keep lanterns.",
+   "Aelmere keeps lanterns."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: aelmere_name (Name aelmere \"Aelmere\") (STV 1.0 0.99))",
+     "(: faltern_name (Name faltern \"Faltern\") (STV 1.0 0.99))",
+     "(: lk_group (GroupOf sk_lkeepers_1 lantern_keeper) (STV 1.0 0.99))",
+     "(: lk_genus (Inheritance lantern_keeper keeper) (STV 1.0 0.99))",
+     "(: lk_poss (Possession sk_lkeepers_1 faltern) (STV 1.0 0.99))",
+     "(: keepers_exchange (Implication (And (Member $x keeper) (From $x aelmere)) (And (Member (sk_exchange $x) exchange) (Agent (sk_exchange $x) $x) (Agent (sk_exchange $x) sk_lkeepers_1) (Theme (sk_exchange $x) letter))) (STV 0.9 0.9))"
+    ],
+    [
+     "(: coast_type (Member sk_coast_1 coast) (STV 1.0 0.99))",
+     "(: villages_no_keep_lanterns (Implication (And (Member $x village) (On $x sk_coast_1)) (And (Member (sk_keep $x) keep) (Agent (sk_keep $x) $x) (Theme (sk_keep $x) lantern))) (STV 0.0 0.9))"
+    ],
+    [
+     "(: aelmere_name (Name aelmere \"Aelmere\") (STV 1.0 0.99))",
+     "(: keep_ev (Member sk_keep_1 keep) (STV 1.0 0.99))",
+     "(: keep_ag (Agent sk_keep_1 aelmere) (STV 1.0 0.99))",
+     "(: keep_th (Theme sk_keep_1 lantern) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the exchange, both villages and the Faltern group all come through, but \"lantern-keepers\" is welded into one kind symbol that is recorded only as a kind of keeper - nothing in the parse says these keepers keep lanterns, so \"who keeps lanterns in Faltern?\" finds nothing there. Say it in its own clause: \"Keepers from Aelmere exchange letters with the keepers of Faltern, who keep lanterns.\" One caveat that is our fault rather than your wording: \"exchange ... with\" between a whole class (any Keeper from Aelmere) and one definite group (the Faltern keepers) has no settled shape in our instruction set yet, so that half of the parse may come out differently on a re-parse.",
+    "good. the \"on this coast\" restriction survives as a condition on the rule rather than being dropped, and the denial covers the whole keeping predication.",
+    "good. a plain habitual keeping event with Aelmere as the doer and lanterns as a non-specific object, and no kind invented for Aelmere that the sentence does not state."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L4-01",
+  "rule": "IV — The village day",
+  "texts": [
+   "Keepers sleep during the day.",
+   "Each Keeper eats a small meal at sundown before the shift.",
+   "Each apprentice walks to the station with a senior Keeper."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: keeper_sleep_rule (Implication (Member $x keeper) (And (Member (sk_sleep $x) sleep) (Agent (sk_sleep $x) $x) (Time (sk_sleep $x) day))) (STV 0.9 0.9))"
+    ],
+    [
+     "(: keeper_eat_rule (Implication (Member $x keeper) (And (Member (sk_eat $x) eat) (Agent (sk_eat $x) $x) (Patient (sk_eat $x) (sk_meal $x)) (Member (sk_meal $x) meal) (Member (sk_meal $x) small) (Time (sk_eat $x) sundown) (Member (sk_shift $x) shift) (Before (sk_eat $x) (sk_shift $x)))) (STV 1.0 0.9))",
+     "(: keeper_q (QuantifierPhrase keeper eat \"each\") (STV 1.0 0.99))"
+    ],
+    [
+     "(: station_type (Member sk_station_1 station) (STV 1.0 0.99))",
+     "(: senkeeper_genus (Inheritance senior_keeper keeper) (STV 1.0 0.99))",
+     "(: senkeeper_mod (Inheritance senior_keeper senior) (STV 1.0 0.99))",
+     "(: apprentice_walk_rule (Implication (Member $x apprentice) (And (Member (sk_walk $x) walk) (Agent (sk_walk $x) $x) (Goal (sk_walk $x) sk_station_1) (CoAgent (sk_walk $x) (sk_keeper $x)) (Member (sk_keeper $x) senior_keeper))) (STV 1.0 0.9))",
+     "(: apprentice_walk_q (QuantifierPhrase apprentice walk \"each\") (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. a fireable generic rule, with \"during the day\" kept as the time of each sleeping.",
+    "mixed: the rule, the small meal and the sundown timing are all right, but \"the shift\" is minted fresh for every Keeper inside the rule instead of standing as one specific shift outside it, so nothing at top level says the shift exists and the before-relation cannot be queried against it. That part is our fault and clears on a re-parse. Worth knowing, though: the compliant reading of \"the shift\" is ONE shift shared by every Keeper - if you mean each Keeper's own shift, say so: \"Each Keeper eats a small meal at sundown, before that Keeper's shift begins.\"",
+    "good. each apprentice gets their own walk and their own senior Keeper as companion, with the station shared, which is the right reading of \"each ... with a ...\"."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L4-02",
+  "rule": "IV — First lighting",
+  "texts": [
+   "Replacement lanterns need no Council touch."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: rl_genus (Inheritance replacement_lantern lantern) (STV 1.0 0.99))",
+     "(: ct_genus (Inheritance council_touch touch) (STV 1.0 0.99))",
+     "(: rl_need_rule (Implication (Member $x replacement_lantern) (And (Member (sk_need $x) need) (Experiencer (sk_need $x) $x) (Stimulus (sk_need $x) council_touch))) (STV 0.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: every atom is true and the parse was judged compliant, but two parts of the wording sit in corners our instruction set does not cover - \"Council touch\" fuses into one kind symbol whose \"council\" half is deliberately not exposed, so nothing links this claim to the Council itself, and an object-position \"no\" has no defined route, so the word is consumed into the rule's falsity and leaves no trace. Rewriting costs you nothing on either count: \"Replacement lanterns do not need a touch from the Council.\" - the negation then sits on the verb, where it is fully specified, and the Council becomes a referent your other Council sentences can join to."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L4-04",
+  "rule": "IV — Checks and dawn-out",
+  "texts": [
+   "Wicks carbonize over a long burn."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: wick_carbonize_rule (Implication (Member $x wick) (And (Member (sk_carbonize $x) carbonize) (Patient (sk_carbonize $x) $x) (Member (sk_burn $x) burn) (Member (sk_burn $x) long) (Over (sk_carbonize $x) (sk_burn $x)))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. parses as a fireable generic rule: every wick gets its own carbonizing event tied to its own long burn by the plain \"over\" relation, with \"long\" kept as a property of the burn and no wick-burn link invented."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L4-08",
+  "rule": "IV — Festivals",
+  "texts": [
+   "The village holds a feast at Mid-summer during peak moth-season."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: village_type (Member sk_village_1 village) (STV 1.0 0.99))",
+     "(: hold_ev (Member sk_hold_1 hold) (STV 1.0 0.99))",
+     "(: hold_ag (Agent sk_hold_1 sk_village_1) (STV 1.0 0.99))",
+     "(: hold_th (Theme sk_hold_1 sk_feast_1) (STV 1.0 0.99))",
+     "(: feast_type (Member sk_feast_1 feast) (STV 1.0 0.99))",
+     "(: hold_time (Time sk_hold_1 mid_summer) (STV 1.0 0.99))",
+     "(: season_type (Member sk_season_1 peak_moth_season) (STV 1.0 0.99))",
+     "(: season_genus (Inheritance peak_moth_season season) (STV 1.0 0.99))",
+     "(: hold_during (During sk_hold_1 sk_season_1) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the village, the feast, the Mid-summer date and the peak-moth-season window are all carried, with \"during\" kept as the stated relation and no recurrence or extra link invented."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L4-09",
+  "rule": "IV — Children and families",
+  "texts": [
+   "When a Keeper marries into a fisher family, that Keeper keeps the station.",
+   "Keeper children may decline apprenticeship."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: fisher_family_genus (Inheritance fisher_family family) (STV 1.0 0.99))",
+     "(: station_type (Member sk_station_1 station) (STV 1.0 0.99))",
+     "(: keeper_marry_keep_rule (Implication (And (Member $k keeper) (Member $m marry) (Agent $m $k) (Goal $m $f) (Member $f fisher_family)) (And (Member (sk_keep $m) keep) (Agent (sk_keep $m) $k) (Theme (sk_keep $m) sk_station_1) (During (sk_keep $m) $m))) (STV 1.0 0.9))"
+    ],
+    [
+     "(: kc_genus (Inheritance keeper_child child) (STV 1.0 0.99))",
+     "(: da_genus (Inheritance decline_apprenticeship decline) (STV 1.0 0.99))",
+     "(: da_obj (Patient decline_apprenticeship apprenticeship) (STV 1.0 0.99))",
+     "(: kc_decline_perm (Inheritance keeper_child (permitted decline_apprenticeship)) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the rule itself fires correctly — each Keeper who marries into a fisher family gets a keeping-the-station event tied to that marriage — but \"marries into a fisher family\" is recorded with a spatial destination role, as though the Keeper travelled to the family, instead of the plain \"into\" relation, which distorts the marriage-alliance sense. Giving the marriage an ordinary object removes the prepositional verb: \"When a Keeper marries a member of a fisher family, that Keeper keeps the station.\"",
+    "good. the permission lands as a kind-level norm on keeper_child and \"decline apprenticeship\" is unpacked, so \"what may they decline?\" answers; note that the capitalized \"Keeper\" is read as an ordinary modifier fused into the kind symbol, so the parse itself carries no link back to the Keeper class."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L5-02",
+  "rule": "V — What wraiths are",
+  "texts": [
+   "Every Keeper believes that the dead of the storm-surge became wraiths."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: dead_group (GroupOf sk_group_1 dead) (STV 1.0 0.99))",
+     "(: storm_surge_type (Member sk_storm_surge_1 storm_surge) (STV 1.0 0.99))",
+     "(: storm_surge_genus (Inheritance storm_surge surge) (STV 1.0 0.99))",
+     "(: keeper_believe_rule (Implication (Member $k keeper) (And (Member (sk_believe $k) believe) (Experiencer (sk_believe $k) $k) (Theme (sk_believe $k) (And (Possession sk_group_1 sk_storm_surge_1) (Member sk_become_1 become) (Patient sk_become_1 sk_group_1) (Past sk_become_1) (Member sk_wraith_1 wraith) (Experiencer sk_wraith_1 sk_group_1) (Result sk_become_1 sk_wraith_1) (Implication (PartOf $x sk_group_1) (Member $x wraith)))))) (STV 1.0 0.9))",
+     "(: keeper_believe_q (QuantifierPhrase keeper believe \"every\") (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the belief, the quantification over every Keeper and the becoming-wraiths are all captured and the rule fires, but \"the dead of the storm-surge\" has no licensed relation, so the parse falls back on a loose possession link that says only that the dead are somehow the surge's, never that the surge killed them. Say the dying outright: \"Every Keeper believes that the people who died in the storm-surge became wraiths.\" That gives a real dying event tied to the surge, and the rest of the parse (the belief rule, the change into wraiths, the per-member distribution) stays exactly as it is."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L5-03",
+  "rule": "V — What a wraith does",
+  "texts": [
+   "Wraiths do not harm people.",
+   "Wraiths drain mire-essence from lit lanterns.",
+   "Drained lanterns burn dimly.",
+   "Keepers have known the wraith rule for generations."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: wraith_harm (Harm wraith person) (STV 0.0 0.9))"
+    ],
+    [
+     "(: me_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
+     "(: wraith_drain (Implication (Member $x wraith) (And (Member (sk_drain $x) drain) (Agent (sk_drain $x) $x) (Patient (sk_drain $x) mire_essence) (Source (sk_drain $x) (sk_lantern $x)) (Member (sk_lantern $x) lantern) (Member (sk_lantern $x) lit))) (STV 0.9 0.9))"
+    ],
+    [
+     "(: drained_lantern_burn (Implication (And (Member $x lantern) (Member $x drained)) (And (Member (sk_burn $x) burn) (Patient (sk_burn $x) $x) (Manner (sk_burn $x) dimly))) (STV 0.9 0.9))"
+    ],
+    [
+     "(: wr_genus (Inheritance wraith_rule rule) (STV 1.0 0.99))",
+     "(: wr_member (Member sk_wraith_rule_1 wraith_rule) (STV 1.0 0.99))",
+     "(: keepers_know_rule (Implication (Member $x keeper) (And (Member (sk_know $x) know) (Experiencer (sk_know $x) $x) (Stimulus (sk_know $x) sk_wraith_rule_1) (Ongoing (sk_know $x)) (MeasureAtLeast (sk_know $x) duration 2 generation))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the denial is recorded faithfully, but as one opaque kind-to-kind atom at strength 0 — having bare kind words (\"wraiths\", \"people\") on both sides is what selects that form — and such an atom never reaches individuals, so asking whether THIS wraith harms someone comes back unknown instead of no. If you want the denial to carry down to each wraith, write \"No wraith harms people.\" — the explicit quantifier forces the per-wraith rule form, which hands the strength-0 result to every wraith the reasoner knows about.",
+    "mixed: the rule fires and keeps the from-the-lantern link, but the mire-essence is filed as something the draining creates or changes when draining only moves it out of the lantern, and the plural \"lit lanterns\" shrinks to a single lantern per wraith. The wording that removes the doubt is \"Wraiths siphon mire-essence from lit lanterns.\" — siphoning reads unmistakably as a transfer, so the essence lands in the moved-not-changed slot. The lantern plural has no better carrier in the current instruction set, so expect that narrowing to remain either way.",
+    "good. the \"drained\" restriction rides as a premise condition rather than being fused into the lantern's kind, and \"dimly\" keeps its surface adverb form. One side effect of the generic-rule shape: it also asserts that drained lanterns do burn, where the sentence only characterizes how they burn.",
+    "mixed: this becomes a per-Keeper rule and then hangs \"for generations\" on each Keeper's own knowing, so it asserts that every individual Keeper has known the rule for two or more generations — which no one person can. Put the generations on the people instead of on one person's knowing: \"Generations of Keepers have known the wraith rule.\" Avoid the form \"The Keepers have known ...\": a capitalized plural after \"the\" is read as a single named thing, which would cut the sentence off from the Keeper kind entirely."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L5-04",
+  "rule": "V — Persistence",
+  "texts": [
+   "Wraiths persist for several weeks before they fade back into the cove.",
+   "Persisting wraiths approach lit lanterns each night.",
+   "Wraiths drain many lanterns while they persist."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: wraith_persist_fade (Implication (Member $x wraith) (And (Member (sk_persist $x) persist) (Experiencer (sk_persist $x) $x) (MeasureAtLeast (sk_persist $x) duration 2 week) (Member (sk_fade $x) fade) (Patient (sk_fade $x) $x) (Goal (sk_fade $x) sk_cove_1) (Before (sk_persist $x) (sk_fade $x)))) (STV 0.9 0.9))",
+     "(: cove_type (Member sk_cove_1 cove) (STV 1.0 0.99))"
+    ],
+    [
+     "(: lp46_rule (Implication (And (Member $x wraith) (Member $x persisting)) (And (Member (sk_approach $x) approach) (Agent (sk_approach $x) $x) (Theme (sk_approach $x) (sk_lantern $x)) (Member (sk_lantern $x) lantern) (Member (sk_lantern $x) lit) (Time (sk_approach $x) night) (Every (sk_approach $x) 1 day))) (STV 0.9 0.9))"
+    ],
+    [
+     "(: wraith_drain_rule (Implication (Member $x wraith) (And (Member (sk_drain $x) drain) (Agent (sk_drain $x) $x) (Patient (sk_drain $x) (sk_lanterns $x)) (GroupOf (sk_lanterns $x) lantern) (CardinalityPhrase (sk_lanterns $x) \"many\") (Member (sk_persist $x) persist) (Experiencer (sk_persist $x) $x) (During (sk_drain $x) (sk_persist $x)))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the rule fires, with the persisting, its at-least-two-weeks span and the ordering before the fading into the cove all hung on the same wraith; the adjudicator confirmed that bound as a faithful reading of \"several weeks\". Only the word \"several\" itself and the \"back\" of \"fade back\" leave no trace in the atoms — an acknowledged hole in the instruction set, not something a rewrite of yours would fix.",
+    "good. the \"persisting\" restriction rides as a premise condition, both participles stay adjectives rather than turning into verbs, and \"each night\" is recorded as a nightly recurrence at night. The one narrowing worth knowing about: the plural \"lit lanterns\" comes out as at least one lit lantern per wraith rather than several — under-specified, not wrong.",
+    "good. the rule fires with the lanterns as a counted group carrying the word \"many\", and \"while they persist\" places the draining inside the persisting with no invented connective."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L5-05",
+  "rule": "V — Wraith-defense",
+  "texts": [
+   "Each feather warding lasts about a month."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: fw_genus (Inheritance feather_warding warding) (STV 1.0 0.99))",
+     "(: fw_last_rule (Implication (Member $x feather_warding) (And (Member (sk_last $x) last) (Experiencer (sk_last $x) $x) (Measure (sk_last $x) duration (ParticleFromNormal 1 0.1) month))) (STV 1.0 0.9))",
+     "(: fw_last_q (QuantifierPhrase feather_warding last \"each\") (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the compound kind (feather warding, still a kind of warding), the \"each\" quantifier and the hedged duration \"about a month\" all come through, and the rule is fireable, so a later question like \"how long does a feather warding last?\" resolves."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L5-06",
+  "rule": "V — The deliberate dimming",
+  "texts": [
+   "Keepers warded the wraith back with ground feathers.",
+   "Every Keeper considers that the plan was dangerous."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: keepers_group (GroupOf sk_keepers_1 keeper) (STV 1.0 0.99))",
+     "(: wraith_type (Member sk_wraith_1 wraith) (STV 1.0 0.99))",
+     "(: ward_event (Member sk_ward_back_1 ward_back) (STV 1.0 0.99))",
+     "(: ward_agent (Agent sk_ward_back_1 sk_keepers_1) (STV 1.0 0.99))",
+     "(: ward_theme (Theme sk_ward_back_1 sk_wraith_1) (STV 1.0 0.99))",
+     "(: ward_tense (Past sk_ward_back_1) (STV 1.0 0.99))",
+     "(: feathers_group (GroupOf sk_feathers_1 feather) (STV 1.0 0.99))",
+     "(: feathers_ground (Member sk_feathers_1 ground) (STV 1.0 0.99))",
+     "(: ward_instrument (Instrument sk_ward_back_1 sk_feathers_1) (STV 1.0 0.99))"
+    ],
+    [
+     "(: keeper_consider_rule (Implication (Member $x keeper) (And (Member (sk_consider $x) consider) (Experiencer (sk_consider $x) $x) (Theme (sk_consider $x) (Past (Member sk_plan_1 dangerous))))) (STV 1.0 0.9))",
+     "(: keeper_consider_q (QuantifierPhrase keeper consider \"every\") (STV 1.0 0.99))",
+     "(: plan_type (Member sk_plan_1 plan) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the warding event, \"ward back\" kept whole as one verb, the group of Keepers doing it, the wraith as what was warded, and the feathers as the means are all correct; the one bad atom is \"ground\", which lands on the bundle of feathers as a whole rather than on each feather, so \"was this feather ground?\" can never resolve. Moving the modifier into its own clause fixes it without changing what you are saying: \"Keepers warded the wraith back with feathers that had been ground.\"",
+    "good. the opinion is recorded as every Keeper's own, the plan's dangerousness stays inside the belief (nothing asserts the plan really was dangerous), the past tense is kept there too, and the rule fires for any Keeper who turns up later."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L5-07",
+  "rule": "V — The long quiet",
+  "texts": [
+   "A few Keepers believe that a wraith remembers the Keeper who let that wraith rise."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: kg1 (GroupOf sk_group_1 keeper) (STV 1.0 0.99))",
+     "(: kg1_card (CardinalityPhrase sk_group_1 \"a few\") (STV 1.0 0.99))",
+     "(: keeper1_type (Member sk_keeper_1 keeper) (STV 1.0 0.99))",
+     "(: grp_believe_ev (Member sk_believe_1 believe) (STV 1.0 0.99))",
+     "(: grp_believe_exp (Experiencer sk_believe_1 sk_group_1) (STV 1.0 0.99))",
+     "(: grp_believe_theme (Theme sk_believe_1 (And (Member sk_wraith_1 wraith) (Member sk_remember_1 remember) (Experiencer sk_remember_1 sk_wraith_1) (Stimulus sk_remember_1 sk_keeper_1) (Member sk_let_1 let) (Agent sk_let_1 sk_keeper_1) (Theme sk_let_1 sk_rise_1) (Past sk_let_1) (Member sk_rise_1 rise) (Agent sk_rise_1 sk_wraith_1))) (STV 1.0 0.99))",
+     "(: keeper_believe_rule (Implication (PartOf $x sk_group_1) (And (Member (sk_believe $x) believe) (Experiencer (sk_believe $x) $x) (Theme (sk_believe $x) (And (Member sk_wraith_1 wraith) (Member sk_remember_1 remember) (Experiencer sk_remember_1 sk_wraith_1) (Stimulus sk_remember_1 sk_keeper_1) (Member sk_let_1 let) (Agent sk_let_1 sk_keeper_1) (Theme sk_let_1 sk_rise_1) (Past sk_let_1) (Member sk_rise_1 rise) (Agent sk_rise_1 sk_wraith_1))))) (STV 1.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: \"a few Keepers\" gives a properly counted group with both a group belief and a per-Keeper rule, and the belief content is correctly held unasserted (nothing claims a wraith really does remember). But \"a wraith\" with a verbal predicate reads as one particular wraith rather than the general rule you seem to mean, and because \"the Keeper who let that wraith rise\" is identified only inside the belief, the parse still asserts one specific Keeper at top level. Making the generality explicit and letting the pronoun bind puts it on the well-supported rule pattern: \"A few Keepers believe that every wraith remembers the Keeper who let it rise.\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L6-01",
+  "rule": "VI — Origins",
+  "texts": [
+   "Keepers tolerate sky-cats."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: sc_genus (Inheritance sky_cat cat) (STV 1.0 0.99))",
+     "(: tolerate_rel (Tolerate keeper sky_cat) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. both \"Keepers\" and \"sky-cats\" are bare plurals, so the sentence stores as one kind-level relation between the two kinds plus the sky-cat/cat genus, with nothing dropped and nothing invented."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L6-02",
+  "rule": "VI — Appearance",
+  "texts": [
+   "Every sky-cat has broad feathered wings.",
+   "Keepers rarely witness a sky-cat hunt."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: sky_cat_genus (Inheritance sky_cat cat) (STV 1.0 0.99))",
+     "(: sky_cat_wing_rule (Implication (Member $x sky_cat) (And (Member (sk_have $x) have) (Holder (sk_have $x) $x) (Theme (sk_have $x) (sk_wings $x)) (Member (sk_wings $x) wing) (Member (sk_wings $x) broad) (Member (sk_wings $x) feathered))) (STV 1.0 0.9))",
+     "(: sky_cat_q (QuantifierPhrase sky_cat have \"every\") (STV 1.0 0.99))"
+    ],
+    [
+     "(: keeper_witness_rule (Implication (Member $x keeper) (And (Member (sk_witness $x) witness) (Experiencer (sk_witness $x) $x) (Member (sk_hunt $x) hunt) (Patient (sk_hunt $x) sky_cat) (Stimulus (sk_witness $x) (sk_hunt $x)))) (STV 0.1 0.9))",
+     "(: keeper_witness_q (QuantifierPhrase keeper witness \"rarely\") (STV 1.0 0.99))",
+     "(: sky_cat_genus (Inheritance sky_cat cat) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: a plural object carrying descriptive adjectives (\"broad feathered wings\") under \"every\" has no faithful form in our translator — the parse types the pair of wings as a single wing and hangs \"broad\" and \"feathered\" on the wing-collection rather than on each wing, so the description is distorted. Split the possession from the description: \"Every sky-cat has wings. Sky-cat wings are broad and feathered.\" The first sentence keeps the universal and the second states both properties as an ordinary generic about sky-cat wings, which needs no plural machinery at all.",
+    "bad: \"a sky-cat hunt\" is a noun compound the translator cannot unpack faithfully — it invented a role making the sky-cat the thing hunted, and the phrase is genuinely ambiguous between a hunt BY a sky-cat and a hunt OF one; \"witness\" additionally pushed the keeper onto the wrong subject role. State the hunting as a clause with an explicit hunter: \"Keepers rarely see a sky-cat hunting.\" That keeps the rarity and the perceiving, and see-plus-participle is a construction the instruction set spells out, so the sky-cat lands as the hunter and no unstated role atom appears."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L6-03",
+  "rule": "VI — Diet and roosting",
+  "texts": [
+   "Keepers cannot count the sky-cats exactly."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: skycat_grp (GroupOf sk_group_1 sky_cat) (STV 1.0 0.99))",
+     "(: skycat_genus (Inheritance sky_cat cat) (STV 1.0 0.99))",
+     "(: keeper_cant_count (Implication (Member $x keeper) (And (Member (sk_count $x) count) (Agent (sk_count $x) $x) (Theme (sk_count $x) sk_group_1) (Manner (sk_count $x) exactly) (Can (sk_count $x)))) (STV 0.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: with the bare plural \"Keepers\" this is a can-claim about the whole kind, which the translator must store as a bare inability property on \"keeper\" — a form with no slot for \"the sky-cats\" and none for \"exactly\", so both are dropped and the claim widens to \"keepers cannot count sky-cats at all\". Make the subject the specific set of keepers so the clause takes the ordinary event form, which carries the counted group and the adverb: \"The keepers cannot count the sky-cats exactly.\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L6-04",
+  "rule": "VI — The crowd rule",
+  "texts": [
+   "Keepers have used the crowd rule for generations."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: keepers_use_rule (Implication (Member $x keeper) (And (Member (sk_use $x) use) (Agent (sk_use $x) $x) (Theme (sk_use $x) sk_rule_1) (Ongoing (sk_use $x)) (MeasureAtLeast (sk_use $x) duration 2 generation))) (STV 0.9 0.9))",
+     "(: rule_type (Member sk_rule_1 crowd_rule) (STV 1.0 0.99))",
+     "(: rule_genus (Inheritance crowd_rule rule) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the generic rule itself is right (every Keeper gets a using-the-crowd-rule event, and it fires), but \"for generations\" cannot ride it — a generic sentence hands every atom to each individual Keeper, so the span comes out as \"each Keeper used the crowd rule for at least two generations\", which the sentence never claims; the span belongs to the practice across Keepers and there is no carrier for that, so it has to be dropped and the content is lost either way. Give the span its own finite clause with a singular subject so it attaches to the practice rather than to each Keeper: \"Keepers use the crowd rule, and this practice has continued for generations.\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L6-06",
+  "rule": "VI — Molting and feathers",
+  "texts": [
+   "Every Keeper considers that sky-cats are sacred.",
+   "Keepers never harm a sky-cat.",
+   "Sky-cats sometimes carry a nightmoth to the spires in flight."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: keeper_considers (Implication (Member $x keeper) (And (Member (sk_consider $x) consider) (Experiencer (sk_consider $x) $x) (Theme (sk_consider $x) (Inheritance sky_cat sacred)))) (STV 1.0 0.9))",
+     "(: keeper_q (QuantifierPhrase keeper consider \"every\") (STV 1.0 0.99))",
+     "(: skycat_genus (Inheritance sky_cat cat) (STV 1.0 0.99))"
+    ],
+    [
+     "(: lorep58_skycat_genus (Inheritance sky_cat cat) (STV 1.0 0.99))",
+     "(: lorep58_quant (QuantifierPhrase keeper harm \"never\") (STV 1.0 0.99))",
+     "(: lorep58_rule (Implication (Member $x keeper) (And (Member (sk_harm $x) harm) (Agent (sk_harm $x) $x) (Patient (sk_harm $x) (sk_sky_cat $x)) (Member (sk_sky_cat $x) sky_cat))) (STV 0.0 0.9))"
+    ],
+    [
+     "(: spires_grp (GroupOf sk_spire_1 spire) (STV 1.0 0.99))",
+     "(: skycat_carry_rule (Implication (Member $x sky_cat) (And (Member (sk_carry $x) carry) (Agent (sk_carry $x) $x) (Theme (sk_carry $x) (sk_nightmoth $x)) (Member (sk_nightmoth $x) nightmoth) (Goal (sk_carry $x) sk_spire_1) (In (sk_carry $x) flight))) (STV 0.5 0.9))",
+     "(: skycat_carry_q (QuantifierPhrase sky_cat carry \"sometimes\") (STV 1.0 0.99))",
+     "(: sky_cat_genus (Inheritance sky_cat cat) (STV 1.0 0.99))",
+     "(: nightmoth_genus (Inheritance nightmoth moth) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the universal over Keepers parses as a fireable rule with the quantifier word recorded, and the belief is sealed under the considering event, so nothing asserts that sky-cats really are sacred.",
+    "good. \"never\" parses as the same per-Keeper rule at strength zero, with the sky-cat object varying per Keeper inside the rule; fireable, with nothing lost.",
+    "good. \"sometimes\" sets the rule's strength and is recorded as a quantifier, and the moth, the destination and \"in flight\" all land in the rule; fireable with every participant covered."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L6-07",
+  "rule": "VI — Counting sky-cats",
+  "texts": [
+   "Keepers count the visible sky-cats on the cliff-spires each morning.",
+   "Keepers track the weight of the feather harvest."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: sky_cat_genus (Inheritance sky_cat cat) (STV 1.0 0.99))",
+     "(: skycats_group (GroupOf sk_group_1 sky_cat) (STV 1.0 0.99))",
+     "(: skycats_visible_rule (Implication (PartOf $x sk_group_1) (Member $x visible)) (STV 1.0 0.9))",
+     "(: cliff_spire_genus (Inheritance cliff_spire spire) (STV 1.0 0.99))",
+     "(: cliffspires_group (GroupOf sk_group_2 cliff_spire) (STV 1.0 0.99))",
+     "(: skycats_on_spires (On sk_group_1 sk_group_2) (STV 1.0 0.99))",
+     "(: keeper_count_rule (Implication (Member $x keeper) (And (Member (sk_count $x) count) (Agent (sk_count $x) $x) (Theme (sk_count $x) sk_group_1) (Time (sk_count $x) morning) (Every (sk_count $x) 1 day))) (STV 0.9 0.9))"
+    ],
+    [
+     "(: lorep61_harvest_genus (Inheritance feather_harvest harvest) (STV 1.0 0.99))",
+     "(: lorep61_harvest_type (Member sk_harvest_1 feather_harvest) (STV 1.0 0.99))",
+     "(: lorep61_weight_type (Member sk_weight_1 weight) (STV 1.0 0.99))",
+     "(: lorep61_weight_poss (Possession sk_weight_1 sk_harvest_1) (STV 1.0 0.99))",
+     "(: lorep61_rule (Implication (Member $x keeper) (And (Member (sk_track $x) track) (Agent (sk_track $x) $x) (Theme (sk_track $x) sk_weight_1))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. \"visible\" is handed to each sky-cat in the definite group rather than to the group as a lump, and \"each morning\" becomes a time slot plus its daily cycle; the counting rule fires and every participant is covered.",
+    "good. the bare generic parses as a fireable per-Keeper rule, and \"the weight of the feather harvest\" becomes its own tracked entity linked to the harvest, so nothing is lost."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L6-08",
+  "rule": "VI — The cove incident",
+  "texts": [
+   "When the moth-count at the Stilllight Lantern is low, sky-cats stay on the cliff-spires.",
+   "Keepers do not feed sky-cats."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: stilllight_name (Name stilllight_lantern \"Stilllight Lantern\") (STV 1.0 0.99))",
+     "(: stilllight_type (Member stilllight_lantern lantern) (STV 1.0 0.99))",
+     "(: mothcount_type (Member sk_moth_count_1 moth_count) (STV 1.0 0.99))",
+     "(: mothcount_genus (Inheritance moth_count count) (STV 1.0 0.99))",
+     "(: mothcount_loc (LocatedIn sk_moth_count_1 stilllight_lantern) (STV 1.0 0.99))",
+     "(: skycat_genus (Inheritance sky_cat cat) (STV 1.0 0.99))",
+     "(: cliffspire_grp (GroupOf sk_cliffspire_1 cliff_spire) (STV 1.0 0.99))",
+     "(: cliffspire_genus (Inheritance cliff_spire spire) (STV 1.0 0.99))",
+     "(: skycat_stay_rule (Implication (And (Member $x sky_cat) (Member sk_moth_count_1 low)) (On $x sk_cliffspire_1)) (STV 0.9 0.9))"
+    ],
+    [
+     "(: keeper_no_feed (Implication (Member $x keeper) (And (Member (sk_feed $x) feed) (Agent (sk_feed $x) $x) (Patient (sk_feed $x) sky_cat))) (STV 0.0 0.9))",
+     "(: skycat_genus (Inheritance sky_cat cat) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the when-clause parses as a fireable rule: the low moth-count is the trigger and the cliff-spire position the consequence, with the lantern, the count and the spires all typed and linked. The only thing not recorded is the continuation sense of 'stay' (it reads as a plain 'are on the cliff-spires'), and no simple rewording recovers it, so the sentence is fine as written.",
+    "good. parses as a fireable per-keeper rule at strength 0 — for any keeper, a feeding of sky-cats is denied — with the sky-cat kind carried as the object and no content dropped. Worth knowing only that a bare plural on both sides of the verb could equally land on a single opaque kind-level record ('keepers feed sky-cats' as one relation atom) in a future re-parse; both forms are faithful, so no rewrite is needed."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L7-01",
+  "rule": "VII — Tides",
+  "texts": [
+   "Neap tides leave the tide-pools dry."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: neap_tide_genus (Inheritance neap_tide tide) (STV 1.0 0.99))",
+     "(: neap_tide_adj (Inheritance neap_tide neap) (STV 1.0 0.99))",
+     "(: pools_group (GroupOf sk_pools_1 tide_pool) (STV 1.0 0.99))",
+     "(: tide_pool_genus (Inheritance tide_pool pool) (STV 1.0 0.99))",
+     "(: neap_leave_rule (Implication (Member $x neap_tide) (And (Member (sk_leave $x) leave) (Agent (sk_leave $x) $x) (Patient (sk_leave $x) sk_pools_1) (Member (sk_dry $x) dry) (Experiencer (sk_dry $x) sk_pools_1) (Result (sk_leave $x) (sk_dry $x)) (Implication (PartOf $y sk_pools_1) (Member $y dry)))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: 'leave the tide-pools dry' is a result-state clause whose object is a definite plural, sitting inside a generic claim about neap tides — so the parse had to bury the half that hands 'dry' to each individual pool inside the generic rule's own conclusion, where its variable is bound by nothing and it carries no truth value of its own. No placement of that half is licensed (at the top level it would assert every tide-pool dry unconditionally), so as parsed the dryness of any one pool never actually derives. Rewrite it as a property that holds under a stated condition: \"Tide-pools are dry at neap tide.\" That is a single licensed atom — the property 'dry' on the tide-pool kind, with 'neap tide' as the condition — which the reasoner can hand to any pool during a neap tide; the only shift is that the pools are the kind rather than one definite set, and the tide is named as the condition instead of the grammatical subject."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L7-02",
+  "rule": "VII — The harvest tide",
+  "texts": [
+   "Keepers cannot explain the moon-phase rule."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: mprule_type (Member sk_moon_phase_rule_1 moon_phase_rule) (STV 1.0 0.99))",
+     "(: mprule_genus (Inheritance moon_phase_rule rule) (STV 1.0 0.99))",
+     "(: keeper_no_explain (Implication (Member $x keeper) (And (Member (sk_explain $x) explain) (Agent (sk_explain $x) $x) (Theme (sk_explain $x) sk_moon_phase_rule_1) (Can (sk_explain $x)))) (STV 0.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: 'Keepers cannot explain X' states an ability of a whole kind, which must be recorded as a property of the keeper kind — and that property's action slot can only hold a bare kind, so 'the moon-phase rule' as one particular rule has nowhere to live; the parse instead produced a per-keeper event rule carrying 'can', the one shape the instruction set rules out for a modal claim over a kind, so the sentence's only predication is mis-recorded either way. Put the specific rule in subject position and leave the keepers as the agent: \"The moon-phase rule cannot be explained by keepers.\" That is an ordinary denied-ability event: the definite rule keeps its own symbol as the thing not explained, the inability is preserved at strength 0, and no kind-level property form is needed. (If the rule need not stay definite, 'Keepers cannot explain moon-phase rules.' also parses cleanly, at the cost of generalising away the particular rule.)"
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L7-03",
+  "rule": "VII — The sea-water store",
+  "texts": [
+   "First-year apprentices usually fill the cisterns."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: fya_genus (Inheritance first_year_apprentice apprentice) (STV 1.0 0.99))",
+     "(: fya_mod (Inheritance first_year_apprentice first_year) (STV 1.0 0.99))",
+     "(: cistern_grp (GroupOf sk_cistern_1 cistern) (STV 1.0 0.99))",
+     "(: fya_fill_rule (Implication (Member $x first_year_apprentice) (And (Member (sk_fill $x) fill) (Agent (sk_fill $x) $x) (Patient (sk_fill $x) sk_cistern_1))) (STV 0.8 0.9))",
+     "(: fya_fill_q (QuantifierPhrase first_year_apprentice fill \"usually\") (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the rule itself is right and usable - first-year apprentices as the doers, \"usually\" carried as the strength of the habit, and the cisterns as one definite group - but the parse also asserts something your sentence never says, that a first-year apprentice is a kind of \"first year\", which came from unpacking the hyphenated label as if it named a category. No content is lost, so no rewrite is needed on content grounds: this is the translator over-unpacking a compound label, not a fault in your wording, and rephrasing the tenure as a phrase (\"apprentices in their first year\") risks the worse outcome of the restriction being dropped or landing in a rule condition that can never match. If you would rather avoid hyphenated kind-labels of this shape altogether, \"New apprentices usually fill the cisterns.\" parses without the stray claim - but adopt it only if \"new\" is faithful to your lore, since it loosens the exact first-year tenure."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L7-04",
+  "rule": "VII — The cold-threshold wind",
+  "texts": [
+   "Salt-bloomed lanterns survive cold-threshold nights.",
+   "Unprepared Cliff Path lanterns die on cold-threshold nights."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: cold_threshold_night_genus (Inheritance cold_threshold_night night) (STV 1.0 0.99))",
+     "(: lantern_survive_rule (Implication (And (Member $x lantern) (Member $x salt_bloomed)) (And (Member (sk_survive $x) survive) (Agent (sk_survive $x) $x) (Theme (sk_survive $x) cold_threshold_night))) (STV 0.9 0.9))"
+    ],
+    [
+     "(: cp_name (Name cliff_path \"Cliff Path\") (STV 1.0 0.99))",
+     "(: cp_type (Member cliff_path path) (STV 1.0 0.99))",
+     "(: ctn_genus (Inheritance cold_threshold_night night) (STV 1.0 0.99))",
+     "(: ct_genus (Inheritance cold_threshold threshold) (STV 1.0 0.99))",
+     "(: lantern_die_rule (Implication (And (Member $x lantern) (Possession $x cliff_path) (Member $x unprepared)) (And (Member (sk_die $x) die) (Patient (sk_die $x) $x) (Time (sk_die $x) cold_threshold_night))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the salt-bloomed restriction becomes the condition of a rule that fires, and surviving cold-threshold nights is covered with nothing added.",
+    "mixed: the lantern side is right and the rule fires, but \"on cold-threshold nights\" is dropped into the time slot as a bare kind label - a slot that only holds dates, named times and parts of the day - so the every-such-night recurrence your plural carries is silently lost. Give the night a clause of its own: \"When a cold-threshold night comes, unprepared lanterns on the Cliff Path die.\" The \"when\" clause makes each such night an occasion the dying can be tied to, so the every-time reading is stated rather than assumed, and spelling out \"on the Cliff Path\" records that location instead of the vaguer association a bare premodifier gets."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L8-03",
+  "rule": "VIII — Silken threads",
+  "texts": [
+   "Keepers scrape the threads off the warm stone with a flat blade.",
+   "Well-attended lanterns yield a small heap of threads each night in moth-season."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: keeper_scrape (Implication (Member $x keeper) (And (Member (sk_scrape $x) scrape) (Agent (sk_scrape $x) $x) (Theme (sk_scrape $x) sk_thread_1) (Source (sk_scrape $x) sk_stone_1) (Instrument (sk_scrape $x) (sk_blade $x)) (Member (sk_blade $x) blade) (Member (sk_blade $x) flat))) (STV 0.9 0.9))",
+     "(: thread_grp (GroupOf sk_thread_1 thread) (STV 1.0 0.99))",
+     "(: stone_type (Member sk_stone_1 stone) (STV 1.0 0.99))",
+     "(: stone_warm (Member sk_stone_1 warm) (STV 1.0 0.99))"
+    ],
+    [
+     "(: moth_season_genus (Inheritance moth_season season) (STV 1.0 0.99))",
+     "(: lantern_yield_rule (Implication (And (Member $x lantern) (Member $x well_attended)) (And (Member (sk_yield $x) yield) (Agent (sk_yield $x) $x) (Patient (sk_yield $x) (sk_heap $x)) (Member (sk_heap $x) heap) (Member (sk_heap $x) small) (GroupOf (sk_heap $x) thread) (Time (sk_yield $x) night) (Every (sk_yield $x) 1 day) (Time (sk_yield $x) moth_season))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the whole scene lands in one fireable rule - keepers as the habitual doers, the threads as one definite group, the warm stone as what they come off, and each keeper's own flat blade as the tool.",
+    "good. everything is carried in one fireable rule: the well-attended restriction, the small heap of threads, the nightly slot and the moth-season window. The nightly cycle is recorded beside the moth-season window rather than inside it, so the two must be read together, but no rewording would express that any better."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L8-07",
+  "rule": "VIII — Cauldrons and tools",
+  "texts": [
+   "Keepers extinguish the lantern at dawn with a brass snuffer.",
+   "Keepers often inherit the snuffer with the station."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: keeper_extinguish_rule (Implication (Member $x keeper) (And (Member (sk_extinguish $x) extinguish) (Agent (sk_extinguish $x) $x) (Patient (sk_extinguish $x) sk_lantern_1) (Time (sk_extinguish $x) dawn) (Instrument (sk_extinguish $x) (sk_snuffer $x)) (Member (sk_snuffer $x) brass_snuffer))) (STV 0.9 0.9))",
+     "(: lantern_type (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: brass_snuffer_genus (Inheritance brass_snuffer snuffer) (STV 1.0 0.99))"
+    ],
+    [
+     "(: keeper_inherit (Implication (Member $x keeper) (And (Member (sk_inherit $x) inherit) (Agent (sk_inherit $x) $x) (Theme (sk_inherit $x) (sk_snuffer $x)) (Member (sk_snuffer $x) snuffer) (Member (sk_station $x) station) (With (sk_inherit $x) (sk_station $x)))) (STV 0.8 0.9))",
+     "(: keeper_inherit_q (QuantifierPhrase keeper inherit \"often\") (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the bare-plural generic becomes a fireable per-keeper rule, with the dawn time, the brass snuffer as the instrument (and typed as a snuffer) and the lantern all carried.",
+    "good. \"often\" sets the rule's strength and is recorded as the quantifier word, the rule fires on any keeper, and each keeper gets their own snuffer and their own station, which is the reading you want."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L8-08",
+  "rule": "VIII — Lanterns",
+  "texts": [
+   "Every lantern has a glass dome.",
+   "Every lantern has an iron reservoir for mire-essence."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: glass_dome_genus (Inheritance glass_dome dome) (STV 1.0 0.99))",
+     "(: every_lantern_has_dome (Implication (Member $x lantern) (And (Member (sk_have $x) have) (Holder (sk_have $x) $x) (Theme (sk_have $x) (sk_dome $x)) (Member (sk_dome $x) glass_dome))) (STV 1.0 0.9))",
+     "(: lantern_q (QuantifierPhrase lantern have \"every\") (STV 1.0 0.99))"
+    ],
+    [
+     "(: lantern_has_reservoir (Implication (Member $x lantern) (And (Member (sk_have $x) have) (Holder (sk_have $x) $x) (Theme (sk_have $x) (sk_reservoir $x)) (Member (sk_reservoir $x) iron_reservoir) (For (sk_reservoir $x) mire_essence))) (STV 1.0 0.9))",
+     "(: lantern_q (QuantifierPhrase lantern have \"every\") (STV 1.0 0.99))",
+     "(: reservoir_genus (Inheritance iron_reservoir reservoir) (STV 1.0 0.99))",
+     "(: essence_genus (Inheritance mire_essence essence) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. \"every lantern\" becomes a fireable rule that gives each individual lantern its own glass dome, with the dome also typed as a dome so a question about domes in general still reaches it.",
+    "good. same fireable per-lantern rule, with the iron reservoir typed as a reservoir, mire-essence typed as an essence, and the \"for mire-essence\" purpose kept on the reservoir rather than dropped."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L9-02",
+  "rule": "IX — The boil",
+  "texts": [
+   "When a cauldron boils hard, the distillation in that cauldron fails.",
+   "When a cauldron boils hard, that cauldron yields a thin slick of poor essence."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: whenever_boil_fail (Implication (And (Member $c cauldron) (Member $x boil) (Patient $x $c) (Manner $x hard)) (And (Member (sk_distill $x) distillation) (Location (sk_distill $x) $c) (Member (sk_fail $x) fail) (Patient (sk_fail $x) (sk_distill $x)) (During (sk_fail $x) $x))) (STV 1.0 0.9))"
+    ],
+    [
+     "(: cauldron_boil_yield_rule (Implication (And (Member $c cauldron) (Member $b boil) (Patient $b $c) (Manner $b hard)) (And (Member (sk_yield $c) yield) (Agent (sk_yield $c) $c) (Patient (sk_yield $c) (sk_slick $c)) (Member (sk_slick $c) slick) (Member (sk_slick $c) thin) (Member (sk_essence $c) essence) (Member (sk_essence $c) poor) (Of (sk_slick $c) (sk_essence $c)) (During (sk_yield $c) $b))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the rule fires and does make a distillation fail during each hard boil, but because \"the distillation in that cauldron\" appears only in the result half, the rule also creates one — it ends up claiming that a distillation exists in the cauldron whenever a cauldron boils hard, instead of assuming one was already running. Put the distillation into the condition so it is matched rather than invented: \"When a distillation runs in a cauldron and that cauldron boils hard, that distillation fails.\"",
+    "bad: the yielding is tied to the cauldron rather than to each boiling, so a cauldron that boils hard many times gets only one slick, and that single slick is then claimed to appear during every one of its boils. Make the recurrence explicit so each boil gets its own yield: \"Every time a cauldron boils hard, that cauldron yields a thin slick of poor essence.\" The \"thin slick of poor essence\" wording itself came through acceptably and needs no change."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L9-04",
+  "rule": "IX — After the boil",
+  "texts": [
+   "Apprentices scrub the cauldrons with sand."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: cauldron_group (GroupOf sk_cauldron_1 cauldron) (STV 1.0 0.99))",
+     "(: apprentice_scrub_rule (Implication (Member $x apprentice) (And (Member (sk_scrub $x) scrub) (Agent (sk_scrub $x) $x) (Patient (sk_scrub $x) sk_cauldron_1) (Instrument (sk_scrub $x) sand))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the bare-plural habit becomes a fireable rule that gives each apprentice their own scrubbing event, the definite \"the cauldrons\" stays a specific group rather than cauldrons-in-general, and \"with sand\" is carried as the instrument; nothing in the sentence is lost."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L9-05",
+  "rule": "IX — Yields",
+  "texts": [
+   "Typical days yield several vessels full of mire-essence.",
+   "Heavy-thread days yield four vessels full of mire-essence.",
+   "Thin days yield a single vessel full of mire-essence.",
+   "Whenever a wraith drains a lantern, the thread harvest at that lantern falls."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: mire_essence_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
+     "(: typical_day_yield_rule (Implication (And (Member $x day) (Member $x typical)) (And (Member (sk_yield $x) yield) (Agent (sk_yield $x) $x) (Patient (sk_yield $x) (sk_vessels $x)) (GroupOf (sk_vessels $x) vessel) (CardinalityPhrase (sk_vessels $x) \"several\") (Member (sk_full $x) full) (Experiencer (sk_full $x) (sk_vessels $x)) (Of (sk_full $x) mire_essence) (Member (sk_vessels $x) full))) (STV 0.9 0.9))"
+    ],
+    [
+     "(: htd_genus (Inheritance heavy_thread_day day) (STV 1.0 0.99))",
+     "(: htd_heavy (Inheritance heavy_thread_day heavy) (STV 1.0 0.99))",
+     "(: mire_essence_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
+     "(: htd_yields (Implication (Member $x heavy_thread_day) (And (Member (sk_yield $x) yield) (Agent (sk_yield $x) $x) (Patient (sk_yield $x) (sk_vessels $x)) (GroupOf (sk_vessels $x) vessel) (Cardinality (sk_vessels $x) 4) (Member (sk_full $x) full) (Experiencer (sk_full $x) (sk_vessels $x)) (Of (sk_full $x) mire_essence))) (STV 0.9 0.9))"
+    ],
+    [
+     "(: lorep80_day_genus (Inheritance thin_day day) (STV 1.0 0.99))",
+     "(: lorep80_day_mod (Inheritance thin_day thin) (STV 1.0 0.99))",
+     "(: lorep80_essence_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
+     "(: lorep80_rule (Implication (Member $x thin_day) (And (Member (sk_yield $x) yield) (Agent (sk_yield $x) $x) (Patient (sk_yield $x) (sk_vessel $x)) (Member (sk_vessel $x) vessel) (Member (sk_vessel $x) single) (Member (sk_full $x) full) (Experiencer (sk_full $x) (sk_vessel $x)) (Of (sk_full $x) mire_essence) (Member (sk_vessel $x) full))) (STV 0.9 0.9))"
+    ],
+    [
+     "(: lp81_th_genus (Inheritance thread_harvest harvest) (STV 1.0 0.99))",
+     "(: lp81_rule (Implication (And (Member $w wraith) (Member $d drain) (Agent $d $w) (Patient $d $l) (Member $l lantern)) (And (Member (sk_fall $d) fall) (Theme (sk_fall $d) (sk_harvest $l)) (Member (sk_harvest $l) thread_harvest) (LocatedIn (sk_harvest $l) $l) (During (sk_fall $d) $d))) (STV 1.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: \"several vessels full of mire-essence\" cannot be recorded as written — the fullness belongs to each vessel, but inside a generic about days the vessels are a fresh batch minted per day, and we have no way to hand a property to the members of such a batch, so the parse ends up saying the collection as a whole is full (which is not what you mean) and the per-vessel reading is lost either way. Move the essence into the verb so no member-property is needed: \"Typical days fill several vessels with mire-essence.\" — the count still rides on the vessels and the mire-essence is carried as what they are filled with.",
+    "mixed: the rule fires and the count of four is kept, but the same \"four vessels full of mire-essence\" problem applies — the fullness of each vessel has no place to attach on a per-day batch of vessels, so that half is dropped. Rewrite it the same way as the previous sentence: \"Heavy-thread days fill four vessels with mire-essence.\" (Separately, the translator also asserted that heavy-thread days are themselves \"heavy\", reading the \"heavy\" out of your two-word term; that is our slip, not your sentence's — the compliant parse just omits it — so keep \"heavy-thread days\" as one term, since it is what keeps the rule fireable.)",
+    "mixed: everything works except \"a single\" — it came out as a quality of the vessel (\"the vessel is single\") instead of a count, because our counting machinery only counts groups and has nowhere to put an exact count on one object; the \"full of mire-essence\" half is fine here, since the bearer is one vessel and not a batch. Minimal fix: \"Thin days yield one vessel full of mire-essence.\" — the lone vessel then carries the \"one\" as far as the notation can. If the contrast with typical and heavy-thread days is the point of the sentence, state it as a comparison in its own sentence (\"A thin day fills fewer vessels than a typical day.\"), which we can record.",
+    "good. the whenever-rule fires: the wraith and the lantern are plain variables any later draining event can match, the falling harvest is minted once per occurrence and tied to its trigger, and the harvest is typed and placed at that same lantern."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L10-02",
+  "rule": "X — Cold stretches",
+  "texts": [
+   "Keepers forecast cold-threshold stretches from the spire weathercocks.",
+   "Keepers forecast cold-threshold stretches from the hearth smoke."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: cthresh_genus (Inheritance cold_threshold threshold) (STV 1.0 0.99))",
+     "(: cts_genus (Inheritance cold_threshold_stretch stretch) (STV 1.0 0.99))",
+     "(: sw_genus (Inheritance spire_weathercock weathercock) (STV 1.0 0.99))",
+     "(: sw_grp (GroupOf sk_group_1 spire_weathercock) (STV 1.0 0.99))",
+     "(: forecast_rule (Implication (Member $x keeper) (And (Member (sk_forecast $x) forecast) (Agent (sk_forecast $x) $x) (Theme (sk_forecast $x) cold_threshold_stretch) (Source (sk_forecast $x) sk_group_1))) (STV 0.9 0.9))"
+    ],
+    [
+     "(: cts_genus (Inheritance cold_threshold_stretch stretch) (STV 1.0 0.99))",
+     "(: hs_genus (Inheritance hearth_smoke smoke) (STV 1.0 0.99))",
+     "(: hs_type (Member sk_hearth_smoke_1 hearth_smoke) (STV 1.0 0.99))",
+     "(: keepers_forecast (Implication (Member $x keeper) (And (Member (sk_forecast $x) forecast) (Agent (sk_forecast $x) $x) (Theme (sk_forecast $x) cold_threshold_stretch) (Source (sk_forecast $x) sk_hearth_smoke_1))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: everything the sentence says is present and the rule fires, but the term \"cold-threshold stretches\" packs one compound inside another (\"cold-threshold\" is itself two words modifying \"stretches\"), and the translator unpacked the inner half a second time, adding a stray claim that a cold threshold is a kind of threshold — an atom nothing else in the parse uses, and one it did not add for the very same phrase in your next sentence, so the wording is a coin-flip rather than reliably safe. Keep the modifier to one word and put the threshold in its own sentence: \"Keepers forecast cold stretches from the spire weathercocks.\" plus \"A stretch counts as cold when the cold reaches the threshold.\" — nothing is lost, and each half lands in a shape the translator handles the same way every time.",
+    "good. the same generic rule fires with the hearth smoke as the source, and both compound terms carry only their head genus this time; note only that the identical phrase \"cold-threshold stretches\" picked up a stray extra atom in the previous sentence, so whichever wording you settle on is worth using in both."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L10-03",
+  "rule": "X — Sky-cat seasons",
+  "texts": [
+   "When nightmoths are scarce, sky-cats sometimes hunt insects.",
+   "Marra Tallowhand's logs record that sky-cats hunt insects."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: nightmoth_genus (Inheritance nightmoth moth) (STV 1.0 0.99))",
+     "(: skycat_genus (Inheritance sky_cat cat) (STV 1.0 0.99))",
+     "(: skycat_hunt (Implication (And (Member $x sky_cat) (KindProperty nightmoth scarce)) (And (Member (sk_hunt $x) hunt) (Agent (sk_hunt $x) $x) (Patient (sk_hunt $x) insect))) (STV 0.5 0.9))",
+     "(: skycat_hunt_q (QuantifierPhrase sky_cat hunt \"sometimes\") (STV 1.0 0.99))"
+    ],
+    [
+     "(: marra_name (Name marra_tallowhand \"Marra Tallowhand\") (STV 1.0 0.99))",
+     "(: log_grp (GroupOf sk_log_grp_1 log) (STV 1.0 0.99))",
+     "(: log_poss (Possession sk_log_grp_1 marra_tallowhand) (STV 1.0 0.99))",
+     "(: skycat_genus (Inheritance sky_cat cat) (STV 1.0 0.99))",
+     "(: record_ev (Member sk_record_1 record) (STV 1.0 0.99))",
+     "(: record_exp (Experiencer sk_record_1 sk_log_grp_1) (STV 1.0 0.99))",
+     "(: record_th (Theme sk_record_1 (Hunt sky_cat insect)) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the whole sentence is carried: the \"when nightmoths are scarce\" condition sits in the rule's premise (so it is never asserted on its own), sky-cats and nightmoths each get their genus link, and \"sometimes\" comes through as a 0.5-strength rule with the word itself recorded alongside. One practical note, not a rewrite: the rule stays dormant until some other sentence in the world file actually states that nightmoths are scarce, since this sentence only supposes that condition rather than asserting it.",
+    "good. the parse records that Marra Tallowhand's logs say sky-cats hunt insects without asserting it as a world fact of its own, which is exactly what \"record that\" means; the logs are handled as one aggregate source rather than as each individual log making the claim, and the adjudicator confirmed that reading against the reviewer's objection."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L10-04",
+  "rule": "X — The Hollows through the year",
+  "texts": [
+   "Keepers at the Hollows often tend lanterns in pairs.",
+   "Keepers at the Hollows meet each week at a shed at the forest edge."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: hollows_name (Name hollows \"Hollows\") (STV 1.0 0.99))",
+     "(: keeper_tend_rule (Implication (And (Member $x keeper) (LocatedIn $x hollows)) (And (Member (sk_tend $x) tend) (Agent (sk_tend $x) $x) (Patient (sk_tend $x) lantern) (In (sk_tend $x) pair))) (STV 0.8 0.9))",
+     "(: keeper_tend_q (QuantifierPhrase keeper tend \"often\") (STV 1.0 0.99))"
+    ],
+    [
+     "(: lorep87_hollows_name (Name hollows \"Hollows\") (STV 1.0 0.99))",
+     "(: lorep87_group (GroupOf sk_group_1 keeper) (STV 1.0 0.99))",
+     "(: lorep87_group_loc (LocatedIn sk_group_1 hollows) (STV 1.0 0.99))",
+     "(: lorep87_meet (Member sk_meet_1 meet) (STV 1.0 0.99))",
+     "(: lorep87_meet_agent (Agent sk_meet_1 sk_group_1) (STV 1.0 0.99))",
+     "(: lorep87_meet_freq (Every sk_meet_1 1 week) (STV 1.0 0.99))",
+     "(: lorep87_shed_type (Member sk_shed_1 shed) (STV 1.0 0.99))",
+     "(: lorep87_meet_loc (Location sk_meet_1 sk_shed_1) (STV 1.0 0.99))",
+     "(: lorep87_forest_type (Member sk_forest_1 forest) (STV 1.0 0.99))",
+     "(: lorep87_edge_type (Member sk_edge_1 edge) (STV 1.0 0.99))",
+     "(: lorep87_edge_partof (PartOf sk_edge_1 sk_forest_1) (STV 1.0 0.99))",
+     "(: lorep87_shed_loc (LocatedIn sk_shed_1 sk_edge_1) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the rule fires for any keeper located at the Hollows, \"often\" lands as a 0.8-strength rule with the word recorded beside it, and the lanterns are carried as the object of the tending. Worth knowing, though it needs no rewrite: \"in pairs\" survives only as the surface phrase attached to the tending, so the two-at-a-time count is not stored as a number and a question like \"how many keepers tend a lantern together?\" will not resolve.",
+    "good. every part lands — the keepers as one group at the Hollows, the weekly recurrence, the shed as the meeting place, and the shed's position at the edge of the forest — and \"meet\" is correctly kept as a single group event rather than split into one meeting per keeper."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ }
+]

@@ -2,7 +2,7 @@
 """Assemble a full parse record from the accepted record plus a pending-subset record.
 
 usage:  python3 assemble_parses.py [--check] [PENDING_PARSES=world_rules_pending_parses.json]
-        (lore:  python3 assemble_parses.py lore_pending_parses.json lore_parses.json lore.json)
+        (lore:  python3 assemble_parses.py lore_pending_parses.json lore_parsed.json lore.json)
                                    [FULL_PARSES=world_rules_parses.json]
                                    [CORPUS=world_rules.json]
 
@@ -11,7 +11,8 @@ sentence the assembler takes the per-sentence stmts/review/census entry from the
 PENDING record if present there, else from the FULL record; a sentence found in
 neither is reported as STILL PENDING. The merged record is written back to
 FULL_PARSES in corpus order (a .bak copy of the previous record is kept), and the
-census is summarised — admission = every sentence `ok`.
+census is summarised — admission = every sentence `ok` AND no EMPTY parse (a sentence
+whose parse holds no statement contributes nothing; it is dropped or restated, never admitted).
 """
 import json, os, shutil, sys
 CHECK = '--check' in sys.argv; sys.argv = [a for a in sys.argv if a != '--check']
@@ -28,7 +29,7 @@ def index(rec):
             out[s] = {k: e[k]['texts'][i] for k in KEYS if k in e and 'texts' in e[k]}
     return out
 have = index(full); have.update(index(pend))   # pending wins
-merged, missing, dead = [], [], []
+merged, missing, dead, empty = [], [], [], []
 for r in corpus:
     ent = {'id': r['id'], 'rule': r['rule'], 'texts': list(r['texts'])}
     for k in KEYS: ent[k] = {'texts': []}
@@ -36,6 +37,7 @@ for r in corpus:
         if s not in have: missing.append((r['id'], s)); [ent[k]['texts'].append(None) for k in KEYS]; continue
         for k in KEYS: ent[k]['texts'].append(have[s].get(k))
         if have[s].get('census') not in (None, 'ok'): dead.append((r['id'], have[s]['census'], s))
+        if have[s].get('stmts') == []: empty.append((r['id'], s))
     merged.append(ent)
 if not CHECK:
     if os.path.exists(full_p): shutil.copy(full_p, full_p + '.bak')
@@ -44,4 +46,5 @@ n = sum(len(r['texts']) for r in corpus)
 print(f'merged {n - len(missing)}/{n} sentences into {full_p} ({len(index(pend))} from pending)')
 for rid, s in missing: print(f'  STILL PENDING [{rid}] {s}')
 for rid, c, s in dead: print(f'  CENSUS {c} [{rid}] {s[:70]}')
-print('ADMISSION:', 'clean — every sentence census ok' if not missing and not dead else 'NOT yet')
+for rid, s in empty: print(f'  EMPTY parse [{rid}] {s[:70]}')
+print('ADMISSION:', 'clean — every sentence census ok, none empty' if not (missing or dead or empty) else 'NOT yet')

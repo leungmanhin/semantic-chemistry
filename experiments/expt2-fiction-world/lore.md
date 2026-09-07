@@ -34,17 +34,18 @@ holds one lantern. The Stilllight Lantern stands at the Sunken Cove. The
 Stilllight Lantern is a large lantern. Iron bands reinforce the Stilllight
 Lantern. The Stilllight Lantern burns through a full night on one filling. The
 Stilllight Keeper walks down the Cove Stair at midnight. The Stilllight Keeper
-checks the flame at midnight. The Stilllight station is a demanding station.
-The Keepers fear the Stilllight station.
+checks the flame at midnight. The Stilllight Station is the lantern-station at
+the Sunken Cove. The Stilllight Station is a demanding station. Every Keeper
+fears the Stilllight Station.
 
-> Design values (not corpus): the Stilllight is the ONLY lantern at the Sunken Cove (encoded as the count 'one lantern'), the largest in Aelmere, twice a normal lantern's height.
+> Design values (not corpus): the Stilllight is the ONLY lantern at the Sunken Cove (encoded as the count 'one lantern'), the largest in Aelmere, twice a normal lantern's height. 'Stilllight Station' is the registry name of the lantern-station at the Sunken Cove (R29's 'the Sunken-Cove station' is the same station).
 
 The Salt-bloom Tide-pools lie north of the village. A goat-path along the
 cliff top leads to the Salt-bloom Tide-pools. The Salt-bloom Tide-pools are
 small pools in a stone shelf above the tide-line. There are seven pools. Two
 pools at the south end never bloom. Whenever a spring tide comes, the
-tide-pools fill and overflow. The Keepers visit the tide-pools at harvest
-time. The Council surveys the tide-pools occasionally.
+tide-pools fill and overflow. Keepers visit the tide-pools at harvest time.
+The Council surveys the tide-pools occasionally.
 
 > Design value: salt-bloom grows in five of the seven pools.
 
@@ -66,7 +67,7 @@ oak table in the Watch.
 The Hollows lie inland from the village. The Hollows are a long stretch of low
 scrub forest. Fog usually covers the Hollows. The Hollows hold thirty-two
 lanterns. The Hollows lanterns stand along the forest paths. The Hollows
-lanterns burn dimly. The Keepers keep the Hollows lanterns dim. Whenever a
+lanterns burn dimly. Keepers keep the lanterns at the Hollows dim. Whenever a
 nightmoth flees the Cliff Path, the nightmoth goes to a dim lantern in the
 Hollows. A small crew of Keepers tends the Hollows. The Hollows produce a thin
 thread harvest.
@@ -154,7 +155,7 @@ Brae. Tessa Brae became Feather-Collector nine years ago. Tessa Brae is
 meticulous about the feather store.
 
 Bevin Coombe is Brindle Coombe's brother. Bevin Coombe tends the Stilllight
-Lantern. The Stilllight station is a hard station. Bevin Coombe sleeps during
+Lantern. The Stilllight Station is a hard station. Bevin Coombe sleeps during
 the day. Bevin Coombe walks down the Cove Stair every evening at sunset.
 
 Marra Tallowhand is Meren Tallowhand's cousin. Marra Tallowhand tends a harbor
@@ -163,62 +164,64 @@ consults Marra Tallowhand's logs.
 
 Each Keeper tends a station alone. When a Keeper trains an apprentice, the
 Keeper and the apprentice tend the station together. During high-wraith weeks,
-two Keepers tend the Stilllight Lantern together. A night shift begins at
-sundown. A Keeper checks the lantern at midnight. A Keeper checks the lantern
-at the third watch. The shift ends at dawn.
+two Keepers tend the Stilllight Lantern together. Night shifts begin at
+sundown. Each Keeper checks the lantern at midnight. Each Keeper checks the
+lantern at the third watch. The shift ends at dawn.
 
 Each Keeper carries a leather case. The case holds a wick-trimmer, a clay
 flask of mire-essence, a striker, a jar of ground feathers, and a pouch of
 salt-bloom.
 
 Keepers wear long oilcloth coats. The coats protect against sea-spray.
-Mire-essence stains a Keeper's coat over time. A first-year apprentice wears
-an unstained coat.
+Mire-essence stains a Keeper's coat over time. Every first-year apprentice
+wears an unstained coat.
 
-Some Keepers keep notebooks of moth-counts and weather notes. A Keeper's
-notebook passes to the heir with the station.
+A few Keepers keep a notebook of moth-counts and weather notes. Whenever an
+heir inherits a Keeper's lantern-station, that heir inherits that Keeper's
+notebook.
 
 Two Keepers have left the village. The two Keepers married outside Aelmere.
-When a Keeper leaves a station, the Council assigns an apprentice to the
-station. The Council assigns an apprentice who has completed thirty solo
-nights.
+Whenever a Keeper leaves a station, the Council assigns an apprentice to that
+station. Whenever an apprentice completes thirty solo nights, the Council
+assigns that apprentice to a station.
 
 There are three apprentices. Coraline Ash is a first-year apprentice. Jeb is a
 second-year apprentice. Mira is a third-year apprentice. The Council expects
 to invest Mira at the next solstice.
 
-The Keepers rarely take apprentices from outside Keeper families. The Council
-may accept an outside apprentice. Two earlier outside apprentices became
-senior Keepers.
+Keepers rarely take apprentices from outside Keeper families. The Council may
+accept an outside apprentice. Two earlier outside apprentices became senior
+Keepers.
 
-The Keepers consider lantern-tending sacred. Lantern-tending is not religious.
-There are no formal prayers. Meren Tallowhand counts moths aloud while Meren
-Tallowhand trims the wick. Bevin Coombe touches the iron bands of the
-Stilllight Lantern each evening.
+Every Keeper considers that lantern-tending is sacred. Lantern-tending is not
+religious. There are no formal prayers. Meren Tallowhand counts moths aloud
+while Meren Tallowhand trims the wick. Bevin Coombe touches the iron bands of
+the Stilllight Lantern each evening.
 
-The villagers say that the lanterns must burn. The Keepers repeat the phrase
-at births, at funerals, and at the close of every Council session. The phrase
-appears in the earliest surviving Watch ledgers.
+The villagers say that the lanterns must burn. Whenever a birth takes place, a
+Keeper repeats the phrase. Whenever a funeral takes place, a Keeper repeats
+the phrase. Whenever the Council closes a session, a Keeper repeats the
+phrase. The phrase appears in the earliest surviving Watch ledgers.
 
-> Sealed (deliberate): a that-clause under 'say'. Known parser limitation: verbatim wording is not preserved, so QA F21 cannot be answered from the parse.
+> Sealed (deliberate): a that-clause under 'say'. Known parser limitation: verbatim wording is not preserved, so QA F21 cannot be answered from the parse. The saying's three occasions are three per-occasion laws (bare 'at births, at funerals' has no recurrence carrier).
 
 When a Keeper fails a station, the Council judges that Keeper. The Council may
 strip a Keeper of a station. The Council may assign penance duties. The
 Council may bar a Keeper from tending. The Council has barred two Keepers
-permanently. The two barred Keepers neglected the Sunken Cove station
-repeatedly.
+permanently. The two barred Keepers often neglected the Stilllight Station.
 
-The village pays the Keepers in food and shelter. The village pools its
+The village pays each Keeper in food and shelter. The village pools its
 fishing harvest, grain trade, and garden produce. Each Keeper draws a share
 from the pool. The villagers use coin for trade with outside merchants.
 
 ## III. The Council and Its History
 
-The Council of Keepers has seven elders. The Council appoints new members by
-consensus. A Council member serves for life. A Council member may retire. The
-current Council includes Meren Tallowhand, Old Vesh, Brindle Coombe,
-Sailsworn, Aelis Brae, Norren, and Wynne Coombe. Wynne Coombe is Brindle
-Coombe's cousin.
+The Council has seven elders. The Council appoints new members by consensus.
+Council members serve permanently. A Council member may retire. The current
+Council includes Meren Tallowhand, Old Vesh, Brindle Coombe, Sailsworn, Aelis
+Brae, Norren, and Wynne Coombe. Wynne Coombe is Brindle Coombe's cousin.
+
+> 'The Council' throughout — a 'Council of Keepers' form mints a separate named body.
 
 The Council meets at every full moon. The Council meets at sundown in the
 Watch. The Council sits at a long oak table. The oak table is old. Meren
@@ -226,24 +229,24 @@ Tallowhand is the Council speaker. The speaker calls each item of business.
 The speaker decides the voting order.
 
 The Council usually decides by consensus. When consensus fails, the Council
-votes by a show of hands. A simple majority decides a vote. The speaker breaks
-a tied vote. Ties are rare.
+votes by a show of hands. Every vote is decided by a simple majority. The
+speaker breaks a tied vote. Ties are rare.
 
 The Council redistributes mire-essence reserves at every full moon. Each
 lantern-station reports its monthly production to the Council. The Cauldron
 Hall Warden reports the essence reserve to the Council. The Council allocates
 mire-essence to the stations for the coming month.
 
-The Northcove contributes mire-essence to the central pool. The Sunken Cove
-station draws mire-essence from the central pool. The exposed Cliff Path
+The Northcove contributes mire-essence to the central pool. The Stilllight
+Station draws mire-essence from the central pool. The exposed Cliff Path
 stations draw mire-essence from the central pool. The Council records each
 redistribution in the ledgers.
 
 The Council decides feather rations. The Council hears apprentice progress
 reports. The Council hears salt-bloom harvest reports. When a Keeper retires,
 the Council re-staffs that Keeper's station. When a Keeper dies, the Council
-re-staffs that Keeper's station. The Council reads letters from other villages
-aloud.
+re-staffs that Keeper's station. The Council reads letters from neighbouring
+villages aloud.
 
 Two Council members may call an emergency meeting. Emergency meetings are
 rare. The Council has called four emergency meetings. Three emergency meetings
@@ -264,22 +267,23 @@ bad winter of one hundred and twelve years ago. A very bad winter came
 sixty-three years ago. Four wraiths emerged from the Sunken Cove sixty-three
 years ago. Old Vesh was a boy sixty-three years ago. Old Vesh's father was a
 Keeper sixty-three years ago. Sixty-three years ago, Old Vesh's father walked
-the Cove Stair every evening with three other Keepers. The Council created the
+the Cove Stair every evening with three Keepers. The Council created the
 modern feather-ration system sixty-three years ago. A bad winter came
 twenty-six years ago. One wraith emerged twenty-six years ago. Twenty-six
 years ago, ground feathers around the Stilllight Lantern warded the wraith
-back. The Council doubled the Stilllight feather ration for winter twenty-six
-years ago.
+back. The Council doubled the feather ration of the Stilllight Station
+twenty-six years ago.
 
 > Design values: the winter of sixty-three years ago was the WORST on record; Old Vesh was eight; the ration after the winter of one hundred and twelve years ago lasted nine months.
 
 The ledgers record three near-miss winters. No wraith emerged in the near-miss
 winters. Apprentices study the near-miss winters.
 
-No other village on this coast keeps lanterns. Faltern lies south of Aelmere.
-Aelmere Keepers exchange letters with the lantern-keepers of Faltern.
+Villages on this coast do not keep lanterns. Aelmere keeps lanterns. Faltern
+lies south of Aelmere. Keepers from Aelmere exchange letters with the
+lantern-keepers of Faltern.
 
-> Design value: Faltern is two days' sail south. Retired: the stepping-down paragraph (decorative).
+> Design value: Faltern is two days' sail south. Retired: the stepping-down paragraph (decorative). Uniqueness ('no other village') = a generic denial over coastal villages plus the Aelmere fact ('other' has no carrier).
 
 The Council recognizes three calendar markers. The autumn equinox starts
 moth-season. The first hard frost starts salt-bloom season. The spring equinox
@@ -290,15 +294,15 @@ secret records.
 
 ## IV. Customs and Daily Rituals
 
-The Keepers sleep during the day. The village rises late. The market square is
-quiet before noon. The villagers eat a long midday meal. The Keepers eat a
+Keepers sleep during the day. The village rises late. The market square is
+quiet before noon. The villagers eat a long midday meal. Each Keeper eats a
 small meal at sundown before the shift. Each Keeper carries the leather case
-to the station at sundown. An apprentice walks with a senior Keeper to the
-station.
+to the station at sundown. Each apprentice walks to the station with a senior
+Keeper.
 
 The first lighting of a new lantern is a small ritual. Each Council member
-touches the vessel of mire-essence before the first lighting. A replacement
-lantern needs no Council touch.
+touches the vessel of mire-essence before the first lighting. Replacement
+lanterns need no Council touch.
 
 At sundown a Keeper cleans the lantern glass with a soft cloth. The Keeper
 trims the wick. The Keeper fills the reservoir from the day's flask. When a
@@ -308,7 +312,7 @@ lights the wick.
 
 At midnight the Keeper checks the flame. At midnight the Keeper refills the
 reservoir to the half-mark. At the third watch the Keeper trims the wick
-carefully. A wick carbonizes over a long burn. At dawn the Keeper extinguishes
+carefully. Wicks carbonize over a long burn. At dawn the Keeper extinguishes
 the flame with a brass snuffer. The Keeper walks home after dawn-out.
 
 Tessa Brae walks the whole cliff base each morning during molting weeks. The
@@ -327,21 +331,25 @@ distillation. The Cauldron Hall sea-water store draws from the Salt-bloom
 Tide-pools. The sea-water store draws from the deep ebb at the harbor mouth.
 Three stone cisterns at the back of Cauldron Hall hold the sea-water.
 
-The village holds three festivals each year. Mid-summer is a feast for the
-Keepers during peak moth-season. Frost-eve is the night before the first hard
-frost. The village stockpiles salt-bloom at Frost-eve. Lantern-night falls at
-midwinter. Lantern-night is an important festival. On Lantern-night every
-Keeper tends a station. On Lantern-night every villager walks the Cliff Path
-at midnight. The Council speaker lights the Stilllight Lantern at sundown on
-Lantern-night. The villagers tell stories around fires in the harbor square on
-Lantern-night.
+The village holds three festivals each year. The village holds a feast at
+Mid-summer during peak moth-season. Frost-eve is the night before the first
+hard frost. The village stockpiles salt-bloom at Frost-eve. Lantern-night
+falls at midwinter. Lantern-night is an important festival. On Lantern-night
+every Keeper tends a station. On Lantern-night every villager walks the Cliff
+Path at midnight. The Council speaker lights the Stilllight Lantern at sundown
+on Lantern-night. The villagers tell stories around fires in the harbor square
+on Lantern-night.
+
+> Design value: the Mid-summer feast is held for the Keepers.
 
 Children learn the names of the lantern-stations by heart. Children chant the
-station names in games. Keepers often marry into fisher families. A Keeper who
-marries outside a Keeper family keeps the station. The children of any Keeper
-may apprentice. A Keeper's child may decline apprenticeship. Some Keeper
-children do not apprentice. Those children often fish, farm in the Hollows, or
-trade down the coast.
+station names in games. Keepers often marry into fisher families. When a
+Keeper marries into a fisher family, that Keeper keeps the station. The
+children of any Keeper may apprentice. Keeper children may decline
+apprenticeship. Some Keeper children do not apprentice. Those children often
+fish, farm in the Hollows, or trade down the coast.
+
+> Design value: a Keeper who marries outside the Keeper families keeps the station (stated for the typical fisher-family case).
 
 The village burns its dead. There are no graves in Aelmere. A storm-surge
 washed the old graveyard into the Sunken Cove six generations ago. The village
@@ -367,37 +375,37 @@ the Sunken Cove. The villagers consider the storm-surge the original
 misfortune of Aelmere.
 
 Wraiths are pale half-translucent figures. Wraiths rise from the water of the
-Sunken Cove. Wraiths rise from no other water. The Keepers believe that
-wraiths are the unsettled dead of the storm-surge.
+Sunken Cove. Every Keeper believes that the dead of the storm-surge became
+wraiths.
 
-> Sealed (deliberate): a belief under 'believe that' — inspect the sealing representation on the first batch.
+> Sealed (deliberate): a belief under 'believe that' — inspect the sealing representation on the first batch. The belief 'wraiths are the unsettled dead of the storm-surge' is stated as a change of kind (the dead became wraiths); 'unsettled' dropped. The exclusivity 'from no other water' is carried by R12 ('Lanterns away from the Sunken Cove do not raise wraiths').
 
-A wraith does not harm a person. A wraith drains mire-essence from a lit
-lantern. A drained lantern burns dimly. Whenever a lantern at the Sunken Cove
-dies before dawn, a wraith rises from the cove's water. The Keepers have known
-the wraith rule for generations. The Council enforces strict standards at the
-Stilllight Lantern.
+Wraiths do not harm people. Wraiths drain mire-essence from lit lanterns.
+Drained lanterns burn dimly. Whenever a lantern at the Sunken Cove dies before
+dawn, a wraith rises from the cove's water. Keepers have known the wraith rule
+for generations. The Council enforces strict standards at the Stilllight
+Lantern.
 
-A wraith fades back into the cove after several weeks. A persisting wraith
-approaches a lit lantern each night. A wraith drains many lanterns during its
-persistence.
+Wraiths persist for several weeks before they fade back into the cove.
+Persisting wraiths approach lit lanterns each night. Wraiths drain many
+lanterns while they persist.
 
 > Design values: a wraith persists one to three weeks and drains twenty to forty lanterns.
 
 When a Keeper scatters ground feathers around a lantern, the feathers ward the
-lantern against wraiths. A feather warding lasts about a month. Feather
+lantern against wraiths. Each feather warding lasts about a month. Feather
 warding is the village's primary wraith-defense. A wraith cannot enter the
 Watch. The feather store inside the Watch keeps wraiths out. A wraith cannot
 enter Cauldron Hall. The smell of boiling mire-essence repels wraiths. No
 wraith has ever entered a village house.
 
 Twenty-six years ago the Council deliberately let the Stilllight Lantern dim
-for one night. The Council wanted to draw the wraith to one place. The Keepers
-warded the wraith back with ground feathers. The plan worked. The Keepers call
-the plan dangerous.
+for one night. The Council wanted to draw the wraith to one place. Keepers
+warded the wraith back with ground feathers. The plan worked. Every Keeper
+considers that the plan was dangerous.
 
 No wraith has risen in twenty-six years. The senior Keepers worry that
-complacency has crept into the village. Some Keepers believe that a wraith
+complacency has crept into the village. A few Keepers believe that a wraith
 remembers the Keeper who let that wraith rise. The Council does not share the
 superstition.
 
@@ -411,21 +419,21 @@ together every evening.
 ## VI. The Sky-cats
 
 Sky-cats have always lived on the cliff-spires. The old Watch ledgers mention
-sky-cats. The Keepers tolerate sky-cats. Sky-cats are wild animals.
+sky-cats. Keepers tolerate sky-cats. Sky-cats are wild animals.
 
-A sky-cat is a small winged animal. A sky-cat has broad feathered wings. Short
-feather-like fur covers a sky-cat's body. Sky-cat feathers are mottled grey
-and white. Sky-cats fly silently. The Keepers rarely witness a sky-cat hunt.
+A sky-cat is a small winged animal. Every sky-cat has broad feathered wings.
+Short feather-like fur covers a sky-cat's body. Sky-cat feathers are mottled
+grey and white. Sky-cats fly silently. Keepers rarely witness a sky-cat hunt.
 
-Sky-cats eat nightmoths. Sky-cats eat nothing else. Sky-cats hunt alone.
-Sky-cats roost together. A dozen sky-cats roost on the cliff-spires. The
-Keepers cannot count the sky-cats exactly. The cliff-spires are very high.
+Sky-cats eat nightmoths. Sky-cats hunt alone. Sky-cats roost together. A dozen
+sky-cats roost on the cliff-spires. Keepers cannot count the sky-cats exactly.
+The cliff-spires are very high.
 
-> Design value: between twelve and twenty sky-cats.
+> Design value: between twelve and twenty sky-cats. 'Sky-cats eat nothing else' dropped: exclusivity has no declarative carrier (a deliberate empty parse); the positive diet fact stands.
 
 Whenever a crowd of nightmoths gathers at a lantern-row, sky-cats descend to
 hunt. When a handful of nightmoths gathers at a lantern-row, sky-cats stay on
-the cliff-spires. The Keepers have used the crowd rule for generations. One
+the cliff-spires. Keepers have used the crowd rule for generations. One
 sky-cat eats many nightmoths in one night. After a sky-cat hunts at a
 lantern-row, the thread harvest at that lantern-row falls. The nightmoth crowd
 recovers slowly.
@@ -440,45 +448,46 @@ productive.
 Sky-cats molt in late summer and early autumn. Whenever a sky-cat molts,
 feathers fall to the base of the cliff. Tessa Brae's collectors gather the
 fallen feathers each morning during molting weeks. Ground sky-cat feathers
-ward lanterns against wraiths. The Keepers consider sky-cats sacred because
-sky-cat feathers ward lanterns against wraiths. The Keepers never harm a
-sky-cat. A sky-cat sometimes carries a nightmoth to the spires in flight.
+ward lanterns against wraiths. Every Keeper considers that sky-cats are
+sacred. Keepers never harm a sky-cat. Sky-cats sometimes carry a nightmoth to
+the spires in flight.
 
-The Keepers count the visible sky-cats on the cliff-spires each morning. The
-Keepers track the weight of the feather harvest.
+> Design intent (not corpus): the Keepers hold sky-cats sacred BECAUSE ground sky-cat feathers ward lanterns against wraiths (R15) — a reason between two generics has no carrier, so the link lives here and in the QA oracle (W5).
+
+Keepers count the visible sky-cats on the cliff-spires each morning. Keepers
+track the weight of the feather harvest.
 
 Three sky-cats once hunted nightmoths at the Sunken Cove. The Council then
 ordered Bevin Coombe to burn wintergloss at the Stilllight Lantern. Wraiths
-sometimes harm sky-cats in the cove. Low moth-counts at the Stilllight Lantern
-keep sky-cats out of the cove. The Keepers do not feed sky-cats. Apprentices
-never approach the cliff-spires.
+sometimes harm sky-cats in the cove. When the moth-count at the Stilllight
+Lantern is low, sky-cats stay on the cliff-spires. Keepers do not feed
+sky-cats. Apprentices never approach the cliff-spires.
 
 ## VII. The Sea and the Tides
 
 The tide rises twice a day. Spring tides are the large tides of the lunar
 cycle. Spring tides occur at new moon or at full moon. Whenever a spring tide
 fills the Salt-bloom Tide-pools, salt-bloom blooms in the pools. Neap tides
-are the small tides. Neap tides occur at the quarter moons. A neap tide leaves
+are the small tides. Neap tides occur at the quarter moons. Neap tides leave
 the tide-pools dry. Salt-bloom needs a spring-tide fill.
 
 The new-moon spring tide is the harvest tide. Whenever a Keeper harvests
 salt-bloom at the new-moon spring tide, that salt-bloom stays potent for the
 season. The Council observes the full-moon spring tide as a calendar marker.
-Salt-bloom from the full-moon tide turns to chalky residue. The Keepers cannot
+Salt-bloom from the full-moon tide turns to chalky residue. Keepers cannot
 explain the moon-phase rule. The pattern is old and reliable.
 
 After each spring tide, a Cauldron Hall apprentice refills the cisterns from
-the deep ebb. The apprentice walks the harbor pier to the deep-ebb point. A
-first-year apprentice usually fills the cisterns.
+the deep ebb. The apprentice walks the harbor pier to the deep-ebb point.
+First-year apprentices usually fill the cisterns.
 
 The cold-threshold wind is a cutting north wind. The cold-threshold wind comes
 off the Cold Sea on clear winter nights. The cold-threshold wind chills
 standing water quickly. The cold-threshold wind extinguishes unprotected
 lanterns. The cold-threshold wind blows between the first hard frost and the
-spring equinox. Salt-bloom in mire-essence slows the burn. A salt-bloomed
-lantern survives a cold-threshold night. An unprepared Cliff Path lantern dies
-on a cold-threshold night. The cold-threshold wind does not reach the
-Northcove.
+spring equinox. Salt-bloom in mire-essence slows the burn. Salt-bloomed
+lanterns survive cold-threshold nights. Unprepared Cliff Path lanterns die on
+cold-threshold nights. The cold-threshold wind does not reach the Northcove.
 
 Storms come over the Cold Sea in autumn and early winter. The autumn equinox
 begins the storm season. Autumn storms sometimes destroy Cliff Path lanterns.
@@ -506,9 +515,9 @@ vessels. The clay comes from a seam in the cliffs. The clay has a green tint.
 > Design value: stored mire-essence keeps for at least three years (QA C10).
 
 Silken threads are the deposits that nightmoths leave on lantern rims. Silken
-threads are fine, grey, and slightly sticky. A Keeper scrapes the threads off
-the warm stone with a flat blade. A well-attended lantern yields a small heap
-of threads each night in moth-season.
+threads are fine, grey, and slightly sticky. Keepers scrape the threads off
+the warm stone with a flat blade. Well-attended lanterns yield a small heap of
+threads each night in moth-season.
 
 Salt-bloom is a pale crystalline crust. Salt-bloom grows on submerged
 tide-pool stones. Salt-bloom smells faintly of salt. Keepers harvest
@@ -529,13 +538,13 @@ feather rations at each full-moon meeting.
 
 The copper cauldrons are old. A coppersmith family in Faltern forged the
 cauldrons. The village cannot replace a lost cauldron. A brass snuffer is a
-Keeper's personal tool. A Keeper extinguishes the lantern at dawn with the
-brass snuffer. A Keeper often inherits the snuffer with the station. A
-wick-trimmer is a Keeper's personal tool.
+Keeper's personal tool. Keepers extinguish the lantern at dawn with a brass
+snuffer. Keepers often inherit the snuffer with the station. A wick-trimmer is
+a Keeper's personal tool.
 
 A Cliff Path lantern is a heavy stone construction. Each lantern stands on a
-stone pedestal. A lantern has a glass dome. A southern glassworks supplies
-replacement domes. A lantern has an iron reservoir for mire-essence. Each
+stone pedestal. Every lantern has a glass dome. A southern glassworks supplies
+replacement domes. Every lantern has an iron reservoir for mire-essence. Each
 lantern is fixed to its station. Iron bands reinforce the Stilllight Lantern.
 The reservoir of the Stilllight Lantern holds a full night of mire-essence.
 The Council built the Stilllight Lantern sixty-three years ago. The Council
@@ -560,10 +569,11 @@ until the threads are submerged. A banked central hearth lights the cauldron
 fires. The central hearth never goes out.
 
 The cauldrons come to a slow boil. Hesper keeps the cauldrons at a steady
-simmer. A hard boil ruins the distillation. A hard boil yields a thin slick of
-poor essence. The threads dissolve slowly through the afternoon. By late
-afternoon a dark slick forms at the bottom of each cauldron. The slick is the
-precursor of mire-essence.
+simmer. When a cauldron boils hard, the distillation in that cauldron fails.
+When a cauldron boils hard, that cauldron yields a thin slick of poor essence.
+The threads dissolve slowly through the afternoon. By late afternoon a dark
+slick forms at the bottom of each cauldron. The slick is the precursor of
+mire-essence.
 
 Hesper skims each cauldron at sundown. Hesper lifts the slick into prewarmed
 clay vessels with a broad ladle. Each cauldron yields a partial vessel of
@@ -573,16 +583,17 @@ cellars. The cellar shelves are arranged by year and month. The old vessels
 stand at the front of the shelves.
 
 Hesper pours the boiled sea-water into the harbor at the end of the day.
-Boiled sea-water does not serve for a second distillation. An apprentice
-scrubs each cauldron with sand.
+Boiled sea-water does not serve for a second distillation. Apprentices scrub
+the cauldrons with sand.
 
-A typical day yields several vessels of mire-essence. A heavy-thread day
-yields four vessels. A thin day yields one vessel. In deep winter the thread
-harvest is thin. After a wraith drains the lanterns, the thread harvest is
-thin. When the thread basket is empty, the cauldrons sit idle. Distillation is
-heavy from early autumn to Lantern-night. Distillation thins through deep
-winter. Distillation recovers from the spring equinox to the summer solstice.
-Distillation runs steadily through summer.
+Typical days yield several vessels full of mire-essence. Heavy-thread days
+yield four vessels full of mire-essence. Thin days yield a single vessel full
+of mire-essence. In deep winter the thread harvest is thin. Whenever a wraith
+drains a lantern, the thread harvest at that lantern falls. When the thread
+basket is empty, the cauldrons sit idle. Distillation is heavy from early
+autumn to Lantern-night. Distillation thins through deep winter. Distillation
+recovers from the spring equinox to the summer solstice. Distillation runs
+steadily through summer.
 
 Cauldron Hall keeps distillation records. The records track thread weight,
 sea-water source, boil time, and vessel yield. Hesper consults the records for
@@ -599,20 +610,23 @@ Moth-counts decline through late autumn.
 > Design values: deep winter five to ten per lantern per night; summer twenty to thirty-five; autumn peak thirty to fifty.
 
 Cold-threshold nights come in stretches of several nights. Mild periods
-separate the cold stretches. The Keepers forecast cold-threshold stretches by
-watching the spire weathercocks and the hearth smoke.
+separate the cold stretches. Keepers forecast cold-threshold stretches from
+the spire weathercocks. Keepers forecast cold-threshold stretches from the
+hearth smoke.
+
+> Design intent: the cold-threshold forecast combines both signs.
 
 Sky-cats hunt often in summer and early autumn. Sky-cats hunt rarely in deep
 winter. Sky-cats resume hunting in spring. When nightmoths are scarce,
-sky-cats sometimes hunt other insects. Marra Tallowhand's logs record sky-cat
-hunts of other insects. Nightmoths remain the sky-cats' main food.
+sky-cats sometimes hunt insects. Marra Tallowhand's logs record that sky-cats
+hunt insects. Nightmoths remain the sky-cats' main food.
 
 When sky-cats hunt the Cliff Path, the Hollows lanterns produce many threads.
 In deep winter the Hollows lanterns produce a small thread harvest. Through
 spring and summer the Hollows lanterns produce a steady thread harvest. Nine
-Keepers tend the Hollows. The Hollows Keepers often tend lanterns in pairs.
-The fog makes the inland paths confusing. The Hollows Keepers meet each week
-at a shed at the forest edge.
+Keepers tend the Hollows. Keepers at the Hollows often tend lanterns in pairs.
+The fog makes the inland paths confusing. Keepers at the Hollows meet each
+week at a shed at the forest edge.
 
 Sailsworn inspects the Salt-bloom Tide-pools once each season. The inspection
 checks the pools for erosion. The inspection confirms that the bloom is

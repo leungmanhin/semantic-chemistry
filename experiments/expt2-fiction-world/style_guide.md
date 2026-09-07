@@ -29,7 +29,9 @@ sentences. Rule TITLES are display labels only — never parsed, never gated.
   static location ("The Sunken Cove lies west of the village", "X stands at
   Y" — `LocatedIn` is containment only; other prepositions are surface
   heads), possession/parts ("The Watch holds the feather store"), habits as
-  "Each Keeper …" or bare-plural generics, exact counts in ONE template
+  bare-plural generics or "Each Keeper …" / "Every N …" (never "A Keeper
+  checks …" — a singular indefinite with a verb is ONE anonymous Keeper, see
+  Generic discipline), exact counts in ONE template
   ("The Cliff Path holds one hundred and twelve lanterns", "There are nine
   cliff-spires" — QA-critical counts only), relative time as "N years ago"
   (the parser's `BeforeBy … now` form; QA-critical dates only), and LAW
@@ -130,7 +132,24 @@ the structural variant pair is **{When, Whenever}**.
 
 Generics are **bare plurals only**: "Drained lanterns burn dimly." A singular
 indefinite with a plain verb ("A drained lantern burns dimly") parses as one
-particular episode and yields NO rule.
+particular episode and yields NO rule. The parser's own rule (lore gate run
+1: 36 such sentences passed the census silently): an indefinite "a/an" is
+generic ONLY in a copular or definitional predication ("A sky-cat is a small
+winged animal") or under a modal ("A wraith cannot enter the Watch", "A
+Council member may retire"); with a verbal predicate it is a witness — write
+the bare plural or an explicit universal ("Every sky-cat has broad feathered
+wings", "Each Keeper checks the lantern at midnight"). A singular indefinite
+is KEPT only for a genuinely specific existential ("A stone landing stands at
+the foot of the Cove Stair"). A conditional's consequent may refer back with
+"the N" ("When a lantern burns mire-essence, the lantern produces
+mist-light") — twenty admitted laws do; "that N" is a preference, not a
+requirement. A frequency adverb carries a strength only on a KIND subject
+("Keepers rarely burn wintergloss"); on a definite or named subject ("The
+Council often …") it has no slot — state a period or drop it. A capitalized
+PLURAL label as subject ("The Keepers …") is a members-less named body with
+no link to the kind: write "Keepers …" (habit), "Each Keeper …" (per-station
+duty) or "Every Keeper believes/considers that …" (attitude). `lint_corpus.py`
+flags every one of these shapes before a parse.
 
 ## Authored truth values
 
@@ -164,7 +183,13 @@ propositional attitudes in the LAW register · periphrastic causatives beyond
 have/get/make/let · free-choice ("no matter how long") · pronoun subjects
 (re-name the referent: "the sky-cat sheds", not "it sheds") · bare definites
 with no in-sentence antecedent ("that lantern-row" unbound, "the burn",
-"elsewhere").
+"elsewhere") · "some ⟨kind⟩" (an existential witness, not a proportion —
+write "A few Keepers" / "Many Keepers") · exceptives and exclusivity
+("nothing else", "no other N" — no declarative carrier: the positive fact
+stands, the exclusion becomes a T-NEGGEN or an annotation) · a capitalized
+PLURAL label as subject ("The Keepers …" — see Generic discipline) · a reason
+between two GENERICS ("sacred because feathers ward …" — `because` links two
+happenings only).
 
 **Replacement policies:** numbers/thresholds → registry collectives ("a
 crowd", "a handful") with exact values in `>` annotations or `cycle_map.md` ·
@@ -181,9 +206,11 @@ exceptionless laws would jointly contradict.
 ## Entity registry (closed lexicon)
 
 People/roles: Keeper, senior Keeper, apprentice, newcomer, heir, the Council,
-Salt-bloom Warden. Places: Aelmere, Cliff Path, Sunken Cove, Northcove, the
-Hollows, Cauldron Hall, the Watch, cliff-spires, Salt-bloom Tide-pools,
-Stilllight Lantern, lantern-row, lantern-station. Things: lantern, wick,
+Salt-bloom Warden, Stilllight Keeper. Places: Aelmere, Cliff Path, Sunken
+Cove, Northcove, the Hollows, Cauldron Hall, the Watch, cliff-spires,
+Salt-bloom Tide-pools, Stilllight Lantern, Stilllight Station (the
+lantern-station at the Sunken Cove — R29's "the Sunken-Cove station" is the
+same station), lantern-row, lantern-station. Things: lantern, wick,
 mire-essence, mist-light, ordinary oil, fresh water, sea-water, silken thread,
 clay vessel, copper cauldron, salt-bloom, chalky residue, wintergloss,
 feather, ground feathers, feather store, feather ration, central pool,
@@ -195,11 +222,28 @@ Creatures: nightmoth, sky-cat, wraith. Times/tides: night, dawn, winter,
 summer, autumn, new moon, full moon, half moon, moon phase, spring tide, cold
 wind. Hyphenated compounds are fixed lexicon entries; use them verbatim.
 
+**Singleton kinds** — the parser encodes "the Council", "the Watch", "the
+village" as per-sentence definite witnesses BY DESIGN (a capitalized common
+noun used as the only label is a common noun, never a name), so ingestion
+resolves a witness typed with one of these kinds to the registry constant:
+council, watch, village (= Aelmere), feather bin, feather store, central
+pool, Cove Stair. Multi-word capitalized names ("Cauldron Hall", "Stilllight
+Station", "Meren Tallowhand") and kind words already yield one stable symbol
+per surface form. **Symbol aliases** applied at ingestion (parser-side
+segmentation variance): `night_moth` → `nightmoth`, `vesh` → `old_vesh`,
+`seawater` → `sea_water`.
+
 ## The parse-gate (admission protocol)
 
 A sentence enters the corpus only after passing all checks — fail-closed; a
 failing sentence is **rewritten, not the parser patched**:
 
+0. **Authoring lint** (`lint_corpus.py`, deterministic, BEFORE any parse):
+   the shapes that mis-parse silently — the census passes them — banned
+   words, indefinite-verbal generics, the capitalized plural label,
+   non-registry names, "After P, Q", coordinated lists, frequency adverbs on
+   a specific subject. Hits are rewritten or consciously kept (a specific
+   existential).
 1. **Schema validity** (deterministic): every output line is a well-formed
    `(: name content (STV s c))` atom; heads and roles from the parser's
    inventory; parentheses balance.
@@ -224,9 +268,16 @@ failing sentence is **rewritten, not the parser patched**:
    parse upstream is stochastic, the census must be `ok` on ALL k parses
    (run 3: an identical sentence was fireable in one run and dead in the
    next). Nuance: a SEALED rule (attitude, counterfactual — intentionally
-   inert) is flagged uniformly; none exist in the LAW register, but the
-   episodic register's counterfactual/belief sentences will need the
-   exporter to tag sealed rules or the gate to exempt them.
+   inert) would be flagged uniformly, but the lore run's four sealed
+   sentences all passed — content nested under an attitude's `Theme` is not
+   scanned as a top-level rule — so no tagging or exemption is needed so
+   far. Caveat: a factive verb ("confirm") may ALSO assert the sealed
+   content at top level while the parser never classifies factivity, so a
+   world-true fact must never live only inside an attitude complement. An
+   EMPTY parse (no statement at all — the parser's deliberate refusal to
+   invent, e.g. "Sky-cats eat nothing else") also passes the census:
+   `assemble_parses.py` lists it as `EMPTY` and admission requires none —
+   the sentence is dropped or restated.
 
 **The judge layer**: an LLM reviewer (as in `world_rules_parses.json`) is an
 AUTHORING-TIME ADVISOR — it proposes rewrites and surfaces new patterns for
@@ -245,9 +296,11 @@ sentences is logged as advisory backlog, never rewrite fuel.
 
 **Incremental admission** (v5): parsing the full corpus every round is
 expensive, so accepted sentences are FROZEN and only edited sentences are
-re-parsed — `world_rules_pending.json` carries just those (same schema), and
-`assemble_parses.py` merges the returned `world_rules_pending_parses.json`
-into the accepted record by exact sentence match and reports the census.
+re-parsed — `<corpus>_pending.json` (`world_rules_pending.json`,
+`lore_pending.json`) carries just those (same schema), and
+`assemble_parses.py` merges the returned `<corpus>_pending_parses.json` into
+the accepted record (`world_rules_parses.json`, `lore_parsed.json`) by exact
+sentence match and reports the census.
 Where the pipeline offers an ADJUDICATOR, an adjudicator-confirmed complaint
 is the reproducibility signal.
 
@@ -259,4 +312,8 @@ belief attributions (→ future lore re-skin) · "near" moon-phase timing (→ "
 annotation keeps "near") · Council emergency meetings, the hunting→molting
 mechanism sentence, Northcove uniqueness (→ annotations; no fireable
 encodings) · wild-NL robustness (→ the FUSE-NF track; a held-out "wild annex"
-of free paraphrases can be generated for its future stress-testing).
+of free paraphrases can be generated for its future stress-testing) · diet
+exclusivity ("nothing else") and "no other N" uniqueness (→ T-NEGGEN forms
++ annotations) · the reason linking two generics ("sacred because feathers
+ward" → annotation + the QA oracle) · "unsettled" in the wraith belief and
+"for the Keepers" on the Mid-summer feast (→ annotations).
