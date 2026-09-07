@@ -245,8 +245,9 @@ village" as per-sentence definite witnesses BY DESIGN (a capitalized common
 noun used as the only label is a common noun, never a name), so ingestion
 resolves a witness typed with one of these kinds to the registry constant:
 council, watch, village (= Aelmere), feather bin, feather store, central
-pool, Cove Stair, sea (= the Cold Sea), moon, tide-pools (= the Salt-bloom
-Tide-pools), cauldron (the cauldron in use — R4/R5's "the cauldron"). Ten
+pool, Cove Stair, sea (= the Cold Sea), moon, coast (= the northern coast),
+tide-pools (= the Salt-bloom Tide-pools), cauldron (the cauldron in use —
+R4/R5's "the cauldron"). Ten
 admitted world_rules laws carry one of these witnesses in their PREMISE, so
 this resolution is what lets them fire on facts from other sentences. A bare
 definite PLURAL of a registry kind ("the villagers", "the cliff-spires")

@@ -188,6 +188,32 @@ edit only if it reproduces (adjudicator-confirmed) in a later run.
   station" → "has its own station, and … is fixed to that station";
   "iron-lidded box" → "… and the bin has an iron lid"; "hold keys" → one
   key each; cousin sentences → symmetric "X and Y are cousins".
+- Run-3 residuals (single-run, flavor): "In distillation, salt is not a
+  substitute for sea-water" → "salt cannot replace sea-water"; "The keepers
+  cannot count the sky-cats exactly" → can count / cannot give an exact
+  number; "Distillation runs heavily …" → "Heavy distillation runs …";
+  "for time-keeping" → "to keep time"; "The salt-bloom is kept in waxed
+  paper packets …" → two clauses (packets, then the store); "Salt-bloom
+  needs spring-tide fills" → "needs spring tides to fill the tide-pools";
+  "A few Keepers each keep a notebook …" → one "that lists" clause per
+  content.
+- Judge self-reversals on record (evidence for the convergence protocol):
+  the Sunken Cove's lantern count ("a single" in run 1, "one" in run 2,
+  "only one" in run 3); "sky-cat feathers" ↔ "feathers from sky-cats"
+  (runs 1 and 3); "Every sky-cat has broad feathered wings" (its own run-1
+  prescription, "bad" in run 2); "that cauldron yields" ↔ "that boiling
+  yields" (runs 2 and 3); "Whenever the moon is full" good twice and mixed
+  once in the same run.
+- PIGGYBACK LIST (reproduced or premise-witness items; parse with the next
+  round, no dedicated run): L5-07 s1 → "No wraith has emerged in the past
+  twenty-six years." · L8-04 s1 → "Whenever a tide-pool stone is
+  submerged, …" · L9-05 s5 / L10-01 s2 → "throughout" for the span sense ·
+  L1-03 s4 → "Whenever wind reflects off harbor water at a harbor lantern,
+  that lantern burns its mire-essence quickly." · L6-08 s3 → "Wraiths that
+  are in the Sunken Cove sometimes harm sky-cats." · L10-05 s1 → "Whenever
+  a new year begins, the Council begins a new ledger." · L6-05 s2 →
+  "Together, the displaced nightmoths keep the lanterns at the Hollows
+  productive."
 - Kept on precedent or by design: L5-05 s1 (= R15's plural feathers),
   L7-04 s4 (= R16 s1), L6-04 s5 and L7-03's "After" (= R7 s4), L3-01 s5
   (membership recorded as PartOf), the two seasonal-colour copulars (the
