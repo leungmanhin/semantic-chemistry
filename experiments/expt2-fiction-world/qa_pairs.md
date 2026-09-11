@@ -95,7 +95,7 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **F29.** What is the cold-threshold?
 > The cutting north wind off the Cold Sea on clear winter nights, sharp enough to extinguish unprotected lanterns. [R16, lore §VII]
 
-**F30.** Who completed apprenticeship-equivalent investment at the spring of Year 2?
+**F30.** Who completed apprenticeship-equivalent investment in the spring of Year 1, on day 260 of the corpus calendar?
 > Coraline Ash. [events Part VII]
 
 ---
