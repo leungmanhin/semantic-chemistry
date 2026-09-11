@@ -195,7 +195,7 @@
       "The harbor wall holds twenty-four lanterns.",
       "The fishing boats use the harbor lanterns as beacons at night.",
       "The harbor lanterns are short and squat.",
-      "Whenever wind reflects off the water at the harbor wall, a harbor lantern burns its mire-essence quickly.",
+      "Whenever wind reflects off harbor water at a harbor lantern, that lantern burns its mire-essence quickly.",
       "Harbor-lantern Keepers live near the harbor."
     ],
     "stmts": {
@@ -228,16 +228,10 @@
           "(: lant_squat_rule (Implication (PartOf $x sk_group_1) (Member $x squat)) (STV 1.0 0.9))"
         ],
         [
-          "(: water_type (Member sk_water_1 water) (STV 1.0 0.99))",
-          "(: wall_type (Member sk_wall_1 harbor_wall) (STV 1.0 0.99))",
-          "(: wall_genus (Inheritance harbor_wall wall) (STV 1.0 0.99))",
-          "(: water_loc (LocatedIn sk_water_1 sk_wall_1) (STV 1.0 0.99))",
-          "(: lantern_type (Member sk_lantern_1 harbor_lantern) (STV 1.0 0.99))",
-          "(: lantern_genus (Inheritance harbor_lantern lantern) (STV 1.0 0.99))",
-          "(: essence_type (Member sk_essence_1 mire_essence) (STV 1.0 0.99))",
-          "(: essence_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
-          "(: essence_poss (Possession sk_essence_1 sk_lantern_1) (STV 1.0 0.99))",
-          "(: whenever_reflect_burn (Implication (And (Member $e reflect) (Patient $e wind) (Off $e sk_water_1)) (And (Member (sk_burn $e) burn) (Agent (sk_burn $e) sk_lantern_1) (Patient (sk_burn $e) sk_essence_1) (Manner (sk_burn $e) quickly) (During (sk_burn $e) $e))) (STV 1.0 0.9))"
+          "(: hw_genus (Inheritance harbor_water water) (STV 1.0 0.99))",
+          "(: hl_genus (Inheritance harbor_lantern lantern) (STV 1.0 0.99))",
+          "(: me_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
+          "(: whenever_reflect_burn (Implication (And (Member $e reflect) (Patient $e wind) (Source $e harbor_water) (Location $e $y) (Member $y harbor_lantern)) (And (Member (sk_burn $e) burn) (Agent (sk_burn $e) $y) (Patient (sk_burn $e) (sk_mire_essence $y)) (Member (sk_mire_essence $y) mire_essence) (Possession (sk_mire_essence $y) $y) (Manner (sk_burn $e) quickly) (During (sk_burn $e) $e))) (STV 1.0 0.9))"
         ],
         [
           "(: hlk_can (Inheritance harbor_lantern_keeper (can keep)) (STV 1.0 0.99))",
@@ -253,7 +247,7 @@
         "good. the wall is typed as a harbor wall (with \"wall\" as its genus) and holds a lantern group counted at twenty-four.",
         "good. the boats, the lanterns, the beacon capacity and \"at night\" are all kept, and the use is recorded both of the boat group and of each individual boat, so a later fact about one boat still connects.",
         "good. \"short\" and \"squat\" are each handed to every harbor lantern by their own rule, rather than being pinned on the group as a single object.",
-        "bad: in the result clause \"a harbor lantern\" was pinned to one particular lantern that the parse also asserts to exist outright, so the rule reads \"that same single lantern burns its essence every time\" instead of \"whichever harbor lantern is involved, on each occasion\". Use the definite plural, so the lanterns are the ones the world already established: \"Whenever wind reflects off the water at the harbor wall, the harbor lanterns burn their mire-essence quickly.\" If you mean it lantern-by-lantern, put the lantern into the condition instead: \"Whenever wind reflects off the water at a harbor lantern, that lantern burns its mire-essence quickly.\"",
+        "good. the whenever-clause becomes a rule that can actually fire: the trigger is one finite clause whose participants (wind, harbor water, the lantern it happens at) are all ordinary matchable terms, so a later sentence reporting such a reflection sets off the burning. \"that lantern\" is correctly tied back to the lantern the reflection happened at, and the burning keeps the possessed mire-essence, the \"quickly\" manner and its simultaneity with the trigger.",
         "good. the bare plural becomes a fireable rule giving every harbor-lantern Keeper a lives-near-the-harbor fact, and the compound kind carries its own keeps-harbor-lanterns atoms."
       ]
     },
@@ -5429,7 +5423,7 @@
     "id": "L5-07",
     "rule": "V — The long quiet",
     "texts": [
-      "No wraith has emerged in twenty-six years.",
+      "No wraith has emerged in the past twenty-six years.",
       "The senior Keepers worry that complacency has crept into the village.",
       "A few Keepers believe that a wraith remembers the Keeper who let that wraith rise.",
       "The Council does not share the superstition."
@@ -5468,7 +5462,7 @@
     },
     "review": {
       "texts": [
-        "mixed: the denial, the per-wraith rule and the explicit \"no\" all come through and the rule fires, but the twenty-six-year window rests on the translator reading a bare \"in twenty-six years\" as \"within the last twenty-six years\" — a reading the instruction set licenses only for an explicit backward-window phrase, so a later re-parse could drop the window or slot it as a duration instead. Make the window explicit: \"No wraith has emerged in the past twenty-six years.\"",
+        "good. the explicit \"no\" lands as a blanket denial over wraiths with the quantifier word itself recorded, the perfect \"has emerged\" as plain past, and \"in the past twenty-six years\" as a backward window on the emergence rather than a claim that an emerging lasted twenty-six years.",
         "mixed: the parse itself is faithful, but 'the senior Keepers' forks the label — here it becomes a group whose members are senior keepers, while a bare 'the Keepers' elsewhere in this set becomes one named body with no keeper members at all, so the two never connect and rules written about 'a Keeper' never reach them. Lowercase the common-noun use so one reading holds throughout: \"The senior keepers worry that complacency has crept into the village.\"",
         "mixed: \"a few Keepers\" gives a properly counted group with both a group belief and a per-Keeper rule, and the belief content is correctly held unasserted (nothing claims a wraith really does remember). But \"a wraith\" with a verbal predicate reads as one particular wraith rather than the general rule you seem to mean, and because \"the Keeper who let that wraith rise\" is identified only inside the belief, the parse still asserts one specific Keeper at top level. Making the generality explicit and letting the pronoun bind puts it on the well-supported rule pattern: \"A few Keepers believe that every wraith remembers the Keeper who let it rise.\"",
         "good. both definite referents stay outside the denial and the whole sharing is denied as one bundle."
@@ -5840,7 +5834,7 @@
     "texts": [
       "Whenever a sky-cat hunts on the Cliff Path, each nightmoth that survives the hunt flees to the Hollows.",
       "Whenever a sky-cat hunts on the Cliff Path, the lanterns at the Hollows gain nightmoths.",
-      "The displaced nightmoths keep the lanterns at the Hollows productive."
+      "Together, the displaced nightmoths keep the lanterns at the Hollows productive."
     ],
     "stmts": {
       "texts": [
@@ -5864,21 +5858,20 @@
           "(: lo39_rule (Implication (And (Member $x hunt) (Agent $x $y) (Member $y sky_cat) (Location $x cliff_path)) (And (Member (sk_gain $x) gain) (Agent (sk_gain $x) sk_lantern_1) (Theme (sk_gain $x) night_moth) (During (sk_gain $x) $x))) (STV 1.0 0.9))"
         ],
         [
-          "(: nm_genus (Inheritance nightmoth moth) (STV 1.0 0.99))",
           "(: nm_group (GroupOf sk_group_1 nightmoth) (STV 1.0 0.99))",
-          "(: nm_displaced_rule (Implication (PartOf $x sk_group_1) (Member $x displaced)) (STV 1.0 0.9))",
+          "(: nm_genus (Inheritance nightmoth moth) (STV 1.0 0.99))",
+          "(: nm_displaced (Implication (PartOf $x sk_group_1) (Member $x displaced)) (STV 1.0 0.9))",
           "(: lant_group (GroupOf sk_lantern_1 lantern) (STV 1.0 0.99))",
           "(: lant_loc (LocatedIn sk_lantern_1 hollows) (STV 1.0 0.99))",
           "(: hollows_name (Name hollows \"Hollows\") (STV 1.0 0.99))",
           "(: e_keep (Member sk_keep_1 keep) (STV 1.0 0.99))",
           "(: e_agent (Agent sk_keep_1 sk_group_1) (STV 1.0 0.99))",
           "(: e_theme (Theme sk_keep_1 sk_lantern_1) (STV 1.0 0.99))",
-          "(: state_productive (Member sk_productive_1 productive) (STV 1.0 0.99))",
-          "(: state_exp (Experiencer sk_productive_1 sk_lantern_1) (STV 1.0 0.99))",
-          "(: e_result (Result sk_keep_1 sk_productive_1) (STV 1.0 0.99))",
+          "(: e_state (Member sk_productive_1 productive) (STV 1.0 0.99))",
+          "(: e_exp (Experiencer sk_productive_1 sk_lantern_1) (STV 1.0 0.99))",
           "(: e_still (Still sk_productive_1) (STV 1.0 0.99))",
-          "(: lant_productive_rule (Implication (PartOf $y sk_lantern_1) (Member $y productive)) (STV 1.0 0.9))",
-          "(: nm_keep_rule (Implication (PartOf $x sk_group_1) (And (Member (sk_keep $x) keep) (Agent (sk_keep $x) $x) (Theme (sk_keep $x) sk_lantern_1))) (STV 1.0 0.9))"
+          "(: e_result (Result sk_keep_1 sk_productive_1) (STV 1.0 0.99))",
+          "(: lant_productive_rule (Implication (PartOf $x sk_lantern_1) (Member $x productive)) (STV 1.0 0.9))"
         ]
       ]
     },
@@ -5886,7 +5879,7 @@
       "texts": [
         "good. a clean, fireable rule: the Cliff Path hunt is the trigger, \"that survives the hunt\" is a condition on each nightmoth, and the flight to the Hollows is the per-occurrence result.",
         "good. the whenever-condition becomes a fireable rule: any sky-cat hunting on the Cliff Path triggers a gain of nightmoths at the Hollows lanterns, tied to that hunt in time, with both places and both creatures typed. One note on our side rather than your wording: \"nightmoths\" came out here as night_moth but as nightmoth in the next sentence, so the two sentences' moths do not yet share one symbol.",
-        "mixed: the group-level reading is right (the displaced moths keep the Hollows lanterns productive, with the productive state and its continuation recorded), but the parse also adds a rule saying each individual nightmoth keeps those lanterns, which the sentence does not claim - the effect is the swarm's jointly - and that per-moth version drops the \"productive\" result, so it degenerates into each moth merely holding the lanterns. Mark the joint effect so the claim stays at the group level: \"Together, the displaced nightmoths keep the lanterns at the Hollows productive.\""
+        "good. \"Together\" is read as one joint keeping by the moth group rather than a separate act per moth, \"displaced\" is handed down to each moth individually instead of being pinned on the group as a whole, and the lanterns are placed at the Hollows as a named location. The maintenance sense of \"keep\" is preserved too: the lanterns' productive state is recorded as continuing and as the result of the keeping, with each lantern individually productive."
       ]
     },
     "census": {
@@ -6039,7 +6032,7 @@
     "texts": [
       "Three sky-cats once hunted nightmoths at the Sunken Cove.",
       "The Council then ordered Bevin Coombe to burn wintergloss at the Stilllight Lantern.",
-      "Wraiths that are in the cove sometimes harm sky-cats.",
+      "Wraiths that are in the Sunken Cove sometimes harm sky-cats.",
       "When a moth-count at the Stilllight Lantern is low, sky-cats stay on the cliff-spires.",
       "Keepers do not feed sky-cats.",
       "Apprentices never approach the cliff-spires."
@@ -6076,9 +6069,10 @@
           "(: e1_lantern_name (Name stilllight_lantern \"Stilllight Lantern\") (STV 1.0 0.99))"
         ],
         [
-          "(: cove_type (Member sk_cove_1 cove) (STV 1.0 0.99))",
-          "(: sky_cat_genus (Inheritance sky_cat cat) (STV 1.0 0.99))",
-          "(: wraith_harm_rule (Implication (And (Member $x wraith) (LocatedIn $x sk_cove_1)) (And (Member (sk_harm $x) harm) (Agent (sk_harm $x) $x) (Patient (sk_harm $x) sky_cat))) (STV 0.5 0.9))",
+          "(: sc_name (Name sunken_cove \"Sunken Cove\") (STV 1.0 0.99))",
+          "(: sc_type (Member sunken_cove cove) (STV 1.0 0.99))",
+          "(: skycat_genus (Inheritance sky_cat cat) (STV 1.0 0.99))",
+          "(: wraith_harm_rule (Implication (And (Member $x wraith) (LocatedIn $x sunken_cove)) (And (Member (sk_harm $x) harm) (Agent (sk_harm $x) $x) (Patient (sk_harm $x) sky_cat))) (STV 0.5 0.9))",
           "(: wraith_harm_q (QuantifierPhrase wraith harm \"sometimes\") (STV 1.0 0.99))"
         ],
         [
@@ -6106,7 +6100,7 @@
       "texts": [
         "mixed: the three sky-cats, the hunting, the moths and the Sunken Cove are all carried, but 'once' has no slot of its own and is simply dropped, so the 'formerly, and not any more' part of the sentence is lost. If that is the sense you want, write 'Three sky-cats used to hunt nightmoths at the Sunken Cove.' — 'used to' is recorded as both the past hunting and its having stopped. Separately, 'nightmoths' is written closed while 'sky-cats' and 'cliff-spires' are hyphenated; hyphenating it as 'night-moths' keeps the symbol stable from parse to parse.",
         "mixed: the ordering, Bevin Coombe as the one told to burn, the wintergloss and the named Lantern all come through, but the sequence word 'then' has no slot and is dropped, so the ordering against the previous sentence is lost. Say the ordering as a time clause instead: 'After the hunt at the Sunken Cove, the Council ordered Bevin Coombe to burn wintergloss at the Stilllight Lantern.' — that is recorded as one event happening before the other.",
-        "good. the relative clause becomes the rule's condition (a wraith that is in the cove), \"sometimes\" both sets the rule's strength and is kept as the quantifier word, and the cove itself is asserted so the rule can actually fire.",
+        "good. the relative clause becomes a fireable condition (a wraith that is located in the Sunken Cove), each such wraith gets its own harming of sky-cats, and 'sometimes' is carried both as the rule's strength and as the recorded quantifier word; the named cove and the sky-cat kind both keep their kind links, so nothing in the sentence is dropped.",
         "mixed: the rule fires and the condition — a low moth-count at the Stilllight Lantern — is fully captured, but \"stay on\" collapses into a bare position statement, so the output cannot tell \"stay on the cliff-spires\" from \"are on the cliff-spires\" and the remaining/continuing sense is lost. If that sense matters, hang the continuation on a predicate rather than on the preposition: \"When a moth-count at the Stilllight Lantern is low, sky-cats remain perched on the cliff-spires.\" — the translator has a carrier for continuation on a predicate, but none on a bare locative.",
         "good. parses as a fireable per-keeper rule at strength 0 — for any keeper, a feeding of sky-cats is denied — with the sky-cat kind carried as the object and no content dropped. Worth knowing only that a bare plural on both sides of the verb could equally land on a single opaque kind-level record ('keepers feed sky-cats' as one relation atom) in a future re-parse; both forms are faithful, so no rewrite is needed.",
         "good. recorded as a standing rule that no apprentice approaches them, with 'never' kept as the surface word and the cliff-spires kept as one specific set."
@@ -6858,7 +6852,7 @@
     "rule": "VIII — Salt-bloom",
     "texts": [
       "Salt-bloom is a pale crystalline crust.",
-      "When a tide-pool stone is submerged, salt-bloom grows on that stone.",
+      "Whenever a tide-pool stone is submerged, salt-bloom grows on that stone.",
       "Salt-bloom crusts have a faint smell of salt.",
       "Keepers harvest salt-bloom with a wooden scraper.",
       "Iron makes salt-bloom crumble.",
@@ -6877,7 +6871,7 @@
         [
           "(: tps_genus (Inheritance tide_pool_stone stone) (STV 1.0 0.99))",
           "(: sb_genus (Inheritance salt_bloom bloom) (STV 1.0 0.99))",
-          "(: submerge_grow_rule (Implication (And (Member $x tide_pool_stone) (Member $e submerge) (Patient $e $x)) (And (Member (sk_grow $x) grow) (Patient (sk_grow $x) (sk_salt_bloom $x)) (Member (sk_salt_bloom $x) salt_bloom) (Location (sk_grow $x) $x) (During (sk_grow $x) $e))) (STV 1.0 0.9))"
+          "(: whenever_submerge_grow (Implication (And (Member $e submerge) (Patient $e $s) (Member $s tide_pool_stone)) (And (Member (sk_grow $e) grow) (Patient (sk_grow $e) salt_bloom) (Location (sk_grow $e) $s) (During (sk_grow $e) $e))) (STV 1.0 0.9))"
         ],
         [
           "(: sbc_genus (Inheritance salt_bloom_crust crust) (STV 1.0 0.99))",
@@ -6926,7 +6920,7 @@
     "review": {
       "texts": [
         "good. salt-bloom keeps its bloom genus and takes crust as its kind, with \"pale\" and \"crystalline\" recorded as separate properties rather than fused into the kind name.",
-        "mixed: the rule fires, but everything it creates is keyed to the stone alone rather than to the soaking, so two submersions of the same stone collapse into one growth and one bloom, and that single bloom is then placed inside both soakings. Make each submersion the explicit trigger occasion: \"Whenever a tide-pool stone is submerged, salt-bloom grows on that stone.\" (your fourth sentence uses 'whenever' and does get a fresh event per occasion).",
+        "good. the whenever-clause becomes a fireable per-occurrence rule: every submerging of a tide-pool stone yields its own growing of salt-bloom, located on that same stone and tied to that occasion, and both hyphenated compounds keep their kind links.",
         "good. parses as a fireable rule over salt-bloom crusts, each crust getting its own faint smell of salt, with 'faint' and 'of salt' both carried.",
         "good. it becomes a standing rule over Keepers, with salt-bloom as what is harvested and each Keeper's own wooden scraper as the tool; the scraper keeps both its scraper genus and its wooden property.",
         "mixed: the causing frame is recorded correctly (iron does it, the crumbling is what it brings about), but salt-bloom is filed as the doer of the crumbling rather than as the thing that crumbles, and the claim is stored as one incident rather than a standing truth. The wording is not really at fault - that doer slip is ours to fix on the next parse - but if you want to sidestep the make-something-happen frame that caused it, write \"Iron crumbles salt-bloom.\"",
@@ -7772,7 +7766,7 @@
       "Whenever a wraith drains a lantern, the thread harvest at that lantern falls.",
       "When the thread basket is empty, the cauldrons sit idle.",
       "Distillation runs heavily from early autumn to Lantern-night.",
-      "The distillation yield thins through deep winter.",
+      "The distillation yield thins throughout deep winter.",
       "Distillation recovers from the spring equinox to the summer solstice.",
       "Distillation runs steadily through summer."
     ],
@@ -7820,11 +7814,13 @@
           "(: lantern_night_type (Member lantern_night night) (STV 1.0 0.99))"
         ],
         [
-          "(: yield_m (Member sk_yield_1 distillation_yield) (STV 1.0 0.99))",
-          "(: yield_genus (Inheritance distillation_yield yield) (STV 1.0 0.99))",
-          "(: thin_ev (Member sk_thin_1 thin) (STV 1.0 0.99))",
-          "(: thin_theme (Theme sk_thin_1 sk_yield_1) (STV 1.0 0.99))",
-          "(: thin_time (Time sk_thin_1 deep_winter) (STV 1.0 0.99))"
+          "(: dy_genus (Inheritance distillation_yield yield) (STV 1.0 0.99))",
+          "(: dy_type (Member sk_yield_1 distillation_yield) (STV 1.0 0.99))",
+          "(: dw_genus (Inheritance deep_winter winter) (STV 1.0 0.99))",
+          "(: dw_mod (Inheritance deep_winter deep) (STV 1.0 0.99))",
+          "(: e_thin (Member sk_thin_1 thin) (STV 1.0 0.99))",
+          "(: e_pat (Patient sk_thin_1 sk_yield_1) (STV 1.0 0.99))",
+          "(: e_during (During sk_thin_1 deep_winter) (STV 1.0 0.99))"
         ],
         [
           "(: recover_ev (Member sk_recover_1 recover) (STV 1.0 0.99))",
@@ -7849,7 +7845,7 @@
         "good. the whenever-rule fires: the wraith and the lantern are plain variables any later draining event can match, the falling harvest is minted once per occurrence and tied to its trigger, and the harvest is typed and placed at that same lantern.",
         "mixed: the conditional itself is right (empty basket → each cauldron idle), but \"sit\" has no carrier as a postural verb with an adjective complement and is dropped, so only \"idle\" survives. Use the plain copula, which costs nothing here: \"When the thread basket is empty, the cauldrons are idle.\" Be aware that either way the rule, once fired, leaves the cauldrons idle permanently — there is no way yet to tie the state to the occasion.",
         "bad: \"heavily\" is dropped — a degree adverb on a verb has no slot in the instruction set, so the parse records only that distillation runs from early autumn to Lantern-night and loses the intensity, which is the point of the line. Move the intensity onto the distillation itself, where it becomes an ordinary property: \"Heavy distillation runs from early autumn to Lantern-night.\" The interval and the Lantern-night name both parse fine as they stand.",
-        "mixed: everything is recorded, but \"through deep winter\" comes out as a point-in-time stamp rather than a span, so the thinning is not marked as holding across the whole season. One word fixes it — \"throughout\" is one of the three words that map to the span relation: \"The distillation yield thins throughout deep winter.\"",
+        "mixed: the thinning, its subject and both compounds parse fine, but 'throughout deep winter' is recorded as a during-link that treats the season as if it were a second event, so the season never reaches the event's ordinary time slot and a later 'when does the yield thin?' question cannot find it; the continuous-span sense of 'throughout' is lost either way. Rewrite as: 'The distillation yield thins in deep winter.' — the season then lands in the time slot where it is queryable, and nothing the current parse actually records is given up.",
         "good. \"from … to …\" lands on the start and end of the recover event, the named times stay bare constants, and the present tense correctly adds no tense atom.",
         "good. judged acceptable on adjudication — the manner adverb keeps its surface form and the habitual reading is right; only the spanning force of \"through\" goes unrecorded, and that is a known gap in the instruction set rather than a fault in your wording."
       ]
@@ -7976,7 +7972,7 @@
       "Moth-counts recover through spring.",
       "Moth-counts are strong through summer.",
       "The moth-count peaks in early autumn.",
-      "The moth-count declines through late autumn."
+      "The moth-count declines throughout late autumn."
     ],
     "stmts": {
       "texts": [
@@ -8002,10 +7998,12 @@
         ],
         [
           "(: mc_genus (Inheritance moth_count count) (STV 1.0 0.99))",
-          "(: mc_typ (Member sk_moth_count_1 moth_count) (STV 1.0 0.99))",
-          "(: decline_ev (Member sk_decline_1 decline) (STV 1.0 0.99))",
-          "(: decline_th (Theme sk_decline_1 sk_moth_count_1) (STV 1.0 0.99))",
-          "(: decline_time (Time sk_decline_1 late_autumn) (STV 1.0 0.99))"
+          "(: mc_type (Member sk_count_1 moth_count) (STV 1.0 0.99))",
+          "(: la_genus (Inheritance late_autumn autumn) (STV 1.0 0.99))",
+          "(: la_mod (Inheritance late_autumn late) (STV 1.0 0.99))",
+          "(: e_decline (Member sk_decline_1 decline) (STV 1.0 0.99))",
+          "(: e_pat (Patient sk_decline_1 sk_count_1) (STV 1.0 0.99))",
+          "(: e_during (During sk_decline_1 late_autumn) (STV 1.0 0.99))"
         ]
       ]
     },
@@ -8015,7 +8013,7 @@
         "good. the bare-plural generic becomes a fireable distributing rule at generic strength, with the season carried on the derived event.",
         "good. the seasonal restriction rides the condition slot rather than being stripped, so no unrestricted \"moth-counts are strong\" is asserted.",
         "good. the definite moth-count, the peaking event with the count as the thing that peaks, and the seasonal time slot are all carried, so no rewrite is needed. Note only that \"early autumn\" is stored as one opaque time symbol (early_autumn), so it will not automatically connect to a plain \"autumn\" used elsewhere in your rules.",
-        "mixed: the decline event and the moth-count that undergoes it are both carried, but the \"through\" is flattened — the parse records only that the decline is located in late autumn, not that it runs across the whole period. If that span sense matters, write \"The moth-count declines throughout late autumn.\" — \"throughout\" is one of the three words the translator has a dedicated span relation for, whereas \"through\" has none and falls back to a point-like time slot."
+        "mixed: the decline and its late-autumn frame both land, but the count is filed as something the declining physically changes rather than as the value that moves (the shape a 'what fell, and by how much' question matches), and 'moth-count' fuses into one opaque symbol, so 'a count of what?' cannot be answered from the record. Rewrite as 'The count of moths falls throughout late autumn.' - 'falls' is one of the verbs the translator reads as a change of value, and 'count of moths' exposes moths as the thing being counted. Separately, a bare season has no time slot of its own, so 'late autumn' is filed as though it were another event and the whole-span sense of 'throughout' is lost either way; naming a month ('in November') is the only wording with a real calendar slot, so use it only if that is what the rule actually means."
       ]
     },
     "census": {
@@ -8298,7 +8296,7 @@
       "Sailsworn inspects the Salt-bloom Tide-pools once each season.",
       "The inspection checks the pools for erosion.",
       "The inspection confirms that the bloom is growing.",
-      "The Council begins a new ledger every year.",
+      "Whenever a new year begins, the Council begins a new ledger.",
       "The Council speaker dates the first page of each new ledger.",
       "Meren Tallowhand dated the first page of the current ledger."
     ],
@@ -8333,12 +8331,7 @@
         ],
         [
           "(: council_type (Member sk_council_1 council) (STV 1.0 0.99))",
-          "(: begin_ev (Member sk_begin_1 begin) (STV 1.0 0.99))",
-          "(: begin_agent (Agent sk_begin_1 sk_council_1) (STV 1.0 0.99))",
-          "(: ledger_type (Member sk_ledger_1 ledger) (STV 1.0 0.99))",
-          "(: ledger_new (Member sk_ledger_1 new) (STV 1.0 0.99))",
-          "(: begin_patient (Patient sk_begin_1 sk_ledger_1) (STV 1.0 0.99))",
-          "(: begin_every (Every sk_begin_1 1 year) (STV 1.0 0.99))"
+          "(: yearly_ledger_rule (Implication (And (Member $e begin) (Patient $e $y) (Member $y year) (Member $y new)) (And (Member (sk_begin_ledger $e) begin) (Agent (sk_begin_ledger $e) sk_council_1) (Patient (sk_begin_ledger $e) (sk_ledger $e)) (Member (sk_ledger $e) ledger) (Member (sk_ledger $e) new) (During (sk_begin_ledger $e) $e))) (STV 1.0 0.9))"
         ],
         [
           "(: speaker_type (Member sk_speaker_1 council_speaker) (STV 1.0 0.99))",
@@ -8365,7 +8358,7 @@
         "good. the named site, Sailsworn as the inspector, and the 'once each season' rate are all carried as licensed atoms, and the habitual clause correctly takes no tense marker.",
         "mixed: the sentence parses cleanly on its own, but each sentence is parsed in isolation, so 'the inspection' and 'the pools' mint brand-new symbols with nothing tying them back to Sailsworn or to the Salt-bloom Tide-pools of the previous line. Name the participants: \"Sailsworn's inspection checks the Salt-bloom Tide-pools for erosion.\"",
         "mixed: the parse seals the complement under the confirming event and also asserts the bloom's growth at top level, which is presumably what you want, but only because 'confirm' was read as factive - the instruction set never classifies it, so a re-parse could treat it like 'say' or 'report' and drop the growth claim entirely. Assert the growth in its own clause and point the confirming at it: \"The bloom is growing, and Sailsworn's inspection confirms this.\"",
-        "mixed: everything is there and nothing is distorted — the Council, the beginning, the new ledger and the yearly recurrence all appear — but \"every year\" is recorded as a flat frequency tag on a single beginning of a single ledger, so \"a new ledger each year\" collapses onto one ledger witness and no per-year rule is produced. Nothing in the parse lets a reader ask which ledger a given year got, or derive one ledger per year. If you want the annual cycle to actually generate a ledger per occasion, use the occurrence wording, which our translator turns into a firing rule: \"Whenever a new year begins, the Council begins a new ledger.\"",
+        "good. the 'whenever' clause becomes a fireable rule - every new-year beginning triggers a Council ledger-opening tied to that occurrence, with a fresh new ledger minted per year and all participants covered.",
         "good. the adjudicator accepted it: 'each new ledger' becomes a fireable per-ledger rule, with the speaker kept as a shared constant and the first page minted per ledger and linked back to it. It keys on ledgers described as 'new', so keep that adjective consistent with the preceding sentence.",
         "good. the multi-word name is one symbol with its Name atom, 'the first page' is ranked first and linked to the ledger, and the dating event carries its agent, its object and past tense."
       ]
