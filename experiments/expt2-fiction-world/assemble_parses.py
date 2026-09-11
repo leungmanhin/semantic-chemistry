@@ -6,9 +6,10 @@ usage:  python3 assemble_parses.py [--check] [PENDING_PARSES=world_rules_pending
                                    [FULL_PARSES=world_rules_parses.json]
                                    [CORPUS=world_rules.json]
 
-Sentences are matched by exact text (unique across the corpus). For every corpus
-sentence the assembler takes the per-sentence stmts/review/census entry from the
-PENDING record if present there, else from the FULL record; a sentence found in
+Sentences are matched by entry id plus exact text (a sentence may recur in another
+entry as a deliberate instance). For every corpus sentence the assembler takes the
+per-sentence stmts/review/census entry from the PENDING record if present there,
+else from the FULL record; a sentence found in
 neither is reported as STILL PENDING. The merged record is written back to
 FULL_PARSES in corpus order (a .bak copy of the previous record is kept), and the
 census is summarised — admission = every sentence `ok` AND no EMPTY parse (a sentence
@@ -26,7 +27,7 @@ def index(rec):
     out = {}
     for e in rec:
         for i, s in enumerate(e['texts']):
-            out[s] = {k: e[k]['texts'][i] for k in KEYS if k in e and 'texts' in e[k]}
+            out[(e['id'], s)] = {k: e[k]['texts'][i] for k in KEYS if k in e and 'texts' in e[k]}
     return out
 have = index(full); have.update(index(pend))   # pending wins
 merged, missing, dead, empty = [], [], [], []
@@ -34,10 +35,11 @@ for r in corpus:
     ent = {'id': r['id'], 'rule': r['rule'], 'texts': list(r['texts'])}
     for k in KEYS: ent[k] = {'texts': []}
     for s in r['texts']:
-        if s not in have: missing.append((r['id'], s)); [ent[k]['texts'].append(None) for k in KEYS]; continue
-        for k in KEYS: ent[k]['texts'].append(have[s].get(k))
-        if have[s].get('census') not in (None, 'ok'): dead.append((r['id'], have[s]['census'], s))
-        if have[s].get('stmts') == []: empty.append((r['id'], s))
+        key = (r['id'], s)
+        if key not in have: missing.append((r['id'], s)); [ent[k]['texts'].append(None) for k in KEYS]; continue
+        for k in KEYS: ent[k]['texts'].append(have[key].get(k))
+        if have[key].get('census') not in (None, 'ok'): dead.append((r['id'], have[key]['census'], s))
+        if have[key].get('stmts') == []: empty.append((r['id'], s))
     merged.append(ent)
 if not CHECK:
     if os.path.exists(full_p): shutil.copy(full_p, full_p + '.bak')

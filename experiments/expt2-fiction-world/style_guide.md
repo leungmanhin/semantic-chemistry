@@ -41,10 +41,34 @@ sentences. Rule TITLES are display labels only — never parsed, never gated.
   L5-02, L5-07 ×2, L10-05); everything else decorative became a plain fact or
   a `>` annotation. Superlatives, ranges, ages, durations, and "only" were
   demoted to annotations throughout.
-- **EPISODIC register** (`events.md` — future re-skin): particular events with tense. Causal linkage uses the bounded
-  connective cues (because / so / as a result), which parse to surface heads —
-  normalization to `ReasonFor` is downstream (genome) work, per the parser
-  spec's own instruction not to normalize connectives.
+- **EPISODIC register** (`events.json` / `events.md`): dated episodes that give
+  the laws their concrete instances. The unit is the EPISODE ENTRY (2–14
+  sentences), parsed as ONE PASSAGE: a definite ("the wraith", "the lantern",
+  "the harvest party") refers back to the indefinite that introduced it earlier
+  in the same episode; across episodes only registry names and constants
+  corefer (the Stilllight Lantern, the Harbor Station, Coraline Ash …).
+  Sentence forms: past tense, one happening per sentence, named or definite
+  participants, an indefinite only to INTRODUCE a participant ("a wraith
+  emerged"); a date as "On day N of Year Y, …" (the parser's `(Year n)` +
+  `(Day n)` terms — days count from the Year-1 autumn equinox, day 0, and
+  Year 2 begins on day 365) or a season of a year; "that night" / "the next
+  morning" inside an episode (term propagation); ordering by "after" /
+  "before" / "N days before Y" (`Before` / `BeforeBy`); durations "for three
+  hours"; counts exact on plurals ("eleven lanterns"), approximations as
+  "about N" (`ParticleFromNormal`), never ranges or comparatives. Causal
+  cues are ONLY "because" / "so" / "as a result", joining two concrete
+  happenings inside one sentence (surface heads `Because` / `So` /
+  `AsAResult`, normalized downstream) — never a happening to a rule; purpose
+  as "in order to". Sealing ONLY where the report is the content ("X reported
+  / said / told Y that P", "X proposed that P", "X asked the Council whether
+  P"); quotations and questions become such reports or are dropped. A law's
+  own vocabulary is reused verbatim for its instances ("A crowd of nightmoths
+  gathered at the East Row. Three sky-cats descended from the cliff-spires.")
+  so the law fires on the episode. A bare plural in a past clause denotes the
+  specific group ("Keepers on the Cliff Path added salt-bloom"); a definite
+  group is lowercase ("the keepers of the Harbor Row") because the
+  capitalized plural label stays banned. No "then / later / meanwhile" (no
+  carrier — use a date or "after"), no "when a/an …" (the rule route).
 
 **Authoring policy (agreed 2026-09-03):** the corpus exists to study ACS
 discovery in the chemical soup, not to exercise linguistic coverage. A
@@ -228,7 +252,12 @@ Salt-bloom Warden, Stilllight Keeper. Places: Aelmere, Cliff Path, Sunken
 Cove, Northcove, the Hollows, Cauldron Hall, the Watch, cliff-spires,
 Salt-bloom Tide-pools, Stilllight Lantern, Stilllight Station (the
 lantern-station at the Sunken Cove — R29's "the Sunken-Cove station" is the
-same station), lantern-row, lantern-station. Things: lantern, wick,
+same station), lantern-row, lantern-station. Events add the registry names
+East Row, Middle Row, West Row (lantern-rows of the Cliff Path), Harbor Row
+(the lantern-row along the harbor wall) and Harbor Station (Coraline Ash's
+lantern-station), and the people Joren Salt, Mira, Roben, Eli, Norren, Halden
+(the substitute Keeper of day 111) and Tam Harrow (a junior Keeper); Aelis
+Brae, Marra Tallowhand, Bevin Coombe and Tessa Brae recur from the lore. Things: lantern, wick,
 mire-essence, mist-light, ordinary oil, fresh water, sea-water, silken thread,
 clay vessel, copper cauldron, salt-bloom, chalky residue, wintergloss,
 feather, ground feathers, feather store, feather ration, central pool,
@@ -303,6 +332,12 @@ failing sentence is **rewritten, not the parser patched**:
    invent, e.g. "Sky-cats eat nothing else") also passes the census:
    `assemble_parses.py` lists it as `EMPTY` and admission requires none —
    the sentence is dropped or restated.
+
+**Passages (events):** the parser takes each events entry's `texts` as ONE
+passage (the parser spec reuses one symbol for mentions of the same thing
+within a passage); the census and the judge still report per sentence. An
+episode holds few rules, so its census is mostly about the sealed reports
+and the occasional Whenever restatement.
 
 **The judge layer**: an LLM reviewer (as in `world_rules_parses.json`) is an
 AUTHORING-TIME ADVISOR — it proposes rewrites and surfaces new patterns for

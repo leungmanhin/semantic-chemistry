@@ -11,6 +11,9 @@ census still says ok), so the author catches them before the expensive parse:
   after-cond     an "After P, Q" conditional (inverted once in a gate run; prefer Whenever)
   list           a coordinated list of three or more items -> one joint event
   freq-specific  a frequency adverb on a definite or named subject (no licensed slot; only kind subjects carry it)
+  episodic       EPISODIC-register hazards: quoted speech or a question mark (sealing / query routes), a sequence
+                 adverb with no carrier (then, later, meanwhile, earlier, afterwards), "between N and M", or a
+                 "when a/an …" clause (the rule route, not an episode)
 usage: python3 lint_corpus.py [CORPUS.json ...]     (default: lore.json)
 """
 import json, re, sys, collections
@@ -18,7 +21,7 @@ import json, re, sys, collections
 COND = re.compile(r'^(When|Whenever|Every time|After|If)\b')
 COPULAR = re.compile(r"^(A|An)\s+(?:[\w\-']+\s+){0,4}?(is|are|was|were)\b")
 MODAL = re.compile(r'\b(may|must|cannot|can|might|should)\b')
-IRREGULAR_PAST = re.compile(r'\b(came|drove|rose|built|forged|began|went|took|made|left|gave|brought|fell|found|held|kept|led|lost|met|ran|said|saw|sat|sent|stood|struck|taught|told|wore|won|wrote|has|have|had|ago|once)\b')
+IRREGULAR_PAST = re.compile(r'\b(came|drove|rose|built|forged|began|went|took|made|left|gave|brought|fell|found|held|kept|led|lost|met|ran|said|saw|sat|sent|stood|struck|taught|told|wore|won|wrote|has|have|had|ago|once|blew|flew|grew|drew|threw|shrank|ate|put|set|spread|shed|read|lit|became|caught|chose|did|dug|got|hit|knew|lay|paid|rang|sang|sank|slept|spoke|stole|swam|was|were|woke)\b')
 FUNCTION_NEXT = {'the','a','an','into','onto','to','from','with','at','in','on','over','off','by','for','of','before','after',
                  'until','through','toward','towards','down','up','out','away','back','and','or','that','its','his','her','their'}
 CHECKS = {
@@ -27,6 +30,7 @@ CHECKS = {
  'non-registry':  re.compile(r"Stilllight station|Stilllight feather|Sunken Cove station|\bthe Stilllight\b(?! (Lantern|Station|Keeper))"),
  'after-cond':    re.compile(r"^After\b[^,]*,"),
  'list':          re.compile(r",\s*[^,]+,\s*(and|or)\s+"),
+ 'episodic':      re.compile(r'["?]|\b(then|later|meanwhile|earlier|afterwards|previously)\b|\bbetween \w+ and \w+\b|\bwhen an? \b', re.I),
  'freq-specific': re.compile(r"^(The (Council|Watch|village|Warden|speaker|fleet|glassworks|inspection)|[A-Z][a-z]+ [A-Z][a-z]+|Hesper|Pell|Sailsworn|Norren|Wynne)\b[^,]*?\b(usually|often|rarely|sometimes|occasionally|periodically)\b"),
 }
 
@@ -52,7 +56,7 @@ def lint(path):
                 if rx.search(t): hits[name].append((loc, t))
             if indef_generic(t): hits['indef-generic'].append((loc, t))
     print(f"== {path}: {sum(len(e['texts']) for e in json.load(open(path)))} sentences")
-    for name in ['banned','indef-generic','plural-label','non-registry','after-cond','list','freq-specific']:
+    for name in ['banned','indef-generic','plural-label','non-registry','after-cond','list','freq-specific','episodic']:
         print(f"  {name}: {len(hits[name])}")
         for loc, t in hits[name]: print(f"      {loc}: {t}")
     return hits

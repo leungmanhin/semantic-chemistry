@@ -68,11 +68,28 @@ control** (superficially similar, must NOT merge).
 | feathers accumulate ↔ feather store grows | Level shift (substance at a place vs stock of an institution) — causally linked, not synonymous. | R28 |
 | repel (wintergloss→moths) ↔ ward (feathers→wraiths) | Both "keep away" verbs, different relations in different cycles; merging would fuse Cycle B's regulator with Cycle C's protector. | R21 vs R15 |
 
-## Episodic cue family (future `events.md` re-skin)
+## Episodic cue family (`events.json`)
 
 | Cues (bounded set) | Parse to | Downstream canonical |
 |---|---|---|
-| "because" · "so" · "as a result" | surface heads `Because` / `So` / `AsAResult` | `ReasonFor` — derived by seeded/genome rules, never by the translator (per the parser spec) |
+| "because" · "so" · "as a result" (two concrete happenings in one sentence) | surface heads `Because` / `So` / `AsAResult` | `ReasonFor` — derived by seeded/genome rules, never by the translator (per the parser spec) |
+| "in order to" (purpose) | `InOrderTo` | purpose edge, downstream |
+| "after" · "before" · "N days before Y" | `Before` / `BeforeBy` (no connective atom) | temporal order |
+| "X reported / said / told Y / proposed / judged that P" · "X asked the Council whether P" | sealed `Theme` / `Whether` | inert by design — never lifted into rule sides |
+
+Law instances reuse the law's own vocabulary verbatim (R6: "A crowd of
+nightmoths gathered at the East Row. Three sky-cats descended from the
+cliff-spires."), so the consolidation target for events is the identity
+mapping onto the world rules, and the mining target is the instance count
+per law (Cycle A: R1–R5 instantiated in E1-06, E1-11, E4-05, E7-03, E10-06;
+Cycle B: R6–R8 in E1-08, E7-05, E8-04, E10-06; Cycle C: R10/R15 in E1-10,
+E5-06, E8-04, E9-07; Cycle D: R13/R14 in E5-06, E5-07; gates R16/R17 in
+E2-01, E2-03, E5-01, E5-10, E7-04, E8-04; R18–R20 in E3-01, E3-03, E6-01,
+E9-09; R21 in E10-08; R22 in E2-01; R25 in E7-06; R26/R27 in E2-06; R30 in
+E5-08). Given up in the re-skin: dialogue and verbatim quotations (→ sealed
+reports or dropped), numeric ranges (→ "about N"), the sky-cat threshold of
+twenty (→ the crowd / handful vocabulary), and "then / later" sequencing (→
+dates and "after").
 
 ## Authored truth values (frequency dial)
 
