@@ -221,8 +221,14 @@ edit only if it reproduces (adjudicator-confirmed) in a later run.
   prescription, "bad" in run 2); "that cauldron yields" ↔ "that boiling
   yields" (runs 2 and 3); "Whenever the moon is full" good twice and mixed
   once in the same run.
-- PIGGYBACK LIST (reproduced or premise-witness items; parse with the next
-  round, no dedicated run): L5-07 s1 → "No wraith has emerged in the past
+- Piggyback list — PARSED in a fourth lore run, all eight census `ok` (six
+  good, two mixed): the harbor-lantern law now has no premise witness, the
+  wraith-emergence window is an explicit `WithinLast`, "Together" gives one
+  joint keeping plus a per-lantern productive rule, the Sunken Cove sits in
+  the premise as a constant, both Whenever laws fire per occurrence. The two
+  "throughout" sentences landed as a `During` link on the season; the
+  reviewer now prefers "in deep winter" (its own run-3 prescription was
+  "throughout" — reversal six). The items were: L5-07 s1 → "No wraith has emerged in the past
   twenty-six years." · L8-04 s1 → "Whenever a tide-pool stone is
   submerged, …" · L9-05 s5 / L10-01 s2 → "throughout" for the span sense ·
   L1-03 s4 → "Whenever wind reflects off harbor water at a harbor lantern,
