@@ -19,7 +19,7 @@ twelve lanterns. The middle stretch of the Cliff Path is unshielded.
 
 The harbor wall holds twenty-four lanterns. The fishing boats use the harbor
 lanterns as beacons at night. The harbor lanterns are short and squat.
-Whenever wind reflects off the water at the harbor wall, a harbor lantern
+Whenever wind reflects off harbor water at a harbor lantern, that lantern
 burns its mire-essence quickly. Harbor-lantern Keepers live near the harbor.
 
 The Sunken Cove lies west of the village. The Cove Stair leads down to the
@@ -403,10 +403,10 @@ for one night. The Council wanted to draw the wraith to one place. Keepers
 warded the wraith back with ground feathers. The plan worked. Every Keeper
 considers that the plan was dangerous.
 
-No wraith has emerged in twenty-six years. The senior Keepers worry that
-complacency has crept into the village. A few Keepers believe that a wraith
-remembers the Keeper who let that wraith rise. The Council does not share the
-superstition.
+No wraith has emerged in the past twenty-six years. The senior Keepers worry
+that complacency has crept into the village. A few Keepers believe that a
+wraith remembers the Keeper who let that wraith rise. The Council does not
+share the superstition.
 
 > Sealed (deliberate): two attitude sentences ('worry that', 'believe that').
 
@@ -442,8 +442,8 @@ that lantern-row falls. The nightmoth crowd recovers slowly.
 
 Whenever a sky-cat hunts on the Cliff Path, each nightmoth that survives the
 hunt flees to the Hollows. Whenever a sky-cat hunts on the Cliff Path, the
-lanterns at the Hollows gain nightmoths. The displaced nightmoths keep the
-lanterns at the Hollows productive.
+lanterns at the Hollows gain nightmoths. Together, the displaced nightmoths
+keep the lanterns at the Hollows productive.
 
 Sky-cats molt in late summer. Sky-cats molt in early autumn. Whenever a
 sky-cat molts, feathers fall to the base of the cliff. Tessa Brae's collectors
@@ -459,7 +459,7 @@ track the weight of the feather harvest.
 
 Three sky-cats once hunted nightmoths at the Sunken Cove. The Council then
 ordered Bevin Coombe to burn wintergloss at the Stilllight Lantern. Wraiths
-that are in the cove sometimes harm sky-cats. When a moth-count at the
+that are in the Sunken Cove sometimes harm sky-cats. When a moth-count at the
 Stilllight Lantern is low, sky-cats stay on the cliff-spires. Keepers do not
 feed sky-cats. Apprentices never approach the cliff-spires.
 
@@ -525,12 +525,13 @@ threads are fine, grey, and slightly sticky. Keepers scrape the threads off
 the warm stone with a flat blade. Well-attended lanterns yield a small heap of
 threads each night in moth-season.
 
-Salt-bloom is a pale crystalline crust. When a tide-pool stone is submerged,
-salt-bloom grows on that stone. Salt-bloom crusts have a faint smell of salt.
-Keepers harvest salt-bloom with a wooden scraper. Iron makes salt-bloom
-crumble. The salt-bloom is kept in waxed paper packets in the Cauldron Hall
-store. Keepers add salt-bloom to mire-essence in winter. Whenever a Keeper
-adds salt-bloom to mire-essence, that mire-essence burns slowly.
+Salt-bloom is a pale crystalline crust. Whenever a tide-pool stone is
+submerged, salt-bloom grows on that stone. Salt-bloom crusts have a faint
+smell of salt. Keepers harvest salt-bloom with a wooden scraper. Iron makes
+salt-bloom crumble. The salt-bloom is kept in waxed paper packets in the
+Cauldron Hall store. Keepers add salt-bloom to mire-essence in winter.
+Whenever a Keeper adds salt-bloom to mire-essence, that mire-essence burns
+slowly.
 
 A wintergloss is a small flowering plant. Wintergloss grows in the Hollows.
 Wintergloss leaves are dark green and glossy. Whenever a lantern burns dried
@@ -600,9 +601,9 @@ four vessels with mire-essence. Thin days fill one vessel with mire-essence.
 In deep winter the thread harvest is thin. Whenever a wraith drains a lantern,
 the thread harvest at that lantern falls. When the thread basket is empty, the
 cauldrons sit idle. Distillation runs heavily from early autumn to
-Lantern-night. The distillation yield thins through deep winter. Distillation
-recovers from the spring equinox to the summer solstice. Distillation runs
-steadily through summer.
+Lantern-night. The distillation yield thins throughout deep winter.
+Distillation recovers from the spring equinox to the summer solstice.
+Distillation runs steadily through summer.
 
 Cauldron Hall keeps distillation records. The records track thread weight,
 sea-water source, boil time, and vessel yield. Hesper consults the records for
@@ -614,7 +615,7 @@ Cauldron Hall briefly in the winter of Year 1.
 
 Moth-counts are thin in deep winter. Moth-counts recover through spring.
 Moth-counts are strong through summer. The moth-count peaks in early autumn.
-The moth-count declines through late autumn.
+The moth-count declines throughout late autumn.
 
 > Design values: deep winter five to ten per lantern per night; summer twenty to thirty-five; autumn peak thirty to fifty.
 
@@ -640,9 +641,9 @@ Hollows meet each week at a shed at the forest edge.
 
 Sailsworn inspects the Salt-bloom Tide-pools once each season. The inspection
 checks the pools for erosion. The inspection confirms that the bloom is
-growing. The Council begins a new ledger every year. The Council speaker dates
-the first page of each new ledger. Meren Tallowhand dated the first page of
-the current ledger.
+growing. Whenever a new year begins, the Council begins a new ledger. The
+Council speaker dates the first page of each new ledger. Meren Tallowhand
+dated the first page of the current ledger.
 
 > Sealed (deliberate, factive): 'confirms that'. Design value: a fresh ledger every ten years. Design value: the Council opens a new ledger every year (the original 'periodically' has no carrier).
 

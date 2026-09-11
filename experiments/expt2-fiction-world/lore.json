@@ -32,7 +32,7 @@
       "The harbor wall holds twenty-four lanterns.",
       "The fishing boats use the harbor lanterns as beacons at night.",
       "The harbor lanterns are short and squat.",
-      "Whenever wind reflects off the water at the harbor wall, a harbor lantern burns its mire-essence quickly.",
+      "Whenever wind reflects off harbor water at a harbor lantern, that lantern burns its mire-essence quickly.",
       "Harbor-lantern Keepers live near the harbor."
     ]
   },
@@ -791,7 +791,7 @@
     "id": "L5-07",
     "rule": "V — The long quiet",
     "texts": [
-      "No wraith has emerged in twenty-six years.",
+      "No wraith has emerged in the past twenty-six years.",
       "The senior Keepers worry that complacency has crept into the village.",
       "A few Keepers believe that a wraith remembers the Keeper who let that wraith rise.",
       "The Council does not share the superstition."
@@ -859,7 +859,7 @@
     "texts": [
       "Whenever a sky-cat hunts on the Cliff Path, each nightmoth that survives the hunt flees to the Hollows.",
       "Whenever a sky-cat hunts on the Cliff Path, the lanterns at the Hollows gain nightmoths.",
-      "The displaced nightmoths keep the lanterns at the Hollows productive."
+      "Together, the displaced nightmoths keep the lanterns at the Hollows productive."
     ]
   },
   {
@@ -890,7 +890,7 @@
     "texts": [
       "Three sky-cats once hunted nightmoths at the Sunken Cove.",
       "The Council then ordered Bevin Coombe to burn wintergloss at the Stilllight Lantern.",
-      "Wraiths that are in the cove sometimes harm sky-cats.",
+      "Wraiths that are in the Sunken Cove sometimes harm sky-cats.",
       "When a moth-count at the Stilllight Lantern is low, sky-cats stay on the cliff-spires.",
       "Keepers do not feed sky-cats.",
       "Apprentices never approach the cliff-spires."
@@ -1011,7 +1011,7 @@
     "rule": "VIII — Salt-bloom",
     "texts": [
       "Salt-bloom is a pale crystalline crust.",
-      "When a tide-pool stone is submerged, salt-bloom grows on that stone.",
+      "Whenever a tide-pool stone is submerged, salt-bloom grows on that stone.",
       "Salt-bloom crusts have a faint smell of salt.",
       "Keepers harvest salt-bloom with a wooden scraper.",
       "Iron makes salt-bloom crumble.",
@@ -1147,7 +1147,7 @@
       "Whenever a wraith drains a lantern, the thread harvest at that lantern falls.",
       "When the thread basket is empty, the cauldrons sit idle.",
       "Distillation runs heavily from early autumn to Lantern-night.",
-      "The distillation yield thins through deep winter.",
+      "The distillation yield thins throughout deep winter.",
       "Distillation recovers from the spring equinox to the summer solstice.",
       "Distillation runs steadily through summer."
     ]
@@ -1172,7 +1172,7 @@
       "Moth-counts recover through spring.",
       "Moth-counts are strong through summer.",
       "The moth-count peaks in early autumn.",
-      "The moth-count declines through late autumn."
+      "The moth-count declines throughout late autumn."
     ]
   },
   {
@@ -1219,7 +1219,7 @@
       "Sailsworn inspects the Salt-bloom Tide-pools once each season.",
       "The inspection checks the pools for erosion.",
       "The inspection confirms that the bloom is growing.",
-      "The Council begins a new ledger every year.",
+      "Whenever a new year begins, the Council begins a new ledger.",
       "The Council speaker dates the first page of each new ledger.",
       "Meren Tallowhand dated the first page of the current ledger."
     ]

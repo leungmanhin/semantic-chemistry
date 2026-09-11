@@ -1,388 +1,58 @@
 [
   {
-    "id": "L1-02",
-    "rule": "I — Cliff Path",
+    "id": "L1-03",
+    "rule": "I — Harbor wall",
     "texts": [
-      "The stones that pave the Cliff Path are flat and sea-worn."
-    ]
-  },
-  {
-    "id": "L1-04",
-    "rule": "I — Sunken Cove",
-    "texts": [
-      "The bones of the old graveyard lie under the water in the Sunken Cove."
-    ]
-  },
-  {
-    "id": "L1-05",
-    "rule": "I — Stilllight Lantern",
-    "texts": [
-      "The Sunken Cove holds a single lantern.",
-      "The iron bands reinforce the Stilllight Lantern."
-    ]
-  },
-  {
-    "id": "L1-06",
-    "rule": "I — Salt-bloom Tide-pools",
-    "texts": [
-      "The Council surveys the tide-pools."
-    ]
-  },
-  {
-    "id": "L1-09",
-    "rule": "I — The Hollows",
-    "texts": [
-      "The lanterns at the Hollows stand along the forest paths.",
-      "The lanterns at the Hollows burn dimly."
-    ]
-  },
-  {
-    "id": "L1-13",
-    "rule": "I — Village square and market",
-    "texts": [
-      "A market runs in the village square every week.",
-      "Every distillation requires sea-water from the Salt-bloom Tide-pools."
-    ]
-  },
-  {
-    "id": "L2-06",
-    "rule": "II — Hesper",
-    "texts": [
-      "Whenever the moon is full, Hesper reports essence production to the Council."
-    ]
-  },
-  {
-    "id": "L2-09",
-    "rule": "II — Tessa Brae",
-    "texts": [
-      "Tessa Brae walks the base of the cliff each morning during the molting season."
-    ]
-  },
-  {
-    "id": "L2-11",
-    "rule": "II — Marra Tallowhand",
-    "texts": [
-      "Marra Tallowhand keeps a detailed log every night.",
-      "Council members often consult Marra Tallowhand's logs."
-    ]
-  },
-  {
-    "id": "L2-12",
-    "rule": "II — Tending a station",
-    "texts": [
-      "When a week is a high-wraith week, two Keepers tend the Stilllight Lantern together."
-    ]
-  },
-  {
-    "id": "L2-14",
-    "rule": "II — Coats",
-    "texts": [
-      "Mire-essence stains every Keeper's coat."
-    ]
-  },
-  {
-    "id": "L2-15",
-    "rule": "II — Notebooks",
-    "texts": [
-      "A few Keepers each keep a notebook that lists moth-counts and weather notes."
-    ]
-  },
-  {
-    "id": "L3-02",
-    "rule": "III — Meetings",
-    "texts": [
-      "Whenever the moon is full, the Council meets."
-    ]
-  },
-  {
-    "id": "L3-03",
-    "rule": "III — Decisions",
-    "texts": [
-      "The Council decides by consensus."
-    ]
-  },
-  {
-    "id": "L3-04",
-    "rule": "III — Redistribution",
-    "texts": [
-      "Whenever the moon is full, the Council redistributes mire-essence reserves."
-    ]
-  },
-  {
-    "id": "L3-06",
-    "rule": "III — Other business",
-    "texts": [
-      "Whenever a Keeper retires, the Council staffs that Keeper's station again.",
-      "Whenever a Keeper dies, the Council staffs that Keeper's station again.",
-      "Letters from neighbouring villages are read aloud by the Council."
-    ]
-  },
-  {
-    "id": "L3-08",
-    "rule": "III — Authority",
-    "texts": [
-      "The Council rarely orders Keepers to burn wintergloss."
-    ]
-  },
-  {
-    "id": "L3-09",
-    "rule": "III — The bad winters",
-    "texts": [
-      "Twenty-six years ago, a lone wraith emerged."
-    ]
-  },
-  {
-    "id": "L4-02",
-    "rule": "IV — First lighting",
-    "texts": [
-      "Replacement lanterns do not need a touch from the Council."
-    ]
-  },
-  {
-    "id": "L4-05",
-    "rule": "IV — Feather collection",
-    "texts": [
-      "Tessa Brae walks every part of the base of the cliff each morning during the molting season.",
-      "The collectors record the collection in a Watch ledger each morning."
-    ]
-  },
-  {
-    "id": "L4-07",
-    "rule": "IV — Sea-water",
-    "texts": [
-      "In distillation, salt is not a substitute for sea-water.",
-      "The sea-water store draws from the deep ebb at the mouth of the harbor."
-    ]
-  },
-  {
-    "id": "L4-09",
-    "rule": "IV — Children and families",
-    "texts": [
-      "Whenever a Keeper marries a member of a fisher family, that Keeper keeps the station."
-    ]
-  },
-  {
-    "id": "L4-12",
-    "rule": "IV — Time-keeping",
-    "texts": [
-      "Keepers carry a notched candle for time-keeping."
-    ]
-  },
-  {
-    "id": "L5-02",
-    "rule": "V — What wraiths are",
-    "texts": [
-      "Wraiths rise from the water in the Sunken Cove.",
-      "Every Keeper believes that the people who died in the storm-surge became wraiths."
-    ]
-  },
-  {
-    "id": "L5-03",
-    "rule": "V — What a wraith does",
-    "texts": [
-      "Keepers know the wraith rule."
+      "Whenever wind reflects off harbor water at a harbor lantern, that lantern burns its mire-essence quickly."
     ]
   },
   {
     "id": "L5-07",
     "rule": "V — The long quiet",
     "texts": [
-      "No wraith has emerged in twenty-six years."
-    ]
-  },
-  {
-    "id": "L5-08",
-    "rule": "V — Stories",
-    "texts": [
-      "Four wraiths rose sixty-three years ago."
-    ]
-  },
-  {
-    "id": "L6-03",
-    "rule": "VI — Diet and roosting",
-    "texts": [
-      "The keepers cannot count the sky-cats exactly."
-    ]
-  },
-  {
-    "id": "L6-04",
-    "rule": "VI — The crowd rule",
-    "texts": [
-      "Keepers use the crowd rule."
+      "No wraith has emerged in the past twenty-six years."
     ]
   },
   {
     "id": "L6-05",
     "rule": "VI — Displacement",
     "texts": [
-      "Whenever a sky-cat hunts on the Cliff Path, the lanterns at the Hollows gain nightmoths.",
-      "The displaced nightmoths keep the lanterns at the Hollows productive."
-    ]
-  },
-  {
-    "id": "L6-06",
-    "rule": "VI — Molting and feathers",
-    "texts": [
-      "Sky-cats molt in late summer.",
-      "Sky-cats molt in early autumn.",
-      "Tessa Brae's collectors gather the fallen feathers each morning during the molting season.",
-      "Ground feathers of sky-cats ward lanterns against wraiths."
+      "Together, the displaced nightmoths keep the lanterns at the Hollows productive."
     ]
   },
   {
     "id": "L6-08",
     "rule": "VI — The cove incident",
     "texts": [
-      "Wraiths that are in the cove sometimes harm sky-cats.",
-      "When a moth-count at the Stilllight Lantern is low, sky-cats stay on the cliff-spires."
-    ]
-  },
-  {
-    "id": "L7-01",
-    "rule": "VII — Tides",
-    "texts": [
-      "Tide-pools are dry at neap tide.",
-      "Salt-bloom needs spring-tide fills."
-    ]
-  },
-  {
-    "id": "L7-02",
-    "rule": "VII — The harvest tide",
-    "texts": [
-      "The keepers cannot explain the moon-phase rule."
-    ]
-  },
-  {
-    "id": "L7-03",
-    "rule": "VII — The sea-water store",
-    "texts": [
-      "Whenever a spring tide ends, a Cauldron Hall apprentice refills the cisterns from the deep ebb."
-    ]
-  },
-  {
-    "id": "L7-04",
-    "rule": "VII — The cold-threshold wind",
-    "texts": [
-      "Whenever a winter night is clear, the cold-threshold wind comes off the Cold Sea.",
-      "Whenever a Keeper mixes salt-bloom into mire-essence, that mire-essence burns slowly.",
-      "Whenever a cold-threshold night comes, unprepared lanterns on the Cliff Path die."
-    ]
-  },
-  {
-    "id": "L7-05",
-    "rule": "VII — Storms and the fleet",
-    "texts": [
-      "Autumn storms come over the Cold Sea.",
-      "Early-winter storms come over the Cold Sea."
-    ]
-  },
-  {
-    "id": "L8-01",
-    "rule": "VIII — Mire-essence",
-    "texts": [
-      "The smell of mire-essence is faintly metallic.",
-      "Mire-essence is dark-green-black.",
-      "The copper cauldrons produce mire-essence."
+      "Wraiths that are in the Sunken Cove sometimes harm sky-cats."
     ]
   },
   {
     "id": "L8-04",
     "rule": "VIII — Salt-bloom",
     "texts": [
-      "When a tide-pool stone is submerged, salt-bloom grows on that stone.",
-      "Salt-bloom crusts have a faint smell of salt.",
-      "The salt-bloom is kept in waxed paper packets in the Cauldron Hall store.",
-      "Whenever a Keeper adds salt-bloom to mire-essence, that mire-essence burns slowly."
-    ]
-  },
-  {
-    "id": "L8-05",
-    "rule": "VIII — Wintergloss",
-    "texts": [
-      "A wintergloss is a small flowering plant."
-    ]
-  },
-  {
-    "id": "L8-06",
-    "rule": "VIII — Ground feathers",
-    "texts": [
-      "Collectors dry the feathers from sky-cats.",
-      "A handful of ground feathers protects a lantern for about a month."
-    ]
-  },
-  {
-    "id": "L8-08",
-    "rule": "VIII — Lanterns",
-    "texts": [
-      "The reservoir of the Stilllight Lantern holds enough mire-essence to burn for one night.",
-      "The Council built the Stilllight Lantern because wraiths had risen again and again."
-    ]
-  },
-  {
-    "id": "L9-02",
-    "rule": "IX — The boil",
-    "texts": [
-      "Whenever a distillation runs in a cauldron and that cauldron boils hard, that distillation fails.",
-      "Whenever a cauldron boils hard, that cauldron yields a thin slick of poor essence."
-    ]
-  },
-  {
-    "id": "L9-03",
-    "rule": "IX — Skimming",
-    "texts": [
-      "Each cauldron yields a vessel that is partly full of mire-essence."
+      "Whenever a tide-pool stone is submerged, salt-bloom grows on that stone."
     ]
   },
   {
     "id": "L9-05",
     "rule": "IX — Yields",
     "texts": [
-      "Typical days fill several vessels with mire-essence.",
-      "Heavy-thread days fill four vessels with mire-essence.",
-      "Thin days fill one vessel with mire-essence.",
-      "Distillation runs heavily from early autumn to Lantern-night.",
-      "The distillation yield thins through deep winter."
+      "The distillation yield thins throughout deep winter."
     ]
   },
   {
     "id": "L10-01",
     "rule": "X — Moth-counts through the year",
     "texts": [
-      "The moth-count peaks in early autumn.",
-      "The moth-count declines through late autumn."
-    ]
-  },
-  {
-    "id": "L10-03",
-    "rule": "X — Sky-cat seasons",
-    "texts": [
-      "Sky-cats hunt often in summer.",
-      "Sky-cats hunt often in early autumn."
-    ]
-  },
-  {
-    "id": "L10-04",
-    "rule": "X — The Hollows through the year",
-    "texts": [
-      "Whenever a sky-cat hunts on the Cliff Path, the lanterns at the Hollows produce many threads.",
-      "In deep winter the lanterns at the Hollows produce a small thread harvest.",
-      "In spring the lanterns at the Hollows produce a steady thread harvest.",
-      "In summer the lanterns at the Hollows produce a steady thread harvest."
+      "The moth-count declines throughout late autumn."
     ]
   },
   {
     "id": "L10-05",
     "rule": "X — Inspections and ledgers",
     "texts": [
-      "The Council begins a new ledger every year."
-    ]
-  },
-  {
-    "id": "L10-06",
-    "rule": "X — Craft and trade",
-    "texts": [
-      "Whenever an equinox passes, Aron Brae makes vessels.",
-      "Traders from Faltern and the inland farms come to the market each week."
+      "Whenever a new year begins, the Council begins a new ledger."
     ]
   }
 ]
