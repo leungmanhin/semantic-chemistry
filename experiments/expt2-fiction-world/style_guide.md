@@ -70,6 +70,33 @@ sentences. Rule TITLES are display labels only — never parsed, never gated.
   capitalized plural label stays banned. No "then / later / meanwhile" (no
   carrier — use a date or "after"), no "when a/an …" (the rule route).
 
+**EPISODIC shapes that mis-parse silently (events run 1, Parts I–III, 23
+passages):** a sealed report whose content is a bare negation ("said that the
+village had no candidate", "reported that no wraith had approached") loses its
+content — state it positively ("lacked a candidate", "had remained free of
+wraiths") or as its own clause; a comparative inside a report ("fewer
+nightmoths") is dropped like any comparative — restate in the law's own
+vocabulary; "the moth-count at X was N" (a bare-numeral copular on a count
+noun) has no carrier — write the counting as an event ("Keepers counted
+seventeen nightmoths at the lantern at the third watch"); the episode's
+opening date reaches only its own sentence, so "that night" copies a day only
+when the opening sentence carried "On day N of Year Y" — a pre-equinox
+episode therefore opens with the season and year ("In the late summer of Year
+1, two days before the autumn equinox, …"); the calendar anchor is "The
+autumn equinox took place on day 0 of Year 1" ("Day 0 of Year 1 fell on …"
+mints two names and a falling event); "for the coming month" is read as the
+issuing's time — drop the period or give it a clause; cargo is never a
+"with"-phrase ("returned … and carried twelve buckets"); "through the night" /
+"took the whole night" → "from dusk until dawn"; a definite later in the
+episode needs a definite antecedent, not a per-member rule or a bare kind
+("Mire-essence formed in the three cauldrons", not "in each cauldron"; "the
+salt-bloom" harvested, not bare "salt-bloom"); "each step" over an unnamed
+kind never fires — name the items. Bare "few" / "fewer" / "more" have no
+carrier — the licensed vague counts are "a few", "a handful of", "several",
+"many", "about N". `(Day n)` is read at ingestion as the day
+of the corpus calendar, not a day of the month (the parser's own slot; the
+reviewer will keep calling day 0 impossible).
+
 **Authoring policy (agreed 2026-09-03):** the corpus exists to study ACS
 discovery in the chemical soup, not to exercise linguistic coverage. A
 sentence that is hard for the parser is simply REWRITTEN in a simpler form

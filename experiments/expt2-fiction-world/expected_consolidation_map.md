@@ -81,9 +81,13 @@ Law instances reuse the law's own vocabulary verbatim (R6: "A crowd of
 nightmoths gathered at the East Row. Three sky-cats descended from the
 cliff-spires."), so the consolidation target for events is the identity
 mapping onto the world rules, and the mining target is the instance count
-per law (Cycle A: R1–R5 instantiated in E1-06, E1-11, E4-05, E7-03, E10-06;
-Cycle B: R6–R8 in E1-08, E7-05, E8-04, E10-06; Cycle C: R10/R15 in E1-10,
-E5-06, E8-04, E9-07; Cycle D: R13/R14 in E5-06, E5-07; gates R16/R17 in
+per law (Cycle A: complete turns in one passage in E1-12, E5-11, E6-03,
+E8-06, E9-10 and across the day pairs E7-09/E7-10 and E10-12/E10-13, plus
+partial instances in E1-06, E1-11, E4-05, E7-03, E10-06; Cycle B: complete
+turns in E1-08, E7-09, E10-12, plus E7-05, E8-04, E8-06, E10-06; Cycle C:
+molt-to-warding across E7-09/E7-10 and E10-12/E10-13, plus E1-10, E5-06,
+E8-04, E9-07; Cycle D: E5-06, E5-07; `instance_coverage.py` recomputes the
+counts; gates R16/R17 in
 E2-01, E2-03, E5-01, E5-10, E7-04, E8-04; R18–R20 in E3-01, E3-03, E6-01,
 E9-09; R21 in E10-08; R22 in E2-01; R25 in E7-06; R26/R27 in E2-06; R30 in
 E5-08). Given up in the re-skin: dialogue and verbatim quotations (→ sealed

@@ -12,8 +12,11 @@ census still says ok), so the author catches them before the expensive parse:
   list           a coordinated list of three or more items -> one joint event
   freq-specific  a frequency adverb on a definite or named subject (no licensed slot; only kind subjects carry it)
   episodic       EPISODIC-register hazards: quoted speech or a question mark (sealing / query routes), a sequence
-                 adverb with no carrier (then, later, meanwhile, earlier, afterwards), "between N and M", or a
-                 "when a/an …" clause (the rule route, not an episode)
+                 adverb with no carrier (then, later, meanwhile, earlier, afterwards, immediately), "between N and M",
+                 a "when a/an …" clause (the rule route, not an episode), a bare comparative or "few" (more / fewer /
+                 less / -er than, instead of, consecutive), a day-part span ("all night", "through the night", "the
+                 whole night"), "the moth-count at … was N" (no carrier — write a counting event), or a negation
+                 inside a that-report ("said that … no / not …" — its content is dropped; state it positively)
 usage: python3 lint_corpus.py [CORPUS.json ...]     (default: lore.json)
 """
 import json, re, sys, collections
@@ -30,7 +33,7 @@ CHECKS = {
  'non-registry':  re.compile(r"Stilllight station|Stilllight feather|Sunken Cove station|\bthe Stilllight\b(?! (Lantern|Station|Keeper))"),
  'after-cond':    re.compile(r"^After\b[^,]*,"),
  'list':          re.compile(r",\s*[^,]+,\s*(and|or)\s+"),
- 'episodic':      re.compile(r'["?]|\b(then|later|meanwhile|earlier|afterwards|previously)\b|\bbetween \w+ and \w+\b|\bwhen an? \b', re.I),
+ 'episodic':      re.compile(r'["?]|\b(then|later|meanwhile|earlier|afterwards|previously|immediately|fewer|less|instead of|consecutive)\b|(?<!a )\bfew\b|\bmore \w+ than\b|\bbetween \w+ and \w+\b|\bwhen an? \b|\b(all|through the|the whole) night\b|moth-count at [^.]* (was|were|fell|rose)\b|\bthat [^.]*\b(no|not|never|did not|had not)\b', re.I),
  'freq-specific': re.compile(r"^(The (Council|Watch|village|Warden|speaker|fleet|glassworks|inspection)|[A-Z][a-z]+ [A-Z][a-z]+|Hesper|Pell|Sailsworn|Norren|Wynne)\b[^,]*?\b(usually|often|rarely|sometimes|occasionally|periodically)\b"),
 }
 
@@ -53,6 +56,7 @@ def lint(path):
         for i, t in enumerate(e['texts']):
             loc = f"{e['id']} s{i+1}"
             for name, rx in CHECKS.items():
+                if name == 'episodic' and 'events' not in path: continue   # the EPISODIC hazards apply to the events corpus only
                 if rx.search(t): hits[name].append((loc, t))
             if indef_generic(t): hits['indef-generic'].append((loc, t))
     print(f"== {path}: {sum(len(e['texts']) for e in json.load(open(path)))} sentences")
