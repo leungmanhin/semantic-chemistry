@@ -137,9 +137,9 @@ Sailsworn is a Council member. Sailsworn is the Salt-bloom Warden for the
 current year. The Salt-bloom Warden leads the new-moon harvest expeditions to
 the tide-pools. Sailsworn is a reliable cliff-climber.
 
-Hesper is the Cauldron Hall Warden. Hesper became Warden two years ago. Hesper
-does not sit on the Council. Whenever the moon is full, Hesper reports essence
-production to the Council.
+Hesper is the Cauldron Hall Warden. Hesper is a Keeper. Hesper became Warden
+two years ago. Hesper does not sit on the Council. Whenever the moon is full,
+Hesper reports essence production to the Council.
 
 Coraline Ash is a new apprentice. Coraline Ash arrived in late summer from
 down the coast. Coraline Ash's family farms down the coast. Coraline Ash is

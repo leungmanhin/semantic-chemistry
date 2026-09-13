@@ -26,6 +26,30 @@ corpus = json.load(open(corp_p)); full = json.load(open(full_p)) if os.path.exis
 pend = json.load(open(pend_p)) if os.path.exists(pend_p) else []
 KEYS = ('stmts', 'review', 'census')
 def is_passage(e): return isinstance(e.get('stmts'), dict) and 'passage' in e['stmts']
+import re
+# A rule nested under a sealing head (an attitude's Theme, Whether, Counterfactual) is inert by design, so a
+# census flag caused only by such rules is not a defect: exempt the passage iff every TOP-LEVEL Implication has
+# a fireable premise (no sk-function term, every sk constant asserted at top level).
+def sealed_only(stmts):
+    top_sk = set()
+    for st in stmts:
+        if '(Implication' not in st: top_sk.update(re.findall(r'\bsk_\w+?_\d+\b', st))
+    for st in stmts:
+        if '(Implication' not in st: continue
+        body = st.split('(Implication', 1)[1]
+        pre = st.split('(Implication', 1)[0]
+        if re.search(r'\((Theme|Whether|Counterfactual|Directive|Forbid|Question)\b', pre): continue   # sealed rule
+        depth = 0; i = 0
+        while i < len(body):
+            if body[i] == '(': depth += 1
+            elif body[i] == ')':
+                depth -= 1
+                if depth == 0: break
+            i += 1
+        premise = body[:i + 1]
+        if re.search(r'\(sk_\w+ \$', premise): return False
+        if any(k not in top_sk for k in re.findall(r'\bsk_\w+?_\d+\b', premise)): return False
+    return True
 PASSAGE = any(is_passage(e) for e in full + pend)
 
 # index the records: per (id, text) for sentence records, per (id, text-tuple) for passage records
@@ -45,7 +69,9 @@ for r in corpus:
             e = have[key]
             merged.append({'id': r['id'], 'rule': r['rule'], 'texts': list(r['texts']), 'stmts': e['stmts'],
                            'review': e.get('review', {'texts': []}), 'census': e['census']})
-            if e['census'].get('passage') != 'ok': dead.append((r['id'], e['census'].get('passage'), r['texts'][0]))
+            c = e['census'].get('passage')
+            if c != 'ok' and sealed_only(e['stmts'].get('passage') or []): c = 'ok (sealed)'
+            if c not in ('ok', 'ok (sealed)'): dead.append((r['id'], c, r['texts'][0]))
             if not e['stmts'].get('passage'): empty.append((r['id'], r['texts'][0]))
         else:
             missing.append((r['id'], f"{r['texts'][0]} … ({len(r['texts'])} sentences)"))

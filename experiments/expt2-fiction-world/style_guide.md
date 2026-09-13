@@ -62,7 +62,15 @@ sentences. Rule TITLES are display labels only — never parsed, never gated.
   as "in order to". Sealing ONLY where the report is the content ("X reported
   / said / told Y that P", "X proposed that P", "X asked the Council whether
   P"); quotations and questions become such reports or are dropped. A law's
-  own vocabulary is reused verbatim for its instances ("A crowd of nightmoths
+  own vocabulary is reused verbatim for its instances — BOTH its antecedent
+  and its consequent ("showed mist-light at night" for R2, "tended the
+  lantern" for R5, "survived the hunt" as a plain fact for R8, a lantern
+  typed "lit" for R15, "salt-bloomed" for R17, a Keeper harvesting "at the
+  new moon" for R18) — because the calibration run fires the laws as
+  parsed, not as consolidated; a re-mention inside an episode is a DEFINITE
+  ("the nightmoths", "the nightmoth crowd", "the keepers of the East Row"),
+  never a bare plural, which mints a fresh group; a joint act by a group
+  takes "together" so no per-member rule over-asserts it ("A crowd of nightmoths
   gathered at the East Row. Three sky-cats descended from the cliff-spires.")
   so the law fires on the episode. A bare plural in a past clause denotes the
   specific group ("Keepers on the Cliff Path added salt-bloom"); a definite

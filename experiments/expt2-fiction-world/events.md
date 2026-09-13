@@ -40,12 +40,13 @@ reported to the Council that the previous new-moon harvest had been thin.
 In the late summer of Year 1, one day before the autumn equinox, Meren
 Tallowhand walked to a station on the Cliff Path at sundown. Meren Tallowhand
 lit the lantern at the station. The lantern burned mire-essence. The lantern
-produced mist-light. The mist-light attracted nightmoths. Meren Tallowhand
-counted seventeen nightmoths at the lantern at the third watch. A handful of
-nightmoths gathered at the Middle Row that night. All the sky-cats stayed on
-the cliff-spires that night.
+produced mist-light. The lantern showed mist-light at night. The mist-light
+attracted nightmoths. Meren Tallowhand tended the lantern that night. Meren
+Tallowhand counted seventeen nightmoths at the lantern at the third watch. A
+handful of nightmoths gathered at the Middle Row that night. All the sky-cats
+stayed on the cliff-spires that night.
 
-> Instances of R1, R2 and R6's handful case (the design threshold of twenty is not corpus).
+> Instances of R1, R2 and R6's handful case (the design threshold of twenty is not corpus). Instances carry the laws' antecedents literally: 'showed mist-light at night' (R2), 'tended the lantern' (R5).
 
 In the late summer of Year 1, one day before the autumn equinox, Bevin Coombe
 walked the Cove Stair at sundown. Bevin Coombe touched the iron bands of the
@@ -62,9 +63,10 @@ On day 0 of Year 1, the night of the autumn equinox was clear and mild.
 Keepers counted about twenty-five nightmoths at each lantern of the Cliff
 Path. A crowd of nightmoths gathered at the East Row. Three sky-cats descended
 from the cliff-spires. The three sky-cats hunted the nightmoth crowd at the
-East Row. The nightmoth crowd at the East Row shrank. Keepers counted seven
-nightmoths at the East Row at the third watch. Each nightmoth that survived
-the hunt fled to the Hollows.
+East Row. The nightmoth crowd at the East Row shrank. Keepers counted seven of
+the nightmoths at the East Row at the third watch. Some nightmoths survived
+the hunt. The surviving nightmoths fled to the Hollows. The surviving
+nightmoths reached the Hollows.
 
 > Instances of R6, R7 and R8 on the equinox night.
 
@@ -95,16 +97,17 @@ stored the mire-essence in three clay vessels.
 
 > Instances of R3, R4 and R5: the Cycle-A production chain in one episode.
 
-On day 3 of Year 1, Keepers lit the lanterns of the East Row at sundown. The
-lanterns burned mire-essence. The lanterns produced mist-light. The mist-light
-attracted nightmoths. Many nightmoths gathered at the lanterns of the East
-Row. The nightmoths landed on the lanterns. The nightmoths left silken threads
-on the lanterns. Pell collected the silken threads from the lanterns at dawn
-on day 4 of Year 1. Pell carried the silken threads to Cauldron Hall. Hesper
-boiled the silken threads in sea-water in the second cauldron on day 4 of Year
-1. Mire-essence formed in the second cauldron by evening. Hesper stored the
-mire-essence in two clay vessels. Keepers lit the lanterns of the East Row
-with the stored mire-essence at sundown on day 4 of Year 1.
+On day 3 of Year 1, the keepers of the East Row together lit the lanterns of
+the East Row at sundown. The keepers of the East Row tended the lanterns that
+night. The lanterns burned mire-essence. Together, the lanterns produced
+mist-light. The lanterns showed mist-light at night. The mist-light attracted
+nightmoths. Many of the nightmoths gathered at the lanterns. The nightmoths
+landed on the lanterns. The nightmoths left silken threads on the lanterns.
+Pell collected the silken threads from the lanterns at dawn on day 4 of Year
+1. Hesper boiled the silken threads in sea-water on day 4 of Year 1.
+Mire-essence formed in a cauldron by evening. Hesper stored the mire-essence
+in two clay vessels. The keepers of the East Row lit the lanterns of the East
+Row with the stored mire-essence at sundown on day 4 of Year 1.
 
 > Routine night: a complete Cycle-A turn in one passage (R1 → R2 → R3 → R4 → R5 → R1), the stored essence lighting the next night.
 
@@ -257,9 +260,11 @@ Harbor Station. A senior Keeper had retired from the Harbor Station, so the
 Harbor Station had been unstaffed. Coraline Ash lit the lantern of the Harbor
 Station at sundown for the first time. Pell stood beside Coraline Ash. The
 wick caught cleanly. The lantern burned mire-essence. The lantern produced
-mist-light. The mist-light attracted nightmoths. A nightmoth landed on the
-lantern after sundown. The nightmoth left silken threads on the lantern. Pell
-joined Coraline Ash at the Harbor Station at midnight and at the third watch.
+mist-light. The lantern showed mist-light at night. The mist-light attracted
+nightmoths. A nightmoth landed on the lantern after sundown. The nightmoth
+left silken threads on the lantern. Coraline Ash tended the lantern that
+night. Pell joined Coraline Ash at the Harbor Station at midnight and at the
+third watch.
 
 > Instances of R1, R2 and R3 at Coraline's first lighting.
 
@@ -275,10 +280,11 @@ Cliff Path stayed thin in that week.
 ## Part V. First Frost and Midwinter
 
 On day 92 of Year 1, the first hard frost came. The harbor was white with rime
-in the morning. The cold wind blew off the sea from dusk until dawn. Every
-lantern on the Cliff Path held salt-bloom in its mire-essence. The
-mire-essence burned slowly. Every lantern on the Cliff Path stayed lit from
-dusk until dawn.
+in the morning. The cold wind blew off the sea from dusk until dawn. Keepers
+on the Cliff Path added salt-bloom to the mire-essence in winter. Every
+lantern on the Cliff Path was salt-bloomed. The cold wind struck the
+salt-bloomed lanterns of the Cliff Path at night. The mire-essence burned
+slowly. Every lantern on the Cliff Path stayed lit from dusk until dawn.
 
 > Instances of R17 at the first hard frost.
 
@@ -299,16 +305,15 @@ that the village always keeps the Stilllight Lantern lit.
 > QA W34: Brindle Coombe's statements, sealed as reports; Old Vesh's reply likewise.
 
 On day 100 of Year 1, Coraline Ash lit the lantern of the Harbor Station at
-sundown. The lantern burned mire-essence. The mire-essence in the lantern held
-salt-bloom. The mire-essence burned slowly. The lantern produced mist-light.
-The mist-light attracted nightmoths. The nightmoths landed on the lantern. The
-nightmoths left silken threads on the lantern. Coraline Ash collected the
-silken threads from the lantern at dawn on day 101 of Year 1. Coraline Ash
-carried the silken threads to Cauldron Hall. Hesper boiled the silken threads
-in sea-water in the third cauldron on day 101 of Year 1. Mire-essence formed
-in the third cauldron by evening. Hesper stored the mire-essence in a clay
-vessel. Coraline Ash drew the stored mire-essence at sundown on day 101 of
-Year 1.
+sundown. The lantern burned mire-essence. The mire-essence in the lantern
+contained salt-bloom. The mire-essence burned slowly. The lantern produced
+mist-light. The lantern showed mist-light at night. The mist-light attracted
+nightmoths. The nightmoths landed on the lantern. The nightmoths left silken
+threads on the lantern. Coraline Ash collected the silken threads from the
+lantern at dawn on day 101 of Year 1. Hesper boiled the silken threads in
+sea-water on day 101 of Year 1. Mire-essence formed in a cauldron by evening.
+Hesper stored the mire-essence in a clay vessel. Coraline Ash drew the stored
+mire-essence at sundown on day 101 of Year 1.
 
 > Routine night: a Cycle-A turn under the salt-bloom gate (R17) in early winter.
 
@@ -337,11 +342,11 @@ because the Stilllight Lantern had burned dim on the night of day 111. The
 Stilllight Lantern had burned dim nine days before the emergence. Marra
 Tallowhand saw the wraith first from her station near the Cove Stair. Marra
 Tallowhand walked to the Stilllight Lantern. Bevin Coombe was already at the
-Stilllight Lantern. Bevin Coombe ground feathers. Bevin Coombe scattered the
-ground feathers around the Stilllight Lantern. The ground feathers warded the
-Stilllight Lantern against the wraith. The wraith approached the Stilllight
-Lantern. The wraith turned away from the Stilllight Lantern. The wraith did
-not drain the Stilllight Lantern.
+Stilllight Lantern. The Stilllight Lantern was lit. Bevin Coombe ground
+feathers. Bevin Coombe scattered the ground feathers around the Stilllight
+Lantern. The ground feathers warded the Stilllight Lantern against the wraith.
+The wraith approached the Stilllight Lantern. The wraith turned away from the
+Stilllight Lantern. The wraith did not drain the Stilllight Lantern.
 
 > QA W15 and W16: the emergence with its because-link to the dim night (a Cycle-D instance stated as an episode), and R15 warding the Stilllight.
 
@@ -403,15 +408,15 @@ approved an apprenticeship-completion track for Halden.
 
 On day 190 of Year 1, Coraline Ash lit the lantern of the Harbor Station at
 sundown. The lantern burned mire-essence. The lantern produced mist-light. The
-mist-light attracted a handful of nightmoths. Coraline Ash counted four
-nightmoths at the lantern at the third watch. The nightmoths landed on the
-lantern. The nightmoths left silken threads on the lantern. Coraline Ash
-collected a small heap of silken threads from the lantern at dawn on day 191
-of Year 1. Coraline Ash carried the silken threads to Cauldron Hall. Hesper
-boiled the silken threads in sea-water in the first cauldron on day 191 of
-Year 1. Mire-essence formed in the first cauldron by evening. Hesper stored
-the mire-essence in a clay vessel. Coraline Ash drew the stored mire-essence
-at sundown on day 191 of Year 1.
+lantern showed mist-light at night. The mist-light attracted a handful of
+nightmoths. Coraline Ash counted four nightmoths at the lantern at the third
+watch. The nightmoths landed on the lantern. The nightmoths left silken
+threads on the lantern. Coraline Ash collected a small heap of silken threads
+from the lantern at dawn on day 191 of Year 1. Coraline Ash carried the silken
+threads to Cauldron Hall. Hesper boiled the silken threads in sea-water on day
+191 of Year 1. Mire-essence formed in a cauldron by evening. Hesper stored the
+mire-essence in a clay vessel. Coraline Ash drew the stored mire-essence at
+sundown on day 191 of Year 1.
 
 > Routine night: a thin late-winter Cycle-A turn — the loop still closes with a handful of nightmoths and a small heap of threads.
 
@@ -429,26 +434,29 @@ spring equinox.
 On day 230 of Year 1, Coraline Ash began a solo stretch of thirty nights at
 the Harbor Station. Pell did not accompany Coraline Ash during the solo
 stretch. Pell visited the Harbor Station on her own off-nights. During the
-solo stretch, Coraline Ash lit the lantern at sundown every night. During the
-solo stretch, Coraline Ash refreshed the mire-essence at midnight every night.
-During the solo stretch, Coraline Ash trimmed the wick at the third watch
-every night. During the solo stretch, Coraline Ash extinguished the lantern at
-dawn every night. Coraline Ash kept the notebook carefully.
+solo stretch, Coraline Ash tended the lantern of the Harbor Station every
+night. During the solo stretch, Coraline Ash lit the lantern at sundown every
+night. During the solo stretch, Coraline Ash refreshed the mire-essence at
+midnight every night. During the solo stretch, Coraline Ash trimmed the wick
+at the third watch every night. During the solo stretch, Coraline Ash
+extinguished the lantern at dawn every night. Coraline Ash kept the notebook
+carefully.
 
 > Instances of R11's nightly duty over the thirty solo nights (QA N18).
 
 On day 246 of Year 1, a thin fog came in off the sea in the evening. The fog
 reduced visibility on the Cliff Path. Coraline Ash kept the lantern of the
-Harbor Station burning steadily. The lantern produced mist-light through the
-fog. The mist-light attracted nightmoths. The nightmoths left silken threads
-on the lantern. Coraline Ash collected about thirty-five silken threads from
-the lantern the next morning.
+Harbor Station burning steadily. The lantern produced mist-light. The lantern
+showed mist-light at night. The mist-light attracted nightmoths. The
+nightmoths landed on the lantern. The nightmoths left silken threads on the
+lantern. Coraline Ash collected about thirty-five silken threads from the
+lantern the next morning.
 
 > Instances of R1, R2 and R3 on the seventeenth solo night.
 
 On day 251 of Year 1, the cold wind returned briefly at night. The lantern of
-the Harbor Station held salt-bloom in its mire-essence. The cold wind struck
-the lantern. The lantern stayed lit.
+the Harbor Station was salt-bloomed. The cold wind struck the salt-bloomed
+lantern. The lantern stayed lit.
 
 > Instance of R17's third law on the twenty-second solo night.
 
@@ -464,13 +472,13 @@ the hunt.
 
 On day 259 of Year 1, Coraline Ash lit the lantern of the Harbor Station at
 sundown on the thirtieth night of the solo stretch. Coraline Ash completed
-thirty solo nights. Coraline Ash's solo count reached thirty. Pell and
-Coraline Ash met at dawn on day 260 of Year 1. Coraline Ash and Pell walked
-back to Aelmere together. The Council met in an informal session on day 260 of
-Year 1. The Council invested Coraline Ash as a Keeper. Coraline Ash lit her
-first lantern as a Keeper at sundown. Meren Tallowhand placed a hand on
-Coraline Ash's shoulder. Meren Tallowhand repeated the phrase. Every villager
-present repeated the phrase.
+thirty solo nights. Coraline Ash's solo count reached thirty. Coraline Ash's
+solo count was large. Pell and Coraline Ash met at dawn on day 260 of Year 1.
+Coraline Ash and Pell walked back to Aelmere together. The Council met in an
+informal session on day 260 of Year 1. The Council invested Coraline Ash as a
+Keeper. Coraline Ash lit her first lantern as a Keeper at sundown. Meren
+Tallowhand placed a hand on Coraline Ash's shoulder. Meren Tallowhand repeated
+the phrase. Every villager present repeated the phrase.
 
 > QA N18 and F30: the investiture is an instance of R25 (the solo count reaches thirty → the Council invests the apprentice).
 
@@ -491,31 +499,31 @@ Council took the proposal under consideration.
 
 > QA W23 and C14: Old Vesh's brighter-station proposal, sealed under 'proposed that'.
 
-On day 300 of Year 1, the keepers of the Harbor Row lit the lanterns of the
-Harbor Row at sundown. The lanterns burned mire-essence. The lanterns produced
-mist-light. The mist-light attracted nightmoths. A crowd of nightmoths
-gathered at the Harbor Row. Three sky-cats descended from the cliff-spires.
-The three sky-cats hunted the nightmoth crowd at the Harbor Row. The nightmoth
-crowd at the Harbor Row shrank. Each nightmoth that survived the hunt fled to
-the Hollows. The lanterns at the Hollows gained silken threads that night. The
-three sky-cats molted during the hunt. Feathers fell to the base of the cliff.
-Nightmoths left silken threads on the lanterns of the Harbor Row. The keepers
-of the Harbor Row collected the silken threads from the lanterns at dawn on
-day 301 of Year 1.
+On day 300 of Year 1, the keepers of the Harbor Row together lit the lanterns
+of the Harbor Row at sundown. The lanterns burned mire-essence. Together, the
+lanterns produced mist-light. The lanterns showed mist-light at night. The
+mist-light attracted nightmoths. A crowd of nightmoths gathered at the Harbor
+Row. Three sky-cats descended from the cliff-spires. The three sky-cats hunted
+the nightmoth crowd at the Harbor Row. The nightmoth crowd at the Harbor Row
+shrank. Some nightmoths survived the hunt. The surviving nightmoths fled to
+the Hollows. The surviving nightmoths reached the Hollows. The three sky-cats
+molted during the hunt. The nightmoths left silken threads on the lanterns of
+the Harbor Row.
 
 > Routine summer night: a full Cycle-B turn inside a Cycle-A night (R6 → R7 → R8 with R8's Hollows consequence) and the R10 molt that feeds Cycle C.
 
-On day 301 of Year 1, the keepers of the Harbor Row carried the silken threads
-to Cauldron Hall. Hesper boiled the silken threads in sea-water in the three
-cauldrons. Mire-essence formed in the three cauldrons by evening. Hesper
-stored the mire-essence in four clay vessels. The keepers of the Harbor Row
-drew the stored mire-essence at sundown. Tessa Brae collected thirty of the
-fallen feathers at the base of the cliff in the morning. Tessa Brae added the
+On day 301 of Year 1, the keepers of the Harbor Row together collected the
+silken threads from the lanterns of the Harbor Row at dawn. The keepers
+carried the silken threads to Cauldron Hall. Hesper boiled the silken threads
+in sea-water. Mire-essence formed in the cauldrons by evening. Hesper stored
+the mire-essence in four clay vessels. The keepers of the Harbor Row drew the
+stored mire-essence at sundown. Tessa Brae collected thirty of the fallen
+feathers at the base of the cliff in the morning. Tessa Brae added the
 feathers to the feather bin. Bevin Coombe took feathers from the feather bin.
-Bevin Coombe ground the feathers. Bevin Coombe scattered the ground feathers
-around the Stilllight Lantern at sundown. The ground feathers warded the
-Stilllight Lantern against wraiths. No wraith approached the Stilllight
-Lantern that night.
+Bevin Coombe ground the feathers. The Stilllight Lantern was lit. Bevin Coombe
+scattered the ground feathers around the Stilllight Lantern at sundown. The
+ground feathers warded the Stilllight Lantern against wraiths. No wraith
+approached the Stilllight Lantern that night.
 
 > The day after: Cycle A's back half (R4 → R5 → the next lighting) and a full Cycle-C turn — the hunt's feathers ward the Stilllight Lantern (R10 → R15).
 
@@ -541,37 +549,37 @@ keep sky-cats hunting on the Cliff Path.
 
 On day 380 of Year 2, Coraline Ash lit the lantern of the Harbor Station at
 sundown. The lantern burned mire-essence. The lantern produced mist-light. The
-mist-light attracted nightmoths. A crowd of nightmoths gathered at the Harbor
-Row. Two sky-cats descended from the cliff-spires. The two sky-cats hunted the
-nightmoth crowd at the Harbor Row. The nightmoth crowd at the Harbor Row
-shrank. The nightmoths left silken threads on the lantern. Coraline Ash
-collected the silken threads from the lantern at dawn on day 381 of Year 2.
-Hesper boiled the silken threads in sea-water in the second cauldron on day
-381 of Year 2. Mire-essence formed in the second cauldron by evening. Hesper
-stored the mire-essence in a clay vessel. Coraline Ash drew the stored
-mire-essence at sundown on day 381 of Year 2.
+lantern showed mist-light at night. The mist-light attracted nightmoths. A
+crowd of nightmoths gathered at the Harbor Row. Two sky-cats descended from
+the cliff-spires. The two sky-cats hunted the nightmoth crowd at the Harbor
+Row. The nightmoth crowd at the Harbor Row shrank. The nightmoths left silken
+threads on the lantern. Coraline Ash collected the silken threads from the
+lantern at dawn on day 381 of Year 2. Hesper boiled the silken threads in
+sea-water on day 381 of Year 2. Mire-essence formed in a cauldron by evening.
+Coraline Ash drew the stored mire-essence at sundown on day 381 of Year 2.
 
 > Routine autumn night of Year 2: Cycle A closes and Cycle B turns once at the Harbor Row.
 
 On day 395 of Year 2, the first cold snap of Year 2 came. Every lantern on the
 Cliff Path already held salt-bloom in its mire-essence. No lantern went out.
-The three bright stations burned extra mire-essence. The three bright stations
-produced strong mist-light. The strong mist-light attracted crowds of
+The lanterns of the three bright stations burned extra mire-essence. The
+lanterns of the three bright stations produced strong mist-light. The lanterns
+showed mist-light at night. The strong mist-light attracted crowds of
 nightmoths. Keepers counted about thirty nightmoths per night at each bright
 station. A crowd of nightmoths gathered at the Middle Row on six of the next
 ten nights. Sky-cats descended from the cliff-spires on those six nights. The
-sky-cats hunted nightmoths at the Middle Row on those six nights. The sky-cats
-molted during the hunts. Feathers fell to the base of the cliff. The feather
-harvest in the following month was strong.
+sky-cats hunted the nightmoth crowds at the Middle Row on those six nights.
+The sky-cats molted during the hunts. Feathers fell to the base of the cliff.
+The feather harvest in the following month was strong.
 
 > The policy's designed chain instantiated: R1, R2, R6, R7, R10 in one episode (QA N17).
 
 On day 396 of Year 2, Coraline Ash wrote in her log that a bright lantern
 draws a crowd of nightmoths. Coraline Ash wrote in her log that a crowd of
 nightmoths brings sky-cats down from the cliff-spires. Coraline Ash wrote in
-her log that hunting sky-cats molt feathers. Coraline Ash wrote in her log
-that ground feathers make the Sunken Cove safe. Coraline Ash read the note to
-Pell at breakfast.
+her log that sky-cats molt during hunts. Coraline Ash wrote in her log that
+ground feathers make the Sunken Cove safe. Coraline Ash read the note to Pell
+at breakfast.
 
 > QA W25: Coraline's chain, sealed under 'wrote that'. Coraline's log chain (QA W25) in the laws' vocabulary: R2, R6, R10, R15.
 
@@ -589,18 +597,17 @@ advisement.
 > A lantern that dies away from the Sunken Cove raises no wraith (R12's negative law).
 
 On day 425 of Year 2, Hesper proposed an experiment with three water sources.
-The Council approved the experiment. Hesper filled the first cauldron with
-sea-water from the Salt-bloom Tide-pools. Hesper filled the second cauldron
-with sea-water from the deep ebb. Hesper filled the third cauldron with harbor
-water from the middle of the pier. Hesper boiled silken threads in the three
-cauldrons for one day. Mire-essence formed in the first cauldron. The first
-cauldron yielded one vessel of mire-essence. Mire-essence formed in the second
-cauldron. The second cauldron yielded one vessel of mire-essence. No
-mire-essence formed in the third cauldron. The third cauldron yielded chalky
-residue. Hesper reported the results to the Council. The Council recorded the
-results in the ledger.
+The Council approved the experiment. Hesper filled Cauldron One with sea-water
+from the Salt-bloom Tide-pools. Hesper filled Cauldron Two with sea-water from
+the deep ebb. Hesper filled Cauldron Three with harbor water from the middle
+of the pier. Hesper boiled silken threads in the three cauldrons for one day.
+Mire-essence formed in Cauldron One. Cauldron One yielded one vessel of
+mire-essence. Mire-essence formed in Cauldron Two. Cauldron Two yielded one
+vessel of mire-essence. No mire-essence formed in Cauldron Three. Cauldron
+Three yielded chalky residue. Hesper reported the results to the Council. The
+Council recorded the results in the ledger.
 
-> Instances of R4 with two working water sources and one failing one.
+> Instances of R4 with two working water sources and one failing one. The three cauldrons carry registry names (Cauldron One, Two, Three) so the experiment's results stay distinct.
 
 On day 440 of Year 2, Tessa Brae found a large sky-cat feather near the third
 cliff-spire. The feather was unusually long. Tessa Brae added the feather to
@@ -615,17 +622,17 @@ months. Norren supervised Eli on every night of her first six months.
 
 > QA N21: an apprentice's first six months (R24).
 
-On day 460 of Year 2, the keepers of the Middle Row lit the lanterns of the
-Middle Row at sundown. The lanterns burned mire-essence. The mire-essence in
-the lanterns held salt-bloom. The mire-essence burned slowly. A cold wind
-struck the Middle Row at night. The lanterns stayed lit. The lanterns produced
-mist-light. The mist-light attracted a handful of nightmoths. The nightmoths
-left silken threads on the lanterns. Keepers collected the silken threads from
-the lanterns at dawn on day 461 of Year 2. Hesper boiled the silken threads in
-sea-water in the first cauldron on day 461 of Year 2. Mire-essence formed in
-the first cauldron by evening. Hesper stored the mire-essence in a clay
-vessel. The keepers of the Middle Row drew the stored mire-essence at sundown
-on day 461 of Year 2.
+On day 460 of Year 2, the keepers of the Middle Row together lit the lanterns
+of the Middle Row at sundown. The lanterns burned mire-essence. The lanterns
+of the Middle Row were salt-bloomed. The mire-essence burned slowly. A cold
+wind struck the salt-bloomed lanterns of the Middle Row at night. Each of the
+lanterns stayed lit. Together, the lanterns produced mist-light. The lanterns
+showed mist-light at night. The mist-light attracted a handful of nightmoths.
+The nightmoths left silken threads on the lanterns. The keepers of the Middle
+Row collected the silken threads from the lanterns at dawn on day 461 of Year
+2. Hesper boiled the silken threads in sea-water on day 461 of Year 2.
+Mire-essence formed in a cauldron by evening. The keepers of the Middle Row
+drew the stored mire-essence at sundown on day 461 of Year 2.
 
 > Routine midwinter night: a Cycle-A turn through the cold-wind gate — the salt-bloomed lanterns stay lit (R17) and the loop closes.
 
@@ -646,15 +653,15 @@ The Council logged the incident.
 > A missed midnight check away from the Sunken Cove; the junior Keeper is named Tam Harrow to avoid the Council member Wynne Coombe's name.
 
 On day 495 of Year 2, Bevin Coombe scattered fresh ground feathers around the
-Stilllight Lantern in the evening. The Stilllight Lantern burned steadily that
-night. Bevin Coombe saw a pale shape near the water of the Sunken Cove. The
-shape turned away before the shape reached the Stilllight Lantern. Bevin
-Coombe reported the sighting to the Council. The Council held an emergency
-session the next afternoon. The Council logged the report as a possible wraith
-near-miss. The Council kept the doubled feather ration at the Stilllight
-Station for two months. The Council told the keepers of the West Row to stay
-alert. No further sighting followed. The Council judged that the feather
-warding had prevented a full emergence.
+Stilllight Lantern in the evening. The Stilllight Lantern was lit that night.
+The Stilllight Lantern burned steadily that night. Bevin Coombe saw a pale
+shape near the water of the Sunken Cove. The shape turned away before the
+shape reached the Stilllight Lantern. Bevin Coombe reported the sighting to
+the Council. The Council held an emergency session the next afternoon. The
+Council logged the report as a possible wraith near-miss. The Council kept the
+doubled feather ration at the Stilllight Station for two months. The Council
+told the keepers of the West Row to stay alert. No further sighting followed.
+The Council judged that the feather warding had prevented a full emergence.
 
 > A near-miss: R15 as an episode with the outcome sealed under the Council's judgment.
 
@@ -667,11 +674,11 @@ weeks. A handful of nightmoths flew in the cold wind each night. The thread
 harvest on the Cliff Path was steady through the two weeks. Cauldron Hall
 distilled at its normal cadence.
 
-On day 525 of Year 2, the moon was new. Mira led a harvest party of three
-people to the Salt-bloom Tide-pools at the new-moon spring tide. The harvest
-party harvested nine buckets of salt-bloom. Mira reported the harvest to the
-Council the next morning. The Council congratulated Mira. The Council recorded
-the harvest.
+On day 525 of Year 2, the moon was new. Mira was a Keeper. Mira led a harvest
+party of three people to the Salt-bloom Tide-pools at the new-moon spring
+tide. Mira harvested salt-bloom at the new moon. The harvest party harvested
+nine buckets of salt-bloom. Mira reported the harvest to the Council the next
+morning. The Council congratulated Mira. The Council recorded the harvest.
 
 > Instance of R18 and R20 led by a newly invested Keeper.
 
@@ -728,29 +735,32 @@ mire-essence that day.
 
 > A routine summer night instantiating R6, R7, R10 and Cycle A's yield.
 
-On day 630 of Year 2, Keepers lit the lanterns of the East Row at sundown. The
-lanterns burned mire-essence. The lanterns produced mist-light. The mist-light
-attracted nightmoths. A crowd of nightmoths gathered at the East Row. Four
-sky-cats descended from the cliff-spires. The four sky-cats hunted the
-nightmoth crowd at the East Row. The nightmoth crowd at the East Row shrank.
-Each nightmoth that survived the hunt fled to the Hollows. The four sky-cats
-molted during the hunt. Feathers fell to the base of the cliff. Nightmoths
-left silken threads on the lanterns of the East Row. Keepers collected the
-silken threads from the lanterns at dawn on day 631 of Year 2. Hesper boiled
-the silken threads in sea-water in the three cauldrons on day 631 of Year 2.
+On day 630 of Year 2, the keepers of the East Row together lit the lanterns of
+the East Row at sundown. The lanterns burned mire-essence. Together, the
+lanterns produced mist-light. The lanterns showed mist-light at night. The
+mist-light attracted nightmoths. A crowd of nightmoths gathered at the East
+Row. Four sky-cats descended from the cliff-spires. The four sky-cats hunted
+the nightmoth crowd at the East Row. The nightmoth crowd at the East Row
+shrank. Some nightmoths survived the hunt. The surviving nightmoths fled to
+the Hollows. The surviving nightmoths reached the Hollows. The four sky-cats
+molted during the hunt. The nightmoths left silken threads on the lanterns of
+the East Row.
 
 > Routine summer night of Year 2: Cycle A's front half with a full Cycle-B turn and the molt that feeds Cycle C.
 
-On day 631 of Year 2, mire-essence formed in the three cauldrons by evening.
-Hesper stored the mire-essence in three clay vessels. Keepers drew the stored
-mire-essence at sundown. Keepers lit the lanterns of the East Row with the
-stored mire-essence at sundown. Tessa Brae collected forty of the fallen
-feathers at the base of the cliff in the morning. Tessa Brae added the
-feathers to the feather bin. Bevin Coombe took feathers from the feather bin.
-Bevin Coombe ground the feathers. Bevin Coombe scattered the ground feathers
-around the Stilllight Lantern at sundown. The ground feathers warded the
-Stilllight Lantern against wraiths. No wraith approached the Stilllight
-Lantern that night.
+On day 631 of Year 2, the keepers of the East Row together collected the
+silken threads from the lanterns of the East Row at dawn. Hesper boiled the
+silken threads in sea-water. Mire-essence formed in the cauldrons by evening.
+Hesper stored the mire-essence in three clay vessels. The keepers of the East
+Row drew the stored mire-essence at sundown. The keepers of the East Row lit
+the lanterns of the East Row with the stored mire-essence at sundown. Tessa
+Brae collected forty of the fallen feathers at the base of the cliff in the
+morning. Tessa Brae added the feathers to the feather bin. Bevin Coombe took
+feathers from the feather bin. Bevin Coombe ground the feathers. The
+Stilllight Lantern was lit. Bevin Coombe scattered the ground feathers around
+the Stilllight Lantern at sundown. The ground feathers warded the Stilllight
+Lantern against wraiths. No wraith approached the Stilllight Lantern that
+night.
 
 > The day after: Cycle A's back half closes on the East Row lanterns and a full Cycle-C turn wards the Stilllight Lantern.
 
@@ -763,13 +773,14 @@ as a Keeper for the first time. Coraline Ash repeated the phrase.
 Sky-cats hunted at the Sunken Cove on day 667, on day 668 and on day 669 of
 Year 2. On day 670 of Year 2, Bevin Coombe asked the Council for permission to
 burn wintergloss at the Stilllight Lantern for one night. The Council approved
-the test. Bevin Coombe burned wintergloss alongside the mire-essence of the
-Stilllight Lantern at sundown. The Stilllight Lantern produced mist-light. The
-wintergloss repelled nightmoths from the Stilllight Lantern. Bevin Coombe
-counted three nightmoths at the Stilllight Lantern that night. About twelve
-nightmoths gather at the Stilllight Lantern on a normal night. The sky-cats
-did not descend into the Sunken Cove that night. Bevin Coombe reported the
-result to the Council. The Council recorded the test.
+the test. Bevin Coombe added wintergloss to the Stilllight Lantern at sundown.
+The Stilllight Lantern burned wintergloss alongside mire-essence. The
+Stilllight Lantern produced mist-light. The wintergloss repelled nightmoths
+from the Stilllight Lantern. Bevin Coombe counted three nightmoths at the
+Stilllight Lantern that night. About twelve nightmoths gather at the
+Stilllight Lantern on a normal night. The sky-cats did not descend into the
+Sunken Cove that night. Bevin Coombe reported the result to the Council. The
+Council recorded the test.
 
 > Instance of R21 (wintergloss) and R6's handful case at the Stilllight. The three prior hunting nights are dated explicitly ('consecutive' has no carrier).
 
