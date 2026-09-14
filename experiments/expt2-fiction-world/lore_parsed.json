@@ -1853,6 +1853,7 @@
     "rule": "II — Hesper",
     "texts": [
       "Hesper is the Cauldron Hall Warden.",
+      "Hesper is a Keeper.",
       "Hesper became Warden two years ago.",
       "Hesper does not sit on the Council.",
       "Whenever the moon is full, Hesper reports essence production to the Council."
@@ -1865,6 +1866,10 @@
           "(: warden_of_hall (Possession hesper cauldron_hall) (STV 1.0 0.99))",
           "(: hall_type (Member cauldron_hall hall) (STV 1.0 0.99))",
           "(: hall_name (Name cauldron_hall \"Cauldron Hall\") (STV 1.0 0.99))"
+        ],
+        [
+          "(: hesper_is_keeper (Member hesper keeper) (STV 1.0 0.99))",
+          "(: hesper_name (Name hesper \"Hesper\") (STV 1.0 0.99))"
         ],
         [
           "(: hesper_name (Name hesper \"Hesper\") (STV 1.0 0.99))",
@@ -1894,6 +1899,7 @@
     "review": {
       "texts": [
         "good. Hesper is typed as a warden, Cauldron Hall comes out as a named hall, and the link between the two is recorded; the only thing not carried is the uniqueness of \"the\" (a one-holder office has no carrier anywhere in the instruction set, so no rewrite helps).",
+        "good. the named individual binds to a single membership fact (Member hesper keeper) plus the one Name fact, which is exactly what the sentence says and nothing more; no tense wrapper is owed on a present-tense copular, and there is no rule to fire. The only loose end the reviewer raised — whether the office word 'Keeper' should also yield a capability atom for the class — is a translator-side question about how a capitalized role title is treated, not content missing from your sentence, so no rewrite is needed.",
         "good. \"became Warden\" comes out as a past change of state with Hesper ending up a warden, and \"two years ago\" is recorded as a two-year gap before now.",
         "bad: same trouble as \"sits on the Council\" - the denial is stored as \"no sitting event on the Council\" rather than \"not a member\", so a membership question finds nothing and it does not line up with the other lore sentences about Council seats. Rewrite as \"Hesper is not a member of the Council.\"",
         "mixed: the content is all there (Hesper as reporter, essence production as what is reported, the Council as addressee, one report per full moon), but the trigger clause is a bare state — \"the moon is full\" — so the rule waits for a reified full-moon state rather than an event, and a later plain sentence such as \"The moon is full.\" produces only the flat form and would never fire it. Give the trigger a verb so each full moon is an occurrence the rule can bind: \"Whenever the moon becomes full, Hesper reports essence production to the Council.\""
@@ -1901,6 +1907,7 @@
     },
     "census": {
       "texts": [
+        "ok",
         "ok",
         "ok",
         "ok",
