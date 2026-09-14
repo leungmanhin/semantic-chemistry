@@ -1,107 +1,102 @@
 [
   {
-    "id": "E1-06",
-    "rule": "I — The equinox week",
+    "id": "E7-09",
+    "rule": "VII — Midspring recovery",
     "texts": [
-      "In the late summer of Year 1, one day before the autumn equinox, Meren Tallowhand walked to a station on the Cliff Path at sundown.",
-      "Meren Tallowhand lit the lantern at the station.",
-      "The lantern burned mire-essence.",
-      "The lantern produced mist-light.",
-      "The lantern showed mist-light at night.",
-      "The mist-light attracted nightmoths.",
-      "Meren Tallowhand tended the lantern that night.",
-      "Meren Tallowhand counted seventeen nightmoths at the lantern at the third watch.",
-      "A handful of nightmoths gathered at the Middle Row that night.",
-      "All the sky-cats stayed on the cliff-spires that night."
-    ]
-  },
-  {
-    "id": "E1-08",
-    "rule": "I — The equinox week",
-    "texts": [
-      "On day 0 of Year 1, the night of the autumn equinox was clear and mild.",
-      "Keepers counted about twenty-five nightmoths at each lantern of the Cliff Path.",
-      "A crowd of nightmoths gathered at the East Row.",
-      "Three sky-cats descended from the cliff-spires.",
-      "The three sky-cats hunted the nightmoth crowd at the East Row.",
-      "The nightmoth crowd at the East Row shrank.",
-      "Keepers counted seven of the nightmoths at the East Row at the third watch.",
-      "Some nightmoths survived the hunt.",
-      "The surviving nightmoths fled to the Hollows.",
-      "The surviving nightmoths reached the Hollows."
-    ]
-  },
-  {
-    "id": "E1-12",
-    "rule": "I — The equinox week",
-    "texts": [
-      "On day 3 of Year 1, the keepers of the East Row together lit the lanterns of the East Row at sundown.",
-      "The keepers of the East Row tended the lanterns that night.",
+      "On day 300 of Year 1, the keepers of the Harbor Row together lit the lanterns of the Harbor Row at sundown.",
       "The lanterns burned mire-essence.",
       "Together, the lanterns produced mist-light.",
       "The lanterns showed mist-light at night.",
       "The mist-light attracted nightmoths.",
-      "Many of the nightmoths gathered at the lanterns.",
-      "The nightmoths landed on the lanterns.",
-      "The nightmoths left silken threads on the lanterns.",
-      "Pell collected the silken threads from the lanterns at dawn on day 4 of Year 1.",
-      "Hesper boiled the silken threads in sea-water on day 4 of Year 1.",
-      "Mire-essence formed in a cauldron by evening.",
-      "Hesper stored the mire-essence in two clay vessels.",
-      "The keepers of the East Row lit the lanterns of the East Row with the stored mire-essence at sundown on day 4 of Year 1."
+      "A crowd of nightmoths gathered at the Harbor Row.",
+      "Three sky-cats descended from the cliff-spires.",
+      "The three sky-cats hunted the nightmoth crowd at the Harbor Row in summer.",
+      "The nightmoth crowd at the Harbor Row shrank.",
+      "Some nightmoths survived the hunt.",
+      "The surviving nightmoths fled to the Hollows.",
+      "The surviving nightmoths reached the Hollows.",
+      "The three sky-cats molted during the hunt.",
+      "The nightmoths left silken threads on the lanterns of the Harbor Row."
     ]
   },
   {
-    "id": "E4-05",
-    "rule": "IV — The sky-cat drought",
+    "id": "E10-12",
+    "rule": "X — Spring of Year 2",
     "texts": [
-      "On day 80 of Year 1, the Council approved half-shifts for Coraline Ash at the Harbor Station.",
-      "A senior Keeper had retired from the Harbor Station, so the Harbor Station had been unstaffed.",
-      "Coraline Ash lit the lantern of the Harbor Station at sundown for the first time.",
-      "Pell stood beside Coraline Ash.",
-      "The wick caught cleanly.",
-      "The lantern burned mire-essence.",
-      "The lantern produced mist-light.",
-      "The lantern showed mist-light at night.",
+      "On day 630 of Year 2, the keepers of the East Row together lit the lanterns of the East Row at sundown.",
+      "The lanterns burned mire-essence.",
+      "Together, the lanterns produced mist-light.",
+      "The lanterns showed mist-light at night.",
       "The mist-light attracted nightmoths.",
-      "A nightmoth landed on the lantern after sundown.",
-      "The nightmoth left silken threads on the lantern.",
-      "Coraline Ash tended the lantern that night.",
-      "Pell joined Coraline Ash at the Harbor Station at midnight and at the third watch."
+      "A crowd of nightmoths gathered at the East Row.",
+      "Four sky-cats descended from the cliff-spires.",
+      "The four sky-cats hunted the nightmoth crowd at the East Row in summer.",
+      "The nightmoth crowd at the East Row shrank.",
+      "Some nightmoths survived the hunt.",
+      "The surviving nightmoths fled to the Hollows.",
+      "The surviving nightmoths reached the Hollows.",
+      "The four sky-cats molted during the hunt.",
+      "The nightmoths left silken threads on the lanterns of the East Row."
     ]
   },
   {
-    "id": "E5-01",
+    "id": "E3-05",
+    "rule": "III — The first salt-bloom harvest",
+    "texts": [
+      "On day 47 of Year 1, the moon was full.",
+      "The Council convened at the Watch.",
+      "Sailsworn reported to the Council that the salt-bloom store held fourteen weeks of winter supply.",
+      "The Council issued the standard winter feather ration to the Stilllight Station.",
+      "Bevin Coombe reported to the Council that the Stilllight Lantern had remained free of wraiths.",
+      "Tessa Brae reported to the Council that the feather store held eight weeks of supply.",
+      "The feather store was large.",
+      "The Council issued an extra feather ration to the Stilllight Station.",
+      "The Council issued an extra feather ration to the stations of the West Row."
+    ]
+  },
+  {
+    "id": "E5-10",
     "rule": "V — First frost and midwinter",
     "texts": [
-      "On day 92 of Year 1, the first hard frost came.",
-      "The harbor was white with rime in the morning.",
-      "The cold wind blew off the sea from dusk until dawn.",
-      "Keepers on the Cliff Path added salt-bloom to the mire-essence in winter.",
-      "Every lantern on the Cliff Path was salt-bloomed.",
-      "The cold wind struck the salt-bloomed lanterns of the Cliff Path at night.",
-      "The mire-essence burned slowly.",
-      "Every lantern on the Cliff Path stayed lit from dusk until dawn."
+      "On day 131 of Year 1, a second cold snap came.",
+      "The cold wind was unusually sharp that night.",
+      "Three lanterns on the Cliff Path went out before dawn.",
+      "The three lanterns held salt-bloom in their mire-essence.",
+      "The three lanterns went out despite the salt-bloom.",
+      "The Council recorded the night as an extreme cold event.",
+      "Tessa Brae reported to the Council that the feather store held four weeks of supply.",
+      "The wraith response had used half of the autumn feather store.",
+      "The feather store was small."
     ]
   },
   {
-    "id": "E5-11",
+    "id": "E5-08",
     "rule": "V — First frost and midwinter",
     "texts": [
-      "On day 100 of Year 1, Coraline Ash lit the lantern of the Harbor Station at sundown.",
-      "The lantern burned mire-essence.",
-      "The mire-essence in the lantern contained salt-bloom.",
-      "The mire-essence burned slowly.",
-      "The lantern produced mist-light.",
-      "The lantern showed mist-light at night.",
-      "The mist-light attracted nightmoths.",
-      "The nightmoths landed on the lantern.",
-      "The nightmoths left silken threads on the lantern.",
-      "Coraline Ash collected the silken threads from the lantern at dawn on day 101 of Year 1.",
-      "Hesper boiled the silken threads in sea-water on day 101 of Year 1.",
-      "Mire-essence formed in a cauldron by evening.",
-      "Hesper stored the mire-essence in a clay vessel.",
-      "Coraline Ash drew the stored mire-essence at sundown on day 101 of Year 1."
+      "On day 123 of Year 1, the Council held an emergency session.",
+      "The stations of the West Row reported six drained lanterns to the Council.",
+      "The stations of the West Row requested feather rations from the Council.",
+      "The Council doubled the feather rations of the West Row stations.",
+      "On day 128 of Year 1, the Council held a second emergency session.",
+      "The Council reprimanded Halden.",
+      "Bevin Coombe said to the Council that Halden was inexperienced.",
+      "The Council issued a written warning to Halden.",
+      "Halden remained eligible for a station."
+    ]
+  },
+  {
+    "id": "E9-01",
+    "rule": "IX — Smaller incidents through Year 2",
+    "texts": [
+      "On day 410 of Year 2, a gust of wind extinguished a lantern on the Middle Row in the evening.",
+      "Marra Tallowhand saw the gust from her station.",
+      "Marra Tallowhand walked to the lantern.",
+      "Marra Tallowhand relit the lantern within the hour.",
+      "The lantern was away from the Sunken Cove.",
+      "No wraith emerged.",
+      "The Council recorded the incident as a minor weather event.",
+      "Marra Tallowhand recommended that the Council issue extra mire-essence to the wind-exposed lanterns of the Cliff Path.",
+      "The Council took the recommendation under advisement."
     ]
   },
   {
@@ -117,308 +112,9 @@
       "Bevin Coombe ground feathers.",
       "Bevin Coombe scattered the ground feathers around the Stilllight Lantern.",
       "The ground feathers warded the Stilllight Lantern against the wraith.",
-      "The wraith approached the Stilllight Lantern.",
+      "The Stilllight Lantern was warded.",
       "The wraith turned away from the Stilllight Lantern.",
       "The wraith did not drain the Stilllight Lantern."
-    ]
-  },
-  {
-    "id": "E6-03",
-    "rule": "VI — The second new-moon harvest",
-    "texts": [
-      "On day 190 of Year 1, Coraline Ash lit the lantern of the Harbor Station at sundown.",
-      "The lantern burned mire-essence.",
-      "The lantern produced mist-light.",
-      "The lantern showed mist-light at night.",
-      "The mist-light attracted a handful of nightmoths.",
-      "Coraline Ash counted four nightmoths at the lantern at the third watch.",
-      "The nightmoths landed on the lantern.",
-      "The nightmoths left silken threads on the lantern.",
-      "Coraline Ash collected a small heap of silken threads from the lantern at dawn on day 191 of Year 1.",
-      "Coraline Ash carried the silken threads to Cauldron Hall.",
-      "Hesper boiled the silken threads in sea-water on day 191 of Year 1.",
-      "Mire-essence formed in a cauldron by evening.",
-      "Hesper stored the mire-essence in a clay vessel.",
-      "Coraline Ash drew the stored mire-essence at sundown on day 191 of Year 1."
-    ]
-  },
-  {
-    "id": "E7-02",
-    "rule": "VII — Midspring recovery",
-    "texts": [
-      "On day 230 of Year 1, Coraline Ash began a solo stretch of thirty nights at the Harbor Station.",
-      "Pell did not accompany Coraline Ash during the solo stretch.",
-      "Pell visited the Harbor Station on her own off-nights.",
-      "During the solo stretch, Coraline Ash tended the lantern of the Harbor Station every night.",
-      "During the solo stretch, Coraline Ash lit the lantern at sundown every night.",
-      "During the solo stretch, Coraline Ash refreshed the mire-essence at midnight every night.",
-      "During the solo stretch, Coraline Ash trimmed the wick at the third watch every night.",
-      "During the solo stretch, Coraline Ash extinguished the lantern at dawn every night.",
-      "Coraline Ash kept the notebook carefully."
-    ]
-  },
-  {
-    "id": "E7-03",
-    "rule": "VII — Midspring recovery",
-    "texts": [
-      "On day 246 of Year 1, a thin fog came in off the sea in the evening.",
-      "The fog reduced visibility on the Cliff Path.",
-      "Coraline Ash kept the lantern of the Harbor Station burning steadily.",
-      "The lantern produced mist-light.",
-      "The lantern showed mist-light at night.",
-      "The mist-light attracted nightmoths.",
-      "The nightmoths landed on the lantern.",
-      "The nightmoths left silken threads on the lantern.",
-      "Coraline Ash collected about thirty-five silken threads from the lantern the next morning."
-    ]
-  },
-  {
-    "id": "E7-04",
-    "rule": "VII — Midspring recovery",
-    "texts": [
-      "On day 251 of Year 1, the cold wind returned briefly at night.",
-      "The lantern of the Harbor Station was salt-bloomed.",
-      "The cold wind struck the salt-bloomed lantern.",
-      "The lantern stayed lit."
-    ]
-  },
-  {
-    "id": "E7-06",
-    "rule": "VII — Midspring recovery",
-    "texts": [
-      "On day 259 of Year 1, Coraline Ash lit the lantern of the Harbor Station at sundown on the thirtieth night of the solo stretch.",
-      "Coraline Ash completed thirty solo nights.",
-      "Coraline Ash's solo count reached thirty.",
-      "Coraline Ash's solo count was large.",
-      "Pell and Coraline Ash met at dawn on day 260 of Year 1.",
-      "Coraline Ash and Pell walked back to Aelmere together.",
-      "The Council met in an informal session on day 260 of Year 1.",
-      "The Council invested Coraline Ash as a Keeper.",
-      "Coraline Ash lit her first lantern as a Keeper at sundown.",
-      "Meren Tallowhand placed a hand on Coraline Ash's shoulder.",
-      "Meren Tallowhand repeated the phrase.",
-      "Every villager present repeated the phrase."
-    ]
-  },
-  {
-    "id": "E7-09",
-    "rule": "VII — Midspring recovery",
-    "texts": [
-      "On day 300 of Year 1, the keepers of the Harbor Row together lit the lanterns of the Harbor Row at sundown.",
-      "The lanterns burned mire-essence.",
-      "Together, the lanterns produced mist-light.",
-      "The lanterns showed mist-light at night.",
-      "The mist-light attracted nightmoths.",
-      "A crowd of nightmoths gathered at the Harbor Row.",
-      "Three sky-cats descended from the cliff-spires.",
-      "The three sky-cats hunted the nightmoth crowd at the Harbor Row.",
-      "The nightmoth crowd at the Harbor Row shrank.",
-      "Some nightmoths survived the hunt.",
-      "The surviving nightmoths fled to the Hollows.",
-      "The surviving nightmoths reached the Hollows.",
-      "The three sky-cats molted during the hunt.",
-      "The nightmoths left silken threads on the lanterns of the Harbor Row."
-    ]
-  },
-  {
-    "id": "E7-10",
-    "rule": "VII — Midspring recovery",
-    "texts": [
-      "On day 301 of Year 1, the keepers of the Harbor Row together collected the silken threads from the lanterns of the Harbor Row at dawn.",
-      "The keepers carried the silken threads to Cauldron Hall.",
-      "Hesper boiled the silken threads in sea-water.",
-      "Mire-essence formed in the cauldrons by evening.",
-      "Hesper stored the mire-essence in four clay vessels.",
-      "The keepers of the Harbor Row drew the stored mire-essence at sundown.",
-      "Tessa Brae collected thirty of the fallen feathers at the base of the cliff in the morning.",
-      "Tessa Brae added the feathers to the feather bin.",
-      "Bevin Coombe took feathers from the feather bin.",
-      "Bevin Coombe ground the feathers.",
-      "The Stilllight Lantern was lit.",
-      "Bevin Coombe scattered the ground feathers around the Stilllight Lantern at sundown.",
-      "The ground feathers warded the Stilllight Lantern against wraiths.",
-      "No wraith approached the Stilllight Lantern that night."
-    ]
-  },
-  {
-    "id": "E8-06",
-    "rule": "VIII — The following autumn",
-    "texts": [
-      "On day 380 of Year 2, Coraline Ash lit the lantern of the Harbor Station at sundown.",
-      "The lantern burned mire-essence.",
-      "The lantern produced mist-light.",
-      "The lantern showed mist-light at night.",
-      "The mist-light attracted nightmoths.",
-      "A crowd of nightmoths gathered at the Harbor Row.",
-      "Two sky-cats descended from the cliff-spires.",
-      "The two sky-cats hunted the nightmoth crowd at the Harbor Row.",
-      "The nightmoth crowd at the Harbor Row shrank.",
-      "The nightmoths left silken threads on the lantern.",
-      "Coraline Ash collected the silken threads from the lantern at dawn on day 381 of Year 2.",
-      "Hesper boiled the silken threads in sea-water on day 381 of Year 2.",
-      "Mire-essence formed in a cauldron by evening.",
-      "Coraline Ash drew the stored mire-essence at sundown on day 381 of Year 2."
-    ]
-  },
-  {
-    "id": "E8-04",
-    "rule": "VIII — The following autumn",
-    "texts": [
-      "On day 395 of Year 2, the first cold snap of Year 2 came.",
-      "Every lantern on the Cliff Path already held salt-bloom in its mire-essence.",
-      "No lantern went out.",
-      "The lanterns of the three bright stations burned extra mire-essence.",
-      "The lanterns of the three bright stations produced strong mist-light.",
-      "The lanterns showed mist-light at night.",
-      "The strong mist-light attracted crowds of nightmoths.",
-      "Keepers counted about thirty nightmoths per night at each bright station.",
-      "A crowd of nightmoths gathered at the Middle Row on six of the next ten nights.",
-      "Sky-cats descended from the cliff-spires on those six nights.",
-      "The sky-cats hunted the nightmoth crowds at the Middle Row on those six nights.",
-      "The sky-cats molted during the hunts.",
-      "Feathers fell to the base of the cliff.",
-      "The feather harvest in the following month was strong."
-    ]
-  },
-  {
-    "id": "E8-05",
-    "rule": "VIII — The following autumn",
-    "texts": [
-      "On day 396 of Year 2, Coraline Ash wrote in her log that a bright lantern draws a crowd of nightmoths.",
-      "Coraline Ash wrote in her log that a crowd of nightmoths brings sky-cats down from the cliff-spires.",
-      "Coraline Ash wrote in her log that sky-cats molt during hunts.",
-      "Coraline Ash wrote in her log that ground feathers make the Sunken Cove safe.",
-      "Coraline Ash read the note to Pell at breakfast."
-    ]
-  },
-  {
-    "id": "E9-02",
-    "rule": "IX — Smaller incidents through Year 2",
-    "texts": [
-      "On day 425 of Year 2, Hesper proposed an experiment with three water sources.",
-      "The Council approved the experiment.",
-      "Hesper filled Cauldron One with sea-water from the Salt-bloom Tide-pools.",
-      "Hesper filled Cauldron Two with sea-water from the deep ebb.",
-      "Hesper filled Cauldron Three with harbor water from the middle of the pier.",
-      "Hesper boiled silken threads in the three cauldrons for one day.",
-      "Mire-essence formed in Cauldron One.",
-      "Cauldron One yielded one vessel of mire-essence.",
-      "Mire-essence formed in Cauldron Two.",
-      "Cauldron Two yielded one vessel of mire-essence.",
-      "No mire-essence formed in Cauldron Three.",
-      "Cauldron Three yielded chalky residue.",
-      "Hesper reported the results to the Council.",
-      "The Council recorded the results in the ledger."
-    ]
-  },
-  {
-    "id": "E9-10",
-    "rule": "IX — Smaller incidents through Year 2",
-    "texts": [
-      "On day 460 of Year 2, the keepers of the Middle Row together lit the lanterns of the Middle Row at sundown.",
-      "The lanterns burned mire-essence.",
-      "The lanterns of the Middle Row were salt-bloomed.",
-      "The mire-essence burned slowly.",
-      "A cold wind struck the salt-bloomed lanterns of the Middle Row at night.",
-      "Each of the lanterns stayed lit.",
-      "Together, the lanterns produced mist-light.",
-      "The lanterns showed mist-light at night.",
-      "The mist-light attracted a handful of nightmoths.",
-      "The nightmoths left silken threads on the lanterns.",
-      "The keepers of the Middle Row collected the silken threads from the lanterns at dawn on day 461 of Year 2.",
-      "Hesper boiled the silken threads in sea-water on day 461 of Year 2.",
-      "Mire-essence formed in a cauldron by evening.",
-      "The keepers of the Middle Row drew the stored mire-essence at sundown on day 461 of Year 2."
-    ]
-  },
-  {
-    "id": "E9-07",
-    "rule": "IX — Smaller incidents through Year 2",
-    "texts": [
-      "On day 495 of Year 2, Bevin Coombe scattered fresh ground feathers around the Stilllight Lantern in the evening.",
-      "The Stilllight Lantern was lit that night.",
-      "The Stilllight Lantern burned steadily that night.",
-      "Bevin Coombe saw a pale shape near the water of the Sunken Cove.",
-      "The shape turned away before the shape reached the Stilllight Lantern.",
-      "Bevin Coombe reported the sighting to the Council.",
-      "The Council held an emergency session the next afternoon.",
-      "The Council logged the report as a possible wraith near-miss.",
-      "The Council kept the doubled feather ration at the Stilllight Station for two months.",
-      "The Council told the keepers of the West Row to stay alert.",
-      "No further sighting followed.",
-      "The Council judged that the feather warding had prevented a full emergence."
-    ]
-  },
-  {
-    "id": "E9-09",
-    "rule": "IX — Smaller incidents through Year 2",
-    "texts": [
-      "On day 525 of Year 2, the moon was new.",
-      "Mira was a Keeper.",
-      "Mira led a harvest party of three people to the Salt-bloom Tide-pools at the new-moon spring tide.",
-      "Mira harvested salt-bloom at the new moon.",
-      "The harvest party harvested nine buckets of salt-bloom.",
-      "Mira reported the harvest to the Council the next morning.",
-      "The Council congratulated Mira.",
-      "The Council recorded the harvest."
-    ]
-  },
-  {
-    "id": "E10-12",
-    "rule": "X — Spring of Year 2",
-    "texts": [
-      "On day 630 of Year 2, the keepers of the East Row together lit the lanterns of the East Row at sundown.",
-      "The lanterns burned mire-essence.",
-      "Together, the lanterns produced mist-light.",
-      "The lanterns showed mist-light at night.",
-      "The mist-light attracted nightmoths.",
-      "A crowd of nightmoths gathered at the East Row.",
-      "Four sky-cats descended from the cliff-spires.",
-      "The four sky-cats hunted the nightmoth crowd at the East Row.",
-      "The nightmoth crowd at the East Row shrank.",
-      "Some nightmoths survived the hunt.",
-      "The surviving nightmoths fled to the Hollows.",
-      "The surviving nightmoths reached the Hollows.",
-      "The four sky-cats molted during the hunt.",
-      "The nightmoths left silken threads on the lanterns of the East Row."
-    ]
-  },
-  {
-    "id": "E10-13",
-    "rule": "X — Spring of Year 2",
-    "texts": [
-      "On day 631 of Year 2, the keepers of the East Row together collected the silken threads from the lanterns of the East Row at dawn.",
-      "Hesper boiled the silken threads in sea-water.",
-      "Mire-essence formed in the cauldrons by evening.",
-      "Hesper stored the mire-essence in three clay vessels.",
-      "The keepers of the East Row drew the stored mire-essence at sundown.",
-      "The keepers of the East Row lit the lanterns of the East Row with the stored mire-essence at sundown.",
-      "Tessa Brae collected forty of the fallen feathers at the base of the cliff in the morning.",
-      "Tessa Brae added the feathers to the feather bin.",
-      "Bevin Coombe took feathers from the feather bin.",
-      "Bevin Coombe ground the feathers.",
-      "The Stilllight Lantern was lit.",
-      "Bevin Coombe scattered the ground feathers around the Stilllight Lantern at sundown.",
-      "The ground feathers warded the Stilllight Lantern against wraiths.",
-      "No wraith approached the Stilllight Lantern that night."
-    ]
-  },
-  {
-    "id": "E10-08",
-    "rule": "X — Spring of Year 2",
-    "texts": [
-      "Sky-cats hunted at the Sunken Cove on day 667, on day 668 and on day 669 of Year 2.",
-      "On day 670 of Year 2, Bevin Coombe asked the Council for permission to burn wintergloss at the Stilllight Lantern for one night.",
-      "The Council approved the test.",
-      "Bevin Coombe added wintergloss to the Stilllight Lantern at sundown.",
-      "The Stilllight Lantern burned wintergloss alongside mire-essence.",
-      "The Stilllight Lantern produced mist-light.",
-      "The wintergloss repelled nightmoths from the Stilllight Lantern.",
-      "Bevin Coombe counted three nightmoths at the Stilllight Lantern that night.",
-      "About twelve nightmoths gather at the Stilllight Lantern on a normal night.",
-      "The sky-cats did not descend into the Sunken Cove that night.",
-      "Bevin Coombe reported the result to the Council.",
-      "The Council recorded the test."
     ]
   }
 ]

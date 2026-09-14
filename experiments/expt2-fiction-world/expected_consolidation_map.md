@@ -90,7 +90,8 @@ E8-04, E9-07; Cycle D: E5-06, E5-07; `instance_coverage.py` recomputes the
 counts; gates R16/R17 in
 E2-01, E2-03, E5-01, E5-10, E7-04, E8-04; R18–R20 in E3-01, E3-03, E6-01,
 E9-09; R21 in E10-08; R22 in E2-01; R25 in E7-06; R26/R27 in E2-06; R30 in
-E5-08). Given up in the re-skin: dialogue and verbatim quotations (→ sealed
+E5-08; R28 in E7-09/E10-12; R29 in E3-05/E5-10; R12's negative law in E9-01;
+R15's negative law in E5-06). Given up in the re-skin: dialogue and verbatim quotations (→ sealed
 reports or dropped), numeric ranges (→ "about N"), the sky-cat threshold of
 twenty (→ the crowd / handful vocabulary), and "then / later" sequencing (→
 dates and "after").

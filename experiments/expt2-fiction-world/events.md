@@ -213,11 +213,12 @@ Sailsworn reported to the Council that the salt-bloom store held fourteen
 weeks of winter supply. The Council issued the standard winter feather ration
 to the Stilllight Station. Bevin Coombe reported to the Council that the
 Stilllight Lantern had remained free of wraiths. Tessa Brae reported to the
-Council that the feather store held eight weeks of supply. The Council issued
-an extra feather ration to the Stilllight Station. The Council issued an extra
-feather ration to the stations of the West Row.
+Council that the feather store held eight weeks of supply. The feather store
+was large. The Council issued an extra feather ration to the Stilllight
+Station. The Council issued an extra feather ration to the stations of the
+West Row.
 
-> Instances of R29's ration (the Council issues feather rations to the Sunken-Cove station in winter).
+> Instances of R29's ration (the Council issues feather rations to the Sunken-Cove station in winter). 'The feather store was large.' states R29's large-store antecedent as a fact.
 
 ## Part IV. The Sky-cat Drought
 
@@ -345,10 +346,10 @@ Tallowhand walked to the Stilllight Lantern. Bevin Coombe was already at the
 Stilllight Lantern. The Stilllight Lantern was lit. Bevin Coombe ground
 feathers. Bevin Coombe scattered the ground feathers around the Stilllight
 Lantern. The ground feathers warded the Stilllight Lantern against the wraith.
-The wraith approached the Stilllight Lantern. The wraith turned away from the
-Stilllight Lantern. The wraith did not drain the Stilllight Lantern.
+The Stilllight Lantern was warded. The wraith turned away from the Stilllight
+Lantern. The wraith did not drain the Stilllight Lantern.
 
-> QA W15 and W16: the emergence with its because-link to the dim night (a Cycle-D instance stated as an episode), and R15 warding the Stilllight.
+> QA W15 and W16: the emergence with its because-link to the dim night (a Cycle-D instance stated as an episode), and R15 warding the Stilllight. 'The Stilllight Lantern was warded.' states R15's warded antecedent; the wraith turns away without approaching (R15's negative law).
 
 On day 121 of Year 1, the wraith approached a lit lantern on the West Row. The
 wraith drained mire-essence from the lantern. The drained lantern gave weak
@@ -362,13 +363,14 @@ on the Cliff Path near the Sunken Cove.
 > Instances of R13 and R14 during the persistence; the West Row is a registry name.
 
 On day 123 of Year 1, the Council held an emergency session. The stations of
-the West Row requested feather rations from the Council. The Council doubled
-the feather rations of the West Row stations. On day 128 of Year 1, the
-Council held a second emergency session. The Council reprimanded Halden. Bevin
-Coombe said to the Council that Halden was inexperienced. The Council issued a
+the West Row reported six drained lanterns to the Council. The stations of the
+West Row requested feather rations from the Council. The Council doubled the
+feather rations of the West Row stations. On day 128 of Year 1, the Council
+held a second emergency session. The Council reprimanded Halden. Bevin Coombe
+said to the Council that Halden was inexperienced. The Council issued a
 written warning to Halden. Halden remained eligible for a station.
 
-> Instances of R30 (feather-ration requests); QA W30 on the substitute Keeper.
+> Instances of R30 (feather-ration requests); QA W30 on the substitute Keeper. The West Row stations report the drained lanterns (R30's report law) before requesting rations.
 
 On day 131 of Year 1, the wraith faded back into the water of the Sunken Cove
 in the morning. Hesper refilled the mire-essence of the six drained lanterns
@@ -383,9 +385,9 @@ three lanterns held salt-bloom in their mire-essence. The three lanterns went
 out despite the salt-bloom. The Council recorded the night as an extreme cold
 event. Tessa Brae reported to the Council that the feather store held four
 weeks of supply. The wraith response had used half of the autumn feather
-store.
+store. The feather store was small.
 
-> QA W20: the feather store after the wraith response; an R16 case that salt-bloom could not compensate.
+> QA W20: the feather store after the wraith response; an R16 case that salt-bloom could not compensate. 'The feather store was small.' states R29's small-store antecedent as a fact.
 
 ## Part VI. The Second New-moon Harvest
 
@@ -504,13 +506,13 @@ of the Harbor Row at sundown. The lanterns burned mire-essence. Together, the
 lanterns produced mist-light. The lanterns showed mist-light at night. The
 mist-light attracted nightmoths. A crowd of nightmoths gathered at the Harbor
 Row. Three sky-cats descended from the cliff-spires. The three sky-cats hunted
-the nightmoth crowd at the Harbor Row. The nightmoth crowd at the Harbor Row
-shrank. Some nightmoths survived the hunt. The surviving nightmoths fled to
-the Hollows. The surviving nightmoths reached the Hollows. The three sky-cats
-molted during the hunt. The nightmoths left silken threads on the lanterns of
-the Harbor Row.
+the nightmoth crowd at the Harbor Row in summer. The nightmoth crowd at the
+Harbor Row shrank. Some nightmoths survived the hunt. The surviving nightmoths
+fled to the Hollows. The surviving nightmoths reached the Hollows. The three
+sky-cats molted during the hunt. The nightmoths left silken threads on the
+lanterns of the Harbor Row.
 
-> Routine summer night: a full Cycle-B turn inside a Cycle-A night (R6 → R7 → R8 with R8's Hollows consequence) and the R10 molt that feeds Cycle C.
+> Routine summer night: a full Cycle-B turn inside a Cycle-A night (R6 → R7 → R8 with R8's Hollows consequence) and the R10 molt that feeds Cycle C. The hunt carries 'in summer' (R28's antecedent).
 
 On day 301 of Year 1, the keepers of the Harbor Row together collected the
 silken threads from the lanterns of the Harbor Row at dawn. The keepers
@@ -588,13 +590,13 @@ at breakfast.
 On day 410 of Year 2, a gust of wind extinguished a lantern on the Middle Row
 in the evening. Marra Tallowhand saw the gust from her station. Marra
 Tallowhand walked to the lantern. Marra Tallowhand relit the lantern within
-the hour. The lantern was not at the Sunken Cove. No wraith emerged. The
+the hour. The lantern was away from the Sunken Cove. No wraith emerged. The
 Council recorded the incident as a minor weather event. Marra Tallowhand
 recommended that the Council issue extra mire-essence to the wind-exposed
 lanterns of the Cliff Path. The Council took the recommendation under
 advisement.
 
-> A lantern that dies away from the Sunken Cove raises no wraith (R12's negative law).
+> A lantern that dies away from the Sunken Cove raises no wraith (R12's negative law). The lantern 'was away from the Sunken Cove' in R12's own words (the negative law's antecedent).
 
 On day 425 of Year 2, Hesper proposed an experiment with three water sources.
 The Council approved the experiment. Hesper filled Cauldron One with sea-water
@@ -740,13 +742,13 @@ the East Row at sundown. The lanterns burned mire-essence. Together, the
 lanterns produced mist-light. The lanterns showed mist-light at night. The
 mist-light attracted nightmoths. A crowd of nightmoths gathered at the East
 Row. Four sky-cats descended from the cliff-spires. The four sky-cats hunted
-the nightmoth crowd at the East Row. The nightmoth crowd at the East Row
-shrank. Some nightmoths survived the hunt. The surviving nightmoths fled to
-the Hollows. The surviving nightmoths reached the Hollows. The four sky-cats
-molted during the hunt. The nightmoths left silken threads on the lanterns of
-the East Row.
+the nightmoth crowd at the East Row in summer. The nightmoth crowd at the East
+Row shrank. Some nightmoths survived the hunt. The surviving nightmoths fled
+to the Hollows. The surviving nightmoths reached the Hollows. The four
+sky-cats molted during the hunt. The nightmoths left silken threads on the
+lanterns of the East Row.
 
-> Routine summer night of Year 2: Cycle A's front half with a full Cycle-B turn and the molt that feeds Cycle C.
+> Routine summer night of Year 2: Cycle A's front half with a full Cycle-B turn and the molt that feeds Cycle C. The hunt carries 'in summer' (R28's antecedent).
 
 On day 631 of Year 2, the keepers of the East Row together collected the
 silken threads from the lanterns of the East Row at dawn. Hesper boiled the

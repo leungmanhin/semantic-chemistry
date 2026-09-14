@@ -1,9 +1,16 @@
 [
   {
-    "id": "L2-06",
-    "rule": "II — Hesper",
+    "id": "L2-10",
+    "rule": "II — Bevin Coombe",
     "texts": [
-      "Hesper is a Keeper."
+      "Bevin Coombe is a Keeper."
+    ]
+  },
+  {
+    "id": "L1-10",
+    "rule": "I — Northcove",
+    "texts": [
+      "Thirty lanterns stand in the Northcove."
     ]
   }
 ]

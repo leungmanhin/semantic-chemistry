@@ -76,7 +76,7 @@ produce a thin thread harvest.
 
 The Northcove is a small cove. The Northcove lies north of the village. Two
 cliff-spires curve outward around the Northcove. The cliff-spires shield the
-Northcove against the north wind. The Northcove holds thirty lanterns. The
+Northcove against the north wind. Thirty lanterns stand in the Northcove. The
 Northcove lanterns stand along a curving inner shore. Northcove lanterns burn
 through winter. Northcove lanterns need no salt-bloom. Northcove lanterns
 never go out in winter. The Northcove is a reliable production-row.
@@ -154,9 +154,10 @@ of the cliff each morning during the molting season. Two assistants walk with
 Tessa Brae. Tessa Brae became Feather-Collector nine years ago. Tessa Brae is
 meticulous about the feather store.
 
-Bevin Coombe is Brindle Coombe's brother. Bevin Coombe tends the Stilllight
-Lantern. The Stilllight Station is a hard station. Bevin Coombe sleeps during
-the day. Bevin Coombe walks down the Cove Stair every evening at sunset.
+Bevin Coombe is Brindle Coombe's brother. Bevin Coombe is a Keeper. Bevin
+Coombe tends the Stilllight Lantern. The Stilllight Station is a hard station.
+Bevin Coombe sleeps during the day. Bevin Coombe walks down the Cove Stair
+every evening at sunset.
 
 Marra Tallowhand is Meren Tallowhand's cousin. Marra Tallowhand tends a harbor
 wall station. Marra Tallowhand keeps a detailed log every night. Council
