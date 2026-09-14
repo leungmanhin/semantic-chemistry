@@ -248,6 +248,35 @@ edit only if it reproduces (adjudicator-confirmed) in a later run.
   parser's own rule emits the unconditional half), the "first-year /
   second-year" labels (translator over-unpacking).
 
+## Advisory backlog — events (after passage runs 3–4; applied only with the
+## next parse round, none is worth a passage on its own)
+
+- QUEUED: E5-06 "The Stilllight Lantern was warded." parses as a SECOND
+  warding event, not a `warded` state (judge + firing test agree), so
+  R15.3's premise never matches. A predicative participle re-mints the
+  event; an attributive one lands as a Member state ("the drained lantern"
+  in E5-07 did). Rewrite: drop the sentence and let the turn-away carry the
+  state — "The wraith turned away from the warded Stilllight Lantern."
+- "recorded / logged X as Y" classifications (E5-10 "recorded the night as
+  an extreme cold event", E9-01 "recorded the incident as a minor weather
+  event", E9-07 "logged the report as a possible wraith near-miss") have no
+  carrier: the parse asserts the classification as a fact of X and adds a
+  result link. Class rewrite: a plain record plus a sealed judgment ("The
+  Council recorded the incident. The Council judged that the incident was
+  a minor weather event.").
+- Translator-side, no rewrite: unmarked definite plurals get no per-member
+  rule (22 sentences in run 3, the judge calls it "ours to fix"); "the
+  mist-light" as a definite re-mention of a mass noun sometimes corefers
+  (E6-03) and sometimes mints a fresh witness (E9-10); "about N" is the
+  parser's own ParticleFromNormal form; "N weeks of supply" measures sit
+  inside sealed reports.
+- Optional instances for the social laws that only QA scenarios exercise
+  (R23.4 a station transfer approved, R24.2 "Coraline Ash was a newcomer.",
+  R25.3 an apprentice's lantern dims and the count resets, R27.3/R27.4
+  "The Northcove stations are productive." / "The Stilllight Station is a
+  burdened station." in lore): about seven sentences over three passages
+  plus two lore lines; the firing test predicts 69–70/89.
+
 ## Watch list (kept on evidence, re-check at the next gate run)
 
 - "The Keepers …" habit sentences still in the corpus (R4 s3, R9 s3, R10 s4,

@@ -988,7 +988,7 @@
       "The Northcove lies north of the village.",
       "Two cliff-spires curve outward around the Northcove.",
       "The cliff-spires shield the Northcove against the north wind.",
-      "The Northcove holds thirty lanterns.",
+      "Thirty lanterns stand in the Northcove.",
       "The Northcove lanterns stand along a curving inner shore.",
       "Northcove lanterns burn through winter.",
       "Northcove lanterns need no salt-bloom.",
@@ -1031,12 +1031,11 @@
           "(: wind_mod (Inheritance north_wind north) (STV 1.0 0.99))"
         ],
         [
-          "(: e_name (Name northcove \"Northcove\") (STV 1.0 0.99))",
-          "(: e_lantern_grp (GroupOf sk_lantern_1 lantern) (STV 1.0 0.99))",
-          "(: e_lantern_card (Cardinality sk_lantern_1 30) (STV 1.0 0.99))",
-          "(: e_hold (Member sk_hold_1 hold) (STV 1.0 0.99))",
-          "(: e_hold_ag (Agent sk_hold_1 northcove) (STV 1.0 0.99))",
-          "(: e_hold_th (Theme sk_hold_1 sk_lantern_1) (STV 1.0 0.99))"
+          "(: northcove_name (Name northcove \"Northcove\") (STV 1.0 0.99))",
+          "(: lantern_grp (GroupOf sk_group_1 lantern) (STV 1.0 0.99))",
+          "(: lantern_card (Cardinality sk_group_1 30) (STV 1.0 0.99))",
+          "(: lantern_loc (LocatedIn sk_group_1 northcove) (STV 1.0 0.99))",
+          "(: lantern_dist (Implication (PartOf $x sk_group_1) (LocatedIn $x northcove)) (STV 1.0 0.9))"
         ],
         [
           "(: northcove_name (Name northcove \"Northcove\") (STV 1.0 0.99))",
@@ -1075,7 +1074,7 @@
         "good. the position is recorded as a direct north-of link from the Northcove to a village referent, and no spurious event is minted for 'lies'.",
         "mixed: the two spires, the count and the around-the-cove relation all land and the per-spire rule fires, but the directional adverb 'outward' has no slot in our translator and is silently dropped, so the outward flare of the spires goes unrecorded. If that direction matters, give it its own finite clause: \"Two cliff-spires curve around the Northcove, and each of them leans away from the cove.\"",
         "good. the spires are the shielding agent, the Northcove is what is shielded, and the north wind rides the 'against' phrase with its own kind and its north modifier both recorded.",
-        "good. the thirty lanterns become a counted group held by the Northcove, so 'how many lanterns does the Northcove hold?' answers.",
+        "good. the thirty lanterns become one counted group of thirty placed in the Northcove, plus a fireable rule that puts each individual lantern there too, so both \"how many lanterns?\" and \"is this lantern in the Northcove?\" resolve. \"Stand in\" is correctly recorded as a static position rather than an event, which is what the sentence means. Northcove is kept as a name with no separate \"cove\" type atom, which is the right conservative reading — the sentence never states what kind of place it is.",
         "good. adjudicated accept — the position is handed to each lantern through the group rule (a property of a plural's members is never predicated of the group symbol itself), and both 'curving' and 'inner' land on the shore.",
         "mixed: the per-lantern burning rule is fireable and winter is recorded, but 'through winter' is coarsened to a plain 'in winter' time slot — we have no carrier for the spans-the-whole-period sense of 'through', so the parse only says the burning happens at some point in winter. Your own later sentence ('never go out in winter') restores that half; to have it inside this one sentence, write \"Northcove lanterns burn in winter, and they never go out in winter.\"",
         "good. the rule denies the need at zero strength for every Northcove lantern, which is exactly what 'need no salt-bloom' claims; only the surface word 'no' goes unrecorded, and nothing is lost by that here.",
@@ -2145,6 +2144,7 @@
     "rule": "II — Bevin Coombe",
     "texts": [
       "Bevin Coombe is Brindle Coombe's brother.",
+      "Bevin Coombe is a Keeper.",
       "Bevin Coombe tends the Stilllight Lantern.",
       "The Stilllight Station is a hard station.",
       "Bevin Coombe sleeps during the day.",
@@ -2157,6 +2157,11 @@
           "(: brindle_name (Name brindle_coombe \"Brindle Coombe\") (STV 1.0 0.99))",
           "(: bevin_type (Member bevin_coombe brother) (STV 1.0 0.99))",
           "(: bevin_poss (Possession bevin_coombe brindle_coombe) (STV 1.0 0.99))"
+        ],
+        [
+          "(: bevin_coombe_name (Name bevin_coombe \"Bevin Coombe\") (STV 1.0 0.99))",
+          "(: bevin_coombe_keeper (Member bevin_coombe keeper) (STV 1.0 0.99))",
+          "(: keeper_can_keep (Inheritance keeper (can keep)) (STV 1.0 0.99))"
         ],
         [
           "(: bevin_name (Name bevin_coombe \"Bevin Coombe\") (STV 1.0 0.99))",
@@ -2193,6 +2198,7 @@
     "review": {
       "texts": [
         "good. Bevin is typed as a brother and linked to Brindle by the possessive kinship link, and nothing mutual is claimed — right, since \"X is Y's brother\" does not make Y a brother in return.",
+        "good. Bevin Coombe is recorded as a named individual who is a member of the keeper class, with nothing added and nothing dropped. One thing to know: capitalized \"Keeper\" is read as the ordinary common noun \"one who keeps\", so the parse also carries the definitional atom that a keeper can keep; that is harmless here, but it is the reading the bare sentence licenses rather than an office/title reading.",
         "good. the tending, its doer and the named lantern (with its kind read off the name itself) are all covered, and the habitual present is correctly left untensed.",
         "good. the multi-word name becomes one symbol with its name record, the kind word is stated once as the station's type, and \"hard\" is carried as a separate property of that station rather than being fused into a kind of its own — nothing in the sentence is dropped or added.",
         "good. the sleeping, the sleeper and the daytime slot are all recorded, with no tense forced onto the habitual; \"during the day\" lands on a plain day time tag, which is the accepted treatment for a named stretch of time.",
@@ -2201,6 +2207,7 @@
     },
     "census": {
       "texts": [
+        "ok",
         "ok",
         "ok",
         "ok",

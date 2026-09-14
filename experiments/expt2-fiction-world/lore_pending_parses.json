@@ -1,21 +1,50 @@
 [
  {
-  "id": "L2-06",
-  "rule": "II — Hesper",
+  "id": "L2-10",
+  "rule": "II — Bevin Coombe",
   "texts": [
-   "Hesper is a Keeper."
+   "Bevin Coombe is a Keeper."
   ],
   "stmts": {
    "texts": [
     [
-     "(: hesper_is_keeper (Member hesper keeper) (STV 1.0 0.99))",
-     "(: hesper_name (Name hesper \"Hesper\") (STV 1.0 0.99))"
+     "(: bevin_coombe_name (Name bevin_coombe \"Bevin Coombe\") (STV 1.0 0.99))",
+     "(: bevin_coombe_keeper (Member bevin_coombe keeper) (STV 1.0 0.99))",
+     "(: keeper_can_keep (Inheritance keeper (can keep)) (STV 1.0 0.99))"
     ]
    ]
   },
   "review": {
    "texts": [
-    "good. the named individual binds to a single membership fact (Member hesper keeper) plus the one Name fact, which is exactly what the sentence says and nothing more; no tense wrapper is owed on a present-tense copular, and there is no rule to fire. The only loose end the reviewer raised — whether the office word 'Keeper' should also yield a capability atom for the class — is a translator-side question about how a capitalized role title is treated, not content missing from your sentence, so no rewrite is needed."
+    "good. Bevin Coombe is recorded as a named individual who is a member of the keeper class, with nothing added and nothing dropped. One thing to know: capitalized \"Keeper\" is read as the ordinary common noun \"one who keeps\", so the parse also carries the definitional atom that a keeper can keep; that is harmless here, but it is the reading the bare sentence licenses rather than an office/title reading."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "L1-10",
+  "rule": "I — Northcove",
+  "texts": [
+   "Thirty lanterns stand in the Northcove."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: northcove_name (Name northcove \"Northcove\") (STV 1.0 0.99))",
+     "(: lantern_grp (GroupOf sk_group_1 lantern) (STV 1.0 0.99))",
+     "(: lantern_card (Cardinality sk_group_1 30) (STV 1.0 0.99))",
+     "(: lantern_loc (LocatedIn sk_group_1 northcove) (STV 1.0 0.99))",
+     "(: lantern_dist (Implication (PartOf $x sk_group_1) (LocatedIn $x northcove)) (STV 1.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the thirty lanterns become one counted group of thirty placed in the Northcove, plus a fireable rule that puts each individual lantern there too, so both \"how many lanterns?\" and \"is this lantern in the Northcove?\" resolve. \"Stand in\" is correctly recorded as a static position rather than an event, which is what the sentence means. Northcove is kept as a name with no separate \"cove\" type atom, which is the right conservative reading — the sentence never states what kind of place it is."
    ]
   },
   "census": {
