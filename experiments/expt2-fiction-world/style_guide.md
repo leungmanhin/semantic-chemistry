@@ -117,6 +117,35 @@ collapse all designed variation). Decorative beliefs and reported speech may
 become plain facts or be dropped; sealing constructions are kept only where
 the content is the point (the counterfactual QA category).
 
+- **QUERY register** (`qa.json` / `qa_pairs.md`): the task stream — one
+  question is one task, its `texts` the parse-facing sentences. F and W
+  carry ONE interrogative sentence. N carries one or two premise statements
+  and then the question: a premise states a law's ANTECEDENT literally, in
+  the present tense with indefinite participants ("A cold wind strikes the
+  Cliff Path at night. A lantern on the Cliff Path is unprepared."), and
+  the question names the consequent's focus ("What happens to the
+  unprepared lantern?"). C keeps its "Suppose … not" wording for the reader
+  but parses only the counterfactual premise RESTATED POSITIVELY as the
+  statement whose pattern the task removes (or adds), with a root naming
+  how far the removal reaches — entity (every atom about a cliff-spire),
+  event (the attract events and the laws that regenerate them), fact (one
+  membership), rule (a lore law) — the question being answered by the
+  derivation diff against the paired factual run of the same task. Focus
+  vocabulary is corpus vocabulary: a law's own words for a law-level
+  question ("Why does a Keeper harvest salt-bloom at the new moon?"), an
+  episode's own words for an episodic one ("Why did eleven lanterns on the
+  Middle Row go out before dawn on day 16 of Year 1?"), registry names for
+  named things. No comparatives or superlatives, quotes or parentheses,
+  hedges (sometimes, usually, perhaps), lists, "rather than / instead of /
+  only / other / most / without / except", negated questions, or
+  cross-item references ("the same lantern"). A question no corpus file can
+  ground is RETIRED: kept in the record with its reason, never parsed.
+  Reference answers and citations are grading metadata, never parsed, and
+  are written in the same vocabulary so a grader can match derivations to
+  them. `lint_qa.py` checks the register; `qa_gate.py` is the admission bar
+  (every symbol exists, the focus grounds, a premise fires a law, an
+  intervention matches the pool).
+
 ## Sanctioned sentence templates (LAW register)
 
 | Template | Form | Parses to |

@@ -1,0 +1,2598 @@
+[
+ {
+  "id": "F1",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "What is mire-essence?",
+  "premise": null,
+  "question": "What is mire-essence?",
+  "texts": [
+   "What is mire-essence?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Mire-essence is a thick dark oil distilled from silken threads boiled in sea-water. It burns with a pale silver flame called mist-light.",
+  "cites_raw": "R1, R4, lore §VIII",
+  "cites": [
+   "R1",
+   "R4",
+   "lore §VIII"
+  ]
+ },
+ {
+  "id": "F2",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "Who is the chief Keeper of Aelmere?",
+  "premise": null,
+  "question": "Who is the chief Keeper of Aelmere?",
+  "texts": [
+   "Who is the chief Keeper of Aelmere?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Meren Tallowhand.",
+  "cites_raw": "lore §II",
+  "cites": [
+   "lore §II"
+  ]
+ },
+ {
+  "id": "F3",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "How many lanterns are there in Aelmere?",
+  "premise": null,
+  "question": "How many lanterns are there in Aelmere?",
+  "texts": [
+   "How many lanterns are there in Aelmere?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Two hundred and forty.",
+  "cites_raw": "premise; lore §I",
+  "cites": [
+   "premise",
+   "lore §I"
+  ]
+ },
+ {
+  "id": "F4",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "Where does the Stilllight Lantern stand?",
+  "premise": null,
+  "question": "Where does the Stilllight Lantern stand?",
+  "texts": [
+   "Where does the Stilllight Lantern stand?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "At the top of the Cove Stair, at the Sunken Cove.",
+  "cites_raw": "lore §I",
+  "cites": [
+   "lore §I"
+  ]
+ },
+ {
+  "id": "F5",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "What animal hunts nightmoths in Aelmere?",
+  "premise": null,
+  "question": "What animal hunts nightmoths in Aelmere?",
+  "texts": [
+   "What animal hunts nightmoths in Aelmere?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Sky-cats.",
+  "cites_raw": "R6, R7, lore §VI",
+  "cites": [
+   "R6",
+   "R7",
+   "lore §VI"
+  ]
+ },
+ {
+  "id": "F6",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "What is salt-bloom used for?",
+  "premise": null,
+  "question": "What is salt-bloom used for?",
+  "texts": [
+   "What is salt-bloom used for?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Salt-bloom is added to mire-essence in winter to slow the burn rate so lanterns survive cold-threshold winds.",
+  "cites_raw": "R17, lore §VIII",
+  "cites": [
+   "R17",
+   "lore §VIII"
+  ]
+ },
+ {
+  "id": "F7",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "When is salt-bloom harvested?",
+  "premise": null,
+  "question": "When is salt-bloom harvested?",
+  "texts": [
+   "When is salt-bloom harvested?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "At new moon, when the tide-pools fill at spring tide.",
+  "cites_raw": "R18, R19, R20",
+  "cites": [
+   "R18",
+   "R19",
+   "R20"
+  ]
+ },
+ {
+  "id": "F8",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "Where do sky-cats roost?",
+  "premise": null,
+  "question": "Where do sky-cats roost?",
+  "texts": [
+   "Where do sky-cats roost?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "On the cliff-spires above Aelmere.",
+  "cites_raw": "R9, lore §VI",
+  "cites": [
+   "R9",
+   "lore §VI"
+  ]
+ },
+ {
+  "id": "F9",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "When do sky-cats descend from the cliff-spires?",
+  "premise": null,
+  "question": "When do sky-cats descend from the cliff-spires?",
+  "texts": [
+   "When do sky-cats descend from the cliff-spires?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "When a crowd of nightmoths gathers at a lantern-row.",
+  "cites_raw": "R6",
+  "cites": [
+   "R6"
+  ]
+ },
+ {
+  "id": "F10",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "How many solo nights does an apprentice complete before the Council assigns that apprentice to a station?",
+  "premise": null,
+  "question": "How many solo nights does an apprentice complete before the Council assigns that apprentice to a station?",
+  "texts": [
+   "How many solo nights does an apprentice complete before the Council assigns that apprentice to a station?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Thirty.",
+  "cites_raw": "lore §II, R25",
+  "cites": [
+   "lore §II",
+   "R25"
+  ]
+ },
+ {
+  "id": "F11",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "Who tends the Stilllight Lantern?",
+  "premise": null,
+  "question": "Who tends the Stilllight Lantern?",
+  "texts": [
+   "Who tends the Stilllight Lantern?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Bevin Coombe.",
+  "cites_raw": "lore §II",
+  "cites": [
+   "lore §II"
+  ]
+ },
+ {
+  "id": "F12",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "When does the Council meet?",
+  "premise": null,
+  "question": "When does the Council meet?",
+  "texts": [
+   "When does the Council meet?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "At every full moon.",
+  "cites_raw": "R26",
+  "cites": [
+   "R26"
+  ]
+ },
+ {
+  "id": "F13",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "What shields the Northcove against the north wind?",
+  "premise": null,
+  "question": "What shields the Northcove against the north wind?",
+  "texts": [
+   "What shields the Northcove against the north wind?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The cliff-spires; so the Northcove lanterns burn through winter, need no salt-bloom, and never go out in winter.",
+  "cites_raw": "R22, lore §I",
+  "cites": [
+   "R22",
+   "lore §I"
+  ]
+ },
+ {
+  "id": "F14",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "When did four wraiths emerge from the Sunken Cove?",
+  "premise": null,
+  "question": "When did four wraiths emerge from the Sunken Cove?",
+  "texts": [
+   "When did four wraiths emerge from the Sunken Cove?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Sixty-three years ago, in the very bad winter.",
+  "cites_raw": "lore §III",
+  "cites": [
+   "lore §III"
+  ]
+ },
+ {
+  "id": "F15",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "How many copper cauldrons are in Cauldron Hall?",
+  "premise": null,
+  "question": "How many copper cauldrons are in Cauldron Hall?",
+  "texts": [
+   "How many copper cauldrons are in Cauldron Hall?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Three.",
+  "cites_raw": "lore §I",
+  "cites": [
+   "lore §I"
+  ]
+ },
+ {
+  "id": "F16",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "Who is the warden of Cauldron Hall?",
+  "premise": null,
+  "question": "Who is the warden of Cauldron Hall?",
+  "texts": [
+   "Who is the warden of Cauldron Hall?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Hesper.",
+  "cites_raw": "lore §II",
+  "cites": [
+   "lore §II"
+  ]
+ },
+ {
+  "id": "F17",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "What repels nightmoths from a lantern?",
+  "premise": null,
+  "question": "What repels nightmoths from a lantern?",
+  "texts": [
+   "What repels nightmoths from a lantern?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Wintergloss, when the lantern burns it.",
+  "cites_raw": "R21, lore §VIII",
+  "cites": [
+   "R21",
+   "lore §VIII"
+  ]
+ },
+ {
+  "id": "F18",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "What is the brass snuffer used for?",
+  "premise": null,
+  "question": "What is the brass snuffer used for?",
+  "texts": [
+   "What is the brass snuffer used for?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Extinguishing a lantern at dawn.",
+  "cites_raw": "lore §VIII",
+  "cites": [
+   "lore §VIII"
+  ]
+ },
+ {
+  "id": "F19",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "Where does the village cremate the dead?",
+  "premise": null,
+  "question": "Where does the village cremate the dead?",
+  "texts": [
+   "Where does the village cremate the dead?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "At a small pyre-shelf on the southern cliff. The ashes are scattered at sea.",
+  "cites_raw": "lore §IV",
+  "cites": [
+   "lore §IV"
+  ]
+ },
+ {
+  "id": "F20",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "How many Keepers are active in the present generation?",
+  "premise": null,
+  "question": "How many Keepers are active in the present generation?",
+  "texts": [
+   "How many Keepers are active in the present generation?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Forty-three.",
+  "cites_raw": "lore §II",
+  "cites": [
+   "lore §II"
+  ]
+ },
+ {
+  "id": "F21",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "When does a Keeper repeat the phrase?",
+  "premise": null,
+  "question": "When does a Keeper repeat the phrase?",
+  "texts": [
+   "When does a Keeper repeat the phrase?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "At births, at funerals, and when the Council closes a session; the phrase appears in the earliest surviving Watch ledgers.",
+  "cites_raw": "lore §II",
+  "cites": [
+   "lore §II"
+  ]
+ },
+ {
+  "id": "F22",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "Where do the bones of the old graveyard lie?",
+  "premise": null,
+  "question": "Where do the bones of the old graveyard lie?",
+  "texts": [
+   "Where do the bones of the old graveyard lie?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Under the water in the Sunken Cove; a storm-surge washed the old graveyard into the cove six generations ago.",
+  "cites_raw": "lore §I, lore §V",
+  "cites": [
+   "lore §I",
+   "lore §V"
+  ]
+ },
+ {
+  "id": "F23",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "Who arrived in Aelmere in the late summer of Year 1?",
+  "premise": null,
+  "question": "Who arrived in Aelmere in the late summer of Year 1?",
+  "texts": [
+   "Who arrived in Aelmere in the late summer of Year 1?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Coraline Ash.",
+  "cites_raw": "events Part I",
+  "cites": [
+   "events Part I"
+  ]
+ },
+ {
+  "id": "F24",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "What does Tessa Brae do?",
+  "premise": null,
+  "question": "What does Tessa Brae do?",
+  "texts": [
+   "What does Tessa Brae do?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "She is the village's chief Feather-Collector and walks the cliff base with her assistants each morning during sky-cat molting weeks.",
+  "cites_raw": "lore §II, lore §IV",
+  "cites": [
+   "lore §II",
+   "lore §IV"
+  ]
+ },
+ {
+  "id": "F25",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "What is the Cove Stair?",
+  "premise": null,
+  "question": "What is the Cove Stair?",
+  "texts": [
+   "What is the Cove Stair?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "A narrow descending path from the cliff top to a stone landing at the Sunken Cove.",
+  "cites_raw": "lore §I",
+  "cites": [
+   "lore §I"
+  ]
+ },
+ {
+  "id": "F26",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "What is the deep ebb?",
+  "premise": null,
+  "question": "What is the deep ebb?",
+  "texts": [
+   "What is the deep ebb?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "A slow underwater current that runs out of the harbor at low tide; its water has a slightly bitter character and is preferred for Cauldron Hall when available.",
+  "cites_raw": "lore §VII",
+  "cites": [
+   "lore §VII"
+  ]
+ },
+ {
+  "id": "F27",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "Where is the feather store?",
+  "premise": null,
+  "question": "Where is the feather store?",
+  "texts": [
+   "Where is the feather store?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "In a sealed bin built into the floor of the Watch's ledger-room.",
+  "cites_raw": "lore §I, lore §VIII",
+  "cites": [
+   "lore §I",
+   "lore §VIII"
+  ]
+ },
+ {
+  "id": "F28",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "Which ground feathers do not ward lanterns?",
+  "premise": null,
+  "question": "Which ground feathers do not ward lanterns?",
+  "texts": [
+   "Which ground feathers do not ward lanterns?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Stale ground feathers.",
+  "cites_raw": "R15",
+  "cites": [
+   "R15"
+  ]
+ },
+ {
+  "id": "F29",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "What is the cold-threshold wind?",
+  "premise": null,
+  "question": "What is the cold-threshold wind?",
+  "texts": [
+   "What is the cold-threshold wind?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The cutting north wind off the Cold Sea on clear winter nights, sharp enough to extinguish unprotected lanterns.",
+  "cites_raw": "R16, lore §VII",
+  "cites": [
+   "R16",
+   "lore §VII"
+  ]
+ },
+ {
+  "id": "F30",
+  "rule": "F — Factual recall",
+  "category": "F",
+  "question_md": "Whom did the Council invest as a Keeper on day 260 of Year 1?",
+  "premise": null,
+  "question": "Whom did the Council invest as a Keeper on day 260 of Year 1?",
+  "texts": [
+   "Whom did the Council invest as a Keeper on day 260 of Year 1?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Coraline Ash.",
+  "cites_raw": "events Part VII",
+  "cites": [
+   "events Part VII"
+  ]
+ },
+ {
+  "id": "W1",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does Aelmere keep lanterns burning every night?",
+  "premise": null,
+  "question": "Why does Aelmere keep lanterns burning every night?",
+  "texts": [
+   "Why does Aelmere keep lanterns burning every night?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "To give the fishing fleet a way home through fog, and to keep wraiths from rising out of the Sunken Cove.",
+  "cites_raw": "premise; R12, lore §V",
+  "cites": [
+   "premise",
+   "R12",
+   "lore §V"
+  ]
+ },
+ {
+  "id": "W2",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does a Keeper light a lantern with mire-essence?",
+  "premise": null,
+  "question": "Why does a Keeper light a lantern with mire-essence?",
+  "texts": [
+   "Why does a Keeper light a lantern with mire-essence?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because only mire-essence produces mist-light, and only mist-light attracts nightmoths (whose silken threads are the village's sole source of new mire-essence).",
+  "cites_raw": "R1, R2, R3, R4, R5",
+  "cites": [
+   "R1",
+   "R2",
+   "R3",
+   "R4",
+   "R5"
+  ]
+ },
+ {
+  "id": "W3",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why is Aelmere's mire-essence supply considered a closed cycle?",
+  "premise": null,
+  "question": "Why is Aelmere's mire-essence supply considered a closed cycle?",
+  "texts": [
+   "Why is Aelmere's mire-essence supply considered a closed cycle?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because mire-essence enables lanterns, lanterns produce mist-light, mist-light attracts nightmoths, nightmoths leave silken threads, and silken threads are boiled into mire-essence. The output of the chain re-enters as input.",
+  "cites_raw": "R1–R5; Cycle A",
+  "cites": [
+   "R1–R5",
+   "Cycle A"
+  ]
+ },
+ {
+  "id": "W4",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why do sky-cats descend from the cliff-spires?",
+  "premise": null,
+  "question": "Why do sky-cats descend from the cliff-spires?",
+  "texts": [
+   "Why do sky-cats descend from the cliff-spires?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because a crowd of nightmoths gathers at a lantern-row, and sky-cats descend to hunt the crowd.",
+  "cites_raw": "R6, R7",
+  "cites": [
+   "R6",
+   "R7"
+  ]
+ },
+ {
+  "id": "W5",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does every Keeper consider that sky-cats are sacred?",
+  "premise": null,
+  "question": "Why does every Keeper consider that sky-cats are sacred?",
+  "texts": [
+   "Why does every Keeper consider that sky-cats are sacred?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because their molted feathers, when ground and scattered around a lantern, ward off wraiths — and wraiths are the village's gravest danger.",
+  "cites_raw": "R15, lore §V, lore §VI",
+  "cites": [
+   "R15",
+   "lore §V",
+   "lore §VI"
+  ]
+ },
+ {
+  "id": "W6",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why did the Council create the modern feather-ration system?",
+  "premise": null,
+  "question": "Why did the Council create the modern feather-ration system?",
+  "texts": [
+   "Why did the Council create the modern feather-ration system?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because four wraiths emerged in the very bad winter sixty-three years ago.",
+  "cites_raw": "lore §III",
+  "cites": [
+   "lore §III"
+  ]
+ },
+ {
+  "id": "W7",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why do the Northcove lanterns burn through winter?",
+  "premise": null,
+  "question": "Why do the Northcove lanterns burn through winter?",
+  "texts": [
+   "Why do the Northcove lanterns burn through winter?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because cliff-spires shield the Northcove from the north winds, so the cold-threshold wind that extinguishes other Cliff Path lanterns does not reach them.",
+  "cites_raw": "R22, lore §I",
+  "cites": [
+   "R22",
+   "lore §I"
+  ]
+ },
+ {
+  "id": "W8",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why did eleven lanterns on the Middle Row go out before dawn on day 16 of Year 1?",
+  "premise": null,
+  "question": "Why did eleven lanterns on the Middle Row go out before dawn on day 16 of Year 1?",
+  "texts": [
+   "Why did eleven lanterns on the Middle Row go out before dawn on day 16 of Year 1?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because the cold snap arrived early, before the Council had begun the seasonal salt-bloom additions to mire-essence. Without salt-bloom slowing the burn, the cold-threshold wind extinguished them.",
+  "cites_raw": "R16, R17, events Part II",
+  "cites": [
+   "R16",
+   "R17",
+   "events Part II"
+  ]
+ },
+ {
+  "id": "W9",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does the Council redistribute mire-essence at the full moon?",
+  "premise": null,
+  "question": "Why does the Council redistribute mire-essence at the full moon?",
+  "texts": [
+   "Why does the Council redistribute mire-essence at the full moon?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because some stations (like the Northcove) consistently over-produce and others (like the Sunken Cove and exposed Cliff Path stretches) consistently under-produce or have special burdens. The redistribution balances supply across the village.",
+  "cites_raw": "R27, lore §III",
+  "cites": [
+   "R27",
+   "lore §III"
+  ]
+ },
+ {
+  "id": "W10",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does the Council rarely order Keepers to burn wintergloss?",
+  "premise": null,
+  "question": "Why does the Council rarely order Keepers to burn wintergloss?",
+  "texts": [
+   "Why does the Council rarely order Keepers to burn wintergloss?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because wintergloss repels nightmoths, and the village depends on attracting nightmoths to produce silken threads.",
+  "cites_raw": "R21",
+  "cites": [
+   "R21"
+  ]
+ },
+ {
+  "id": "W11",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why did the Council discuss burning wintergloss at the Stilllight Lantern in Year 1?",
+  "premise": null,
+  "question": "Why did the Council discuss burning wintergloss at the Stilllight Lantern in Year 1?",
+  "texts": [
+   "Why did the Council discuss burning wintergloss at the Stilllight Lantern in Year 1?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because a sky-cat had been observed hunting at the Sunken Cove, and the Council considered keeping moth-counts there below the sky-cat threshold so that sky-cats would not be drawn into the cove (where wraiths sometimes harm them).",
+  "cites_raw": "R21, events Part IV",
+  "cites": [
+   "R21",
+   "events Part IV"
+  ]
+ },
+ {
+  "id": "W12",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does a Keeper harvest salt-bloom at the new moon?",
+  "premise": null,
+  "question": "Why does a Keeper harvest salt-bloom at the new moon?",
+  "texts": [
+   "Why does a Keeper harvest salt-bloom at the new moon?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because salt-bloom harvested at other lunar phases turns to chalky residue within a week and loses its potency. Only new-moon-harvested salt-bloom retains usefulness through the season.",
+  "cites_raw": "R18",
+  "cites": [
+   "R18"
+  ]
+ },
+ {
+  "id": "W13",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does the harvest party harvest salt-bloom at the new-moon spring tide?",
+  "premise": null,
+  "question": "Why does the harvest party harvest salt-bloom at the new-moon spring tide?",
+  "texts": [
+   "Why does the harvest party harvest salt-bloom at the new-moon spring tide?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because salt-bloom only blooms in the tide-pools when the pools are full, and the pools are only fully filled by spring tides.",
+  "cites_raw": "R19, R20",
+  "cites": [
+   "R19",
+   "R20"
+  ]
+ },
+ {
+  "id": "W14",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does the village cremate the dead?",
+  "premise": null,
+  "question": "Why does the village cremate the dead?",
+  "texts": [
+   "Why does the village cremate the dead?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because the original graveyard was destroyed by a storm-surge six generations ago, and its loss is believed to be the source of the wraith problem. The village burns its dead at sea now to prevent further accumulation of unsettled dead in the cove.",
+  "cites_raw": "lore §IV, lore §V",
+  "cites": [
+   "lore §IV",
+   "lore §V"
+  ]
+ },
+ {
+  "id": "W15",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why did a wraith emerge from the water of the Sunken Cove on day 120 of Year 1?",
+  "premise": null,
+  "question": "Why did a wraith emerge from the water of the Sunken Cove on day 120 of Year 1?",
+  "texts": [
+   "Why did a wraith emerge from the water of the Sunken Cove on day 120 of Year 1?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because nine days earlier, the Stilllight Lantern at the Sunken Cove had been allowed to dim (carbonized wick, inattentive substitute Keeper) for three hours overnight. This was equivalent to a dim-flame event and triggered the wraith.",
+  "cites_raw": "R11, R12, events Part V",
+  "cites": [
+   "R11",
+   "R12",
+   "events Part V"
+  ]
+ },
+ {
+  "id": "W16",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why did the wraith turn away from the Stilllight Lantern on day 120 of Year 1?",
+  "premise": null,
+  "question": "Why did the wraith turn away from the Stilllight Lantern on day 120 of Year 1?",
+  "texts": [
+   "Why did the wraith turn away from the Stilllight Lantern on day 120 of Year 1?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because Bevin Coombe had scattered ground feathers around the Stilllight's base, which ward off wraiths.",
+  "cites_raw": "R15, events Part V",
+  "cites": [
+   "R15",
+   "events Part V"
+  ]
+ },
+ {
+  "id": "W17",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why did the thread harvest at the West Row fall during the wraith's persistence in Year 1?",
+  "premise": null,
+  "question": "Why did the thread harvest at the West Row fall during the wraith's persistence in Year 1?",
+  "texts": [
+   "Why did the thread harvest at the West Row fall during the wraith's persistence in Year 1?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because wraith-drained lanterns burn with weak mist-light, and weak mist-light attracts only a small fraction of the usual nightmoth count.",
+  "cites_raw": "R13, R14",
+  "cites": [
+   "R13",
+   "R14"
+  ]
+ },
+ {
+  "id": "W18",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why did the cauldrons yield two vessels of mire-essence on day 17 of Year 1?",
+  "premise": null,
+  "question": "Why did the cauldrons yield two vessels of mire-essence on day 17 of Year 1?",
+  "texts": [
+   "Why did the cauldrons yield two vessels of mire-essence on day 17 of Year 1?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because the eleven relit lanterns of the Middle Row burned dimly and gave weak mist-light, the weak mist-light attracted a handful of nightmoths, the thread harvest at the Middle Row fell, and fewer threads boil into less mire-essence.",
+  "cites_raw": "R14, R3, R4, events Part II",
+  "cites": [
+   "R14",
+   "R3",
+   "R4",
+   "events Part II"
+  ]
+ },
+ {
+  "id": "W19",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why do surviving nightmoths flee to the dim lanterns of the Hollows during a sky-cat hunt?",
+  "premise": null,
+  "question": "Why do surviving nightmoths flee to the dim lanterns of the Hollows during a sky-cat hunt?",
+  "texts": [
+   "Why do surviving nightmoths flee to the dim lanterns of the Hollows during a sky-cat hunt?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because a sky-cat hunt on the Cliff Path makes the surviving nightmoths flee toward dim lights, and the Hollows lanterns are dim.",
+  "cites_raw": "R8, lore §VI",
+  "cites": [
+   "R8",
+   "lore §VI"
+  ]
+ },
+ {
+  "id": "W20",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why did the wraith response use half of the autumn feather store in Year 1?",
+  "premise": null,
+  "question": "Why did the wraith response use half of the autumn feather store in Year 1?",
+  "texts": [
+   "Why did the wraith response use half of the autumn feather store in Year 1?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because wraith-defense requires scattering ground feathers around lit lanterns near the Sunken Cove, and feather rations are issued from the Watch's store. A wraith persistence event significantly depletes the store.",
+  "cites_raw": "R15, lore §III, events Part V",
+  "cites": [
+   "R15",
+   "lore §III",
+   "events Part V"
+  ]
+ },
+ {
+  "id": "W21",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why do the villagers consider the Cove Stair unlucky?",
+  "premise": null,
+  "question": "Why do the villagers consider the Cove Stair unlucky?",
+  "texts": [
+   "Why do the villagers consider the Cove Stair unlucky?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because it is the source of wraiths and is considered an unlucky place. The Cove Stair is by custom unlucky to walk.",
+  "cites_raw": "lore §IV, lore §V",
+  "cites": [
+   "lore §IV",
+   "lore §V"
+  ]
+ },
+ {
+  "id": "W22",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does the village need sky-cats?",
+  "premise": null,
+  "question": "Why does the village need sky-cats?",
+  "texts": [
+   "Why does the village need sky-cats?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because sky-cats produce feathers (by molting), feathers ward off wraiths, and wraith-warding is necessary at the Sunken Cove to prevent further wraith summoning (drained lanterns ⇒ more wraiths). Without sky-cats, the village would have no wraith-defense.",
+  "cites_raw": "R10, R15, R12, lore §V, lore §VI",
+  "cites": [
+   "R10",
+   "R15",
+   "R12",
+   "lore §V",
+   "lore §VI"
+  ]
+ },
+ {
+  "id": "W23",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why did Old Vesh report the thin feather autumn of twenty-six years ago to the Council in Year 1?",
+  "premise": null,
+  "question": "Why did Old Vesh report the thin feather autumn of twenty-six years ago to the Council in Year 1?",
+  "texts": [
+   "Why did Old Vesh report the thin feather autumn of twenty-six years ago to the Council in Year 1?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because thin sky-cat activity means thin feather harvest, and thin feathers mean weak wraith-warding capacity for the coming winter. Old Vesh remembers that the bad winter twenty-six years ago was also preceded by a thin feather autumn.",
+  "cites_raw": "R28, R29, events Part IV",
+  "cites": [
+   "R28",
+   "R29",
+   "events Part IV"
+  ]
+ },
+ {
+  "id": "W24",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why do Keepers count many sky-cats on the cliff-spires in the morning in late summer?",
+  "premise": null,
+  "question": "Why do Keepers count many sky-cats on the cliff-spires in the morning in late summer?",
+  "texts": [
+   "Why do Keepers count many sky-cats on the cliff-spires in the morning in late summer?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because moth-counts are high (peak moth-season), sky-cats descend often to hunt, and they molt during these busy weeks, producing more feathers at the cliff base. The Keepers also observe more sky-cats on the spires after hunting nights.",
+  "cites_raw": "R10, R28, lore §VI",
+  "cites": [
+   "R10",
+   "R28",
+   "lore §VI"
+  ]
+ },
+ {
+  "id": "W25",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why did Coraline Ash write in her log that a crowd of nightmoths brings sky-cats down from the cliff-spires?",
+  "premise": null,
+  "question": "Why did Coraline Ash write in her log that a crowd of nightmoths brings sky-cats down from the cliff-spires?",
+  "texts": [
+   "Why did Coraline Ash write in her log that a crowd of nightmoths brings sky-cats down from the cliff-spires?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because the Council had instituted Old Vesh's proposal: extra essence rations to three Cliff Path stations, deliberately drawing higher moth-counts, in order to retain more sky-cats and thereby produce more feathers for wraith-defense. Coraline had identified the causal chain in her own words.",
+  "cites_raw": "R1, R2, R6, R10, R15, events Part VIII",
+  "cites": [
+   "R1",
+   "R2",
+   "R6",
+   "R10",
+   "R15",
+   "events Part VIII"
+  ]
+ },
+ {
+  "id": "W26",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does an apprentice's solo count reset when the apprentice's lantern dims?",
+  "premise": null,
+  "question": "Why does an apprentice's solo count reset when the apprentice's lantern dims?",
+  "texts": [
+   "Why does an apprentice's solo count reset when the apprentice's lantern dims?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because a dim-flame event is a partial failure of station-tending, equivalent in seriousness to letting a lantern go un-tended, and the apprenticeship requires thirty consecutive nights without failure.",
+  "cites_raw": "R25",
+  "cites": [
+   "R25"
+  ]
+ },
+ {
+  "id": "W27",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why did the Council build the Stilllight Lantern sixty-three years ago?",
+  "premise": null,
+  "question": "Why did the Council build the Stilllight Lantern sixty-three years ago?",
+  "texts": [
+   "Why did the Council build the Stilllight Lantern sixty-three years ago?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because it was constructed sixty-three years ago in response to the worst winter, and its purpose is to burn reliably at the Sunken Cove — the wraith-prone location — without ever dimming. Its size and reinforcement reduce the risk of incidents like the day-120 carbonized-wick event.",
+  "cites_raw": "lore §I, lore §III, lore §VIII",
+  "cites": [
+   "lore §I",
+   "lore §III",
+   "lore §VIII"
+  ]
+ },
+ {
+  "id": "W28",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does the sea-water store draw from the deep ebb?",
+  "premise": null,
+  "question": "Why does the sea-water store draw from the deep ebb?",
+  "texts": [
+   "Why does the sea-water store draw from the deep ebb?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because mire-essence distillation requires sea-water from those specific local sources; fresh water and imported salt do not yield mire-essence.",
+  "cites_raw": "R4, lore §IV, lore §VIII",
+  "cites": [
+   "R4",
+   "lore §IV",
+   "lore §VIII"
+  ]
+ },
+ {
+  "id": "W29",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does the Stilllight Keeper check the flame at midnight?",
+  "premise": null,
+  "question": "Why does the Stilllight Keeper check the flame at midnight?",
+  "texts": [
+   "Why does the Stilllight Keeper check the flame at midnight?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because a single un-tended event at the Stilllight can trigger a wraith emergence within the lunar cycle, whereas un-tended events elsewhere on the Cliff Path do not summon wraiths.",
+  "cites_raw": "R11, R12",
+  "cites": [
+   "R11",
+   "R12"
+  ]
+ },
+ {
+  "id": "W30",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why did the Stilllight Lantern burn dim on the night of day 111 of Year 1?",
+  "premise": null,
+  "question": "Why did the Stilllight Lantern burn dim on the night of day 111 of Year 1?",
+  "texts": [
+   "Why did the Stilllight Lantern burn dim on the night of day 111 of Year 1?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because the wick was carbonized and Halden, the substitute Keeper, did not trim it; Bevin Coombe said to the Council that Halden was inexperienced.",
+  "cites_raw": "events Part V",
+  "cites": [
+   "events Part V"
+  ]
+ },
+ {
+  "id": "W31",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does the Council meet at every full moon?",
+  "premise": null,
+  "question": "Why does the Council meet at every full moon?",
+  "texts": [
+   "Why does the Council meet at every full moon?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because the full-moon meeting is the village's established calendar marker for Council business, and emergencies are rare enough that off-cycle meetings are not regularly required.",
+  "cites_raw": "R26, lore §III",
+  "cites": [
+   "R26",
+   "lore §III"
+  ]
+ },
+ {
+  "id": "W32",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does the harvest party need a spring tide?",
+  "premise": null,
+  "question": "Why does the harvest party need a spring tide?",
+  "texts": [
+   "Why does the harvest party need a spring tide?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because spring tides are larger and fill the Salt-bloom Tide-pools enough for salt-bloom to bloom; neap tides leave the pools mostly dry and no salt-bloom forms.",
+  "cites_raw": "R19, R20, lore §VII",
+  "cites": [
+   "R19",
+   "R20",
+   "lore §VII"
+  ]
+ },
+ {
+  "id": "W33",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does Old Vesh tell the story of the bad winter of sixty-three years ago?",
+  "premise": null,
+  "question": "Why does Old Vesh tell the story of the bad winter of sixty-three years ago?",
+  "texts": [
+   "Why does Old Vesh tell the story of the bad winter of sixty-three years ago?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because he was a boy of eight at the time and remembers his father (then a Keeper) walking the Cove Stair with three other men every evening of that winter. It was a formative memory of his childhood.",
+  "cites_raw": "lore §III",
+  "cites": [
+   "lore §III"
+  ]
+ },
+ {
+  "id": "W34",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why did Brindle Coombe say at the Council that a hard winter would force the village to dim some lanterns?",
+  "premise": null,
+  "question": "Why did Brindle Coombe say at the Council that a hard winter would force the village to dim some lanterns?",
+  "texts": [
+   "Why did Brindle Coombe say at the Council that a hard winter would force the village to dim some lanterns?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because they were behind on both mire-essence (from the thin thread harvest of the early cold snaps) and on feathers (from the sky-cat drought), so a hard winter would force rationing — which would mean choosing lanterns to dim deliberately to preserve essence supply elsewhere.",
+  "cites_raw": "events Part V",
+  "cites": [
+   "events Part V"
+  ]
+ },
+ {
+  "id": "W35",
+  "rule": "W — Why-questions",
+  "category": "W",
+  "question_md": "Why does Hesper boil silken threads in sea-water?",
+  "premise": null,
+  "question": "Why does Hesper boil silken threads in sea-water?",
+  "texts": [
+   "Why does Hesper boil silken threads in sea-water?"
+  ],
+  "modes": [
+   "query"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Because mire-essence forms only when silken threads are boiled in sea-water; the Hollows theory is a conjecture about the origin of the supply, not a present source.",
+  "cites_raw": "premise, R4, R5",
+  "cites": [
+   "premise",
+   "R4",
+   "R5"
+  ]
+ },
+ {
+  "id": "N1",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A sky-cat hunts nightmoths at a lantern-row on the Cliff Path. What happens to the nightmoth crowd at that lantern-row?",
+  "premise": "A sky-cat hunts nightmoths at a lantern-row on the Cliff Path.",
+  "question": "What happens to the nightmoth crowd at that lantern-row?",
+  "texts": [
+   "A sky-cat hunts nightmoths at a lantern-row on the Cliff Path.",
+   "What happens to the nightmoth crowd at that lantern-row?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The nightmoth crowd at that lantern-row shrinks.",
+  "cites_raw": "R7",
+  "cites": [
+   "R7"
+  ]
+ },
+ {
+  "id": "N2",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A lantern at the Sunken Cove dies before dawn. What happens at the Sunken Cove?",
+  "premise": "A lantern at the Sunken Cove dies before dawn.",
+  "question": "What happens at the Sunken Cove?",
+  "texts": [
+   "A lantern at the Sunken Cove dies before dawn.",
+   "What happens at the Sunken Cove?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "A wraith emerges from the cove's water.",
+  "cites_raw": "R12",
+  "cites": [
+   "R12"
+  ]
+ },
+ {
+  "id": "N3",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A lantern burns wintergloss alongside mire-essence. What happens to the nightmoths at that lantern?",
+  "premise": "A lantern burns wintergloss alongside mire-essence.",
+  "question": "What happens to the nightmoths at that lantern?",
+  "texts": [
+   "A lantern burns wintergloss alongside mire-essence.",
+   "What happens to the nightmoths at that lantern?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The wintergloss repels nightmoths from the lantern, and every nightmoth avoids it.",
+  "cites_raw": "R21",
+  "cites": [
+   "R21"
+  ]
+ },
+ {
+  "id": "N4",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A Keeper grinds feathers and scatters the feathers around a lit lantern at the Sunken Cove. A wraith emerges from the water of the Sunken Cove. What happens to the lantern?",
+  "premise": "A Keeper grinds feathers and scatters the feathers around a lit lantern at the Sunken Cove. A wraith emerges from the water of the Sunken Cove.",
+  "question": "What happens to the lantern?",
+  "texts": [
+   "A Keeper grinds feathers and scatters the feathers around a lit lantern at the Sunken Cove.",
+   "A wraith emerges from the water of the Sunken Cove.",
+   "What happens to the lantern?"
+  ],
+  "modes": [
+   "statement",
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The feathers ward the lantern against wraiths, and the wraith does not approach the warded lantern.",
+  "cites_raw": "R15",
+  "cites": [
+   "R15"
+  ]
+ },
+ {
+  "id": "N5",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "An apprentice's lantern dims during the apprentice's solo nights. What happens to the apprentice's solo count?",
+  "premise": "An apprentice's lantern dims during the apprentice's solo nights.",
+  "question": "What happens to the apprentice's solo count?",
+  "texts": [
+   "An apprentice's lantern dims during the apprentice's solo nights.",
+   "What happens to the apprentice's solo count?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The solo count resets, and the apprentice begins the thirty solo nights again.",
+  "cites_raw": "R25",
+  "cites": [
+   "R25"
+  ]
+ },
+ {
+  "id": "N6",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A cold wind strikes the Cliff Path at night. A lantern on the Cliff Path is unprepared. What happens to the unprepared lantern?",
+  "premise": "A cold wind strikes the Cliff Path at night. A lantern on the Cliff Path is unprepared.",
+  "question": "What happens to the unprepared lantern?",
+  "texts": [
+   "A cold wind strikes the Cliff Path at night.",
+   "A lantern on the Cliff Path is unprepared.",
+   "What happens to the unprepared lantern?"
+  ],
+  "modes": [
+   "statement",
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The unprepared lantern goes out before dawn.",
+  "cites_raw": "R16",
+  "cites": [
+   "R16"
+  ]
+ },
+ {
+  "id": "N7",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A cold wind strikes the Cliff Path at night. A lantern on the Cliff Path is salt-bloomed. What happens to the salt-bloomed lantern?",
+  "premise": "A cold wind strikes the Cliff Path at night. A lantern on the Cliff Path is salt-bloomed.",
+  "question": "What happens to the salt-bloomed lantern?",
+  "texts": [
+   "A cold wind strikes the Cliff Path at night.",
+   "A lantern on the Cliff Path is salt-bloomed.",
+   "What happens to the salt-bloomed lantern?"
+  ],
+  "modes": [
+   "statement",
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The salt-bloomed lantern survives the cold night; its mire-essence burns slowly.",
+  "cites_raw": "R17",
+  "cites": [
+   "R17"
+  ]
+ },
+ {
+  "id": "N8",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A crowd of nightmoths gathers at a lantern-row. What do the sky-cats do?",
+  "premise": "A crowd of nightmoths gathers at a lantern-row.",
+  "question": "What do the sky-cats do?",
+  "texts": [
+   "A crowd of nightmoths gathers at a lantern-row.",
+   "What do the sky-cats do?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Sky-cats descend from the cliff-spires and hunt the crowd.",
+  "cites_raw": "R6, R7",
+  "cites": [
+   "R6",
+   "R7"
+  ]
+ },
+ {
+  "id": "N9",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A sky-cat hunts through summer. What happens at the base of the cliff by autumn?",
+  "premise": "A sky-cat hunts through summer.",
+  "question": "What happens at the base of the cliff by autumn?",
+  "texts": [
+   "A sky-cat hunts through summer.",
+   "What happens at the base of the cliff by autumn?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Many feathers accumulate at the base of the cliff by autumn, and the autumn feather store grows.",
+  "cites_raw": "R28, R10",
+  "cites": [
+   "R28",
+   "R10"
+  ]
+ },
+ {
+  "id": "N10",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "The feather store at the Watch is large. What happens at the Sunken Cove lanterns in winter?",
+  "premise": "The feather store at the Watch is large.",
+  "question": "What happens at the Sunken Cove lanterns in winter?",
+  "texts": [
+   "The feather store at the Watch is large.",
+   "What happens at the Sunken Cove lanterns in winter?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Each Keeper tends the Sunken Cove lanterns safely in winter.",
+  "cites_raw": "R29",
+  "cites": [
+   "R29"
+  ]
+ },
+ {
+  "id": "N11",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A wraith drains the lanterns of the West Row. What happens to the thread harvest at the West Row?",
+  "premise": "A wraith drains the lanterns of the West Row.",
+  "question": "What happens to the thread harvest at the West Row?",
+  "texts": [
+   "A wraith drains the lanterns of the West Row.",
+   "What happens to the thread harvest at the West Row?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The drained lanterns give weak mist-light, the weak mist-light attracts a handful of nightmoths, and the thread harvest at the West Row falls.",
+  "cites_raw": "R13, R14, R3",
+  "cites": [
+   "R13",
+   "R14",
+   "R3"
+  ]
+ },
+ {
+  "id": "N12",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A Keeper leaves a lantern on the Middle Row untended overnight. What happens to the lantern?",
+  "premise": "A Keeper leaves a lantern on the Middle Row untended overnight.",
+  "question": "What happens to the lantern?",
+  "texts": [
+   "A Keeper leaves a lantern on the Middle Row untended overnight.",
+   "What happens to the lantern?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The lantern dies before dawn; the lantern is away from the Sunken Cove, so no wraith rises.",
+  "cites_raw": "R11, R12",
+  "cites": [
+   "R11",
+   "R12"
+  ]
+ },
+ {
+  "id": "N13",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A Keeper gathers salt-bloom at the full moon. What happens to that salt-bloom?",
+  "premise": "A Keeper gathers salt-bloom at the full moon.",
+  "question": "What happens to that salt-bloom?",
+  "texts": [
+   "A Keeper gathers salt-bloom at the full moon.",
+   "What happens to that salt-bloom?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "That salt-bloom turns to chalky residue.",
+  "cites_raw": "R18",
+  "cites": [
+   "R18"
+  ]
+ },
+ {
+  "id": "N14",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A newcomer arrives in Aelmere in autumn. What does the newcomer do?",
+  "premise": "A newcomer arrives in Aelmere in autumn.",
+  "question": "What does the newcomer do?",
+  "texts": [
+   "A newcomer arrives in Aelmere in autumn.",
+   "What does the newcomer do?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The newcomer apprentices under a senior Keeper.",
+  "cites_raw": "R24",
+  "cites": [
+   "R24"
+  ]
+ },
+ {
+  "id": "N15",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A Keeper on the Cliff Path retires. What happens to that Keeper's station?",
+  "premise": "A Keeper on the Cliff Path retires.",
+  "question": "What happens to that Keeper's station?",
+  "texts": [
+   "A Keeper on the Cliff Path retires.",
+   "What happens to that Keeper's station?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The Council staffs the station again; an heir inherits the lantern-station.",
+  "cites_raw": "R23, lore §II",
+  "cites": [
+   "R23",
+   "lore §II"
+  ]
+ },
+ {
+  "id": "N16",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "The new-moon spring tide passes uneventfully and the village fails to send a salt-bloom harvest party. What happens to that month's salt-bloom store?",
+  "premise": "The new-moon spring tide passes uneventfully and the village fails to send a salt-bloom harvest party.",
+  "question": "What happens to that month's salt-bloom store?",
+  "texts": [],
+  "modes": [],
+  "roots": [],
+  "question_mode": "query",
+  "answer": "No salt-bloom is added to the store that month, and the season's reserves are short. The village must ration salt-bloom more strictly through the winter.",
+  "cites_raw": "R18, R19, events Part II",
+  "cites": [
+   "R18",
+   "R19",
+   "events Part II"
+  ],
+  "retired": "no positive premise derives the answer: a missed harvest is a non-event; the residue case is N13"
+ },
+ {
+  "id": "N17",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "The lanterns of three Cliff Path stations burn extra mire-essence. What happens at those stations?",
+  "premise": "The lanterns of three Cliff Path stations burn extra mire-essence.",
+  "question": "What happens at those stations?",
+  "texts": [
+   "The lanterns of three Cliff Path stations burn extra mire-essence.",
+   "What happens at those stations?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The lanterns produce strong mist-light, the strong mist-light attracts crowds of nightmoths, sky-cats descend to hunt, the sky-cats molt during the hunts, and feathers fall to the base of the cliff.",
+  "cites_raw": "R1, R2, R6, R10, events Part VIII",
+  "cites": [
+   "R1",
+   "R2",
+   "R6",
+   "R10",
+   "events Part VIII"
+  ]
+ },
+ {
+  "id": "N18",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "An apprentice's solo count is large. What does the Council do?",
+  "premise": "An apprentice's solo count is large.",
+  "question": "What does the Council do?",
+  "texts": [
+   "An apprentice's solo count is large.",
+   "What does the Council do?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The Council invests the apprentice as a Keeper.",
+  "cites_raw": "R25, events Part VII",
+  "cites": [
+   "R25",
+   "events Part VII"
+  ]
+ },
+ {
+  "id": "N19",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "The Council meets at the full moon. What does the Council do with the mire-essence reserves?",
+  "premise": "The Council meets at the full moon.",
+  "question": "What does the Council do with the mire-essence reserves?",
+  "texts": [
+   "The Council meets at the full moon.",
+   "What does the Council do with the mire-essence reserves?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The Council redistributes mire-essence: productive stations contribute to the central pool, burdened stations draw from it, and the ledgers record the redistribution.",
+  "cites_raw": "R27",
+  "cites": [
+   "R27"
+  ]
+ },
+ {
+  "id": "N20",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A wraith drains six lanterns on the West Row. The wraith fades back into the water of the Sunken Cove. What happens to the drained lanterns?",
+  "premise": "A wraith drains six lanterns on the West Row. The wraith fades back into the water of the Sunken Cove.",
+  "question": "What happens to the drained lanterns?",
+  "texts": [
+   "A wraith drains six lanterns on the West Row.",
+   "The wraith fades back into the water of the Sunken Cove.",
+   "What happens to the drained lanterns?"
+  ],
+  "modes": [
+   "statement",
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "Hesper refills their mire-essence during the following week, and the lanterns return to normal mist-light.",
+  "cites_raw": "events Part V",
+  "cites": [
+   "events Part V"
+  ]
+ },
+ {
+  "id": "N21",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A second-year Keeper is assigned an apprentice. What happens during the apprentice's first six months?",
+  "premise": "A second-year Keeper is assigned an apprentice.",
+  "question": "What happens during the apprentice's first six months?",
+  "texts": [],
+  "modes": [],
+  "roots": [],
+  "question_mode": "query",
+  "answer": "The apprentice does not tend any lantern alone. They walk with the senior Keeper, carry the case, and learn the order of operations.",
+  "cites_raw": "R24, events Part I",
+  "cites": [
+   "R24",
+   "events Part I"
+  ],
+  "retired": "the six-month rule is in no corpus file; the newcomer case is N14"
+ },
+ {
+  "id": "N22",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "The Stilllight Lantern burns wintergloss alongside mire-essence for one week. What happens to the nightmoths at the Stilllight Lantern?",
+  "premise": "The Stilllight Lantern burns wintergloss alongside mire-essence for one week.",
+  "question": "What happens to the nightmoths at the Stilllight Lantern?",
+  "texts": [
+   "The Stilllight Lantern burns wintergloss alongside mire-essence for one week.",
+   "What happens to the nightmoths at the Stilllight Lantern?"
+  ],
+  "modes": [
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The wintergloss repels nightmoths from the Stilllight Lantern, and the moth-count at the Stilllight Lantern falls.",
+  "cites_raw": "R21",
+  "cites": [
+   "R21"
+  ]
+ },
+ {
+  "id": "N23",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A Keeper observes that there have been three sky-cats visible on the spires by morning for two weeks running, instead of the usual eight to twelve. What does this predict about the feather harvest?",
+  "premise": "A Keeper observes that there have been three sky-cats visible on the spires by morning for two weeks running, instead of the usual eight to twelve.",
+  "question": "What does this predict about the feather harvest?",
+  "texts": [],
+  "modes": [],
+  "roots": [],
+  "question_mode": "query",
+  "answer": "The feather harvest will be thin: fewer sky-cats means fewer molting feathers falling to the cliff base.",
+  "cites_raw": "R10, R28, events Part IV",
+  "cites": [
+   "R10",
+   "R28",
+   "events Part IV"
+  ],
+  "retired": "a magnitude prediction with no law behind it (few sky-cats); the drought is Part IV's own record"
+ },
+ {
+  "id": "N24",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "The village experiences a thin sky-cat year followed by a winter with multiple cold snaps. What does this predict?",
+  "premise": "The village experiences a thin sky-cat year followed by a winter with multiple cold snaps.",
+  "question": "What does this predict?",
+  "texts": [],
+  "modes": [],
+  "roots": [],
+  "question_mode": "query",
+  "answer": "A difficult winter — possibly approaching a bad-winter classification: feather store small, wraith-defense weak, mire-essence production thin. The Council is likely to ration feathers and possibly deliberately dim some lanterns.",
+  "cites_raw": "events Parts IV, V; lore §III",
+  "cites": [
+   "events Parts IV",
+   "V",
+   "lore §III"
+  ],
+  "retired": "a narrative prediction over a season; no law derives a bad-winter classification"
+ },
+ {
+  "id": "N25",
+  "rule": "N — What-next",
+  "category": "N",
+  "question_md": "A Keeper dims a lantern on the Cliff Path. The dim lantern gives weak mist-light. What happens to the thread harvest at that lantern?",
+  "premise": "A Keeper dims a lantern on the Cliff Path. The dim lantern gives weak mist-light.",
+  "question": "What happens to the thread harvest at that lantern?",
+  "texts": [
+   "A Keeper dims a lantern on the Cliff Path.",
+   "The dim lantern gives weak mist-light.",
+   "What happens to the thread harvest at that lantern?"
+  ],
+  "modes": [
+   "statement",
+   "statement",
+   "query"
+  ],
+  "roots": [
+   null,
+   null,
+   null
+  ],
+  "question_mode": "query",
+  "answer": "The weak mist-light attracts a handful of nightmoths, the thread harvest at that lantern falls, and less mire-essence forms.",
+  "cites_raw": "R14, R3, R4",
+  "cites": [
+   "R14",
+   "R3",
+   "R4"
+  ]
+ },
+ {
+  "id": "C1",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose the cliff-spires did not exist. What about the village's annual operations would change?",
+  "premise": "Suppose the cliff-spires did not exist.",
+  "question": "What about the village's annual operations would change?",
+  "texts": [
+   "The cliff-spires rise above the eastern cliff."
+  ],
+  "modes": [
+   "intervention"
+  ],
+  "roots": [
+   "entity"
+  ],
+  "question_mode": "diff",
+  "answer": "Two major effects. First, sky-cats would not roost above Aelmere, so the village would not have a feather source for wraith-warding. Second, the Northcove would not be shielded from cold winds, so it would lose its status as the village's reliable winter production-row. The village's wraith-defense would essentially collapse, and the supply of essence in winter would become marginal.",
+  "cites_raw": "R9, R10, R15, R22",
+  "cites": [
+   "R9",
+   "R10",
+   "R15",
+   "R22"
+  ]
+ },
+ {
+  "id": "C2",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose nightmoths were not attracted to mist-light. What would the village's mire-essence supply look like?",
+  "premise": "Suppose nightmoths were not attracted to mist-light.",
+  "question": "What would the village's mire-essence supply look like?",
+  "texts": [
+   "Mist-light attracts nightmoths."
+  ],
+  "modes": [
+   "intervention"
+  ],
+  "roots": [
+   "event"
+  ],
+  "question_mode": "diff",
+  "answer": "There would be no silken-thread harvest, because moths would not land on lanterns. Without threads, no mire-essence could be distilled. The village's supply of essence would deplete within whatever stored reserves remained (about four years at full reserve) and then collapse.",
+  "cites_raw": "R2, R3, R4, R5",
+  "cites": [
+   "R2",
+   "R3",
+   "R4",
+   "R5"
+  ]
+ },
+ {
+  "id": "C3",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose salt-bloom were harvestable at any lunar phase, not only at new moon. What would change for the village?",
+  "premise": "Suppose salt-bloom were harvestable at any lunar phase, not only at new moon.",
+  "question": "What would change for the village?",
+  "texts": [
+   "Salt-bloom gathered at the full moon turns to chalky residue."
+  ],
+  "modes": [
+   "intervention"
+  ],
+  "roots": [
+   "event"
+  ],
+  "question_mode": "diff",
+  "answer": "The village would not need to time its harvests to the new-moon spring tide and would have more flexibility around winter preparation. The salt-bloom Warden role would be less critical. Bad-tide-timing winters (like the one one hundred and twelve years ago) would not have caused salt-bloom shortfall.",
+  "cites_raw": "R18",
+  "cites": [
+   "R18"
+  ]
+ },
+ {
+  "id": "C4",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose the storm-surge of six generations ago had never happened. What about the present village would be different?",
+  "premise": "Suppose the storm-surge of six generations ago had never happened.",
+  "question": "What about the present village would be different?",
+  "texts": [
+   "A storm-surge washed the old graveyard into the Sunken Cove six generations ago."
+  ],
+  "modes": [
+   "intervention"
+  ],
+  "roots": [
+   "event"
+  ],
+  "question_mode": "diff",
+  "answer": "There would be no Sunken Cove in its current form, no wraiths, no Stilllight Lantern, no feather-warding requirement, no feather-rationing system, and no Cove Stair customs. The Council's chief winter business would be only mire-essence redistribution, not wraith risk. The sky-cats would still exist (their roost is independent), but feathers would have no anti-wraith use.",
+  "cites_raw": "lore §V, R12, R15",
+  "cites": [
+   "lore §V",
+   "R12",
+   "R15"
+  ]
+ },
+ {
+  "id": "C5",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose nightmoth populations exceeded the sky-cat threshold every night of the year (e.g., due to a hypothetical surge in moth numbers). What would happen to silken-thread harvests and sky-cat feathers?",
+  "premise": "Suppose nightmoth populations exceeded the sky-cat threshold every night of the year (e.g., due to a hypothetical surge in moth numbers).",
+  "question": "What would happen to silken-thread harvests and sky-cat feathers?",
+  "texts": [
+   "A crowd of nightmoths gathers at each lantern-row every night."
+  ],
+  "modes": [
+   "statement"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "diff",
+  "answer": "Sky-cats would descend nightly, hunting heavily and producing very heavy feather harvests. However, silken-thread harvests would be reduced on each hunted stretch because of moth depletion. The village would have abundant wraith-defense but thinner essence production — a different balance from current operations.",
+  "cites_raw": "R6, R7, R10, R3",
+  "cites": [
+   "R6",
+   "R7",
+   "R10",
+   "R3"
+  ]
+ },
+ {
+  "id": "C6",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose Coraline had not been accepted into apprenticeship. What about Year 1's events would be different?",
+  "premise": "Suppose Coraline had not been accepted into apprenticeship.",
+  "question": "What about Year 1's events would be different?",
+  "texts": [
+   "Coraline Ash is an apprentice."
+  ],
+  "modes": [
+   "intervention"
+  ],
+  "roots": [
+   "fact"
+  ],
+  "question_mode": "diff",
+  "answer": "The corpus does not directly answer this counterfactual, but several events of Year 1 hinge on Coraline's presence: Pell's mentorship role would not have existed, the Hollows-Cliff Path station near the harbor would have remained unstaffed longer, and the Council would have had one fewer apprentice in the cohort. The substantive events (cold snaps, wraith emergence, salt-bloom harvests) would have proceeded similarly with respect to physical rules.",
+  "cites_raw": "events Parts I, IV, VII",
+  "cites": [
+   "events Parts I",
+   "IV",
+   "VII"
+  ]
+ },
+ {
+  "id": "C7",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose wintergloss were not known to repel nightmoths. What option would the Council lose?",
+  "premise": "Suppose wintergloss were not known to repel nightmoths.",
+  "question": "What option would the Council lose?",
+  "texts": [
+   "Wintergloss repels nightmoths."
+  ],
+  "modes": [
+   "intervention"
+  ],
+  "roots": [
+   "event"
+  ],
+  "question_mode": "diff",
+  "answer": "The Council would lose the ability to selectively suppress moth-counts at specific lanterns (currently used to keep moths low at the Stilllight in weeks when sky-cats are hunting in the cove). The village would have no clean mechanism for keeping sky-cats out of the cove.",
+  "cites_raw": "R21, events Part IV",
+  "cites": [
+   "R21",
+   "events Part IV"
+  ]
+ },
+ {
+  "id": "C8",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose sky-cat feathers had no anti-wraith property. What would the village do for wraith-defense?",
+  "premise": "Suppose sky-cat feathers had no anti-wraith property.",
+  "question": "What would the village do for wraith-defense?",
+  "texts": [
+   "Ground feathers ward lanterns against wraiths."
+  ],
+  "modes": [
+   "intervention"
+  ],
+  "roots": [
+   "event"
+  ],
+  "question_mode": "diff",
+  "answer": "The corpus describes feather-warding as the *primary* wraith-defense; no other defense is described. Without it, the village would have to rely entirely on rule R11 (never letting a Sunken Cove lantern die) — i.e., perfect attention at the Stilllight. The risk of bad winters would be vastly higher.",
+  "cites_raw": "R15, lore §V",
+  "cites": [
+   "R15",
+   "lore §V"
+  ]
+ },
+ {
+  "id": "C9",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose the apprenticeship requirement were ten consecutive solo nights instead of thirty. What would change about the village?",
+  "premise": "Suppose the apprenticeship requirement were ten consecutive solo nights instead of thirty.",
+  "question": "What would change about the village?",
+  "texts": [
+   "Whenever an apprentice completes thirty solo nights, the Council assigns that apprentice to a station.",
+   "Whenever an apprentice completes ten solo nights, the Council assigns that apprentice to a station."
+  ],
+  "modes": [
+   "intervention",
+   "statement"
+  ],
+  "roots": [
+   "rule",
+   null
+  ],
+  "question_mode": "diff",
+  "answer": "More apprentices would complete more quickly, the rotation of Keepers would be faster, and the Council might have to staff more apprentice classes per generation. The Council's standards for solo readiness would presumably be lower, possibly leading to more dim-flame events and a higher wraith risk.",
+  "cites_raw": "R25",
+  "cites": [
+   "R25"
+  ]
+ },
+ {
+  "id": "C10",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose mire-essence stored in clay vessels lost potency within six months instead of three years. What about the village's annual cycle would change?",
+  "premise": "Suppose mire-essence stored in clay vessels lost potency within six months instead of three years.",
+  "question": "What about the village's annual cycle would change?",
+  "texts": [
+   "Stored mire-essence stays good for years.",
+   "Stored mire-essence stays good for six months."
+  ],
+  "modes": [
+   "intervention",
+   "statement"
+  ],
+  "roots": [
+   "fact",
+   null
+  ],
+  "question_mode": "diff",
+  "answer": "The village could not maintain a multi-year reserve, so a single bad year could not be cushioned by stored essence. Production-shortfall winters would directly cause lantern dimming or extinguishment. The Council's redistribution would shift toward \"use what was made this month\" rather than reserve-balanced.",
+  "cites_raw": "lore §VIII",
+  "cites": [
+   "lore §VIII"
+  ]
+ },
+ {
+  "id": "C11",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose a new bad-winter event with multiple wraith emergences occurred next year. What would the Council most likely do, based on the precedent of sixty-three years ago?",
+  "premise": "Suppose a new bad-winter event with multiple wraith emergences occurred next year.",
+  "question": "What would the Council most likely do, based on the precedent of sixty-three years ago?",
+  "texts": [
+   "Four wraiths emerge from the Sunken Cove in the winter of Year 3."
+  ],
+  "modes": [
+   "statement"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "diff",
+  "answer": "Walk the Stair with multiple Keepers each evening (per Old Vesh's father's example), ration feathers more strictly, possibly call emergency Council sessions, and likely modify standing policy afterward (as the post-bad-winter Council instituted the modern feather-rationing system).",
+  "cites_raw": "lore §III, lore §V",
+  "cites": [
+   "lore §III",
+   "lore §V"
+  ]
+ },
+ {
+  "id": "C12",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose the Northcove had not existed but Aelmere had otherwise the same geography. What about the winter pattern would change?",
+  "premise": "Suppose the Northcove had not existed but Aelmere had otherwise the same geography.",
+  "question": "What about the winter pattern would change?",
+  "texts": [
+   "The Northcove is a small cove."
+  ],
+  "modes": [
+   "intervention"
+  ],
+  "roots": [
+   "entity"
+  ],
+  "question_mode": "diff",
+  "answer": "The village would lose its most reliable winter production-row. Mire-essence production in winter would depend entirely on salt-bloom-protected Cliff Path lanterns, which is more fragile. Bad-winter risk would be substantially higher.",
+  "cites_raw": "R22, lore §I",
+  "cites": [
+   "R22",
+   "lore §I"
+  ]
+ },
+ {
+  "id": "C13",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose the substitute Keeper at the Stilllight on day 111 of Year 1 had noticed the carbonized wick and corrected it promptly. What would have happened nine days later?",
+  "premise": "Suppose the substitute Keeper at the Stilllight on day 111 of Year 1 had noticed the carbonized wick and corrected it promptly.",
+  "question": "What would have happened nine days later?",
+  "texts": [
+   "The Stilllight Lantern burned dim on the night of day 111 of Year 1."
+  ],
+  "modes": [
+   "intervention"
+  ],
+  "roots": [
+   "event"
+  ],
+  "question_mode": "diff",
+  "answer": "The wraith emergence on day 120 would not have occurred. The Cliff Path lanterns drained in the following eleven days would not have been drained. The feather store would not have been depleted to the levels it reached. The downstream concern about a thin feather store leading into deep winter would have been less acute.",
+  "cites_raw": "R11, R12, events Part V",
+  "cites": [
+   "R11",
+   "R12",
+   "events Part V"
+  ]
+ },
+ {
+  "id": "C14",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose the village began deliberately encouraging sky-cat populations (e.g., extra essence to certain stations to draw higher moth counts year-round). What would the long-term effect be?",
+  "premise": "Suppose the village began deliberately encouraging sky-cat populations (e.g., extra essence to certain stations to draw higher moth counts year-round).",
+  "question": "What would the long-term effect be?",
+  "texts": [
+   "Keepers burn extra mire-essence at three Cliff Path lanterns every night."
+  ],
+  "modes": [
+   "statement"
+  ],
+  "roots": [
+   null
+  ],
+  "question_mode": "diff",
+  "answer": "Higher sustained sky-cat hunting, larger feather harvests, more secure wraith-defense, but also more aggressive moth depletion on the favored stations and possibly displacement of moths to other lanterns. This is essentially what Old Vesh proposed at the end of Year 1 — a small targeted version of the policy.",
+  "cites_raw": "R1, R2, R6, R10, events Part VII–VIII",
+  "cites": [
+   "R1",
+   "R2",
+   "R6",
+   "R10",
+   "events Part VII–VIII"
+  ]
+ },
+ {
+  "id": "C15",
+  "rule": "C — Counterfactuals",
+  "category": "C",
+  "question_md": "Suppose all forty-three Keepers retired simultaneously and only the three apprentices remained. What would happen to the village over the following weeks?",
+  "premise": "Suppose all forty-three Keepers retired simultaneously and only the three apprentices remained.",
+  "question": "What would happen to the village over the following weeks?",
+  "texts": [
+   "Forty-three Keepers are active in the present generation.",
+   "Three apprentices tend the lanterns of Aelmere."
+  ],
+  "modes": [
+   "intervention",
+   "statement"
+  ],
+  "roots": [
+   "entity",
+   null
+  ],
+  "question_mode": "diff",
+  "answer": "The apprentices could not staff all stations. Many lanterns would go un-tended. Stations at the Sunken Cove would dim, likely triggering wraith emergence within a lunar cycle. The village would face a worse-than-bad-winter crisis without time to train new Keepers (since apprenticeship requires one full year). Mire-essence supply would deplete quickly. The Council would need to recruit and train emergency apprentices in haste, breaking the normal one-year requirement.",
+  "cites_raw": "R23, R24, R25, R11, R12",
+  "cites": [
+   "R23",
+   "R24",
+   "R25",
+   "R11",
+   "R12"
+  ]
+ }
+]
