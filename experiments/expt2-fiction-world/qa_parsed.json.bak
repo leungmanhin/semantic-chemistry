@@ -27,18 +27,18 @@
     "id": "F2",
     "rule": "F — Factual recall",
     "texts": [
-      "Who is the chief Keeper?"
+      "Who is the chief Keeper of Aelmere?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (Member $x chief_keeper) $tv)"
+          "(: $prf (And (Member $x chief_keeper) (Possession $x $a) (Name $a \"Aelmere\")) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. the query puts the unknown in the individual slot of the fused role-title kind chief_keeper — exactly the atom a matching statement (\"X is the chief Keeper\") stores — and the answer comes back bare, unbound by any name."
+        "mixed: the query is well formed - it leaves the asked-for person open, types them as a chief keeper and ties Aelmere in by name - but \"the chief Keeper of Aelmere\" sits on a fault line in the translator: an of-phrase after a \"-er\" noun can be read either as the office's possessor or as the thing the keeper keeps, and the two readings land on different link heads, so if the statement of the fact takes the other reading this question matches nothing and comes back empty. The possessive form is decided rather than a coin-flip, so use it in both the statement and the question: \"Who is Aelmere's chief Keeper?\""
       ]
     },
     "census": {
@@ -99,18 +99,18 @@
     "id": "F5",
     "rule": "F — Factual recall",
     "texts": [
-      "What hunts nightmoths at a lantern-row?"
+      "What animal hunts nightmoths in Aelmere?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (And (Member $e hunt) (Agent $e $x) (Theme $e nightmoth) (Location $e $l) (Member $l lantern_row)) $tv)"
+          "(: $prf (And (Member $x animal) (Member $e hunt) (Agent $e $x) (Theme $e nightmoth) (Location $e $ae) (Name $ae \"Aelmere\")) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. the hunter is the bare wh-answer in the hunting event's agent slot, the prey stays a kind-level object the hunting does not change, and the lantern-row binds by its kind in the location slot with no tense atom, which is right for the generic present."
+        "good. the unknown sits in the hunter slot with an \"animal\" restriction on it, \"nightmoths\" stays a bare kind as the thing hunted, the hunting is located in Aelmere by name, and the habitual present rightly gets no tense marker - the query asks what the question asks and asserts nothing."
       ]
     },
     "census": {
@@ -459,18 +459,18 @@
     "id": "F20",
     "rule": "F — Factual recall",
     "texts": [
-      "How many Keepers are active?"
+      "How many Keepers are active in the present generation?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (And (GroupOf $g keeper) (Cardinality $g $n) (Inheritance $g active)) $tv)"
+          "(: $prf (And (Member sk_generation_1 generation) (GroupOf sk_generation_1 keeper) (Member sk_generation_1 present) (GroupOf $g keeper) (SubsetOf $g sk_generation_1) (Cardinality $g $n) (Inheritance $g active)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "mixed: the count line is the most the instruction set licenses and it does bind a stated count (\"three Keepers are active\"), but a plural's copular property is normally stored per member (\"the Keepers are active\") or as a vague count phrase (\"several Keepers are active\"), and neither leaves a number sitting on the group for this query to read — so the how-many form will usually come back empty. Ask for the Keepers themselves and read the count off the answers: \"Which Keepers are active?\""
+        "bad: as phrased the question cannot be asked. A count can only be hung on a group that *does* something, so \"how many Keepers are active\" — a count plus a plain adjective — has no form; \"in the present generation\" then has nothing to attach to either, so the count and the period cannot be asked together; and the current parse invents a generation whose members are Keepers, which your question never says. Rewrite with a finite verb naming what an active Keeper does, so the count and the period both ride one event: \"How many Keepers serve in the present generation?\""
       ]
     },
     "census": {
@@ -507,18 +507,18 @@
     "id": "F22",
     "rule": "F — Factual recall",
     "texts": [
-      "What lies under the water in the Sunken Cove?"
+      "Where do the bones of the old graveyard lie?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (And (Member $w water) (Name $c \"Sunken Cove\") (LocatedIn $w $c) (Under $x $w)) $tv)"
+          "(: $prf (And (Member $g graveyard) (Member $g old) (GroupOf $bones bone) (Possession $bones $g) (LocatedIn $bones $where)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. \"lies\" states a position rather than an event, so the thing asked for sits in the unknown slot of an entity-attached \"under\" atom over the water, and the Sunken Cove binds by its name as what contains that water — the same attachment a statement worded this way would take."
+        "mixed: the unknown is in the right slot (the bones' position), but the query is over-constrained and reaches only one of the ways a position gets stored. It demands a stored possession link between the bones and the graveyard, which only exists if the fact was also written as a genitive, and it asks only for containment ('in/at/inside'), so a text saying the bones lie beneath the chapel or beside the yew, or giving the place only on the burial event, returns nothing. State the tie as containment and ask the position plainly: \"Where do the bones in the old graveyard lie?\" - and if the answer you expect uses a non-containment preposition, ask with that word instead, e.g. \"What do the bones in the old graveyard lie beneath?\""
       ]
     },
     "census": {
@@ -675,18 +675,18 @@
     "id": "F29",
     "rule": "F — Factual recall",
     "texts": [
-      "Where does the cold-threshold wind come from?"
+      "What is the cold-threshold wind?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (And (Member $w cold_threshold_wind) (Member $e come) (Patient $e $w) (Source $e $s)) $tv)"
+          "(: $prf (Measure cold_threshold_wind wind $n $u) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. the wind binds by its compound kind, the asked-for origin is the bare unknown in the coming event's source slot, and the wind is the undergoer of the motion rather than a volitional doer, which is the reading a natural force takes."
+        "bad: the query hard-codes \"cold_threshold_wind\" as a knowledge-base symbol instead of looking the referent up by its kind, and it invents a measurement dimension called \"wind\" that no word of your question supplies, so it asks for a number on a scale nothing would ever have been stored under and cannot reach a definitional statement at all. We have no \"what is X?\" retrieval form, so name the kind of answer you want. For a classification, ask \"What kind of thing is the cold-threshold wind?\"; if what you want is its threshold value, name the dimension instead and ask \"What temperature is the cold-threshold wind?\" (or \"What wind speed is the cold-threshold wind?\"), which binds a stored measure cleanly."
       ]
     },
     "census": {
@@ -723,18 +723,18 @@
     "id": "W1",
     "rule": "W — Why-questions",
     "texts": [
-      "Why do the lanterns of Aelmere burn every night?"
+      "Why does Aelmere keep lanterns burning every night?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (And (Member $e burn) (Patient $e $l) (GroupOf $l lantern) (Possession $l $a) (Name $a \"Aelmere\") (Time $e night) (Every $e 1 day) (ReasonFor $r $e)) $tv)"
+          "(: $prf (And (Name $a \"Aelmere\") (Member $e keep) (Agent $e $a) (Theme $e $g) (GroupOf $g lantern) (Member $s burning) (Experiencer $s $g) (Still $s) (Result $e $s) (Time $e night) (Every $e 1 day) (ReasonFor $r $e)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. the query asks for the reason of the burning itself, keeps the habitual reading of \"every night\" (a night slot plus its daily cycle, no tense), and binds both the lantern group and its Aelmere link."
+        "bad: the question asks for a maintained state named `burning` and binds the lanterns as a definite group, but a statement of this same habit would file the state under the verb `burn` with the -ing recorded as an aspect marker, and would leave a bare-plural object as the bare kind `lantern` — so the query can never match the stored fact. The deeper trouble is the phrasing itself: \"keep X V-ing\" maintaining an ongoing activity has no settled form in the translator (only a resultant state does, as in \"kept the gate shut\"), so the lanterns' role in the burning is left undecided. Rewrite with a plain adjectival result state and a definite object: \"Why does Aelmere keep the lanterns alight every night?\" (\"keep the lanterns lit\" works the same way)."
       ]
     },
     "census": {
@@ -771,18 +771,18 @@
     "id": "W3",
     "rule": "W — Why-questions",
     "texts": [
-      "Why does a Keeper store the mire-essence that forms in the cauldron?"
+      "Why is Aelmere's mire-essence supply considered a closed cycle?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (And (Member $k keeper) (Member $e store) (Agent $e $k) (Theme $e $m) (Member $m mire_essence) (Member $f form) (Patient $f $m) (Location $f $c) (Member $c cauldron) (ReasonFor $r $e)) $tv)"
+          "(: $prf (And (Name $ae \"Aelmere\") (Member $s mire_essence_supply) (Possession $s $ae) (Member $e consider) (Theme $e (Member $s closed_cycle)) (ReasonFor $r $e)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. the storing is the focus event the reason is asked of, and \"that forms in the cauldron\" comes through as its own forming event with the mire-essence and the cauldron both in place."
+        "good. the query rebuilds the \"is considered\" report faithfully — an opinion event with no named holder, the closed-cycle claim held unasserted inside it, and the supply's typing plus its link to Aelmere outside — and asks the reason for the considering. One thing to keep steady on your side: the answer will only bind if the statement that establishes this uses the same wording, \"mire-essence supply\" and \"closed cycle\"."
       ]
     },
     "census": {
@@ -915,18 +915,18 @@
     "id": "W9",
     "rule": "W — Why-questions",
     "texts": [
-      "Why does the Council redistribute mire-essence reserves?"
+      "Why does the Council redistribute mire-essence at the full moon?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (And (Member $e redistribute) (Agent $e $c) (Member $c council) (Theme $e mire_essence_reserve) (ReasonFor $r $e)) $tv)"
+          "(: $prf (And (Member $c council) (Member $e redistribute) (Agent $e $c) (Theme $e mire_essence) (Time $e full_moon) (ReasonFor $r $e)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. the query asks why the redistributing happens, with the Council as the doer and the mire-essence reserves as what is moved, and it adds nothing the question did not ask."
+        "good. the query asks for the reason the Council redistributes mire-essence and keeps the full-moon timing on the event; \"at the full moon\" is not one of the calendar or time-of-day forms our translator has a settled slot for, but the plain full-moon time marker it used is the closest fit and no rewording of that phrase would do better."
       ]
     },
     "census": {
@@ -938,15 +938,25 @@
   {
     "id": "W10",
     "rule": "W — Why-questions",
-    "texts": [],
+    "texts": [
+      "Why does the Council rarely order Keepers to burn wintergloss?"
+    ],
     "stmts": {
-      "texts": []
+      "texts": [
+        [
+          "(: $prf (And (Member $c council) (Member $e order) (Agent $e $c) (Recipient $e keeper) (Theme $e $b) (Member $b burn) (Agent $b keeper) (Patient $b wintergloss) (ReasonFor $r $e)) $tv)"
+        ]
+      ]
     },
     "review": {
-      "texts": []
+      "texts": [
+        "mixed: the ordering and its \"Keepers to burn wintergloss\" complement are built correctly, but \"rarely\" drops out of the question entirely, so the query asks why the Council orders this at all and matches a Council that orders it constantly just as well — the infrequency you are actually asking about has nothing in the question to attach to. Rewrite as \"Why is it rare for the Council to order keepers to burn wintergloss?\": making rarity a stated property of the ordering gives the why something to point at instead of an adverb the query cannot carry, and the lowercase \"keepers\" keeps the word reading as the role rather than as a name."
+      ]
     },
     "census": {
-      "texts": []
+      "texts": [
+        "ok"
+      ]
     }
   },
   {
@@ -1097,18 +1107,18 @@
     "id": "W17",
     "rule": "W — Why-questions",
     "texts": [
-      "Why did the thread harvest at the West Row fall in Year 1?"
+      "Why did the thread harvest at the West Row fall during the wraith's persistence in Year 1?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (And (Member $h thread_harvest) (Name $wr \"West Row\") (LocatedIn $h $wr) (Member $e fall) (Theme $e $h) (Time $e (Year 1)) (Past $e) (ReasonFor $r $e)) $tv)"
+          "(: $prf (And (Member $h thread_harvest) (Location $h $loc) (Name $loc \"West Row\") (Member $e fall) (Theme $e $h) (Past $e) (Member $wth wraith) (Member $p persistence) (Experiencer $p $wth) (Time $p (Year 1)) (During $e $p) (ReasonFor $r $e)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "mixed: nothing is lost and the query does ask for the reason of the fall, but the wording leaves two things to chance — \"fall\" reads either as a drop in yield or as \"took place in Year 1\", and a place phrase hung on the harvest noun (\"the thread harvest at the West Row\") has no settled encoding, so the row link is recorded here in a different shape from your parallel Middle Row question and the two will not match each other. If you mean the yield dropped, write \"Why did the West Row thread harvest decline in Year 1?\"; if you mean the harvest was held then, write \"Why did the West Row thread harvest take place in Year 1?\" — the named premodifier gives the row one fixed encoding either way."
+        "mixed: the fall, the wraith's persistence, the Year 1 time and the reason ask are all right, but \"at the West Row\" is hung on the harvest itself, and a place phrase on an event-noun like \"harvest\" has no settled home — a statement could just as easily record the West Row as where the harvest *is* rather than where it happens, and then this question finds nothing. Attach the place to the falling instead, where it is unambiguous: \"Why did the thread harvest fall at the West Row during the wraith's persistence in Year 1?\""
       ]
     },
     "census": {
@@ -1121,18 +1131,18 @@
     "id": "W18",
     "rule": "W — Why-questions",
     "texts": [
-      "Why did the thread harvest at the Middle Row fall on day 17 of Year 1?"
+      "Why did the cauldrons yield two vessels of mire-essence on day 17 of Year 1?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (And (Member $f fall) (Theme $f $h) (Member $h thread_harvest) (Location $h $m) (Name $m \"Middle Row\") (Past $f) (Time $f (Day 17)) (Time $f (Year 1)) (ReasonFor $r $f)) $tv)"
+          "(: $prf (And (Member $e yield) (Agent $e $g) (GroupOf $g cauldron) (Patient $e $m) (Member $m mire_essence) (Measure $m quantity 2 vessel) (Time $e (Day 17)) (Time $e (Year 1)) (Past $e) (ReasonFor $r $e)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "bad: \"fall on day 17 of Year 1\" was taken literally — the query invents a separate falling event with the harvest as its object and puts the date on that falling, so it asks the reason for a fall rather than the reason the harvest was on day 17. Date the harvest with a plain light verb instead: \"Why did the thread harvest at the Middle Row take place on day 17 of Year 1?\" If you actually meant the yield dropped that day, say so with an unambiguous verb: \"Why did the thread harvest at the Middle Row decline on day 17 of Year 1?\""
+        "bad: the query measures the yield on a dimension called \"quantity\" that no word in your question supplies, so it can only match a stored fact that happens to have invented the same dimension — and \"two vessels of mire-essence\" (a container amount of a substance) has no settled form at all, so the count may never line up with how the yield was recorded. Say the amount as a plain count of things instead of a container measure of a substance: \"Why did the cauldrons yield two mire-essence vessels on day 17 of Year 1?\""
       ]
     },
     "census": {
@@ -1145,18 +1155,18 @@
     "id": "W19",
     "rule": "W — Why-questions",
     "texts": [
-      "Why does a surviving nightmoth flee to a dim lantern in the Hollows?"
+      "Why do surviving nightmoths flee to the dim lanterns of the Hollows during a sky-cat hunt?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (And (Member $n nightmoth) (Member $n surviving) (Member $e flee) (Agent $e $n) (Goal $e $l) (Member $l lantern) (Member $l dim) (Location $e $h) (Name $h \"Hollows\") (ReasonFor $r $e)) $tv)"
+          "(: $prf (And (Member $x nightmoth) (Inheritance nightmoth moth) (Member $x surviving) (Member $e flee) (Agent $e $x) (Goal $e $l) (GroupOf $l lantern) (Possession $l $hw) (Name $hw \"Hollows\") (During $e $h) (Member $h sky_cat_hunt) (Inheritance sky_cat_hunt hunt) (ReasonFor $r $e)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. the query asks for the reason of the fleeing itself, keeps \"surviving\" and \"dim\" as plain descriptions of the moth and the lantern, uses the goal sense of \"to\" for a lantern it flees toward, and binds \"Hollows\" by its name alone. The reviewer's worry that \"in the Hollows\" might belong to the lantern rather than to the fleeing was judged not a defect — both attachments are licensed and the question is asked faithfully either way — so no rewrite is needed."
+        "bad: \"dim\" is dropped, so the question asks about any lanterns of the Hollows rather than the dim ones — and it cannot be put back, because a describing word on a definite plural (\"the dim lanterns\") is recorded of the individual lanterns, never of the set, so a question aimed at the set has nothing to bind. Ask about a single lantern, where the property sits on the thing itself: \"Why do surviving nightmoths flee to a dim lantern of the Hollows during a sky-cat hunt?\""
       ]
     },
     "census": {
@@ -1241,18 +1251,18 @@
     "id": "W23",
     "rule": "W — Why-questions",
     "texts": [
-      "Why did the Council discuss the sky-cat drought in Year 1?"
+      "Why did Old Vesh report the thin feather autumn of twenty-six years ago to the Council in Year 1?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (And (Member $c council) (Member $e discuss) (Agent $e $c) (Theme $e $d) (Member $d sky_cat_drought) (Time $e (Year 1)) (Past $e) (ReasonFor $r $e)) $tv)"
+          "(: $prf (And (Name $v \"Old Vesh\") (Member $e report) (Agent $e $v) (Theme $e $a) (Member $a feather_autumn) (Member $a thin) (BeforeBy $a now 26 year) (Recipient $e $c) (Member $c council) (Time $e (Year 1)) (Past $e) (ReasonFor $r $e)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. the query asks for the reason of the Council's discussing, keeps the sky-cat drought as the thing discussed (unchanged by being discussed), and pins the discussion to Year 1 in the past, so every part of the question is carried."
+        "good. every element of the question is carried — Old Vesh as the reporter, the thin feather autumn as what was reported, the Council as the addressee, Year 1 as when the reporting happened, and the autumn's own dating as a twenty-six-year gap back from now — with the reason as the single unknown."
       ]
     },
     "census": {
@@ -1264,15 +1274,25 @@
   {
     "id": "W24",
     "rule": "W — Why-questions",
-    "texts": [],
+    "texts": [
+      "Why do Keepers count many sky-cats on the cliff-spires in the morning in late summer?"
+    ],
     "stmts": {
-      "texts": []
+      "texts": [
+        [
+          "(: $prf (And (Member $k keeper) (Member $e count) (Agent $e $k) (Theme $e $g) (GroupOf $g sky_cat) (CardinalityPhrase $g \"many\") (Location $e $s) (GroupOf $s cliff_spire) (Time $e morning) (Time $e late_summer) (ReasonFor $r $e)) $tv)"
+        ]
+      ]
     },
     "review": {
-      "texts": []
+      "texts": [
+        "good. the query asks for the reason of the counting event and keeps every restriction the question puts on it — a keeper as the counter, a \"many\"-sized set of sky-cats as what is counted, the cliff-spires as where, and both the morning and the late-summer time."
+      ]
     },
     "census": {
-      "texts": []
+      "texts": [
+        "ok"
+      ]
     }
   },
   {
@@ -1423,18 +1443,18 @@
     "id": "W31",
     "rule": "W — Why-questions",
     "texts": [
-      "Why does the Council meet at the Watch?"
+      "Why does the Council meet at every full moon?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (And (Member $e meet) (Agent $e $c) (Member $c council) (Location $e $w) (Member $w watch) (ReasonFor $r $e)) $tv)"
+          "(: $prf (And (Member $c council) (Member $e meet) (Agent $e $c) (Time $e full_moon) (ReasonFor $r $e)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. the query asks for the reason of the Council's meeting, treats the Council as one body doing the meeting rather than as separate members, and puts \"at the Watch\" on the meeting itself; the unmarked present is read as a standing practice, which is what the question intends."
+        "mixed: the query asks the right thing (the reason the Council meets, with the Council as the meeting's agent), but it pins the recurrence as a plain time slot 'full_moon' and drops 'every' -- 'at every full moon' is not one of the calendar slots the instruction set fixes (weekday, day-part, month name), so a statement of the same fact may instead store the recurrence as a per-occurrence rule with no such time atom, and then this question matches nothing. Make the recurrence an explicit occurrence clause that a statement and a question route the same way: \"Why does the Council meet every time the moon is full?\""
       ]
     },
     "census": {
@@ -1471,18 +1491,18 @@
     "id": "W33",
     "rule": "W — Why-questions",
     "texts": [
-      "Why does Old Vesh remember two bad winters?"
+      "Why does Old Vesh tell the story of the bad winter of sixty-three years ago?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: $prf (And (Name $v \"Old Vesh\") (Member $e remember) (Experiencer $e $v) (Stimulus $e $w) (GroupOf $w winter) (Cardinality $w 2) (Implication (PartOf $x $w) (Member $x bad)) (ReasonFor $r $e)) $tv)"
+          "(: $prf (And (Name $v \"Old Vesh\") (Member $e tell) (Agent $e $v) (Theme $e $s) (Member $s story) (Of $s $w) (Member $w winter) (Member $w bad) (BeforeBy $w now 63 year) (ReasonFor $r $e)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. Old Vesh is found by name, remembering is treated as a state he is in with the winters as what he remembers, and \"two bad winters\" keeps the count of two on the pair while \"bad\" is said of each winter separately — the same shape a statement of the same content would take."
+        "mixed: the question is asked correctly (Old Vesh as the teller, the reason left open), but the parse ties the story to the winter with an 'Of' link the instruction set licenses only for nominalizations and true relational nouns -- 'the story of X' is an aboutness phrase, which it explicitly excludes -- so a statement of the same fact would most likely leave that link out and this query would then match nothing. Put the aboutness on a verb, where it does have a licensed slot: \"Why does Old Vesh tell the story that describes the bad winter of sixty-three years ago?\""
       ]
     },
     "census": {
@@ -2221,24 +2241,26 @@
     "id": "N19",
     "rule": "N — What-next",
     "texts": [
-      "The moon is full.",
-      "What does the Council do?"
+      "The Council meets at the full moon.",
+      "What does the Council do with the mire-essence reserves?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: moon_type (Member sk_moon_1 moon) (STV 1.0 0.99))",
-          "(: moon_full (Member sk_moon_1 full) (STV 1.0 0.99))"
+          "(: council_type (Member sk_council_1 council) (STV 1.0 0.99))",
+          "(: meet_ev (Member sk_meet_1 meet) (STV 1.0 0.99))",
+          "(: meet_ag (Agent sk_meet_1 sk_council_1) (STV 1.0 0.99))",
+          "(: meet_time (Time sk_meet_1 full_moon) (STV 1.0 0.99))"
         ],
         [
-          "(: $prf (And (Member $b council) (Member $e $verb) (Agent $e $b)) $tv)"
+          "(: $prf (And (Member $e $verb) (Agent $e sk_council_1) (Theme $e $g) (GroupOf $g mire_essence_reserve)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. \"the moon\" becomes one specific thing of its kind and \"full\" is stated of that thing directly, with no extra tense or hedging — exactly what the sentence asserts.",
-        "good. the query leaves the action open and asks for whatever the Council is the doer of, so any stored Council activity will answer it; the moon fact from the first sentence names no referent of this question, so nothing from it is pulled in or repeated."
+        "good. the meeting, the Council as its doer and \"at the full moon\" as its time all come through, and leaving the event unmarked is the recurring/habitual reading the bare present states.",
+        "mixed: the Council and the reserves are picked out correctly, but \"do with\" leaves both the verb and the reserves' part in it unknown, so the question has to guess one slot and will miss an answer that stores the reserves as the thing consumed or as a \"with\" phrase. Rewrite by naming the action you expect and letting the reserves be its plain object, e.g. \"Does the Council distribute the mire-essence reserves?\" (substituting whichever verb your answer uses); keep \"What does the Council do?\" as a separate question if the verb must stay open."
       ]
     },
     "census": {

@@ -28,11 +28,11 @@
   "id": "F2",
   "rule": "F — Factual recall",
   "category": "F",
-  "question_md": "Who is the chief Keeper of Aelmere?",
+  "question_md": "Who is the chief Keeper?",
   "premise": null,
-  "question": "Who is the chief Keeper of Aelmere?",
+  "question": "Who is the chief Keeper?",
   "texts": [
-   "Who is the chief Keeper of Aelmere?"
+   "Who is the chief Keeper?"
   ],
   "modes": [
    "query"
@@ -98,11 +98,11 @@
   "id": "F5",
   "rule": "F — Factual recall",
   "category": "F",
-  "question_md": "What animal hunts nightmoths in Aelmere?",
+  "question_md": "What hunts nightmoths at a lantern-row?",
   "premise": null,
-  "question": "What animal hunts nightmoths in Aelmere?",
+  "question": "What hunts nightmoths at a lantern-row?",
   "texts": [
-   "What animal hunts nightmoths in Aelmere?"
+   "What hunts nightmoths at a lantern-row?"
   ],
   "modes": [
    "query"
@@ -452,11 +452,11 @@
   "id": "F20",
   "rule": "F — Factual recall",
   "category": "F",
-  "question_md": "How many Keepers are active in the present generation?",
+  "question_md": "How many Keepers are active?",
   "premise": null,
-  "question": "How many Keepers are active in the present generation?",
+  "question": "How many Keepers are active?",
   "texts": [
-   "How many Keepers are active in the present generation?"
+   "How many Keepers are active?"
   ],
   "modes": [
    "query"
@@ -498,11 +498,11 @@
   "id": "F22",
   "rule": "F — Factual recall",
   "category": "F",
-  "question_md": "Where do the bones of the old graveyard lie?",
+  "question_md": "What lies under the water in the Sunken Cove?",
   "premise": null,
-  "question": "Where do the bones of the old graveyard lie?",
+  "question": "What lies under the water in the Sunken Cove?",
   "texts": [
-   "Where do the bones of the old graveyard lie?"
+   "What lies under the water in the Sunken Cove?"
   ],
   "modes": [
    "query"
@@ -511,7 +511,7 @@
    null
   ],
   "question_mode": "query",
-  "answer": "Under the water in the Sunken Cove; a storm-surge washed the old graveyard into the cove six generations ago.",
+  "answer": "The bones of the old graveyard; a storm-surge washed the graveyard into the cove six generations ago.",
   "cites_raw": "lore §I, lore §V",
   "cites": [
    "lore §I",
@@ -662,11 +662,11 @@
   "id": "F29",
   "rule": "F — Factual recall",
   "category": "F",
-  "question_md": "What is the cold-threshold wind?",
+  "question_md": "Where does the cold-threshold wind come from?",
   "premise": null,
-  "question": "What is the cold-threshold wind?",
+  "question": "Where does the cold-threshold wind come from?",
   "texts": [
-   "What is the cold-threshold wind?"
+   "Where does the cold-threshold wind come from?"
   ],
   "modes": [
    "query"
@@ -675,7 +675,7 @@
    null
   ],
   "question_mode": "query",
-  "answer": "The cutting north wind off the Cold Sea on clear winter nights, sharp enough to extinguish unprotected lanterns.",
+  "answer": "Off the Cold Sea; it is a cutting north wind that extinguishes unprotected lanterns on clear winter nights.",
   "cites_raw": "R16, lore §VII",
   "cites": [
    "R16",
@@ -709,11 +709,11 @@
   "id": "W1",
   "rule": "W — Why-questions",
   "category": "W",
-  "question_md": "Why does Aelmere keep lanterns burning every night?",
+  "question_md": "Why do the lanterns of Aelmere burn every night?",
   "premise": null,
-  "question": "Why does Aelmere keep lanterns burning every night?",
+  "question": "Why do the lanterns of Aelmere burn every night?",
   "texts": [
-   "Why does Aelmere keep lanterns burning every night?"
+   "Why do the lanterns of Aelmere burn every night?"
   ],
   "modes": [
    "query"
@@ -761,11 +761,11 @@
   "id": "W3",
   "rule": "W — Why-questions",
   "category": "W",
-  "question_md": "Why is Aelmere's mire-essence supply considered a closed cycle?",
+  "question_md": "Why does a Keeper store the mire-essence that forms in the cauldron?",
   "premise": null,
-  "question": "Why is Aelmere's mire-essence supply considered a closed cycle?",
+  "question": "Why does a Keeper store the mire-essence that forms in the cauldron?",
   "texts": [
-   "Why is Aelmere's mire-essence supply considered a closed cycle?"
+   "Why does a Keeper store the mire-essence that forms in the cauldron?"
   ],
   "modes": [
    "query"
@@ -774,7 +774,7 @@
    null
   ],
   "question_mode": "query",
-  "answer": "Because mire-essence enables lanterns, lanterns produce mist-light, mist-light attracts nightmoths, nightmoths leave silken threads, and silken threads are boiled into mire-essence. The output of the chain re-enters as input.",
+  "answer": "Because stored mire-essence lights the lanterns, the lanterns produce mist-light, mist-light attracts nightmoths, nightmoths leave silken threads, and silken threads boiled in sea-water form mire-essence again; the output of the chain re-enters as input.",
   "cites_raw": "R1–R5; Cycle A",
   "cites": [
    "R1–R5",
@@ -906,11 +906,11 @@
   "id": "W9",
   "rule": "W — Why-questions",
   "category": "W",
-  "question_md": "Why does the Council redistribute mire-essence at the full moon?",
+  "question_md": "Why does the Council redistribute mire-essence reserves?",
   "premise": null,
-  "question": "Why does the Council redistribute mire-essence at the full moon?",
+  "question": "Why does the Council redistribute mire-essence reserves?",
   "texts": [
-   "Why does the Council redistribute mire-essence at the full moon?"
+   "Why does the Council redistribute mire-essence reserves?"
   ],
   "modes": [
    "query"
@@ -933,21 +933,16 @@
   "question_md": "Why does the Council rarely order Keepers to burn wintergloss?",
   "premise": null,
   "question": "Why does the Council rarely order Keepers to burn wintergloss?",
-  "texts": [
-   "Why does the Council rarely order Keepers to burn wintergloss?"
-  ],
-  "modes": [
-   "query"
-  ],
-  "roots": [
-   null
-  ],
+  "texts": [],
+  "modes": [],
+  "roots": [],
   "question_mode": "query",
   "answer": "Because wintergloss repels nightmoths, and the village depends on attracting nightmoths to produce silken threads.",
   "cites_raw": "R21",
   "cites": [
    "R21"
-  ]
+  ],
+  "retired": "'rarely' has no query carrier; the lore sentence behind it is one STV-0.1 bundle"
  },
  {
   "id": "W11",
@@ -1097,11 +1092,11 @@
   "id": "W17",
   "rule": "W — Why-questions",
   "category": "W",
-  "question_md": "Why did the thread harvest at the West Row fall during the wraith's persistence in Year 1?",
+  "question_md": "Why did the thread harvest at the West Row fall in Year 1?",
   "premise": null,
-  "question": "Why did the thread harvest at the West Row fall during the wraith's persistence in Year 1?",
+  "question": "Why did the thread harvest at the West Row fall in Year 1?",
   "texts": [
-   "Why did the thread harvest at the West Row fall during the wraith's persistence in Year 1?"
+   "Why did the thread harvest at the West Row fall in Year 1?"
   ],
   "modes": [
    "query"
@@ -1121,11 +1116,11 @@
   "id": "W18",
   "rule": "W — Why-questions",
   "category": "W",
-  "question_md": "Why did the cauldrons yield two vessels of mire-essence on day 17 of Year 1?",
+  "question_md": "Why did the thread harvest at the Middle Row fall on day 17 of Year 1?",
   "premise": null,
-  "question": "Why did the cauldrons yield two vessels of mire-essence on day 17 of Year 1?",
+  "question": "Why did the thread harvest at the Middle Row fall on day 17 of Year 1?",
   "texts": [
-   "Why did the cauldrons yield two vessels of mire-essence on day 17 of Year 1?"
+   "Why did the thread harvest at the Middle Row fall on day 17 of Year 1?"
   ],
   "modes": [
    "query"
@@ -1134,12 +1129,11 @@
    null
   ],
   "question_mode": "query",
-  "answer": "Because the eleven relit lanterns of the Middle Row burned dimly and gave weak mist-light, the weak mist-light attracted a handful of nightmoths, the thread harvest at the Middle Row fell, and fewer threads boil into less mire-essence.",
-  "cites_raw": "R14, R3, R4, events Part II",
+  "answer": "Because the eleven relit lanterns of the Middle Row burned dimly and gave weak mist-light, and the weak mist-light attracted only a handful of nightmoths.",
+  "cites_raw": "R14, R3, events Part II",
   "cites": [
    "R14",
    "R3",
-   "R4",
    "events Part II"
   ]
  },
@@ -1147,11 +1141,11 @@
   "id": "W19",
   "rule": "W — Why-questions",
   "category": "W",
-  "question_md": "Why do surviving nightmoths flee to the dim lanterns of the Hollows during a sky-cat hunt?",
+  "question_md": "Why does a surviving nightmoth flee to a dim lantern in the Hollows?",
   "premise": null,
-  "question": "Why do surviving nightmoths flee to the dim lanterns of the Hollows during a sky-cat hunt?",
+  "question": "Why does a surviving nightmoth flee to a dim lantern in the Hollows?",
   "texts": [
-   "Why do surviving nightmoths flee to the dim lanterns of the Hollows during a sky-cat hunt?"
+   "Why does a surviving nightmoth flee to a dim lantern in the Hollows?"
   ],
   "modes": [
    "query"
@@ -1247,11 +1241,11 @@
   "id": "W23",
   "rule": "W — Why-questions",
   "category": "W",
-  "question_md": "Why did Old Vesh report the thin feather autumn of twenty-six years ago to the Council in Year 1?",
+  "question_md": "Why did the Council discuss the sky-cat drought in Year 1?",
   "premise": null,
-  "question": "Why did Old Vesh report the thin feather autumn of twenty-six years ago to the Council in Year 1?",
+  "question": "Why did the Council discuss the sky-cat drought in Year 1?",
   "texts": [
-   "Why did Old Vesh report the thin feather autumn of twenty-six years ago to the Council in Year 1?"
+   "Why did the Council discuss the sky-cat drought in Year 1?"
   ],
   "modes": [
    "query"
@@ -1260,7 +1254,7 @@
    null
   ],
   "question_mode": "query",
-  "answer": "Because thin sky-cat activity means thin feather harvest, and thin feathers mean weak wraith-warding capacity for the coming winter. Old Vesh remembers that the bad winter twenty-six years ago was also preceded by a thin feather autumn.",
+  "answer": "Because a handful of sky-cats had been visible on the cliff-spires for two weeks, so the feather harvest was thin, and a thin feather autumn came before the bad winter of twenty-six years ago.",
   "cites_raw": "R28, R29, events Part IV",
   "cites": [
    "R28",
@@ -1275,15 +1269,9 @@
   "question_md": "Why do Keepers count many sky-cats on the cliff-spires in the morning in late summer?",
   "premise": null,
   "question": "Why do Keepers count many sky-cats on the cliff-spires in the morning in late summer?",
-  "texts": [
-   "Why do Keepers count many sky-cats on the cliff-spires in the morning in late summer?"
-  ],
-  "modes": [
-   "query"
-  ],
-  "roots": [
-   null
-  ],
+  "texts": [],
+  "modes": [],
+  "roots": [],
   "question_mode": "query",
   "answer": "Because moth-counts are high (peak moth-season), sky-cats descend often to hunt, and they molt during these busy weeks, producing more feathers at the cliff base. The Keepers also observe more sky-cats on the spires after hunting nights.",
   "cites_raw": "R10, R28, lore §VI",
@@ -1291,7 +1279,8 @@
    "R10",
    "R28",
    "lore §VI"
-  ]
+  ],
+  "retired": "the late-summer peak is a lore generalization with no rule or episode behind it"
  },
  {
   "id": "W25",
@@ -1445,11 +1434,11 @@
   "id": "W31",
   "rule": "W — Why-questions",
   "category": "W",
-  "question_md": "Why does the Council meet at every full moon?",
+  "question_md": "Why does the Council meet at the Watch?",
   "premise": null,
-  "question": "Why does the Council meet at every full moon?",
+  "question": "Why does the Council meet at the Watch?",
   "texts": [
-   "Why does the Council meet at every full moon?"
+   "Why does the Council meet at the Watch?"
   ],
   "modes": [
    "query"
@@ -1458,7 +1447,7 @@
    null
   ],
   "question_mode": "query",
-  "answer": "Because the full-moon meeting is the village's established calendar marker for Council business, and emergencies are rare enough that off-cycle meetings are not regularly required.",
+  "answer": "Because the full-moon meeting at the Watch is the village's established calendar marker for Council business.",
   "cites_raw": "R26, lore §III",
   "cites": [
    "R26",
@@ -1494,11 +1483,11 @@
   "id": "W33",
   "rule": "W — Why-questions",
   "category": "W",
-  "question_md": "Why does Old Vesh tell the story of the bad winter of sixty-three years ago?",
+  "question_md": "Why does Old Vesh remember two bad winters?",
   "premise": null,
-  "question": "Why does Old Vesh tell the story of the bad winter of sixty-three years ago?",
+  "question": "Why does Old Vesh remember two bad winters?",
   "texts": [
-   "Why does Old Vesh tell the story of the bad winter of sixty-three years ago?"
+   "Why does Old Vesh remember two bad winters?"
   ],
   "modes": [
    "query"
@@ -1507,9 +1496,10 @@
    null
   ],
   "question_mode": "query",
-  "answer": "Because he was a boy of eight at the time and remembers his father (then a Keeper) walking the Cove Stair with three other men every evening of that winter. It was a formative memory of his childhood.",
-  "cites_raw": "lore §III",
+  "answer": "Because he was a boy of eight in the bad winter of sixty-three years ago, when his father walked the Cove Stair every evening with three Keepers, and he was a Keeper in the bad winter of twenty-six years ago.",
+  "cites_raw": "lore §II, lore §III",
   "cites": [
+   "lore §II",
    "lore §III"
   ]
  },
@@ -2047,12 +2037,12 @@
   "id": "N19",
   "rule": "N — What-next",
   "category": "N",
-  "question_md": "The Council meets at the full moon. What does the Council do with the mire-essence reserves?",
-  "premise": "The Council meets at the full moon.",
-  "question": "What does the Council do with the mire-essence reserves?",
+  "question_md": "The moon is full. What does the Council do?",
+  "premise": "The moon is full.",
+  "question": "What does the Council do?",
   "texts": [
-   "The Council meets at the full moon.",
-   "What does the Council do with the mire-essence reserves?"
+   "The moon is full.",
+   "What does the Council do?"
   ],
   "modes": [
    "statement",
@@ -2063,9 +2053,10 @@
    null
   ],
   "question_mode": "query",
-  "answer": "The Council redistributes mire-essence: productive stations contribute to the central pool, burdened stations draw from it, and the ledgers record the redistribution.",
-  "cites_raw": "R27",
+  "answer": "The Council meets at the Watch and redistributes mire-essence reserves: productive stations contribute to the central pool, burdened stations draw from it, and the ledgers record the redistribution.",
+  "cites_raw": "R26, R27",
   "cites": [
+   "R26",
    "R27"
   ]
  },

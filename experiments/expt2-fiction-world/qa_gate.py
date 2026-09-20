@@ -25,12 +25,13 @@ usage: python3 qa_gate.py [--mock] [--no-relax]
 import json, re, sys, collections, os
 MOCK = '--mock' in sys.argv
 LIMIT = next((int(a.split('=')[1]) for a in sys.argv if a.startswith('--limit=')), None)
+ONLY = next((set(a.split('=')[1].split(',')) for a in sys.argv if a.startswith('--only=')), None)
 sys.argv = ['firing_test.py', '--diagnose=NONE'] + [a for a in sys.argv[1:] if a == '--no-relax']
 src = open('firing_test.py').read().replace('print(', 'noprint(')
 ns = {'noprint': lambda *a, **k: None}
 exec(compile(src, 'firing_test.py', 'exec'), ns)
-facts, laws, by_head, kinds_of, unify, cands, match, order, canon, types_in, body, parse, RELAX, ATTACH = (
-    ns[k] for k in 'facts laws by_head kinds_of unify cands match order canon types_in body parse RELAX ATTACH'.split())
+facts, laws, by_head, kinds_of, unify, cands, match, order, canon, types_in, body, parse, RELAX, ATTACH, state_witnesses = (
+    ns[k] for k in 'facts laws by_head kinds_of unify cands match order canon types_in body parse RELAX ATTACH state_witnesses'.split())
 wr = json.load(open('world_rules_parses.json')); lore = json.load(open('lore_parsed.json')) if os.path.exists('lore_parsed.json') else []
 DERIVED = {'ReasonFor', 'PurposeOf'}
 ROLES = ['Object', 'Agent', 'Experiencer', 'Recipient', 'Stimulus', 'Beneficiary', 'Goal', 'Source', 'Location']
@@ -64,6 +65,7 @@ for uid, prem, cons in rules:
     for c in prem + cons: symbols_of(c, inventory)
 inventory = {s for s in inventory if not s.startswith('?')}
 idx = collections.defaultdict(list)     # (head, position, value) -> facts
+SCOPE = [None]                          # the task being checked: its witnesses are 'uid:…'
 wok = collections.defaultdict(set)      # kind -> witnesses / constants typed with it
 def index_fact(f, add=True):
     for i, a in enumerate(f[1:], 1):
@@ -124,8 +126,9 @@ def candidates(c, b=None):
             if RELAX and ':' not in v: vals |= wok.get(v, set()) | {w for k in subkinds.get(v, ()) for w in wok.get(k, ())}
             xs = [f for h in heads for val in vals for f in idx.get((h, i, val), [])]
         if best is None or len(xs) < len(best): best = xs
-    if best is not None: return best
-    return [f for h in heads for f in by_head.get(h, [])]
+    xs = best if best is not None else [f for h in heads for f in by_head.get(h, [])]
+    if SCOPE[0]: xs = sorted(xs, key=lambda f: 0 if any(isinstance(x, str) and x.startswith(SCOPE[0]) for x in f) else 1)
+    return xs
 def unify_q(c, f, b):
     if c[0] == 'To' and f[0] in ROLES: return unify2(c[1], f[1], b) and unify2(c[2], f[2], b)
     if c[0] == 'Time' and len(c) == 3 and isvar(walk(c[2], b)) and f[0] in TEMPORAL: return unify2(c[1], f[1], b)
@@ -133,27 +136,33 @@ def unify_q(c, f, b):
     if c[0] == 'Theme' and len(c) == 3 and isinstance(c[2], tuple) and f[0] in ('Theme', 'Object') and isinstance(f[2], tuple):
         return unify2(c[1], f[1], b) and sealed_covers(c[2], f[2])
     return unify2(c, f, b)
-def match_q(conjs, limit=50000):
-    """DFS over all bindings, the most constrained conjunct first at every step; returns (binding, None) or
-    (None, the conjunct that could not be satisfied at the deepest point reached)"""
-    best = [-1, None]; nodes = [0]
+def match_q(conjs, limit=50000, prefer=None, max_solutions=60):
+    """DFS over all bindings, the most constrained conjunct first at every step. Returns (binding, None), where the
+    binding is the first one satisfying `prefer` if any does, else the first found; or (None, the conjunct that could
+    not be satisfied at the deepest point reached)."""
+    best = [-1, None]; nodes = [0]; found = []
     def dfs(rest, b):
-        if nodes[0] > limit: return None
+        if nodes[0] > limit or len(found) >= max_solutions: return
         if len(conjs) - len(rest) > best[0]: best[0] = len(conjs) - len(rest); best[1] = rest[0] if rest else None
-        if not rest: return b
+        if not rest:
+            found.append(b)
+            return
         scored = sorted(((len(candidates(c, b)), i) for i, c in enumerate(rest)), key=lambda x: x[0])
         n, i = scored[0]; c = rest[i]
         if n == 0:
             if len(conjs) - len(rest) >= best[0]: best[1] = c
-            return None
+            return
         for f in candidates(c, b):
             nodes[0] += 1; nb = dict(b)
             if unify_q(c, f, nb):
-                r = dfs(rest[:i] + rest[i+1:], nb)
-                if r is not None: return r
-        return None
-    b = dfs(list(conjs), {})
-    return (b, None) if b is not None else (None, best[1])
+                dfs(rest[:i] + rest[i+1:], nb)
+                if found and (prefer is None or prefer(found[-1])): return
+                if len(found) >= max_solutions: return
+    dfs(list(conjs), {})
+    if not found: return None, best[1]
+    for b in found:
+        if prefer is None or prefer(b): return b, None
+    return found[0], None
 def match_rules(conjs, limit=4000):
     """a law-level focus: every conjunct unifies with an atom of ONE rule (premise or consequent) or with a pool fact,
     variables shared, the most constrained conjunct first; at least one conjunct must come from the rule"""
@@ -190,7 +199,18 @@ def entry_atoms(uid, stmts):
     for st in stmts:
         bd = body(st)
         if bd is None: continue
-        if isinstance(bd, tuple) and bd and bd[0] == 'Implication': rs.append((conjs_of(canon(skvar(bd[1]), uid, types)), conjs_of(canon(skvar(bd[2]), uid, types)))); continue
+        if isinstance(bd, tuple) and bd and bd[0] == 'Implication':
+            if isinstance(bd[1], tuple) and bd[1] and bd[1][0] == 'PartOf' and isinstance(bd[1][1], str) and bd[1][1].startswith('$'):
+                var, grp = bd[1][1], bd[1][2]   # a per-member rule over a group holds of the group itself
+                def inst(t):
+                    if isinstance(t, str): return grp if t == var else t
+                    if isinstance(t, tuple) and t and isinstance(t[0], str) and t[0].startswith('sk_'): return f"{t[0]}_{'_'.join(str(x).strip('$') for x in t[1:])}"
+                    return tuple(inst(x) for x in t)
+                for c in conjs_of(inst(bd[2])):
+                    f = canon(c, uid, types)
+                    if isinstance(f, tuple) and f: fs.append(f)
+                continue
+            rs.append((conjs_of(canon(skvar(bd[1]), uid, types)), conjs_of(canon(skvar(bd[2]), uid, types)))); continue
         if isinstance(bd, tuple) and len(bd) == 2 and bd[0] == 'Past' and isinstance(bd[1], tuple): bd = bd[1]
         f = canon(bd, uid, types)
         if isinstance(f, tuple) and f:
@@ -199,6 +219,7 @@ def entry_atoms(uid, stmts):
                 fs += [('Member', ev, f[0].lower()), ('Agent', ev, f[1]), ('Object', ev, f[2])]; continue
             fs.append(f)
             if f[0] == 'GroupOf': fs.append(('Member', f[1], f[2]))
+    fs += state_witnesses(fs)
     return fs, rs
 def add_facts(fs):
     for f in fs:
@@ -208,17 +229,18 @@ def remove_facts(fs):
     for f in fs:
         if f in by_head[f[0]]: by_head[f[0]].remove(f)
         index_fact(f, add=False)
-law_cons = {}   # law uid -> consequent conjuncts with the premise's own $-variables (Skolem terms as $sk_ variables)
-for e in wr:
+law_cons = {}   # rule uid -> consequent conjuncts with the premise's own $-variables (Skolem terms as $sk_ variables)
+for e in wr + lore:
     for i, ss in enumerate(e['stmts']['texts']):
         uid = f"{e['id']}.{i+1}"; types = types_in(ss)
         for st in ss:
             bd = body(st)
             if isinstance(bd, tuple) and bd and bd[0] == 'Implication': law_cons[uid] = conjs_of(canon(skvar(bd[2]), uid, types))
-def derive(uid, fs):
-    """one forward hop: for every law a premise fires, its consequent instantiated under that binding"""
+all_rules = list(laws) + [(uid, conjs_of(canon(skvar(body(st)[1]), uid, types_in(ss)))) for e in lore for i, ss in enumerate(e['stmts']['texts']) for uid in [f"{e['id']}.{i+1}"] for st in (ss or []) if isinstance(body(st), tuple) and body(st) and body(st)[0] == 'Implication' and not (isinstance(body(st)[1], tuple) and body(st)[1] and body(st)[1][0] == 'PartOf')]
+def derive_once(uid, fs, hop):
+    """one forward hop over the world and lore rules: consequents instantiated under every premise binding anchored on fs"""
     out = []; fset = set(fs)
-    for law, conj in laws:
+    for law, conj in all_rules:
         oc = order(conj)
         for i in range(len(oc)):
             for f in [x for x in cands(oc[i], {}) if x in fset]:
@@ -231,10 +253,18 @@ def derive(uid, fs):
                         return tuple(inst(x) for x in t) if isinstance(t, tuple) else t
                     for c in law_cons.get(law, []):
                         g = inst(c)
-                        if isinstance(g, tuple) and g and not any(isinstance(x, str) and x.startswith('$') for x in g):
+                        if isinstance(g, tuple) and g and not any(isinstance(x, str) and x.startswith('$') for x in g) and g not in out:
                             out.append(g)
                             if g[0] == 'GroupOf': out.append(('Member', g[1], g[2]))
     return out
+def derive(uid, fs, hops=3):
+    """run the task's premise forward to a small fixpoint (what the chamber does over a few epochs)"""
+    have = list(fs); new = fs; allnew = []
+    for h in range(hops):
+        d = [g for g in derive_once(uid, new, h) if g not in have]
+        if not d: break
+        d += state_witnesses(d); add_facts(d); have += d; allnew += d; new = d
+    return allnew
 def fires_on(fs):
     """laws whose premise binds at least one of these atoms"""
     out = []; fset = set(fs)
@@ -250,7 +280,7 @@ def fires_on(fs):
 def law_cuts(kinds):
     return [uid for uid, prem, cons in rules if uid[0] == 'R' and set(kinds_in(cons)) & set(kinds)]
 # ---- checks
-def check_query(uid, lines, own, types):
+def check_query(uid, lines, own, types, task=False):
     best = None
     for ln in lines:
         m = re.match(r'\(:\s+\$\w+\s+(.*)\s+(\$\w+|\(STV [^)]*\))\)\s*$', ln.strip())
@@ -263,14 +293,26 @@ def check_query(uid, lines, own, types):
             missing = sorted(s for s in syms if s not in inventory and s not in own and s not in DERIVED)
             if missing: v = 'unmatched-symbol: ' + ', '.join(missing)
             else:
-                focus = [c for c in conjs if not (isinstance(c, tuple) and c and c[0] in DERIVED)]
-                b, fail = match_q(focus)
+                focus = []
+                for c in conjs:
+                    if isinstance(c, tuple) and c and c[0] in DERIVED: continue
+                    if isinstance(c, tuple) and len(c) == 3 and c[0] == 'Implication' and isinstance(c[1], tuple) and c[1][0] == 'PartOf' \
+                       and isinstance(c[2], tuple) and c[2][0] == 'Member' and c[2][1] == c[1][1]:
+                        focus.append(('Member', c[1][2], c[2][2])); continue   # per-member property of a group = the group's property
+                    focus.append(c)
+                isder = lambda bb: any(isinstance(x, str) and re.search(r'_[RL]\d+-?\d*\.\d+$', x) for x in bb.values())
+                b, fail = match_q(focus, prefer=isder if task else None)
                 if b is not None:
-                    us = units_of(b); v = 'ok (grounds in ' + ', '.join(('derived ' + x.split('_')[-1]) if '_R' in x else x for x in (us or ['constants'])) + ')'
+                    vals = [x for x in b.values() if isinstance(x, str)]
+                    derived = sorted({re.search(r'_([RL]\d+-?\d*\.\d+)$', x).group(1) for x in vals if re.search(r'_[RL]\d+-?\d*\.\d+$', x)})
+                    own_hit = any(x.startswith(uid + ':') for x in vals)
+                    us = [u for u in units_of(b) if u != uid]
+                    v = 'ok (grounds in ' + ', '.join((['derived ' + ', '.join(derived)] if derived else []) + (['the premise'] if own_hit and not derived else []) + us or ['constants']) + ')'
+                    if task and not derived: v = 'ok-stale (grounds only in ' + ('the premise' if own_hit else 'existing facts: ' + ', '.join(us or ['constants'])) + ')'
                 else:
                     r = match_rules(focus)
-                    v = f'ok-law (in {r})' if r else f'focus-not-grounded at {fail}'
-        rank = 2 if v.startswith('ok (') else 1 if v.startswith('ok-law') else 0
+                    v = (f'ok-law (in {r})' if not task else f'ok-stale (a rule, {r}, not a derived atom)') if r else f'focus-not-grounded at {fail}'
+        rank = 2 if v.startswith('ok (') else 1 if v.startswith(('ok-law', 'ok-stale')) else 0
         if best is None or rank > best[0]: best = (rank, v)
     return best[1]
 def check_statement(fs, rs):
@@ -299,32 +341,32 @@ def gate(qa, rec):
     meta = {e['id']: e for e in qa}; clean = 0; summary = collections.Counter()
     for e in (rec[:LIMIT] if LIMIT else rec):
         q = meta[e['id']]; uid = e['id']
-        if q.get('retired'): continue
+        if q.get('retired') or (ONLY and e['id'] not in ONLY): continue
         print(e['id'], file=sys.stderr, end=' ', flush=True)
         parsed = [(t, st, q['modes'][i], q.get('roots', [None] * 9)[i]) for i, (t, st) in enumerate(zip(e['texts'], e['stmts']['texts']))]
         own_facts, per_text = [], []; etypes = types_in([x for _, st, _, _ in parsed for x in (st or [])])
         for t, st, mode, root in parsed:
             fs, rs = entry_atoms(uid, st or []) if st else ([], [])
             per_text.append((fs, rs)); own_facts += fs
-        add_facts(own_facts); derived = derive(uid, own_facts) if q['category'] in 'NC' else []; add_facts(derived); own = set()
+        SCOPE[0] = uid + ':'; add_facts(own_facts); derived = derive(uid, own_facts) if q['category'] in 'NC' else []; own = set()
         for f in own_facts + derived: symbols_of(f, own)
         try:
             verdicts = []
             for (t, st, mode, root), (fs, rs) in zip(parsed, per_text):
                 if st is None: verdicts.append((mode, 'PENDING')); continue
                 if not st: verdicts.append((mode, 'EMPTY')); continue
-                if mode == 'query': verdicts.append((mode, check_query(uid, st, own, etypes)))
+                if mode == 'query': verdicts.append((mode, check_query(uid, st, own, etypes, task=(q['category'] == 'N'))))
                 elif mode == 'statement': verdicts.append((mode, check_statement(fs, rs)))
                 elif mode == 'intervention': verdicts.append((mode, check_intervention(uid, fs, rs, root)))
-        finally: remove_facts(own_facts); remove_facts(derived)
+        finally: remove_facts(own_facts); remove_facts(derived); SCOPE[0] = None
         st_ok = [v for m, v in verdicts if m == 'statement']
-        ok = all(v.startswith(('ok', 'fires', 'adds', 'matches', 'scene')) for _, v in verdicts) and \
+        ok = all(v.startswith(('ok', 'fires', 'adds', 'matches', 'scene')) and not v.startswith('ok-stale') for _, v in verdicts) and \
              (q['category'] != 'N' or any(v.startswith(('fires', 'adds')) for v in st_ok))
         clean += ok
         for m, v in verdicts: summary[(m, v.split(' ')[0].split(':')[0])] += 1
         print(f"[{e['id']}] {'ok' if ok else 'NOT ok'}")
         for (m, v), t in zip(verdicts, e['texts']): print(f"    {m:12s} {v}\n                 {t[:90]}")
-    print(f"GATE: {clean}/{sum(1 for e in rec if not meta[e['id']].get('retired'))} entries ok")
+    print(f"GATE: {clean}/{sum(1 for e in rec if not meta[e['id']].get('retired') and not (ONLY and e['id'] not in ONLY))} entries ok")
     for k in sorted(summary): print(f"   {k[0]:12s} {k[1]:28s} {summary[k]}")
 MOCK_REC = [
  {"id": "F11", "rule": "F — Factual recall", "texts": ["Who tends the Stilllight Lantern?"], "stmts": {"texts": [[

@@ -11,7 +11,8 @@ Conventions applied to the pool (each is one of item 1's rules):
   group      (GroupOf g K) also asserts (Member g K); a per-member rule (Implication (PartOf $x g) C) also asserts
              C with $x := g (the group as a whole)
   state      a state witness with an experiencer asserts the property of the experiencer:
-             (Member s P) (Experiencer s x) => (Member x P)
+             (Member s P) (Experiencer s x) => (Member x P), and a property the laws read as a state asserts
+             the state witness back
   alias      symbol aliases and CardinalityPhrase string normalization
   relax      a kind-constant filler in a premise matches a witness typed with that kind, a bare kind constant in a
              fact's role slot counts as an anonymous witness of that kind, and Patient / Theme are one object slot
@@ -126,6 +127,19 @@ for uid, stmts, kind in load():
 exp = {f[1]: f[2] for f in facts if isinstance(f, tuple) and len(f) == 3 and f[0] == "Experiencer"}
 facts.extend(("Member", exp[f[1]], f[2]) for f in list(facts)
              if isinstance(f, tuple) and len(f) == 3 and f[0] == "Member" and f[1] in exp and isinstance(f[2], str))
+# the kinds the laws read as state witnesses ((Member $s K) with (Experiencer $s $x) in a premise)
+LAW_STATES = set()
+for uid, conj in laws:
+    exps = {c[1] for c in conj if isinstance(c, tuple) and len(c) == 3 and c[0] == "Experiencer"}
+    LAW_STATES |= {c[2] for c in conj if isinstance(c, tuple) and len(c) == 3 and c[0] == "Member" and c[1] in exps and isinstance(c[2], str)}
+def state_witnesses(fs):
+    """(Member w K) with K a law state kind also asserts (Member w:K K) (Experiencer w:K w) — the reverse of the state convention"""
+    out = []
+    for f in fs:
+        if isinstance(f, tuple) and len(f) == 3 and f[0] == "Member" and isinstance(f[1], str) and f[2] in LAW_STATES and not f[1].endswith(":" + f[2]):
+            sw = f"{f[1]}:{f[2]}"; out += [("Member", sw, f[2]), ("Experiencer", sw, f[1])]
+    return out
+if RELAX: facts.extend(state_witnesses(facts))
 kinds_of = collections.defaultdict(set)
 for f in facts:
     if isinstance(f, tuple) and len(f) == 3 and f[0] == "Member" and isinstance(f[1], str) and isinstance(f[2], str): kinds_of[f[1]].add(f[2])

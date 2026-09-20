@@ -11,7 +11,7 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **F1.** What is mire-essence?
 > Mire-essence is a thick dark oil distilled from silken threads boiled in sea-water. It burns with a pale silver flame called mist-light. [R1, R4, lore §VIII]
 
-**F2.** Who is the chief Keeper of Aelmere?
+**F2.** Who is the chief Keeper?
 > Meren Tallowhand. [lore §II]
 
 **F3.** How many lanterns are there in Aelmere?
@@ -20,7 +20,7 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **F4.** Where does the Stilllight Lantern stand?
 > At the top of the Cove Stair, at the Sunken Cove. [lore §I]
 
-**F5.** What animal hunts nightmoths in Aelmere?
+**F5.** What hunts nightmoths at a lantern-row?
 > Sky-cats. [R6, R7, lore §VI]
 
 **F6.** What is salt-bloom used for?
@@ -65,14 +65,14 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **F19.** Where does the village cremate the dead?
 > At a small pyre-shelf on the southern cliff. The ashes are scattered at sea. [lore §IV]
 
-**F20.** How many Keepers are active in the present generation?
+**F20.** How many Keepers are active?
 > Forty-three. [lore §II]
 
 **F21.** When does a Keeper repeat the phrase?
 > At births, at funerals, and when the Council closes a session; the phrase appears in the earliest surviving Watch ledgers. [lore §II]
 
-**F22.** Where do the bones of the old graveyard lie?
-> Under the water in the Sunken Cove; a storm-surge washed the old graveyard into the cove six generations ago. [lore §I, lore §V]
+**F22.** What lies under the water in the Sunken Cove?
+> The bones of the old graveyard; a storm-surge washed the graveyard into the cove six generations ago. [lore §I, lore §V]
 
 **F23.** Who arrived in Aelmere in the late summer of Year 1?
 > Coraline Ash. [events Part I]
@@ -92,8 +92,8 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **F28.** Which ground feathers do not ward lanterns?
 > Stale ground feathers. [R15]
 
-**F29.** What is the cold-threshold wind?
-> The cutting north wind off the Cold Sea on clear winter nights, sharp enough to extinguish unprotected lanterns. [R16, lore §VII]
+**F29.** Where does the cold-threshold wind come from?
+> Off the Cold Sea; it is a cutting north wind that extinguishes unprotected lanterns on clear winter nights. [R16, lore §VII]
 
 **F30.** Whom did the Council invest as a Keeper on day 260 of Year 1?
 > Coraline Ash. [events Part VII]
@@ -102,14 +102,14 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 
 ## Why-questions (W1–W35)
 
-**W1.** Why does Aelmere keep lanterns burning every night?
+**W1.** Why do the lanterns of Aelmere burn every night?
 > To give the fishing fleet a way home through fog, and to keep wraiths from rising out of the Sunken Cove. [premise; R12, lore §V]
 
 **W2.** Why does a Keeper light a lantern with mire-essence?
 > Because only mire-essence produces mist-light, and only mist-light attracts nightmoths (whose silken threads are the village's sole source of new mire-essence). [R1, R2, R3, R4, R5]
 
-**W3.** Why is Aelmere's mire-essence supply considered a closed cycle?
-> Because mire-essence enables lanterns, lanterns produce mist-light, mist-light attracts nightmoths, nightmoths leave silken threads, and silken threads are boiled into mire-essence. The output of the chain re-enters as input. [R1–R5; Cycle A]
+**W3.** Why does a Keeper store the mire-essence that forms in the cauldron?
+> Because stored mire-essence lights the lanterns, the lanterns produce mist-light, mist-light attracts nightmoths, nightmoths leave silken threads, and silken threads boiled in sea-water form mire-essence again; the output of the chain re-enters as input. [R1–R5; Cycle A]
 
 **W4.** Why do sky-cats descend from the cliff-spires?
 > Because a crowd of nightmoths gathers at a lantern-row, and sky-cats descend to hunt the crowd. [R6, R7]
@@ -126,10 +126,10 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **W8.** Why did eleven lanterns on the Middle Row go out before dawn on day 16 of Year 1?
 > Because the cold snap arrived early, before the Council had begun the seasonal salt-bloom additions to mire-essence. Without salt-bloom slowing the burn, the cold-threshold wind extinguished them. [R16, R17, events Part II]
 
-**W9.** Why does the Council redistribute mire-essence at the full moon?
+**W9.** Why does the Council redistribute mire-essence reserves?
 > Because some stations (like the Northcove) consistently over-produce and others (like the Sunken Cove and exposed Cliff Path stretches) consistently under-produce or have special burdens. The redistribution balances supply across the village. [R27, lore §III]
 
-**W10.** Why does the Council rarely order Keepers to burn wintergloss?
+**W10.** Why does the Council rarely order Keepers to burn wintergloss? *(retired: 'rarely' has no query carrier; the lore sentence behind it is one STV-0.1 bundle)*
 > Because wintergloss repels nightmoths, and the village depends on attracting nightmoths to produce silken threads. [R21]
 
 **W11.** Why did the Council discuss burning wintergloss at the Stilllight Lantern in Year 1?
@@ -150,13 +150,13 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **W16.** Why did the wraith turn away from the Stilllight Lantern on day 120 of Year 1?
 > Because Bevin Coombe had scattered ground feathers around the Stilllight's base, which ward off wraiths. [R15, events Part V]
 
-**W17.** Why did the thread harvest at the West Row fall during the wraith's persistence in Year 1?
+**W17.** Why did the thread harvest at the West Row fall in Year 1?
 > Because wraith-drained lanterns burn with weak mist-light, and weak mist-light attracts only a small fraction of the usual nightmoth count. [R13, R14]
 
-**W18.** Why did the cauldrons yield two vessels of mire-essence on day 17 of Year 1?
-> Because the eleven relit lanterns of the Middle Row burned dimly and gave weak mist-light, the weak mist-light attracted a handful of nightmoths, the thread harvest at the Middle Row fell, and fewer threads boil into less mire-essence. [R14, R3, R4, events Part II]
+**W18.** Why did the thread harvest at the Middle Row fall on day 17 of Year 1?
+> Because the eleven relit lanterns of the Middle Row burned dimly and gave weak mist-light, and the weak mist-light attracted only a handful of nightmoths. [R14, R3, events Part II]
 
-**W19.** Why do surviving nightmoths flee to the dim lanterns of the Hollows during a sky-cat hunt?
+**W19.** Why does a surviving nightmoth flee to a dim lantern in the Hollows?
 > Because a sky-cat hunt on the Cliff Path makes the surviving nightmoths flee toward dim lights, and the Hollows lanterns are dim. [R8, lore §VI]
 
 **W20.** Why did the wraith response use half of the autumn feather store in Year 1?
@@ -168,10 +168,10 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **W22.** Why does the village need sky-cats?
 > Because sky-cats produce feathers (by molting), feathers ward off wraiths, and wraith-warding is necessary at the Sunken Cove to prevent further wraith summoning (drained lanterns ⇒ more wraiths). Without sky-cats, the village would have no wraith-defense. [R10, R15, R12, lore §V, lore §VI]
 
-**W23.** Why did Old Vesh report the thin feather autumn of twenty-six years ago to the Council in Year 1?
-> Because thin sky-cat activity means thin feather harvest, and thin feathers mean weak wraith-warding capacity for the coming winter. Old Vesh remembers that the bad winter twenty-six years ago was also preceded by a thin feather autumn. [R28, R29, events Part IV]
+**W23.** Why did the Council discuss the sky-cat drought in Year 1?
+> Because a handful of sky-cats had been visible on the cliff-spires for two weeks, so the feather harvest was thin, and a thin feather autumn came before the bad winter of twenty-six years ago. [R28, R29, events Part IV]
 
-**W24.** Why do Keepers count many sky-cats on the cliff-spires in the morning in late summer?
+**W24.** Why do Keepers count many sky-cats on the cliff-spires in the morning in late summer? *(retired: the late-summer peak is a lore generalization with no rule or episode behind it)*
 > Because moth-counts are high (peak moth-season), sky-cats descend often to hunt, and they molt during these busy weeks, producing more feathers at the cliff base. The Keepers also observe more sky-cats on the spires after hunting nights. [R10, R28, lore §VI]
 
 **W25.** Why did Coraline Ash write in her log that a crowd of nightmoths brings sky-cats down from the cliff-spires?
@@ -192,14 +192,14 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **W30.** Why did the Stilllight Lantern burn dim on the night of day 111 of Year 1?
 > Because the wick was carbonized and Halden, the substitute Keeper, did not trim it; Bevin Coombe said to the Council that Halden was inexperienced. [events Part V]
 
-**W31.** Why does the Council meet at every full moon?
-> Because the full-moon meeting is the village's established calendar marker for Council business, and emergencies are rare enough that off-cycle meetings are not regularly required. [R26, lore §III]
+**W31.** Why does the Council meet at the Watch?
+> Because the full-moon meeting at the Watch is the village's established calendar marker for Council business. [R26, lore §III]
 
 **W32.** Why does the harvest party need a spring tide?
 > Because spring tides are larger and fill the Salt-bloom Tide-pools enough for salt-bloom to bloom; neap tides leave the pools mostly dry and no salt-bloom forms. [R19, R20, lore §VII]
 
-**W33.** Why does Old Vesh tell the story of the bad winter of sixty-three years ago?
-> Because he was a boy of eight at the time and remembers his father (then a Keeper) walking the Cove Stair with three other men every evening of that winter. It was a formative memory of his childhood. [lore §III]
+**W33.** Why does Old Vesh remember two bad winters?
+> Because he was a boy of eight in the bad winter of sixty-three years ago, when his father walked the Cove Stair every evening with three Keepers, and he was a Keeper in the bad winter of twenty-six years ago. [lore §II, lore §III]
 
 **W34.** Why did Brindle Coombe say at the Council that a hard winter would force the village to dim some lanterns?
 > Because they were behind on both mire-essence (from the thin thread harvest of the early cold snaps) and on feathers (from the sky-cat drought), so a hard winter would force rationing — which would mean choosing lanterns to dim deliberately to preserve essence supply elsewhere. [events Part V]
@@ -265,8 +265,8 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **N18.** An apprentice's solo count is large. What does the Council do?
 > The Council invests the apprentice as a Keeper. [R25, events Part VII]
 
-**N19.** The Council meets at the full moon. What does the Council do with the mire-essence reserves?
-> The Council redistributes mire-essence: productive stations contribute to the central pool, burdened stations draw from it, and the ledgers record the redistribution. [R27]
+**N19.** The moon is full. What does the Council do?
+> The Council meets at the Watch and redistributes mire-essence reserves: productive stations contribute to the central pool, burdened stations draw from it, and the ledgers record the redistribution. [R26, R27]
 
 **N20.** A wraith drains six lanterns on the West Row. The wraith fades back into the water of the Sunken Cove. What happens to the drained lanterns?
 > Hesper refills their mire-essence during the following week, and the lanterns return to normal mist-light. [events Part V]
