@@ -17,6 +17,9 @@ Conventions applied to the pool (each is one of item 1's rules):
              fact's role slot counts as an anonymous witness of that kind, and Patient / Theme are one object slot
              (all off with --no-relax)
   tense      a (Past X) ground statement asserts X; the tense stays a marker on the unit
+  date       an undated past event inherits its passage's opening (Year n) + (Day n)
+  place      LocatedIn / PartOf / Possession / Of / On / At to a registry place are one attachment slot, and a place
+             that HOLDS things attaches them (the corpus's containment idiom)
 Records: world_rules_parses.json + lore_parsed.json (sentence records) and events_parsed.json (passage record)."""
 import json, re, sys, collections, os
 RELAX = '--no-relax' not in sys.argv
@@ -26,9 +29,15 @@ for a in sys.argv[1:]:
 SINGLETON = {"council": "council", "watch": "watch", "village": "aelmere", "sea": "cold_sea", "moon": "moon", "coast": "coast",
              "tide_pool": "salt_bloom_tide_pools", "cauldron": "cauldron", "feather_store": "feather_store", "feather_bin": "feather_bin",
              "central_pool": "central_pool", "cove_stair": "cove_stair"}
-ALIAS = {"night_moth": "nightmoth", "vesh": "old_vesh", "seawater": "sea_water", "winter_gloss": "wintergloss", '"a handful"': '"handful"', '"a few"': '"few"'}
+ALIAS = {"night_moth": "nightmoth", "vesh": "old_vesh", "seawater": "sea_water", "winter_gloss": "wintergloss", "turn_away": "turn", "bring_down": "bring", '"a handful"': '"handful"', '"a few"': '"few"'}
 OBJECT = {"Patient", "Theme"}
 TENSE = {"Past"}
+ATTACH = {"LocatedIn", "PartOf", "Possession", "Of", "On", "At"}
+PLACE_KINDS = {"cove", "hall", "wall", "path", "row", "station", "bin", "cellar", "room", "harbor", "village", "watch", "store", "cauldron_hall"}
+def kinds_of_local(ufacts, w): return {f[2] for f in ufacts if f[0] == "Member" and f[1] == w and isinstance(f[2], str)}
+PLACES = {"sunken_cove", "cliff_path", "middle_row", "east_row", "west_row", "harbor_row", "northcove", "hollows", "cauldron_hall",
+          "aelmere", "watch", "cove_stair", "harbor", "harbor_station", "stilllight_station", "salt_bloom_tide_pools", "cold_sea",
+          "harbor_wall", "ledger_room", "cliff_spires", "faltern"}
 tok = re.compile(r'\(|\)|"[^"]*"|[^\s()]+')
 def parse(s):
     toks = tok.findall(s); pos = 0
@@ -67,7 +76,9 @@ def canon(term, uid, types):
             return SINGLETON[k] if k in SINGLETON else f"{uid}:{term}"
         return ALIAS.get(term, term)
     if term and term[0] in OBJECT and RELAX: return ("Object",) + tuple(canon(x, uid, types) for x in term[1:])
-    return tuple(canon(x, uid, types) for x in term)
+    out = tuple(canon(x, uid, types) for x in term)
+    if RELAX and len(out) == 3 and out[0] in ATTACH and out[2] in PLACES: return ("AttachedTo",) + out[1:]   # place attachment
+    return out
 facts, laws = [], []
 for uid, stmts, kind in load():
     types = types_in(stmts); pending = []   # group-lifted consequents, added after the unit's own facts
@@ -93,6 +104,24 @@ for uid, stmts, kind in load():
         f = canon(bd, uid, types); facts.append(f)
         if isinstance(f, tuple) and f and f[0] == "GroupOf": facts.append(("Member", f[1], f[2]))
     facts.extend(pending)
+    # containment idiom: a place that HOLDS things attaches them (the corpus says "The Watch holds the feather store")
+    if RELAX:
+        ufacts = [f for f in facts if isinstance(f, tuple) and len(f) >= 2 and isinstance(f[1], str) and f[1].startswith(uid + ":")]
+        holds = {f[1] for f in ufacts if f[0] == "Member" and f[2] == "hold"}
+        for h in holds:
+            ag = next((f[2] for f in ufacts if f[0] == "Agent" and f[1] == h), None)
+            ob = [f[2] for f in ufacts if f[0] == "Object" and f[1] == h]
+            if ag is not None and (ag in PLACES or kinds_of_local(ufacts, ag) & PLACE_KINDS):
+                for o in ob: facts.append(("AttachedTo", o, ag))
+    if kind == "event":   # rule (e): undated past events inherit the passage's opening date
+        unit_facts = [f for f in facts if isinstance(f, tuple) and len(f) >= 2 and isinstance(f[1], str) and f[1].startswith(uid + ":")]
+        year = next((f[2] for f in unit_facts if f[0] == "Time" and isinstance(f[2], tuple) and f[2][0] == "Year"), None)
+        day = next((f[2] for f in unit_facts if f[0] == "Time" and isinstance(f[2], tuple) and f[2][0] == "Day"), None)
+        dated = {f[1] for f in unit_facts if f[0] == "Time" and isinstance(f[2], tuple) and f[2][0] == "Day"}
+        for f in unit_facts:
+            if f[0] == "Past" and len(f) == 2 and f[1] not in dated:
+                if day: facts.append(("Time", f[1], day))
+                if year: facts.append(("Time", f[1], year))
 # a state witness with an experiencer asserts the property of the experiencer: (Member s P) (Experiencer s x) => (Member x P)
 exp = {f[1]: f[2] for f in facts if isinstance(f, tuple) and len(f) == 3 and f[0] == "Experiencer"}
 facts.extend(("Member", exp[f[1]], f[2]) for f in list(facts)
@@ -110,9 +139,11 @@ def unify(pat, fact, b):
             b[pat] = fact; return True
         return pat == fact or (RELAX and isinstance(fact, str) and pat in kinds_of.get(fact, ()))
     if not isinstance(fact, tuple) or len(pat) != len(fact): return False
+    if RELAX and pat and pat[0] in ATTACH and fact[0] == "AttachedTo": return all(unify(p, f, b) for p, f in zip(pat[1:], fact[1:]))
     return all(unify(p, f, b) for p, f in zip(pat, fact))
 def cands(pat, b):
     xs = by_head.get(pat[0], []) if isinstance(pat, tuple) else []
+    if RELAX and isinstance(pat, tuple) and pat and pat[0] in ATTACH: xs = xs + by_head.get("AttachedTo", [])
     # narrow by any argument already bound or constant
     for i, a in enumerate(pat[1:], 1):
         key = b.get(a) if isinstance(a, str) and a.startswith("$") else (a if isinstance(a, str) else None)

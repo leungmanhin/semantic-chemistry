@@ -1,0 +1,2856 @@
+[
+ {
+  "id": "F1",
+  "rule": "F — Factual recall",
+  "texts": [
+   "What is mire-essence?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (Inheritance mire_essence $x) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the question asks what kind of thing mire-essence is, and the query leaves exactly that slot open on the kind itself, so any statement saying what mire-essence is a kind of will answer it; nothing is added to the knowledge base."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F2",
+  "rule": "F — Factual recall",
+  "texts": [
+   "Who is the chief Keeper of Aelmere?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $x chief_keeper) (Possession $x $a) (Name $a \"Aelmere\")) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the query is well formed - it leaves the asked-for person open, types them as a chief keeper and ties Aelmere in by name - but \"the chief Keeper of Aelmere\" sits on a fault line in the translator: an of-phrase after a \"-er\" noun can be read either as the office's possessor or as the thing the keeper keeps, and the two readings land on different link heads, so if the statement of the fact takes the other reading this question matches nothing and comes back empty. The possessive form is decided rather than a coin-flip, so use it in both the statement and the question: \"Who is Aelmere's chief Keeper?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F3",
+  "rule": "F — Factual recall",
+  "texts": [
+   "How many lanterns are there in Aelmere?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Name $a \"Aelmere\") (GroupOf $g lantern) (LocatedIn $g $a) (Cardinality $g $n)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query builds the group of lanterns, leaves its count open where \"how many\" asks, and ties that group to Aelmere by the static containment relation your \"in\" states rather than by an event location."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F4",
+  "rule": "F — Factual recall",
+  "texts": [
+   "Where does the Stilllight Lantern stand?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Name $x \"Stilllight Lantern\") (LocatedIn $x $w)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the query is faithful - \"stand\" is correctly treated as a position, not a happening, and the lantern is bound by its name - but \"where ... stand\" can only find a position recorded as containment (\"in / at / inside / within\"). A position written with any other preposition (\"on the quay\", \"beside the mere\") has no form this question can reach, so it would come back empty rather than wrong. If the lantern's position is stated with a non-containment preposition, ask with that same preposition - \"What does the Stilllight Lantern stand on?\" - and if it is stated as being in a place, leave the question exactly as it is."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F5",
+  "rule": "F — Factual recall",
+  "texts": [
+   "What animal hunts nightmoths in Aelmere?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $x animal) (Member $e hunt) (Agent $e $x) (Theme $e nightmoth) (Location $e $ae) (Name $ae \"Aelmere\")) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the unknown sits in the hunter slot with an \"animal\" restriction on it, \"nightmoths\" stays a bare kind as the thing hunted, the hunting is located in Aelmere by name, and the habitual present rightly gets no tense marker - the query asks what the question asks and asserts nothing."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F6",
+  "rule": "F — Factual recall",
+  "texts": [
+   "What is salt-bloom used for?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e use) (Theme $e salt_bloom) (For $e $w)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: the query hangs the unknown on a literal \"for\"-phrase attached to the using event instead of asking for that event's purpose, so it answers only if the stored fact happens to be worded with \"for\" and misses a purpose stated as \"salt-bloom is used to cure hides\" — the wording the reasoner actually recognizes as a purpose. Ask the reason of a plainly named focus event instead: \"Why is salt-bloom used?\" — that routes through the canonical reason link, which stated purposes feed into, so it reaches both a purpose and a cause. Word the answering fact with a purpose infinitive (\"Salt-bloom is used to preserve fish\") rather than \"used for preserving fish\", since a \"for\"-phrase purpose is not reachable as a purpose."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F7",
+  "rule": "F — Factual recall",
+  "texts": [
+   "When is salt-bloom harvested?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e harvest) (Theme $e salt_bloom) (Time $e $t)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query leaves the harvesting event's time slot open and binds salt-bloom as the thing harvested, with no doer invented for the agentless passive and no tense forced onto the habitual present."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F8",
+  "rule": "F — Factual recall",
+  "texts": [
+   "Where do sky-cats roost?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (Implication (Member $x sky_cat) (And (Member (sk_roost $x) roost) (Experiencer (sk_roost $x) $x) (Location (sk_roost $x) $where))) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query mirrors the way a bare-plural generic is stored — a rule giving each sky-cat its own roosting — and puts the unknown in that roosting's place slot, which is exactly what the question asks."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F9",
+  "rule": "F — Factual recall",
+  "texts": [
+   "When do sky-cats descend from the cliff-spires?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $x sky_cat) (Member $e descend) (Agent $e $x) (GroupOf $g cliff_spire) (Source $e $g) (Time $e $t)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query asks for the time of a descending whose doer is a sky-cat and whose starting point is the cliff-spires, with the unknown in the time slot and nothing added beyond the question."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F10",
+  "rule": "F — Factual recall",
+  "texts": [
+   "How many solo nights does an apprentice complete before the Council assigns that apprentice to a station?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $a apprentice) (Member $e1 complete) (Agent $e1 $a) (Theme $e1 $g) (GroupOf $g solo_night) (Cardinality $g $n) (Member $e2 assign) (Agent $e2 $c) (Member $c council) (Theme $e2 $a) (Goal $e2 $s) (Member $s station) (Before $e1 $e2)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query counts the group of solo nights the apprentice completes, keeps the same apprentice in the Council's assigning event for \"that apprentice\", and orders the completing before the assigning as the sentence does."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F11",
+  "rule": "F — Factual recall",
+  "texts": [
+   "Who tends the Stilllight Lantern?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Name $l \"Stilllight Lantern\") (Member $e tend) (Agent $e $who) (Patient $e $l)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query asks who does the tending and pins the tended thing to the name \"Stilllight Lantern\", leaving the answer slot open and adding no tense to the present habitual, so nothing of the question is lost or added. One thing to know: the lantern lands in the \"object changed by the action\" slot for \"tend\", so a stored fact that words the same care with a pure maintenance verb (\"keeps the Stilllight Lantern\") may be filed in the neighbouring slot and not line up."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F12",
+  "rule": "F — Factual recall",
+  "texts": [
+   "When does the Council meet?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e meet) (Agent $e $c) (Member $c council) (Time $e $t)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query binds \"the Council\" as an ordinary council (capitalized, but the sentence never states a proper name) as the party doing the meeting and leaves the time of the meeting open, with no tense invented for the present habitual. One thing to know: this asks for the meeting's time slot (which day, which hour), not its rate — a fact recorded only as a frequency like \"every two weeks\" would not come back, so ask \"How often does the Council meet?\" when the rate is what you want."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F13",
+  "rule": "F — Factual recall",
+  "texts": [
+   "What shields the Northcove against the north wind?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e shield) (Agent $e $x) (Theme $e $n) (Name $n \"Northcove\") (Against $e $w) (Member $w north_wind)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the shielder is left open as the answer, the Northcove is bound by its name and sits in the \"unchanged thing being protected\" slot, and \"against the north wind\" is kept with the preposition the sentence actually uses rather than being folded into some other relation. Nothing is added: the north wind is carried as the one kind \"north wind\" with no extra claims about it."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F14",
+  "rule": "F — Factual recall",
+  "texts": [
+   "When did four wraiths emerge from the Sunken Cove?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (GroupOf $g wraith) (Cardinality $g 4) (Member $e emerge) (Agent $e $g) (Name $c \"Sunken Cove\") (Source $e $c) (Past $e) (Time $e $t)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. every part of the question is carried: a group of wraiths of size exactly four, doing the emerging, out of the named Sunken Cove, in the past, with the time left open as the asked-for answer."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F15",
+  "rule": "F — Factual recall",
+  "texts": [
+   "How many copper cauldrons are in Cauldron Hall?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Name $h \"Cauldron Hall\") (GroupOf $g copper_cauldron) (LocatedIn $g $h) (Cardinality $g $n)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query picks out one group of copper cauldrons sitting in the named Cauldron Hall and returns the size of that group, which is exactly what \"how many\" asks; \"are in\" is correctly recorded as a standing position rather than as something happening."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F16",
+  "rule": "F — Factual recall",
+  "texts": [
+   "Who is the warden of Cauldron Hall?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Name $c \"Cauldron Hall\") (Member $c hall) (Member $who warden) (Possession $who $c)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query asks exactly who the warden is — Cauldron Hall bound by its name and typed as a hall, the unknown left in the warden slot, and the two joined by the ordinary \"role-of\" link a statement of the same fact would use."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F17",
+  "rule": "F — Factual recall",
+  "texts": [
+   "What repels nightmoths from a lantern?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e repel) (Agent $e $x) (Theme $e night_moth) (Source $e $l) (Member $l lantern)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the question is asked as a standing habit with the unknown in the doer slot, nightmoths as the kind repelled and the lantern in the whence (from) slot, and nothing added beyond what you asked. One thing to keep steady on your side: a bare answering statement like \"smokeleaf repels nightmoths\" is filed as a kind-to-kind relation that this question's event shape cannot reach, so keep the lantern in the sentence that answers it."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F18",
+  "rule": "F — Factual recall",
+  "texts": [
+   "What is the brass snuffer used for?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $x brass_snuffer) (Member $e use) (Theme $e $x) (PurposeOf $g $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the passive \"is used\" is rebuilt with the brass snuffer as the thing used and no doer named, and the ask is for the purpose of that using. Worth knowing on your side: the purpose only binds when the answering statement states it as a clause (\"the brass snuffer is used to douse the wick\"), not as a noun phrase (\"a tool for wick-dousing\"), and the snuffer should be named the same way there."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F19",
+  "rule": "F — Factual recall",
+  "texts": [
+   "Where does the village cremate the dead?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e cremate) (Agent $e $v) (Member $v village) (Patient $e dead) (Location $e $where)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the shape is right — the village as the doer, the unknown in the place slot, no tense on a standing practice — but \"the dead\" has no noun head, and the translator has no rule for an adjective standing in for a noun, so it lands as the bare property symbol `dead`. A statement that wrote the same people as bodies, as corpses, or as a group would then not be reached by this question. Give the phrase a plain one-word noun head and use that same noun in the answering statement: \"Where does the village cremate corpses?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F20",
+  "rule": "F — Factual recall",
+  "texts": [
+   "How many Keepers are active in the present generation?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member sk_generation_1 generation) (GroupOf sk_generation_1 keeper) (Member sk_generation_1 present) (GroupOf $g keeper) (SubsetOf $g sk_generation_1) (Cardinality $g $n) (Inheritance $g active)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: as phrased the question cannot be asked. A count can only be hung on a group that *does* something, so \"how many Keepers are active\" — a count plus a plain adjective — has no form; \"in the present generation\" then has nothing to attach to either, so the count and the period cannot be asked together; and the current parse invents a generation whose members are Keepers, which your question never says. Rewrite with a finite verb naming what an active Keeper does, so the count and the period both ride one event: \"How many Keepers serve in the present generation?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F21",
+  "rule": "F — Factual recall",
+  "texts": [
+   "When does a Keeper repeat the phrase?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $k keeper) (Member $e repeat) (Agent $e $k) (Theme $e $p) (Member $p phrase) (Time $e $t)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query leaves the time slot open on the repeating event and binds the Keeper by kind and the phrase by kind, so it asks exactly when a keeper's repeating of the phrase happens, and the unmarked habitual present is carried with no tense atom, as the instruction set prescribes."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F22",
+  "rule": "F — Factual recall",
+  "texts": [
+   "Where do the bones of the old graveyard lie?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $g graveyard) (Member $g old) (GroupOf $bones bone) (Possession $bones $g) (LocatedIn $bones $where)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the unknown is in the right slot (the bones' position), but the query is over-constrained and reaches only one of the ways a position gets stored. It demands a stored possession link between the bones and the graveyard, which only exists if the fact was also written as a genitive, and it asks only for containment ('in/at/inside'), so a text saying the bones lie beneath the chapel or beside the yew, or giving the place only on the burial event, returns nothing. State the tie as containment and ask the position plainly: \"Where do the bones in the old graveyard lie?\" - and if the answer you expect uses a non-containment preposition, ask with that word instead, e.g. \"What do the bones in the old graveyard lie beneath?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F23",
+  "rule": "F — Factual recall",
+  "texts": [
+   "Who arrived in Aelmere in the late summer of Year 1?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e arrive) (Agent $e $who) (Name $ae \"Aelmere\") (Location $e $ae) (Time $e (Year 1)) (Time $e late_summer) (Past $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the arriver is correctly the unknown and the place and year bind, but \"the late summer of Year 1\" has no licensed time term - the translator had to coin a bare late_summer symbol and lift the year out of the genitive by hand, so the question only matches a statement that happened to be worded the same way (\"in the summer of Year 1\" or \"late in summer\" would store something else and the question would miss). Split the two time adjuncts and keep one fixed wording for the season everywhere in the stream: \"Who arrived in Aelmere in late summer, in Year 1?\" If your world names months, naming the month instead of the season removes the guess entirely, since months are a time term the translator has."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F24",
+  "rule": "F — Factual recall",
+  "texts": [
+   "What does Tessa Brae do?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Name $t \"Tessa Brae\") (Member $e $verb) (Agent $e $t)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query puts the unknown in the verb slot of an event Tessa Brae is the agent of, binds her by her verbatim name string rather than a guessed symbol, and asserts nothing - the instruction set's prescribed \"what does X do?\" shape exactly."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F25",
+  "rule": "F — Factual recall",
+  "texts": [
+   "What is the Cove Stair?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Name $c \"Cove Stair\") (Member $c $what)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. \"Cove Stair\" is read as a name (the capitalized run says more than the bare kind word), so the query binds it by its name string and leaves the kind slot open - which is exactly what \"what is it?\" asks - and nothing is asserted."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F26",
+  "rule": "F — Factual recall",
+  "texts": [
+   "What is the deep ebb?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $x ebb) (Member $x deep) (Member $x $c)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query picks out the thing that is an ebb and is deep and leaves the answer slot open, which is the licensed shape for an open \"what\" ask (the same shape as \"what does Bob do?\"), so any identifying class stored for it binds. Two limits are ours, not your sentence's, and no rewording would remove them: an open answer slot also re-binds the words you supplied, so \"ebb\" and \"deep\" come back alongside a real answer, and we have to guess whether \"deep ebb\" was recorded split (an ebb that is deep) or fused as a single term of art."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F27",
+  "rule": "F — Factual recall",
+  "texts": [
+   "Where is the feather store?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $s feather_store) (LocatedIn $s $w)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query binds the feather store by its kind and asks what contains it, which is exactly what \"where is X?\" asks. One caveat on our side: we can only reach a position recorded as containment (\"in / at / inside / within\"), so if the store's position was stated with \"next to\", \"on\" or \"atop\", this question finds nothing rather than the wrong thing."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F28",
+  "rule": "F — Factual recall",
+  "texts": [
+   "Which ground feathers do not ward lanterns?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $x ground_feather) (Member $e ward) (Agent $e $x) (Theme $e lantern)) (STV 0.0 $conf))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the unknown sits in the warder slot, the warding event and the lanterns are pinned as stated, and the whole pattern is asked at falsity, which is what the negative \"which N do not V?\" asks. Note only that a fact stated about the kinds at large (\"ground feathers ward lanterns\") does not distribute to individual feathers, so this instance-level question will stay silent on it rather than guess."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F29",
+  "rule": "F — Factual recall",
+  "texts": [
+   "What is the cold-threshold wind?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (Measure cold_threshold_wind wind $n $u) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: the query hard-codes \"cold_threshold_wind\" as a knowledge-base symbol instead of looking the referent up by its kind, and it invents a measurement dimension called \"wind\" that no word of your question supplies, so it asks for a number on a scale nothing would ever have been stored under and cannot reach a definitional statement at all. We have no \"what is X?\" retrieval form, so name the kind of answer you want. For a classification, ask \"What kind of thing is the cold-threshold wind?\"; if what you want is its threshold value, name the dimension instead and ask \"What temperature is the cold-threshold wind?\" (or \"What wind speed is the cold-threshold wind?\"), which binds a stored measure cleanly."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "F30",
+  "rule": "F — Factual recall",
+  "texts": [
+   "Whom did the Council invest as a Keeper on day 260 of Year 1?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e invest) (Agent $e $council) (Member $council council) (Patient $e $who) (Past $e) (Time $e (Day 260)) (Time $e (Year 1)) (Member $st keeper) (Experiencer $st $who) (Member $who keeper) (Result $e $st)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the unknown sits in the object slot of the investing event, the Council stays the investing party, both date terms ride the event, and the conferred Keeper role is rebuilt as the state the investing brought about — the same shape an \"invested X as a Keeper\" statement is stored in, so the answer binds. It does ask for that full conferred-role bundle, so an appointment recorded some other way (a plain \"X was a Keeper from day 260\") would not be reached by this question."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W1",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does Aelmere keep lanterns burning every night?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Name $a \"Aelmere\") (Member $e keep) (Agent $e $a) (Theme $e $g) (GroupOf $g lantern) (Member $s burning) (Experiencer $s $g) (Still $s) (Result $e $s) (Time $e night) (Every $e 1 day) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: the question asks for a maintained state named `burning` and binds the lanterns as a definite group, but a statement of this same habit would file the state under the verb `burn` with the -ing recorded as an aspect marker, and would leave a bare-plural object as the bare kind `lantern` — so the query can never match the stored fact. The deeper trouble is the phrasing itself: \"keep X V-ing\" maintaining an ongoing activity has no settled form in the translator (only a resultant state does, as in \"kept the gate shut\"), so the lanterns' role in the burning is left undecided. Rewrite with a plain adjectival result state and a definite object: \"Why does Aelmere keep the lanterns alight every night?\" (\"keep the lanterns lit\" works the same way)."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W2",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does a Keeper light a lantern with mire-essence?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $k keeper) (Member $e light) (Agent $e $k) (Patient $e $lt) (Member $lt lantern) (Instrument $e mire_essence) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query rebuilds the lighting event exactly as a statement of it would — a keeper as the doer, the lantern as the thing changed, mire-essence as the means — and hangs the reason-ask on that event, asserting nothing."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W3",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why is Aelmere's mire-essence supply considered a closed cycle?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Name $ae \"Aelmere\") (Member $s mire_essence_supply) (Possession $s $ae) (Member $e consider) (Theme $e (Member $s closed_cycle)) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query rebuilds the \"is considered\" report faithfully — an opinion event with no named holder, the closed-cycle claim held unasserted inside it, and the supply's typing plus its link to Aelmere outside — and asks the reason for the considering. One thing to keep steady on your side: the answer will only bind if the statement that establishes this uses the same wording, \"mire-essence supply\" and \"closed cycle\"."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W4",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why do sky-cats descend from the cliff-spires?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $x sky_cat) (Member $e descend) (Agent $e $x) (GroupOf $g cliff_spire) (Source $e $g) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query asks the reason for the descending itself, with sky-cats bound generically by kind, the cliff-spires in the whence (from) slot, and no tense on what is a standing habit."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W5",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does every Keeper consider that sky-cats are sacred?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $x keeper) (Member $e consider) (Experiencer $e $x) (Theme $e (Inheritance sky_cat sacred)) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query rebuilds the attitude as a considering held by a keeper, with \"sky-cats are sacred\" kept inside it as the held belief rather than asserted, and asks the reason for that considering; the universal \"every Keeper\" rightly becomes a per-keeper pattern, which is how a distributed member is queried."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W6",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why did the Council create the modern feather-ration system?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $c council) (Member $e create) (Agent $e $c) (Patient $e $s) (Member $s feather_ration_system) (Member $s modern) (Past $e) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query rebuilds the create event with the Council as the doer and the modern feather-ration system as the thing created, and asks only for its reason — nothing is asserted and nothing in the question is dropped."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W7",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why do the Northcove lanterns burn through winter?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e burn) (Patient $e $g) (GroupOf $g lantern) (Possession $g $n) (Name $n \"Northcove\") (Time $e winter) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the Northcove lanterns, the burning and the reason-ask all come through, but \"through winter\" flattens to a bare winter time-stamp, so the question ends up asking why the lanterns burn at some point in winter rather than why they burn the whole season — and it will miss a stored fact that records the burning as lasting across winter. Rewrite as \"Why do the Northcove lanterns burn throughout the winter?\": our translator has a proper whole-extent relation for \"throughout\" (and \"during\"/\"while\") but none for \"through\", so that one word swap keeps the season-long force without changing what you are asking."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W8",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why did eleven lanterns on the Middle Row go out before dawn on day 16 of Year 1?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Name $mr \"Middle Row\") (GroupOf $g lantern) (Cardinality $g 11) (On $g $mr) (Member $e go_out) (Patient $e $g) (TimeAtMost $e dawn) (Time $e (Day 16)) (Time $e (Year 1)) (Past $e) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the count of eleven, the Middle Row restriction, the phrasal \"go out\" kept whole, the before-dawn bound and the day 16 / Year 1 date are all carried, and the line asks only for the reason the lanterns went out."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W9",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does the Council redistribute mire-essence at the full moon?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $c council) (Member $e redistribute) (Agent $e $c) (Theme $e mire_essence) (Time $e full_moon) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query asks for the reason the Council redistributes mire-essence and keeps the full-moon timing on the event; \"at the full moon\" is not one of the calendar or time-of-day forms our translator has a settled slot for, but the plain full-moon time marker it used is the closest fit and no rewording of that phrase would do better."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W10",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does the Council rarely order Keepers to burn wintergloss?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $c council) (Member $e order) (Agent $e $c) (Recipient $e keeper) (Theme $e $b) (Member $b burn) (Agent $b keeper) (Patient $b wintergloss) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the ordering and its \"Keepers to burn wintergloss\" complement are built correctly, but \"rarely\" drops out of the question entirely, so the query asks why the Council orders this at all and matches a Council that orders it constantly just as well — the infrequency you are actually asking about has nothing in the question to attach to. Rewrite as \"Why is it rare for the Council to order keepers to burn wintergloss?\": making rarity a stated property of the ordering gives the why something to point at instead of an adverb the query cannot carry, and the lowercase \"keepers\" keeps the word reading as the role rather than as a name."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W11",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why did the Council discuss burning wintergloss at the Stilllight Lantern in Year 1?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $c council) (Member $e discuss) (Agent $e $c) (Theme $e $b) (Member $b burn) (Patient $b wintergloss) (Name $l \"Stilllight Lantern\") (Location $e $l) (Time $e (Year 1)) (Past $e) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the query asks the right thing — the reason for the Council's discussing, with the lantern as place, Year 1 and the past tense all bound — but \"discuss burning wintergloss\" puts a gerund clause in the direct-object slot, which the translator has no rule for: here the burning is spelled out as an event in its own right, while a statement of the same fact may instead tuck it inside the discussing, and then the question matches nothing. Rewrite as \"Why did the Council discuss the burning of wintergloss at the Stilllight Lantern in Year 1?\" — an \"of\"-phrase after the noun is the shape the translator handles, so the question and the stored fact come out the same way."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W12",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does a Keeper harvest salt-bloom at the new moon?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e harvest) (Agent $e $k) (Member $k keeper) (Theme $e salt_bloom) (Inheritance salt_bloom bloom) (Time $e new_moon) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query asks for the reason behind the harvesting itself, with the keeper bound as the agent, salt-bloom as what is harvested, and no tense marking on the habitual present; \"at the new moon\" rides the time slot as a plain recurring-occasion symbol, the same way a habitual's slot is normally recorded."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W13",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does the harvest party harvest salt-bloom at the new-moon spring tide?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $p harvest_party) (Member $e harvest) (Agent $e $p) (Theme $e salt_bloom) (Time $e new_moon_spring_tide) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the question is asked as the harvesting event plus a single \"what was the reason\" slot, with the harvest party bound by its kind and nothing asserted; the adjudicator reviewed the plain \"new-moon spring tide\" time symbol and ruled it acceptable — it fills the right slot and claims nothing extra."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W14",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does the village cremate the dead?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e cremate) (Agent $e $v) (Member $v village) (Patient $e dead) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query asks for the reason the village cremates, with the village bound by its kind as the one doing it and \"the dead\" as the non-specific thing cremated, no tense on the habitual present, and the reason left as the only open slot."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W15",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why did a wraith emerge from the water of the Sunken Cove on day 120 of Year 1?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $w wraith) (Member $e emerge) (Agent $e $w) (Source $e $wt) (Member $wt water) (LocatedIn $wt $sc) (Name $sc \"Sunken Cove\") (Member $sc cove) (Past $e) (Time $e (Day 120)) (Time $e (Year 1)) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: \"the water of the Sunken Cove\" is asked for as water *contained in* the cove, but an \"of\"-phrase like this is stored as a part-of/belongs-to link instead, so the question looks for a connection no statement of that same phrase would have recorded and can come back empty even when the fact is in the knowledge base. Rewrite as \"Why did a wraith emerge from the water in the Sunken Cove on day 120 of Year 1?\" — the explicit \"in\" states the containment the question is already asking about, so statement and question agree. One residual caveat, harmless here: \"day 120 of Year 1\" names no month, so the day number is filed in the ordinary calendar-day slot — the same on both sides, so it still matches."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W16",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why did the wraith turn away from the Stilllight Lantern on day 120 of Year 1?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e turn_away) (Agent $e $w) (Member $w wraith) (Source $e $l) (Name $l \"Stilllight Lantern\") (Time $e (Day 120)) (Time $e (Year 1)) (Past $e) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query rebuilds the turn-away event exactly as the question states it — the wraith as the one turning, the named Stilllight Lantern as what it turned away from, and day 120 of Year 1 as the time — and asks only for the reason, asserting nothing."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W17",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why did the thread harvest at the West Row fall during the wraith's persistence in Year 1?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $h thread_harvest) (Location $h $loc) (Name $loc \"West Row\") (Member $e fall) (Theme $e $h) (Past $e) (Member $wth wraith) (Member $p persistence) (Experiencer $p $wth) (Time $p (Year 1)) (During $e $p) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the fall, the wraith's persistence, the Year 1 time and the reason ask are all right, but \"at the West Row\" is hung on the harvest itself, and a place phrase on an event-noun like \"harvest\" has no settled home — a statement could just as easily record the West Row as where the harvest *is* rather than where it happens, and then this question finds nothing. Attach the place to the falling instead, where it is unambiguous: \"Why did the thread harvest fall at the West Row during the wraith's persistence in Year 1?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W18",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why did the cauldrons yield two vessels of mire-essence on day 17 of Year 1?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e yield) (Agent $e $g) (GroupOf $g cauldron) (Patient $e $m) (Member $m mire_essence) (Measure $m quantity 2 vessel) (Time $e (Day 17)) (Time $e (Year 1)) (Past $e) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: the query measures the yield on a dimension called \"quantity\" that no word in your question supplies, so it can only match a stored fact that happens to have invented the same dimension — and \"two vessels of mire-essence\" (a container amount of a substance) has no settled form at all, so the count may never line up with how the yield was recorded. Say the amount as a plain count of things instead of a container measure of a substance: \"Why did the cauldrons yield two mire-essence vessels on day 17 of Year 1?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W19",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why do surviving nightmoths flee to the dim lanterns of the Hollows during a sky-cat hunt?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $x nightmoth) (Inheritance nightmoth moth) (Member $x surviving) (Member $e flee) (Agent $e $x) (Goal $e $l) (GroupOf $l lantern) (Possession $l $hw) (Name $hw \"Hollows\") (During $e $h) (Member $h sky_cat_hunt) (Inheritance sky_cat_hunt hunt) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: \"dim\" is dropped, so the question asks about any lanterns of the Hollows rather than the dim ones — and it cannot be put back, because a describing word on a definite plural (\"the dim lanterns\") is recorded of the individual lanterns, never of the set, so a question aimed at the set has nothing to bind. Ask about a single lantern, where the property sits on the thing itself: \"Why do surviving nightmoths flee to a dim lantern of the Hollows during a sky-cat hunt?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W20",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why did the wraith response use half of the autumn feather store in Year 1?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $wr wraith_response) (Member $e use) (Agent $e $wr) (Member $s autumn_feather_store) (Member $p autumn_feather_store) (PartOf $p $s) (ProportionOf $p $s half) (Theme $e $p) (Time $e (Year 1)) (Past $e) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query builds the using event with the wraith response as the user and a half-portion of the autumn feather store as what was used, keeps Year 1 and the past tense, and asks only for the reason."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W21",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why do the villagers consider the Cove Stair unlucky?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (GroupOf $v villager) (Name $c \"Cove Stair\") (Member $c stair) (Member $e consider) (Experiencer $e $v) (Theme $e (Member $c unlucky)) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query asks for the reason of the villagers' considering event, binding the villagers as a group of villagers and the Cove Stair by its name, and it keeps the \"unlucky\" verdict sealed inside the attitude, so the question asks what the villagers hold without asserting that the stair is unlucky."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W22",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does the village need sky-cats?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e need) (Experiencer $e $v) (Member $v village) (Stimulus $e sky_cat) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the needing is asked as an event with the village as the one who needs and sky-cats as what is needed, the habitual present adds no tense constraint that a stored fact would have to match, and the reason is the only open slot."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W23",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why did Old Vesh report the thin feather autumn of twenty-six years ago to the Council in Year 1?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Name $v \"Old Vesh\") (Member $e report) (Agent $e $v) (Theme $e $a) (Member $a feather_autumn) (Member $a thin) (BeforeBy $a now 26 year) (Recipient $e $c) (Member $c council) (Time $e (Year 1)) (Past $e) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. every element of the question is carried — Old Vesh as the reporter, the thin feather autumn as what was reported, the Council as the addressee, Year 1 as when the reporting happened, and the autumn's own dating as a twenty-six-year gap back from now — with the reason as the single unknown."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W24",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why do Keepers count many sky-cats on the cliff-spires in the morning in late summer?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $k keeper) (Member $e count) (Agent $e $k) (Theme $e $g) (GroupOf $g sky_cat) (CardinalityPhrase $g \"many\") (Location $e $s) (GroupOf $s cliff_spire) (Time $e morning) (Time $e late_summer) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query asks for the reason of the counting event and keeps every restriction the question puts on it — a keeper as the counter, a \"many\"-sized set of sky-cats as what is counted, the cliff-spires as where, and both the morning and the late-summer time."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W25",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why did Coraline Ash write in her log that a crowd of nightmoths brings sky-cats down from the cliff-spires?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $w write) (Experiencer $w $c) (Name $c \"Coraline Ash\") (Member $lg log) (Possession $lg $c) (Location $w $lg) (Past $w) (Theme $w (And (Member $cr crowd) (GroupOf $cr night_moth) (Member $bd bring_down) (Agent $bd $cr) (Theme $bd sky_cat) (Source $bd $sp))) (Inheritance night_moth moth) (GroupOf $sp cliff_spire) (Inheritance cliff_spire spire) (Inheritance sky_cat cat) (ReasonFor $r $w)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the reason is asked of Coraline Ash's writing, not of the moths' behaviour, which is what the question means, and the claim she wrote stays sealed under the writing event so the query never asserts it; the log, the moths and the cliff-spires are all bound as the question names them."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W26",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does an apprentice's solo count reset when the apprentice's lantern dims?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e reset) (Patient $e $c) (Member $c solo_count) (Possession $c $a) (Member $a apprentice) (Member $d dim) (Patient $d $l) (Member $l lantern) (Possession $l $a) (During $e $d) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the pieces are right (the reset and the dimming are both named, one apprentice is shared by \"an apprentice\" and \"the apprentice\", and the dimming is tied to the reset as the occasion), but the present-tense generic wording — \"an apprentice's ... when ... dims\" — makes the question ask why a standing REGULARITY holds, and a regularity is stored as a rule with no occurrence for the reason to hang on, so the query can only answer if some particular reset happens to be on file with a stated reason. Ask about a particular occasion instead, one finite clause per event: \"Why did the apprentice's solo count reset when the apprentice's lantern dimmed?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W27",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why did the Council build the Stilllight Lantern sixty-three years ago?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e build) (Agent $e $c) (Member $c council) (Patient $e $l) (Name $l \"Stilllight Lantern\") (Member $l lantern) (Past $e) (BeforeBy $e now 63 year) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query names the building event plainly, binds the Council by kind and the Stilllight Lantern by its name, keeps \"sixty-three years ago\" as a measured gap back from now, and leaves the reason as the one thing asked for."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W28",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does the sea-water store draw from the deep ebb?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e draw) (Agent $e $s) (Member $s sea_water_store) (Source $e $b) (Member $b ebb) (Member $b deep) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the drawing is named as the focus event with the sea-water store as the one doing it and the deep ebb in the \"from\" slot, and the reason is the only unknown; the definite singular subject keeps this a plain standing fact rather than a rule, so a stated reason can actually attach to it."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W29",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does the Stilllight Keeper check the flame at midnight?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e check) (Agent $e $k) (Name $k \"Stilllight Keeper\") (Member $k keeper) (Theme $e $f) (Member $f flame) (Time $e midnight) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query binds the Stilllight Keeper by name, puts the flame in the checked slot, keeps \"at midnight\" as a named time point the way dawn or noon would be stored, and asks only for the reason."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W30",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why did the Stilllight Lantern burn dim on the night of day 111 of Year 1?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Name $l \"Stilllight Lantern\") (Member $e burn) (Patient $e $l) (Past $e) (Time $e (Year 1)) (Time $e (Day 111)) (Time $e night) (Member $l dim) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the burning is named as the focus event with the Stilllight Lantern bound by name, the whole \"night of day 111 of Year 1\" stack kept as separate time atoms, and \"dim\" kept as a state the lantern was in rather than a manner adverb; the reason is the only thing asked for."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W31",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does the Council meet at every full moon?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $c council) (Member $e meet) (Agent $e $c) (Time $e full_moon) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the query asks the right thing (the reason the Council meets, with the Council as the meeting's agent), but it pins the recurrence as a plain time slot 'full_moon' and drops 'every' -- 'at every full moon' is not one of the calendar slots the instruction set fixes (weekday, day-part, month name), so a statement of the same fact may instead store the recurrence as a per-occurrence rule with no such time atom, and then this question matches nothing. Make the recurrence an explicit occurrence clause that a statement and a question route the same way: \"Why does the Council meet every time the moon is full?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W32",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does the harvest party need a spring tide?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $p harvest_party) (Member $e need) (Experiencer $e $p) (Stimulus $e $t) (Member $t spring_tide) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query builds the needing state with the harvest party as its experiencer and a spring tide as what is needed, binds both by kind, and hangs the asked-for reason on that event -- nothing of the question is lost or added."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W33",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does Old Vesh tell the story of the bad winter of sixty-three years ago?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Name $v \"Old Vesh\") (Member $e tell) (Agent $e $v) (Theme $e $s) (Member $s story) (Of $s $w) (Member $w winter) (Member $w bad) (BeforeBy $w now 63 year) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the question is asked correctly (Old Vesh as the teller, the reason left open), but the parse ties the story to the winter with an 'Of' link the instruction set licenses only for nominalizations and true relational nouns -- 'the story of X' is an aboutness phrase, which it explicitly excludes -- so a statement of the same fact would most likely leave that link out and this query would then match nothing. Put the aboutness on a verb, where it does have a licensed slot: \"Why does Old Vesh tell the story that describes the bad winter of sixty-three years ago?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W34",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why did Brindle Coombe say at the Council that a hard winter would force the village to dim some lanterns?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e say) (Experiencer $e $b) (Name $b \"Brindle Coombe\") (Location $e $c) (Member $c council) (Theme $e (And (Member $w winter) (Member $w hard) (Member $f force) (Agent $f $w) (Theme $f $d) (Future $f) (Member $d dim) (Agent $d $v) (Theme $d $l) (GroupOf $l lantern))) (Member $v village) (Past $e) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: the query rebuilds the whole reported claim as one sealed block and puts the lanterns in the dimming's 'moved, unchanged' slot, but dimming changes the lanterns, so a faithfully parsed statement files them in the change-of-state slot instead and this question binds nothing. On top of that, a sealed two-event complement (a hard winter forcing, the village dimming) is matched as a single structural term whose conjunct order nothing fixes, so even a slot-correct version of this question can fail to line up with the statement. Keep the reported claim to one finite clause so the sealed content is small and stable: \"Why did Brindle Coombe say at the Council that the village would have to dim some lanterns in a hard winter?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "W35",
+  "rule": "W — Why-questions",
+  "texts": [
+   "Why does Hesper boil silken threads in sea-water?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: $prf (And (Member $e boil) (Agent $e $h) (Name $h \"Hesper\") (Patient $e silken_thread) (Location $e sea_water) (ReasonFor $r $e)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the query names its focus event plainly -- Hesper as the boiler, the silken threads as what is boiled, sea-water as where -- and asks only for that event's reason, adding nothing."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N1",
+  "rule": "N — What-next",
+  "texts": [
+   "A sky-cat hunts nightmoths at a lantern-row on the Cliff Path.",
+   "What happens to the nightmoth crowd at that lantern-row?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: sc_type (Member sk_sky_cat_1 sky_cat) (STV 1.0 0.99))",
+     "(: sc_genus (Inheritance sky_cat cat) (STV 1.0 0.99))",
+     "(: hunt_ev (Member sk_hunt_1 hunt) (STV 1.0 0.99))",
+     "(: hunt_ag (Agent sk_hunt_1 sk_sky_cat_1) (STV 1.0 0.99))",
+     "(: hunt_pat (Patient sk_hunt_1 night_moth) (STV 1.0 0.99))",
+     "(: moth_genus (Inheritance night_moth moth) (STV 1.0 0.99))",
+     "(: hunt_loc (Location sk_hunt_1 sk_lantern_row_1) (STV 1.0 0.99))",
+     "(: lr_type (Member sk_lantern_row_1 lantern_row) (STV 1.0 0.99))",
+     "(: lr_genus (Inheritance lantern_row row) (STV 1.0 0.99))",
+     "(: lr_on (On sk_lantern_row_1 cliff_path) (STV 1.0 0.99))",
+     "(: cp_type (Member cliff_path path) (STV 1.0 0.99))",
+     "(: cp_name (Name cliff_path \"Cliff Path\") (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $g crowd) (GroupOf $g night_moth) (LocatedIn $g sk_lantern_row_1) (Member $e $verb) (Patient $e $g)) $tv)",
+     "(: $prf (And (Member $g crowd) (GroupOf $g night_moth) (LocatedIn $g sk_lantern_row_1) (Member $e $verb) (Theme $e $g)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the hunting, its sky-cat hunter and nightmoth prey, the lantern-row as where it happens, and Cliff Path as a name with its own kind fact all land where they should.",
+    "bad: two things block it. \"What happens to\" never names the verb, so the translator cannot tell which slot the moths belong in and falls back on guessing two of them, and \"the nightmoth crowd\" has nothing to attach to, because the first sentence records the moths as a kind rather than as a particular set; the lantern-row also ends up recorded as where the crowd sits instead of where the happening is. Ask it from the actor's side, which does parse: \"What does the sky-cat do at that lantern-row?\" — that reaches the hunting at that lantern-row, whose prey is the nightmoths. If you need the moths themselves referable later, introduce them as a set in the first sentence: \"A sky-cat hunts a crowd of nightmoths at a lantern-row on the Cliff Path.\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N2",
+  "rule": "N — What-next",
+  "texts": [
+   "A lantern at the Sunken Cove dies before dawn.",
+   "What happens at the Sunken Cove?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: lantern_type (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: cove_type (Member sunken_cove cove) (STV 1.0 0.99))",
+     "(: cove_name (Name sunken_cove \"Sunken Cove\") (STV 1.0 0.99))",
+     "(: lantern_loc (LocatedIn sk_lantern_1 sunken_cove) (STV 1.0 0.99))",
+     "(: die_ev (Member sk_die_1 die) (STV 1.0 0.99))",
+     "(: die_patient (Patient sk_die_1 sk_lantern_1) (STV 1.0 0.99))",
+     "(: die_time (TimeAtMost sk_die_1 dawn) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $e $verb) (Location $e sunken_cove)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the lantern, its position at the named cove, the dying with the lantern as the thing that dies, and \"before dawn\" as an upper bound on the time are all recorded.",
+    "good. it asks exactly what the question asks, in the open-verb form the instruction set prescribes, with the cove reused as the symbol the first sentence created; note only that the first sentence attaches the cove to the lantern rather than to the dying, so this question has nothing in that context to match."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N3",
+  "rule": "N — What-next",
+  "texts": [
+   "A lantern burns wintergloss alongside mire-essence.",
+   "What happens to the nightmoths at that lantern?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: burn_ev (Member sk_burn_1 burn) (STV 1.0 0.99))",
+     "(: burn_ag (Agent sk_burn_1 sk_lantern_1) (STV 1.0 0.99))",
+     "(: burn_pat (Patient sk_burn_1 wintergloss) (STV 1.0 0.99))",
+     "(: burn_alongside (Alongside sk_burn_1 mire_essence) (STV 1.0 0.99))",
+     "(: lantern_ty (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: wg_genus (Inheritance wintergloss gloss) (STV 1.0 0.99))",
+     "(: me_genus (Inheritance mire_essence essence) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (GroupOf $g nightmoth) (Inheritance nightmoth moth) (LocatedIn $g sk_lantern_1) (Member $e $verb) (Theme $e $g)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the burning, its lantern and the wintergloss it burns are right, but \"alongside mire-essence\" survives only as an opaque preposition record — nothing says the mire-essence burns too, so a later question about what the lantern burns will not find it. If both substances burn, write \"A lantern burns wintergloss and mire-essence.\", which gives each substance its own burning. If you meant the mire-essence merely sits beside the burning, say that instead: \"A lantern burns wintergloss next to a pot of mire-essence.\"",
+    "mixed: \"that lantern\" resolves correctly to the lantern of the first sentence and every part of the question is well formed, but \"what happens to\" leaves the verb unnamed, so the moths get pinned into one single role and the question will miss any event that filed them under a different one; \"at that lantern\" is likewise recorded as where the moths stand rather than where the happening is. Ask it from the actor's side — \"What do the nightmoths at that lantern do?\" — or name the event you are really asking about, e.g. \"Does that lantern's burning draw the nightmoths?\"; either one fixes the moths' role."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N4",
+  "rule": "N — What-next",
+  "texts": [
+   "A Keeper grinds feathers and scatters the feathers around a lit lantern at the Sunken Cove.",
+   "A wraith emerges from the water of the Sunken Cove.",
+   "What happens to the lantern?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: k_type (Member sk_keeper_1 keeper) (STV 1.0 0.99))",
+     "(: e1_grind (Member sk_grind_1 grind) (STV 1.0 0.99))",
+     "(: e1_agent (Agent sk_grind_1 sk_keeper_1) (STV 1.0 0.99))",
+     "(: feathers_grp (GroupOf sk_feathers_1 feather) (STV 1.0 0.99))",
+     "(: e1_patient (Patient sk_grind_1 sk_feathers_1) (STV 1.0 0.99))",
+     "(: e2_scatter (Member sk_scatter_1 scatter) (STV 1.0 0.99))",
+     "(: e2_agent (Agent sk_scatter_1 sk_keeper_1) (STV 1.0 0.99))",
+     "(: e2_theme (Theme sk_scatter_1 sk_feathers_1) (STV 1.0 0.99))",
+     "(: lant_type (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: lant_lit (Member sk_lantern_1 lit) (STV 1.0 0.99))",
+     "(: e2_around (Around sk_scatter_1 sk_lantern_1) (STV 1.0 0.99))",
+     "(: cove_type (Member sunken_cove cove) (STV 1.0 0.99))",
+     "(: cove_name (Name sunken_cove \"Sunken Cove\") (STV 1.0 0.99))",
+     "(Interpretation r1 (: e2_loc (Location sk_scatter_1 sunken_cove) (STV 1.0 0.99)))",
+     "(Interpretation r2 (: lant_loc (LocatedIn sk_lantern_1 sunken_cove) (STV 1.0 0.99)))"
+    ],
+    [
+     "(: wraith_mem (Member sk_wraith_1 wraith) (STV 1.0 0.99))",
+     "(: emerge_ev (Member sk_emerge_1 emerge) (STV 1.0 0.99))",
+     "(: emerge_ag (Agent sk_emerge_1 sk_wraith_1) (STV 1.0 0.99))",
+     "(: water_mem (Member sk_water_1 water) (STV 1.0 0.99))",
+     "(: emerge_src (Source sk_emerge_1 sk_water_1) (STV 1.0 0.99))",
+     "(: water_poss (Possession sk_water_1 sunken_cove) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $e $verb) (To $e sk_lantern_1)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. each clause gets its own event with the Keeper acting and one shared set of feathers, \"lit\" stays a property of the lantern, and the genuinely ambiguous \"at the Sunken Cove\" is recorded as two complete readings — the scattering there, or the lantern there — rather than guessed.",
+    "good. the wraith, the emerging, the water it comes out of and that water's link to the cove are all there, and the cove reuses the symbol the first sentence created.",
+    "bad: \"happens to\" is recorded as a directed-at preposition, which no statement about something befalling the lantern would ever produce, so the question matches nothing — and with the verb unnamed there is no other slot the translator could have used. Ask it from the actor's side: \"What does the wraith do?\" parses cleanly and returns the next event. If the lantern's fate is what you need, name the verb — \"Does the wraith put out the lantern?\" — because which slot the lantern takes depends on that verb."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N5",
+  "rule": "N — What-next",
+  "texts": [
+   "An apprentice's lantern dims during the apprentice's solo nights.",
+   "What happens to the apprentice's solo count?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: e_appr (Member sk_apprentice_1 apprentice) (STV 1.0 0.99))",
+     "(: e_lant (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: e_poss (Possession sk_lantern_1 sk_apprentice_1) (STV 1.0 0.99))",
+     "(: e_dim (Member sk_dim_1 dim) (STV 1.0 0.99))",
+     "(: e_pat (Patient sk_dim_1 sk_lantern_1) (STV 1.0 0.99))",
+     "(: e_nights_g (GroupOf sk_nights_1 solo_night) (STV 1.0 0.99))",
+     "(: e_nights_poss (Possession sk_nights_1 sk_apprentice_1) (STV 1.0 0.99))",
+     "(: e_time (Time sk_dim_1 sk_nights_1) (STV 1.0 0.99))",
+     "(: sn_genus (Inheritance solo_night night) (STV 1.0 0.99))",
+     "(: sn_mod (Inheritance solo_night solo) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $c solo_count) (Possession $c sk_apprentice_1) (Member $e $verb) (To $e $c)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: \"during the apprentice's solo nights\" is not carried — it lands in a plain time slot that takes calendar terms, not a set of nights, and even the correct \"during\" record is only defined over one single happening, so the recurring frame the sentence states is lost. Rewrite it as one occurrence per night: \"Whenever an apprentice works a solo night, that apprentice's lantern dims.\" — that gives a dimming for each solo night, tied to it. Separately, \"solo\" is being asserted as a property of the night, which it is not; \"a night the apprentice works alone\" avoids that if you want to keep the wording literal.",
+    "bad: \"happens to\" again lands as a directed-at preposition rather than in a slot for the thing something befalls, so it matches nothing, and \"the apprentice's solo count\" has nothing to bind to either — a count is held as the size of a set of things, never as a thing of its own. Ask about the nights themselves: \"How many solo nights has the apprentice had?\" If you mean the count changing, name the change: \"Does the apprentice's count of solo nights rise?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N6",
+  "rule": "N — What-next",
+  "texts": [
+   "A cold wind strikes the Cliff Path at night.",
+   "A lantern on the Cliff Path is unprepared.",
+   "What happens to the unprepared lantern?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: wind_type (Member sk_wind_1 wind) (STV 1.0 0.99))",
+     "(: wind_cold (Member sk_wind_1 cold) (STV 1.0 0.99))",
+     "(: strike_ev (Member sk_strike_1 strike) (STV 1.0 0.99))",
+     "(: strike_ag (Agent sk_strike_1 sk_wind_1) (STV 1.0 0.99))",
+     "(: strike_th (Theme sk_strike_1 cliff_path) (STV 1.0 0.99))",
+     "(: path_type (Member cliff_path path) (STV 1.0 0.99))",
+     "(: path_name (Name cliff_path \"Cliff Path\") (STV 1.0 0.99))",
+     "(: strike_tm (Time sk_strike_1 night) (STV 1.0 0.99))"
+    ],
+    [
+     "(: lant_mem (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: lant_on (On sk_lantern_1 cliff_path) (STV 1.0 0.99))",
+     "(: lant_unprep (Member sk_lantern_1 unprepared) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $e $verb) (To $e sk_lantern_1)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the wind gets its own thing to hang facts on, the striking carries its doer, the path it strikes and the night it happens at, and the named Cliff Path is kept as one name with \"path\" stated as its kind.",
+    "good. the lantern is a fresh thing rather than anything carried over from the first sentence, \"on the Cliff Path\" keeps the surface \"on\" instead of claiming the lantern sits inside the path, and \"unprepared\" is recorded as a plain property of it.",
+    "bad: the query hangs the lantern off a \"to\" oblique — the slot for what an action is aimed at — so it never asks what befalls the lantern and can match nothing in the knowledge base; an open \"what happens to X?\" has no supported form at all, because the slot an answer would file X in depends on the verb the question leaves unnamed. Name the event you are asking about and give the lantern its plain object position, with no \"to\"-phrase: \"Does the cold wind damage the unprepared lantern at night?\" If you would rather keep the question open, ask it from the acting side, which is supported: \"What does the cold wind do at night?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N7",
+  "rule": "N — What-next",
+  "texts": [
+   "A cold wind strikes the Cliff Path at night.",
+   "A lantern on the Cliff Path is salt-bloomed.",
+   "What happens to the salt-bloomed lantern?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: wind_type (Member sk_wind_1 wind) (STV 1.0 0.99))",
+     "(: wind_cold (Member sk_wind_1 cold) (STV 1.0 0.99))",
+     "(: strike_ev (Member sk_strike_1 strike) (STV 1.0 0.99))",
+     "(: strike_agent (Agent sk_strike_1 sk_wind_1) (STV 1.0 0.99))",
+     "(: strike_theme (Theme sk_strike_1 cliff_path) (STV 1.0 0.99))",
+     "(: path_type (Member cliff_path path) (STV 1.0 0.99))",
+     "(: path_name (Name cliff_path \"Cliff Path\") (STV 1.0 0.99))",
+     "(: strike_time (Time sk_strike_1 night) (STV 1.0 0.99))"
+    ],
+    [
+     "(: lant_type (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: lant_on_path (On sk_lantern_1 cliff_path) (STV 1.0 0.99))",
+     "(: lant_salt_bloomed (Member sk_lantern_1 salt_bloomed) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $e $verb) (To $e sk_lantern_1)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the cold wind, the striking, the struck Cliff Path and the night it happens at are all carried, and the multi-word name stays one symbol with \"path\" stated separately as its kind.",
+    "good. the Cliff Path is reused from the first sentence rather than introduced a second time, \"on\" is kept as the surface position rather than read as containment, and \"salt-bloomed\" is carried as one plain property of the lantern. Be aware that the coined word stays unanalysed — nothing connects it to \"bloom\" or to salt — so spell it the same way in every sentence and question that mentions it.",
+    "bad: the query hangs the lantern off a \"to\" oblique — the slot for what an action is aimed at — so it never asks what befalls the lantern and can match nothing in the knowledge base; an open \"what happens to X?\" has no supported form at all, because the slot an answer would file X in depends on the verb the question leaves unnamed. Name the event you are asking about and give the lantern its plain object position, with no \"to\"-phrase: \"Does the cold wind damage the salt-bloomed lantern at night?\" If you would rather keep the question open, ask it from the acting side, which is supported: \"What does the cold wind do at night?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N8",
+  "rule": "N — What-next",
+  "texts": [
+   "A crowd of nightmoths gathers at a lantern-row.",
+   "What do the sky-cats do?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: crowd_mem (Member sk_crowd_1 crowd) (STV 1.0 0.99))",
+     "(: crowd_grp (GroupOf sk_crowd_1 nightmoth) (STV 1.0 0.99))",
+     "(: nightmoth_genus (Inheritance nightmoth moth) (STV 1.0 0.99))",
+     "(: gather_ev (Member sk_gather_1 gather) (STV 1.0 0.99))",
+     "(: gather_ag (Agent sk_gather_1 sk_crowd_1) (STV 1.0 0.99))",
+     "(: gather_loc (Location sk_gather_1 sk_lantern_row_1) (STV 1.0 0.99))",
+     "(: lrow_mem (Member sk_lantern_row_1 lantern_row) (STV 1.0 0.99))",
+     "(: lrow_genus (Inheritance lantern_row row) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (GroupOf $g sky_cat) (Member $e $verb) (Agent $e $g)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the crowd is one group whose members are nightmoths, the gathering is recorded as that group acting as a unit rather than each moth separately, the lantern-row is its own thing filling the place slot, and both coined compounds keep their plain heads (moth, row).",
+    "good. \"the sky-cats\" binds a group of sky-cats and the question asks openly what that group does, which is the supported shape for an open \"what do they do\" question. Just make sure the facts meant to answer it also present the sky-cats as a group — a fact about a single sky-cat acting alone is not reached by this question."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N9",
+  "rule": "N — What-next",
+  "texts": [
+   "A sky-cat hunts through summer.",
+   "What happens at the base of the cliff by autumn?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: sc_type (Member sk_sky_cat_1 sky_cat) (STV 1.0 0.99))",
+     "(: sc_genus (Inheritance sky_cat cat) (STV 1.0 0.99))",
+     "(: hunt_ev (Member sk_hunt_1 hunt) (STV 1.0 0.99))",
+     "(: hunt_ag (Agent sk_hunt_1 sk_sky_cat_1) (STV 1.0 0.99))",
+     "(: hunt_time (Time sk_hunt_1 summer) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $e $verb) (Location $e $b) (Member $b base) (PartOf $b $c) (Member $c cliff) (Time $e autumn)) $tv)",
+     "(: $prf (And (Member $e $verb) (Location $e $b) (Member $b base) (PartOf $b $c) (Member $c cliff) (TimeAtMost $e autumn)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the sky-cat, the hunting and summer all come through, but \"through summer\" flattens to a bare summer time-stamp, so the fact reads as a hunt at some point in summer rather than one lasting the whole season. Rewrite as \"A sky-cat hunts throughout the summer.\": our translator has a proper whole-extent relation for \"throughout\" (and \"during\" / \"while\") but none for \"through\", so that one word swap keeps the season-long force without changing what you are saying.",
+    "mixed: the place is built correctly — the base bound as part of the cliff — and the open \"what happens\" is asked in the supported way, but \"by autumn\" reaches nothing: the translator can rank months and weekdays against each other and nothing ranks seasons, so the deadline collapses to \"stamped autumn\" and will miss the hunting your first sentence stamped summer. Give the deadline a month, and date the statements in months too: \"What happens at the base of the cliff by September?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N10",
+  "rule": "N — What-next",
+  "texts": [
+   "The feather store at the Watch is large.",
+   "What happens at the Sunken Cove lanterns in winter?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: fs_type (Member sk_feather_store_1 feather_store) (STV 1.0 0.99))",
+     "(: fs_genus (Inheritance feather_store store) (STV 1.0 0.99))",
+     "(: watch_type (Member sk_watch_1 watch) (STV 1.0 0.99))",
+     "(: fs_loc (LocatedIn sk_feather_store_1 sk_watch_1) (STV 1.0 0.99))",
+     "(: fs_large (Member sk_feather_store_1 large) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Name $sc \"Sunken Cove\") (GroupOf $g lantern) (Possession $g $sc) (Member $e $verb) (Location $e $g) (Time $e winter)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the feather store is one thing held at the Watch, \"the Watch\" stays an ordinary capitalized common noun rather than being treated as a name, and \"large\" is recorded straight on the store.",
+    "good. \"Sunken Cove\" is bound by its name, its lanterns bind as a group belonging to it, and the open \"what happens\" is asked with those lanterns as the place and winter as the time. Word the answering facts the same way — \"the Sunken Cove lanterns\" as a group — so question and fact line up."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N11",
+  "rule": "N — What-next",
+  "texts": [
+   "A wraith drains the lanterns of the West Row.",
+   "What happens to the thread harvest at the West Row?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: qap89_wraith (Member sk_wraith_1 wraith) (STV 1.0 0.99))",
+     "(: qap89_drain (Member sk_drain_1 drain) (STV 1.0 0.99))",
+     "(: qap89_agent (Agent sk_drain_1 sk_wraith_1) (STV 1.0 0.99))",
+     "(: qap89_patient (Patient sk_drain_1 sk_lantern_1) (STV 1.0 0.99))",
+     "(: qap89_lanterns (GroupOf sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: qap89_poss (Possession sk_lantern_1 west_row) (STV 1.0 0.99))",
+     "(: qap89_row_type (Member west_row row) (STV 1.0 0.99))",
+     "(: qap89_row_name (Name west_row \"West Row\") (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $h thread_harvest) (LocatedIn $h west_row) (Member $e $verb) (Patient $e $h)) $tv)",
+     "(: $prf (And (Member $h thread_harvest) (LocatedIn $h west_row) (Member $e $verb) (Theme $e $h)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the wraith, the draining and the West Row's lanterns are all recorded, the lanterns as one definite group in the affected slot — so the draining is stated of the group, and a single lantern named later is not itself queryable as drained.",
+    "bad: \"what happens to X?\" names no verb, so the translator has to guess which slot would hold the harvest (it emitted two guesses, one Patient line and one Theme line), and the question also makes \"at the West Row\" a separate containment fact about the harvest that has to be proved. The premise ties the West Row only to its lanterns and never mentions a thread harvest, so nothing can match. Name the consequence you are asking about and tie the harvest to the row the way the premise ties the lanterns: \"Does the wraith's draining ruin the West Row's thread harvest?\" — with whichever consequence verb you actually mean in place of \"ruin\"."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N12",
+  "rule": "N — What-next",
+  "texts": [
+   "A Keeper leaves a lantern on the Middle Row untended overnight.",
+   "What happens to the lantern?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: keeper_ty (Member sk_keeper_1 keeper) (STV 1.0 0.99))",
+     "(: leave_ev (Member sk_leave_1 leave) (STV 1.0 0.99))",
+     "(: leave_ag (Agent sk_leave_1 sk_keeper_1) (STV 1.0 0.99))",
+     "(: leave_th (Theme sk_leave_1 sk_lantern_1) (STV 1.0 0.99))",
+     "(: leave_time (Time sk_leave_1 night) (STV 1.0 0.99))",
+     "(: lantern_ty (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: lantern_loc (On sk_lantern_1 middle_row) (STV 1.0 0.99))",
+     "(: mr_ty (Member middle_row row) (STV 1.0 0.99))",
+     "(: mr_name (Name middle_row \"Middle Row\") (STV 1.0 0.99))",
+     "(: lantern_untended (Member sk_lantern_1 untended) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $e $verb) (Theme $e sk_lantern_1)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: \"leave X untended\" states a result — the lantern is untended because the Keeper left it — but the parse keeps only a flat \"the lantern is untended\" atom with nothing linking that state to the leaving, and it hangs \"overnight\" on the leaving rather than on the untendedness that lasts the night. Give the result its own finite clause: \"A Keeper leaves a lantern on the Middle Row, so the lantern stays untended overnight.\"",
+    "mixed: the query does reuse the premise's lantern and does match the leaving, but \"what happens to X?\" names no verb, so the slot that holds the lantern has to be guessed, and any later fact stored under a different slot returns nothing. Name the event you mean and the question parses cleanly: \"Does anyone tend the lantern overnight?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N13",
+  "rule": "N — What-next",
+  "texts": [
+   "A Keeper gathers salt-bloom at the full moon.",
+   "What happens to that salt-bloom?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: e_keeper (Member sk_keeper_1 keeper) (STV 1.0 0.99))",
+     "(: e_gather (Member sk_gather_1 gather) (STV 1.0 0.99))",
+     "(: e_agent (Agent sk_gather_1 sk_keeper_1) (STV 1.0 0.99))",
+     "(: e_theme (Theme sk_gather_1 salt_bloom) (STV 1.0 0.99))",
+     "(: e_genus (Inheritance salt_bloom bloom) (STV 1.0 0.99))",
+     "(: e_time (Time sk_gather_1 full_moon) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $e $verb) (Patient $e salt_bloom)) $tv)",
+     "(: $prf (And (Member $e $verb) (Theme $e salt_bloom)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the gathering, its Keeper and its salt-bloom, and the full-moon time are all recorded, and no \"every\"-style recurrence is invented for wording that does not state one.",
+    "mixed: the query reuses the premise's salt-bloom and its Theme line does match the gathering, but \"what happens to X?\" names no verb, so the translator has to fan out over guessed slots (one Patient line, one Theme line) and any consequence stored under another slot is missed. When you have a consequence in mind, name it: \"Does the Keeper dry that salt-bloom?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N14",
+  "rule": "N — What-next",
+  "texts": [
+   "A newcomer arrives in Aelmere in autumn.",
+   "What does the newcomer do?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: newcomer_mem (Member sk_newcomer_1 newcomer) (STV 1.0 0.99))",
+     "(: arrive_ev (Member sk_arrive_1 arrive) (STV 1.0 0.99))",
+     "(: arrive_ag (Agent sk_arrive_1 sk_newcomer_1) (STV 1.0 0.99))",
+     "(: arrive_loc (Location sk_arrive_1 aelmere) (STV 1.0 0.99))",
+     "(: aelmere_name (Name aelmere \"Aelmere\") (STV 1.0 0.99))",
+     "(: arrive_time (Time sk_arrive_1 autumn) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $e $verb) (Agent $e sk_newcomer_1)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the arrival, its newcomer, Aelmere as the event's place and autumn as its time are all recorded, with no kind invented for the name.",
+    "good. this is the licensed open \"what does X do?\" shape, and it binds the premise's newcomer directly as the agent of the unknown event."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N15",
+  "rule": "N — What-next",
+  "texts": [
+   "A Keeper on the Cliff Path retires.",
+   "What happens to that Keeper's station?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: k_type (Member sk_keeper_1 keeper) (STV 1.0 0.99))",
+     "(: cp_name (Name cliff_path \"Cliff Path\") (STV 1.0 0.99))",
+     "(: cp_type (Member cliff_path path) (STV 1.0 0.99))",
+     "(: k_loc (On sk_keeper_1 cliff_path) (STV 1.0 0.99))",
+     "(: e_retire (Member sk_retire_1 retire) (STV 1.0 0.99))",
+     "(: e_agent (Agent sk_retire_1 sk_keeper_1) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $s station) (Possession $s sk_keeper_1) (Member $e $verb) (Theme $e $s)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the Keeper, the Cliff Path as a named place with its kind, the \"on\" position and the retiring event are all recorded.",
+    "mixed: the query is the best form the instruction set licenses, but the question names no verb, so the slot that would hold the station has to be guessed, and the station is a referent the premise never introduces — its \"that Keeper's\" link is a further conjunct that must also be proved, so nothing matches here. Mention the station in the premise and name the focus event in the question: \"Who takes over that Keeper's station?\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N17",
+  "rule": "N — What-next",
+  "texts": [
+   "The lanterns of three Cliff Path stations burn extra mire-essence.",
+   "What happens at those stations?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: qap99_path_type (Member cliff_path path) (STV 1.0 0.99))",
+     "(: qap99_path_name (Name cliff_path \"Cliff Path\") (STV 1.0 0.99))",
+     "(: qap99_st_group (GroupOf sk_station_1 station) (STV 1.0 0.99))",
+     "(: qap99_st_card (Cardinality sk_station_1 3) (STV 1.0 0.99))",
+     "(: qap99_st_poss (Possession sk_station_1 cliff_path) (STV 1.0 0.99))",
+     "(: qap99_lt_group (GroupOf sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: qap99_lt_poss (Possession sk_lantern_1 sk_station_1) (STV 1.0 0.99))",
+     "(: qap99_es_type (Member sk_essence_1 mire_essence) (STV 1.0 0.99))",
+     "(: qap99_es_extra (Member sk_essence_1 extra) (STV 1.0 0.99))",
+     "(: qap99_es_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
+     "(: qap99_burn_ev (Member sk_burn_1 burn) (STV 1.0 0.99))",
+     "(: qap99_burn_ag (Agent sk_burn_1 sk_lantern_1) (STV 1.0 0.99))",
+     "(: qap99_burn_pt (Patient sk_burn_1 sk_essence_1) (STV 1.0 0.99))",
+     "(: qap99_burn_rule (Implication (PartOf $x sk_lantern_1) (And (Member (sk_burn $x) burn) (Agent (sk_burn $x) $x) (Patient (sk_burn $x) sk_essence_1))) (STV 1.0 0.9))"
+    ],
+    [
+     "(: $prf (And (Member $e $verb) (Location $e sk_station_1)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the three stations, their lanterns and the burning all come through, but \"extra\" ends up recorded as a property of the mire-essence itself (the essence is \"extra\") rather than as a larger amount being burned, and nothing places the burning at the stations, so a follow-up question about what happens there has no event to find. Rewrite as: \"At three Cliff Path stations, the lanterns burn more mire-essence than the lanterns at the other stations do.\" — an explicit comparison with a stated standard carries the increment, and the fronted \"at three Cliff Path stations\" puts the burning at the stations.",
+    "good. the query asks for any event located at the stations and correctly reuses the earlier sentence's station group for \"those stations\", leaving the verb as the unknown."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N18",
+  "rule": "N — What-next",
+  "texts": [
+   "An apprentice's solo count is large.",
+   "What does the Council do?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: e_apprentice (Member sk_apprentice_1 apprentice) (STV 1.0 0.99))",
+     "(: e_count (Member sk_count_1 solo_count) (STV 1.0 0.99))",
+     "(: e_count_genus (Inheritance solo_count count) (STV 1.0 0.99))",
+     "(: e_poss (Possession sk_count_1 sk_apprentice_1) (STV 1.0 0.99))",
+     "(: e_large (Member sk_count_1 large) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $c council) (Member $e $verb) (Agent $e $c)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: \"an apprentice\" is read as one particular apprentice, so the parse claims that a single specific apprentice happens to have a large solo count instead of stating the general fact about apprentices, and a possessive subject like \"an apprentice's N\" has no route into the general form. Rewrite as: \"Every apprentice has a large solo count.\" — an explicit quantifier with a plain verb, which gives every apprentice his or her own large solo count.",
+    "good. \"the Council\" is bound by kind with no name attached, and the verb is left open with the Council as the doer — the shape the translator handles for \"what does X do?\"."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N19",
+  "rule": "N — What-next",
+  "texts": [
+   "The Council meets at the full moon.",
+   "What does the Council do with the mire-essence reserves?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: council_type (Member sk_council_1 council) (STV 1.0 0.99))",
+     "(: meet_ev (Member sk_meet_1 meet) (STV 1.0 0.99))",
+     "(: meet_ag (Agent sk_meet_1 sk_council_1) (STV 1.0 0.99))",
+     "(: meet_time (Time sk_meet_1 full_moon) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $e $verb) (Agent $e sk_council_1) (Theme $e $g) (GroupOf $g mire_essence_reserve)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the meeting, the Council as its doer and \"at the full moon\" as its time all come through, and leaving the event unmarked is the recurring/habitual reading the bare present states.",
+    "mixed: the Council and the reserves are picked out correctly, but \"do with\" leaves both the verb and the reserves' part in it unknown, so the question has to guess one slot and will miss an answer that stores the reserves as the thing consumed or as a \"with\" phrase. Rewrite by naming the action you expect and letting the reserves be its plain object, e.g. \"Does the Council distribute the mire-essence reserves?\" (substituting whichever verb your answer uses); keep \"What does the Council do?\" as a separate question if the verb must stay open."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N20",
+  "rule": "N — What-next",
+  "texts": [
+   "A wraith drains six lanterns on the West Row.",
+   "The wraith fades back into the water of the Sunken Cove.",
+   "What happens to the drained lanterns?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: wraith_ty (Member sk_wraith_1 wraith) (STV 1.0 0.99))",
+     "(: drain_ev (Member sk_drain_1 drain) (STV 1.0 0.99))",
+     "(: drain_ag (Agent sk_drain_1 sk_wraith_1) (STV 1.0 0.99))",
+     "(: drain_pat (Patient sk_drain_1 sk_group_1) (STV 1.0 0.99))",
+     "(: grp_ty (GroupOf sk_group_1 lantern) (STV 1.0 0.99))",
+     "(: grp_card (Cardinality sk_group_1 6) (STV 1.0 0.99))",
+     "(: grp_loc (On sk_group_1 west_row) (STV 1.0 0.99))",
+     "(: wr_ty (Member west_row row) (STV 1.0 0.99))",
+     "(: wr_name (Name west_row \"West Row\") (STV 1.0 0.99))"
+    ],
+    [
+     "(: fade_ev (Member sk_fade_1 fade) (STV 1.0 0.99))",
+     "(: fade_pat (Patient sk_fade_1 sk_wraith_1) (STV 1.0 0.99))",
+     "(: fade_goal (Goal sk_fade_1 sk_water_1) (STV 1.0 0.99))",
+     "(: water_ty (Member sk_water_1 water) (STV 1.0 0.99))",
+     "(: water_part (PartOf sk_water_1 sunken_cove) (STV 1.0 0.99))",
+     "(: cove_ty (Member sunken_cove cove) (STV 1.0 0.99))",
+     "(: cove_name (Name sunken_cove \"Sunken Cove\") (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $e $verb) (To $e sk_group_1)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the wraith, the six-lantern group with its count, the draining and the lanterns' position on the West Row all come through, and West Row is kept as one name with its kind stated separately.",
+    "mixed: the fading, the wraith and the cove's water all come through, but \"back\" is dropped with nothing to carry it, so the sense that the wraith is returning where it came from is lost. Rewrite as: \"The wraith fades into the water of the Sunken Cove again.\" — \"again\" is the one return/repetition marker the translator records.",
+    "bad: \"happens to\" gives the lanterns no slot as the thing acted on, so the question hangs them off a \"to\" relation that no statement ever writes and matches nothing — even though the earlier sentence already stores the lanterns as what the wraith drained. Rewrite by naming the action you expect and making the lanterns its plain object, e.g. \"Who refills the drained lanterns?\" (substituting whichever verb your answer uses)."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N22",
+  "rule": "N — What-next",
+  "texts": [
+   "The Stilllight Lantern burns wintergloss alongside mire-essence for one week.",
+   "What happens to the nightmoths at the Stilllight Lantern?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: sl_name (Name stilllight_lantern \"Stilllight Lantern\") (STV 1.0 0.99))",
+     "(: sl_type (Member stilllight_lantern lantern) (STV 1.0 0.99))",
+     "(: e_burn (Member sk_burn_1 burn) (STV 1.0 0.99))",
+     "(: e_agent (Agent sk_burn_1 stilllight_lantern) (STV 1.0 0.99))",
+     "(: e_pat1 (Patient sk_burn_1 wintergloss) (STV 1.0 0.99))",
+     "(: e_pat2 (Patient sk_burn_1 mire_essence) (STV 1.0 0.99))",
+     "(: e_dur (Measure sk_burn_1 duration 1 week) (STV 1.0 0.99))",
+     "(: wg_genus (Inheritance wintergloss gloss) (STV 1.0 0.99))",
+     "(: me_genus (Inheritance mire_essence essence) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (GroupOf $g nightmoth) (LocatedIn $g stilllight_lantern) (Member $e $verb) (To $e $g)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: \"alongside mire-essence\" is recorded as a second thing burned, which the preposition does not license; done correctly it becomes a bare \"alongside\" side-relation and the sentence then no longer says the mire-essence is burned at all, so that content is lost either way. Rewrite as: \"The Stilllight Lantern burns wintergloss and mire-essence for one week.\" — plain coordination gives each substance its own burning, both for the same week.",
+    "bad: \"what happens to\" leaves the nightmoths in a \"to\" relation that no statement ever writes, so the question matches nothing about them (the \"at the Stilllight Lantern\" part is fine). Rewrite as: \"What do the nightmoths do at the Stilllight Lantern?\" — an open verb with the moths as the doer is the shape the translator handles; if your answer instead has the moths acted on, name the verb, e.g. \"Does the Stilllight Lantern burn the nightmoths?\"."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "N25",
+  "rule": "N — What-next",
+  "texts": [
+   "A Keeper dims a lantern on the Cliff Path.",
+   "The dim lantern gives weak mist-light.",
+   "What happens to the thread harvest at that lantern?"
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: k_type (Member sk_keeper_1 keeper) (STV 1.0 0.99))",
+     "(: l_type (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+     "(: cp_type (Member cliff_path path) (STV 1.0 0.99))",
+     "(: cp_name (Name cliff_path \"Cliff Path\") (STV 1.0 0.99))",
+     "(: d_ev (Member sk_dim_1 dim) (STV 1.0 0.99))",
+     "(: d_ag (Agent sk_dim_1 sk_keeper_1) (STV 1.0 0.99))",
+     "(: d_pat (Patient sk_dim_1 sk_lantern_1) (STV 1.0 0.99))",
+     "(Interpretation r1 (: d_loc (Location sk_dim_1 cliff_path) (STV 1.0 0.99)))",
+     "(Interpretation r2 (: l_loc (On sk_lantern_1 cliff_path) (STV 1.0 0.99)))"
+    ],
+    [
+     "(: lantern_dim (Member sk_lantern_1 dim) (STV 1.0 0.99))",
+     "(: give_ev (Member sk_give_1 give) (STV 1.0 0.99))",
+     "(: give_ag (Agent sk_give_1 sk_lantern_1) (STV 1.0 0.99))",
+     "(: give_th (Theme sk_give_1 sk_mist_light_1) (STV 1.0 0.99))",
+     "(: ml_type (Member sk_mist_light_1 mist_light) (STV 1.0 0.99))",
+     "(: ml_genus (Inheritance mist_light light) (STV 1.0 0.99))",
+     "(: ml_weak (Member sk_mist_light_1 weak) (STV 1.0 0.99))"
+    ],
+    [
+     "(: $prf (And (Member $h thread_harvest) (Location $h sk_lantern_1) (Member $e $verb) (To $e $h)) $tv)"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the keeper, the lantern and the named Cliff Path are all typed and the dimming carries its doer and its object; the genuinely ambiguous \"on the Cliff Path\" (where the dimming happened, or which lantern it was) is recorded as two complete readings rather than being forced onto one.",
+    "good. \"the dim lantern\" reuses the lantern from the first sentence with \"dim\" as its own descriptive atom, and the mist-light is individuated so that the stated \"weak\" is carried rather than dropped.",
+    "bad: the query hangs the harvest off a \"to\" oblique — the slot for what an activity is aimed at — so it never asks what befalls the harvest and can match no statement in the knowledge base; an open \"what happens to X?\" has no supported form at all, because the slot an answer would store X in depends on the verb the question leaves unnamed. Name the event you are asking about and give the harvest its plain subject or object position, with no \"to\"-phrase: \"Does the weak mist-light reduce the thread harvest at that lantern?\" If you would rather keep the question open, ask it from the acting side, which is supported: \"What does the weak mist-light do?\" Hanging \"at that lantern\" off a finite clause instead (\"the thread that is harvested at that lantern\") also removes a second wobble, since a place phrase on an event-naming noun leaves the location head undecided."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C1",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "The cliff-spires rise above the eastern cliff."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: cs_grp (GroupOf sk_group_1 cliff_spire) (STV 1.0 0.99))",
+     "(: cs_gen (Inheritance cliff_spire spire) (STV 1.0 0.99))",
+     "(: ec_mem (Member sk_cliff_1 eastern_cliff) (STV 1.0 0.99))",
+     "(: ec_gen (Inheritance eastern_cliff cliff) (STV 1.0 0.99))",
+     "(: ec_mod (Inheritance eastern_cliff eastern) (STV 1.0 0.99))",
+     "(: cs_above (Above sk_group_1 sk_cliff_1) (STV 1.0 0.99))",
+     "(: cs_above_rule (Implication (PartOf $x sk_group_1) (Above $x sk_cliff_1)) (STV 1.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the definite plural is read as one specific set of cliff-spires, and the 'above the eastern cliff' position is recorded both for the set as a whole and for each individual spire, so a spire named later still answers correctly; both compounds keep their plain heads (spire, cliff) with 'eastern' exposed as a property of the cliff."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C2",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "Mist-light attracts nightmoths."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: mistlight_genus (Inheritance mist_light light) (STV 1.0 0.99))",
+     "(: nightmoth_genus (Inheritance nightmoth moth) (STV 1.0 0.99))",
+     "(: attract_rel (Attract mist_light nightmoth) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. both sides are bare kinds, so the sentence is stored as a kind-level attraction between mist-light and nightmoths at generic strength, which is faithful: it does not over-claim that any particular moth is attracted, and both compound names keep their head nouns (light, moth) available."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C3",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "Salt-bloom gathered at the full moon turns to chalky residue."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: sb_genus (Inheritance salt_bloom bloom) (STV 1.0 0.99))",
+     "(: cr_genus (Inheritance chalky_residue residue) (STV 1.0 0.99))",
+     "(: cr_mod (Inheritance chalky_residue chalky) (STV 1.0 0.99))",
+     "(: sb_turns_residue (Implication (And (Member $x salt_bloom) (Member $g gather) (Theme $g $x) (Time $g full_moon)) (And (Member (sk_turn $x) turn) (Patient (sk_turn $x) $x) (Member (sk_residue $x) chalky_residue) (Experiencer (sk_residue $x) $x) (Member $x chalky_residue) (Result (sk_turn $x) (sk_residue $x)))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the generic rule itself is right and can fire - gathered salt-bloom turning to chalky residue, with the residue predicated of the same stuff rather than a freshly invented object - but the timing 'at the full moon' lands as a raw time label that the translator's time vocabulary (calendar dates, clock times, 'yesterday'-type words, parts of the day) does not cover, so that condition cannot be matched or unpacked downstream and the moon phase carries no structure of its own. Rewrite as: \"Salt-bloom gathered during a full moon turns to chalky residue.\" - 'during' is the supported way to place one happening inside another, so the full moon becomes a proper anchor the gathering sits within, with no change of meaning."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C4",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "A storm-surge washed the old graveyard into the Sunken Cove six generations ago."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: sw_type (Member sk_storm_surge_1 storm_surge) (STV 1.0 0.99))",
+     "(: sw_genus (Inheritance storm_surge surge) (STV 1.0 0.99))",
+     "(: e_wash (Member sk_wash_1 wash) (STV 1.0 0.99))",
+     "(: e_ag (Agent sk_wash_1 sk_storm_surge_1) (STV 1.0 0.99))",
+     "(: e_th (Theme sk_wash_1 sk_graveyard_1) (STV 1.0 0.99))",
+     "(: gy_type (Member sk_graveyard_1 graveyard) (STV 1.0 0.99))",
+     "(: gy_old (Member sk_graveyard_1 old) (STV 1.0 0.99))",
+     "(: e_goal (Goal sk_wash_1 sunken_cove) (STV 1.0 0.99))",
+     "(: cove_name (Name sunken_cove \"Sunken Cove\") (STV 1.0 0.99))",
+     "(: cove_type (Member sunken_cove cove) (STV 1.0 0.99))",
+     "(: e_past (Past sk_wash_1) (STV 1.0 0.99))",
+     "(: e_before (BeforeBy sk_wash_1 now 6 generation) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the surge is the doer, the graveyard is the thing displaced (unchanged, so no claim that it still sits there), the Sunken Cove is the destination, the name keeps its 'cove' kind without inventing a 'sunken' property, and 'six generations ago' is recorded as a measured gap back from now. One caveat that does not warrant a rewrite: 'generation' has no conversion into years, so this age cannot be compared with dated events - but that is exactly what the sentence says, and any numeric rewrite would add a figure you did not state."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C5",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "A crowd of nightmoths gathers at each lantern-row every night."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: lr_genus (Inheritance lantern_row row) (STV 1.0 0.99))",
+     "(: nm_genus (Inheritance nightmoth moth) (STV 1.0 0.99))",
+     "(: crowd_gather_rule (Implication (Member $l lantern_row) (And (Member (sk_crowd $l) crowd) (GroupOf (sk_crowd $l) nightmoth) (Member (sk_gather $l) gather) (Agent (sk_gather $l) (sk_crowd $l)) (Location (sk_gather $l) $l) (Time (sk_gather $l) night) (Every (sk_gather $l) 1 day))) (STV 1.0 0.9))",
+     "(: lr_q (QuantifierPhrase lantern_row gather \"each\") (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. 'each lantern-row' becomes a universal that gives every row its own crowd and its own gathering, the crowd stays one collective actor (so nothing wrongly claims each moth gathers by itself), the location sits on the gathering, and 'every night' is recorded as the night slot plus a once-a-day cycle."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C6",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "Coraline Ash is an apprentice."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: ca_name (Name coraline_ash \"Coraline Ash\") (STV 1.0 0.99))",
+     "(: ca_type (Member coraline_ash apprentice) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the full name is kept as one symbol with its exact surface string, and Coraline Ash is typed as an apprentice — nothing in the sentence is dropped or added."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C7",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "Wintergloss repels nightmoths."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: rel (Repel wintergloss nightmoth) (STV 0.9 0.9))",
+     "(: nm_genus (Inheritance nightmoth moth) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. both sides are bare kinds, so the sentence lands as one kind-level fact that wintergloss repels nightmoths, at the strength a general claim gets, plus the record that a nightmoth is a moth."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C8",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "Ground feathers ward lanterns against wraiths."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: gf_genus1 (Inheritance ground_feather feather) (STV 1.0 0.99))",
+     "(: gf_genus2 (Inheritance ground_feather ground) (STV 1.0 0.99))",
+     "(: gf_ward_rule (Implication (Member $x ground_feather) (And (Member (sk_ward $x) ward) (Agent (sk_ward $x) $x) (Theme (sk_ward $x) lantern) (Against (sk_ward $x) wraith))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the parse gives each ground feather its own warding, which is exactly what lets it keep the \"against wraiths\" restriction — a bare kind-to-kind relation has no room for that third party — and \"ground\" is correctly carried as a property of the feathers rather than dropped."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C9",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "Whenever an apprentice completes thirty solo nights, the Council assigns that apprentice to a station.",
+   "Whenever an apprentice completes ten solo nights, the Council assigns that apprentice to a station."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: council_mem (Member sk_council_1 council) (STV 1.0 0.99))",
+     "(: sn_gen (Inheritance solo_night night) (STV 1.0 0.99))",
+     "(: sn_mod (Inheritance solo_night solo) (STV 1.0 0.99))",
+     "(: whenever_complete_assign (Implication (And (Member $x apprentice) (Member (sk_complete $x) complete) (Agent (sk_complete $x) $x) (Patient (sk_complete $x) (sk_nights $x)) (GroupOf (sk_nights $x) solo_night) (Cardinality (sk_nights $x) 30)) (And (Member (sk_assign $x) assign) (Agent (sk_assign $x) sk_council_1) (Theme (sk_assign $x) $x) (Goal (sk_assign $x) (sk_station $x)) (Member (sk_station $x) station) (During (sk_assign $x) (sk_complete $x)))) (STV 1.0 0.9))"
+    ],
+    [
+     "(: solo_night_genus (Inheritance solo_night night) (STV 1.0 0.99))",
+     "(: solo_night_mod (Inheritance solo_night solo) (STV 1.0 0.99))",
+     "(: council_type (Member sk_council_1 council) (STV 1.0 0.99))",
+     "(: apprentice_station_rule (Implication (And (Member $x apprentice) (Member $c complete) (Agent $c $x) (Theme $c $g) (GroupOf $g solo_night) (Cardinality $g 10)) (And (Member (sk_assign $c) assign) (Agent (sk_assign $c) sk_council_1) (Theme (sk_assign $c) $x) (Goal (sk_assign $c) (sk_station $c)) (Member (sk_station $c) station) (During (sk_assign $c) $c))) (STV 1.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: the rule the translator built can never fire — its trigger is written in terms no recorded fact can ever match — so no apprentice is ever assigned to a station, and the thirty nights are also slotted as something the completing alters rather than as what gets completed. Your wording is not really the culprit: the same sentence with \"ten\" in place of \"thirty\" parsed cleanly, so this is a translator slip more than a phrasing problem. If you want to steer it, use the plainest trigger connective and keep the condition as one finite clause: \"When an apprentice completes thirty solo nights, the Council assigns that apprentice to a station.\"",
+    "good. the trigger matches on ordinary variables, so each time an apprentice completes the ten solo nights the rule mints that apprentice's own assignment to a station, tied to the completion that set it off."
+   ]
+  },
+  "census": {
+   "texts": [
+    "unfireable-rule: sk-function-in-premise",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C10",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "Stored mire-essence stays good for years.",
+   "Stored mire-essence stays good for six months."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: me_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
+     "(: mire_good_rule (Implication (And (Member $x mire_essence) (Member $x stored)) (And (Member (sk_good $x) good) (Experiencer (sk_good $x) $x) (Still (sk_good $x)) (MeasureAtLeast (sk_good $x) duration 2 year))) (STV 0.9 0.9))"
+    ],
+    [
+     "(: me_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
+     "(: sme_genus (Inheritance stored_mire_essence mire_essence) (STV 1.0 0.99))",
+     "(: sme_mod (Inheritance stored_mire_essence stored) (STV 1.0 0.99))",
+     "(: good_state (Member sk_good_1 good) (STV 1.0 0.99))",
+     "(: good_exp (Experiencer sk_good_1 stored_mire_essence) (STV 1.0 0.99))",
+     "(: good_still (Still sk_good_1) (STV 1.0 0.99))",
+     "(: good_dur (Measure sk_good_1 duration 6 month) (STV 1.0 0.99))",
+     "(: sme_good (Inheritance stored_mire_essence good) (STV 1.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "mixed: the restriction to stored essence, the \"stays\" continuation and the \"at least two years\" reading of \"for years\" all survive, but the plain fact that the essence is good is recorded only inside the reified state, so a direct \"is stored mire-essence good?\" finds nothing. Giving the claim a countable bearer lets the plain property come along with the continuation: \"Stored batches of mire-essence stay good for years.\"",
+    "bad: the parse asserts a single state of being good held by the kind itself and pitches it at \"every\"-strength rather than the strength a general claim gets, and once those unlicensed atoms come out there is nothing left to carry \"stays\" or \"for six months\" — the shelf life, which is the point of the sentence, is lost. Give the claim a countable bearer so the good-state has something to hold of and the six months has somewhere to attach: \"Stored batches of mire-essence stay good for six months.\""
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C11",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "Four wraiths emerge from the Sunken Cove in the winter of Year 3."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: wraiths_grp (GroupOf sk_group_1 wraith) (STV 1.0 0.99))",
+     "(: wraiths_card (Cardinality sk_group_1 4) (STV 1.0 0.99))",
+     "(: emerge_ev (Member sk_emerge_1 emerge) (STV 1.0 0.99))",
+     "(: emerge_agent (Agent sk_emerge_1 sk_group_1) (STV 1.0 0.99))",
+     "(: emerge_source (Source sk_emerge_1 sunken_cove) (STV 1.0 0.99))",
+     "(: cove_type (Member sunken_cove cove) (STV 1.0 0.99))",
+     "(: cove_name (Name sunken_cove \"Sunken Cove\") (STV 1.0 0.99))",
+     "(: emerge_time_season (Time sk_emerge_1 winter) (STV 1.0 0.99))",
+     "(: emerge_time_year (Time sk_emerge_1 (Year 3)) (STV 1.0 0.99))",
+     "(: wraiths_emerge_rule (Implication (PartOf $x sk_group_1) (And (Member (sk_emerge $x) emerge) (Agent (sk_emerge $x) $x) (Source (sk_emerge $x) sunken_cove) (Time (sk_emerge $x) winter) (Time (sk_emerge $x) (Year 3)))) (STV 1.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the four wraiths keep their group and count, the emergence is sourced at the named cove, and both stated times ride the emerging event, with a per-wraith rule that fires for any member the knowledge base later names. the season is stored as a plain time symbol beside Year 3 — an encoding the instruction set does not spell out — but nothing the sentence says is lost, so no rewrite is needed."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C12",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "The Northcove is a small cove."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: northcove_name (Name northcove \"Northcove\") (STV 1.0 0.99))",
+     "(: northcove_type (Member northcove cove) (STV 1.0 0.99))",
+     "(: northcove_small (Member northcove small) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the name, the cove kind and the size are three separate facts about one individual, which is exactly the shape a proper-noun label plus a plain descriptive adjective should take."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C13",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "The Stilllight Lantern burned dim on the night of day 111 of Year 1."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: sl_name (Name stilllight_lantern \"Stilllight Lantern\") (STV 1.0 0.99))",
+     "(: sl_type (Member stilllight_lantern lantern) (STV 1.0 0.99))",
+     "(: e_burn (Member sk_burn_1 burn) (STV 1.0 0.99))",
+     "(: e_patient (Patient sk_burn_1 stilllight_lantern) (STV 1.0 0.99))",
+     "(: e_past (Past sk_burn_1) (STV 1.0 0.99))",
+     "(: e_dim (Member stilllight_lantern dim) (STV 1.0 0.99))",
+     "(: e_time_day (Time sk_burn_1 (Day 111)) (STV 1.0 0.99))",
+     "(: e_time_year (Time sk_burn_1 (Year 1)) (STV 1.0 0.99))",
+     "(: e_time_night (Time sk_burn_1 night) (STV 1.0 0.99))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the lantern's name and kind, the past burning with the lantern as the thing that burned, the dim state holding during it, and all three stated time slots (night, day 111, Year 1) are carried, so nothing in the sentence is dropped."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C14",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "Keepers burn extra mire-essence at three Cliff Path lanterns every night."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: cp_type (Member cliff_path path) (STV 1.0 0.99))",
+     "(: cp_name (Name cliff_path \"Cliff Path\") (STV 1.0 0.99))",
+     "(: lg_group (GroupOf sk_lantern_group_1 lantern) (STV 1.0 0.99))",
+     "(: lg_card (Cardinality sk_lantern_group_1 3) (STV 1.0 0.99))",
+     "(: lg_poss (Possession sk_lantern_group_1 cliff_path) (STV 1.0 0.99))",
+     "(: me_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
+     "(: keepers_burn (Implication (Member $x keeper) (And (Member (sk_burn $x) burn) (Agent (sk_burn $x) $x) (Member (sk_mire_essence $x) mire_essence) (Member (sk_mire_essence $x) extra) (Patient (sk_burn $x) (sk_mire_essence $x)) (Location (sk_burn $x) sk_lantern_group_1) (Time (sk_burn $x) night) (Every (sk_burn $x) 1 day))) (STV 0.9 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "good. the habitual becomes a per-keeper rule at generic strength with the extra mire-essence, the three Cliff Path lanterns as the place, the night slot and its daily cycle all inside it, and the rule fires for any keeper the knowledge base names later."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok"
+   ]
+  }
+ },
+ {
+  "id": "C15",
+  "rule": "C — Counterfactuals",
+  "texts": [
+   "Forty-three Keepers are active in the present generation.",
+   "Three apprentices tend the lanterns of Aelmere."
+  ],
+  "stmts": {
+   "texts": [
+    [
+     "(: keepers_grp (GroupOf sk_group_1 keeper) (STV 1.0 0.99))",
+     "(: keepers_card (Cardinality sk_group_1 43) (STV 1.0 0.99))",
+     "(: gen_mem (Member sk_generation_1 generation) (STV 1.0 0.99))",
+     "(: gen_mod (Member sk_generation_1 present) (STV 1.0 0.99))",
+     "(: keepers_in_gen (In sk_group_1 sk_generation_1) (STV 1.0 0.99))",
+     "(: keepers_active_rule (Implication (PartOf $x sk_group_1) (Member $x active)) (STV 1.0 0.9))"
+    ],
+    [
+     "(: apr_grp (GroupOf sk_group_1 apprentice) (STV 1.0 0.99))",
+     "(: apr_card (Cardinality sk_group_1 3) (STV 1.0 0.99))",
+     "(: lant_grp (GroupOf sk_lanterns_1 lantern) (STV 1.0 0.99))",
+     "(: aelmere_name (Name aelmere \"Aelmere\") (STV 1.0 0.99))",
+     "(: lant_poss (Possession sk_lanterns_1 aelmere) (STV 1.0 0.99))",
+     "(: e_tend (Member sk_tend_1 tend) (STV 1.0 0.99))",
+     "(: e_agent (Agent sk_tend_1 sk_group_1) (STV 1.0 0.99))",
+     "(: e_theme (Theme sk_tend_1 sk_lanterns_1) (STV 1.0 0.99))",
+     "(: apr_tend_rule (Implication (PartOf $x sk_group_1) (And (Member (sk_tend $x) tend) (Agent (sk_tend $x) $x) (Theme (sk_tend $x) sk_lanterns_1))) (STV 1.0 0.9))"
+    ]
+   ]
+  },
+  "review": {
+   "texts": [
+    "bad: \"in the present generation\" is hung on the group of Keepers as a standing relation between two things, while the rule that carries the real claim says only that each of those Keepers is active — the restriction never reaches the predication, so the parse asserts the Keepers are active flat out, a wider claim than you made. Let the generation restrict the Keepers themselves instead of framing the clause: \"Forty-three Keepers of the present generation are active.\" That keeps the count, the generation and the activeness, and the per-member conclusion is then limited to that generation's Keepers.",
+    "good. the three apprentices keep their count and group, the lanterns are a group belonging to Aelmere, and the per-apprentice tending rule ranges over the group, so an apprentice named later inherits a tending of those lanterns."
+   ]
+  },
+  "census": {
+   "texts": [
+    "ok",
+    "ok"
+   ]
+  }
+ }
+]
