@@ -1,108 +1,68 @@
 [
   {
-    "id": "F2",
-    "rule": "F — Factual recall",
-    "texts": [
-      "Who is the chief Keeper?"
-    ]
-  },
-  {
-    "id": "F5",
-    "rule": "F — Factual recall",
-    "texts": [
-      "What hunts nightmoths at a lantern-row?"
-    ]
-  },
-  {
-    "id": "F20",
-    "rule": "F — Factual recall",
-    "texts": [
-      "How many Keepers are active?"
-    ]
-  },
-  {
-    "id": "F22",
-    "rule": "F — Factual recall",
-    "texts": [
-      "What lies under the water in the Sunken Cove?"
-    ]
-  },
-  {
-    "id": "F29",
-    "rule": "F — Factual recall",
-    "texts": [
-      "Where does the cold-threshold wind come from?"
-    ]
-  },
-  {
-    "id": "W1",
-    "rule": "W — Why-questions",
-    "texts": [
-      "Why do the lanterns of Aelmere burn every night?"
-    ]
-  },
-  {
-    "id": "W3",
-    "rule": "W — Why-questions",
-    "texts": [
-      "Why does a Keeper store the mire-essence that forms in the cauldron?"
-    ]
-  },
-  {
-    "id": "W9",
-    "rule": "W — Why-questions",
-    "texts": [
-      "Why does the Council redistribute mire-essence reserves?"
-    ]
-  },
-  {
-    "id": "W17",
-    "rule": "W — Why-questions",
-    "texts": [
-      "Why did the thread harvest at the West Row fall in Year 1?"
-    ]
-  },
-  {
-    "id": "W18",
-    "rule": "W — Why-questions",
-    "texts": [
-      "Why did the thread harvest at the Middle Row fall on day 17 of Year 1?"
-    ]
-  },
-  {
-    "id": "W19",
-    "rule": "W — Why-questions",
-    "texts": [
-      "Why does a surviving nightmoth flee to a dim lantern in the Hollows?"
-    ]
-  },
-  {
-    "id": "W23",
-    "rule": "W — Why-questions",
-    "texts": [
-      "Why did the Council discuss the sky-cat drought in Year 1?"
-    ]
-  },
-  {
-    "id": "W31",
-    "rule": "W — Why-questions",
-    "texts": [
-      "Why does the Council meet at the Watch?"
-    ]
-  },
-  {
-    "id": "W33",
-    "rule": "W — Why-questions",
-    "texts": [
-      "Why does Old Vesh remember two bad winters?"
-    ]
-  },
-  {
-    "id": "N19",
+    "id": "N2",
     "rule": "N — What-next",
     "texts": [
-      "The moon is full.",
-      "What does the Council do?"
+      "A lantern at the Sunken Cove dies before dawn.",
+      "What emerges from the water of the Sunken Cove?"
+    ]
+  },
+  {
+    "id": "N3",
+    "rule": "N — What-next",
+    "texts": [
+      "A lantern burns wintergloss alongside mire-essence.",
+      "What does the wintergloss do?"
+    ]
+  },
+  {
+    "id": "N10",
+    "rule": "N — What-next",
+    "texts": [
+      "The feather store at the Watch is large.",
+      "What does each Keeper do in winter?"
+    ]
+  },
+  {
+    "id": "N11",
+    "rule": "N — What-next",
+    "texts": [
+      "A wraith drains the lanterns of the West Row.",
+      "The drained lanterns attract a handful of nightmoths.",
+      "What happens to the thread harvest?"
+    ]
+  },
+  {
+    "id": "N12",
+    "rule": "N — What-next",
+    "texts": [
+      "A lantern on the Middle Row is untended through the night.",
+      "What happens to the lantern?"
+    ]
+  },
+  {
+    "id": "N17",
+    "rule": "N — What-next",
+    "texts": [
+      "The lanterns of three Cliff Path stations burn extra mire-essence.",
+      "What happens to the lanterns of those stations?"
+    ]
+  },
+  {
+    "id": "N22",
+    "rule": "N — What-next",
+    "texts": [
+      "The Stilllight Lantern burns wintergloss alongside mire-essence for one week.",
+      "What does the wintergloss do?"
+    ]
+  },
+  {
+    "id": "N25",
+    "rule": "N — What-next",
+    "texts": [
+      "A Keeper dims a lantern on the Cliff Path.",
+      "The dim lantern attracts a handful of nightmoths.",
+      "What happens to the thread harvest?"
     ]
   }
 ]

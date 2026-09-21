@@ -10,7 +10,8 @@ in CONTEXT names the premise's witnesses directly. Per text, by its mode (from q
                 the ingestion conventions — `ok (grounds in UNIT)` — or unify with one world-rules / lore rule —
                 `ok-law (in RULE)`, a law-level question answered by the rule rather than by a fact — else
                 `focus-not-grounded at CONJUNCT`. A `To` slot on an open-verb focus ("what happens to X") is read
-                as any participant role; an open `(Time e $t)` accepts any temporal head; a sealed Theme matches
+                as any participant role, and so is any role the parser guessed for a participant of an OPEN verb
+                ("what happens to X", "what does X do"); an open `(Time e $t)` accepts any temporal head; a sealed Theme matches
                 when its event kinds are covered by the fact's sealed content. The text passes if ANY alternative does.
   statement     an N premise or a C addition: a generic sentence parsed as an Implication `adds rule`; a ground
                 sentence `fires R…` when a world-rules law binds one of its atoms, else `scene`. An N entry needs at
@@ -293,6 +294,9 @@ def check_query(uid, lines, own, types, task=False):
             missing = sorted(s for s in syms if s not in inventory and s not in own and s not in DERIVED)
             if missing: v = 'unmatched-symbol: ' + ', '.join(missing)
             else:
+                # an open-verb question asks for ANY eventuality involving X: the role the parser guessed for X is arbitrary
+                open_ev = {c[1] for c in conjs if isinstance(c, tuple) and len(c) == 3 and c[0] == 'Member' and isvar(c[1]) and isvar(c[2])}
+                conjs = [('To', c[1], c[2]) if (isinstance(c, tuple) and len(c) == 3 and c[0] in ROLES + ['To'] and c[1] in open_ev and not isinstance(c[2], tuple)) else c for c in conjs]
                 focus = []
                 for c in conjs:
                     if isinstance(c, tuple) and c and c[0] in DERIVED: continue

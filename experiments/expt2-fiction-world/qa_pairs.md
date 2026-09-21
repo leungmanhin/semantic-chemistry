@@ -214,10 +214,10 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **N1.** A sky-cat hunts nightmoths at a lantern-row on the Cliff Path. What happens to the nightmoth crowd at that lantern-row?
 > The nightmoth crowd at that lantern-row shrinks. [R7]
 
-**N2.** A lantern at the Sunken Cove dies before dawn. What happens at the Sunken Cove?
+**N2.** A lantern at the Sunken Cove dies before dawn. What emerges from the water of the Sunken Cove?
 > A wraith emerges from the cove's water. [R12]
 
-**N3.** A lantern burns wintergloss alongside mire-essence. What happens to the nightmoths at that lantern?
+**N3.** A lantern burns wintergloss alongside mire-essence. What does the wintergloss do?
 > The wintergloss repels nightmoths from the lantern, and every nightmoth avoids it. [R21]
 
 **N4.** A Keeper grinds feathers and scatters the feathers around a lit lantern at the Sunken Cove. A wraith emerges from the water of the Sunken Cove. What happens to the lantern?
@@ -238,14 +238,14 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **N9.** A sky-cat hunts through summer. What happens at the base of the cliff by autumn?
 > Many feathers accumulate at the base of the cliff by autumn, and the autumn feather store grows. [R28, R10]
 
-**N10.** The feather store at the Watch is large. What happens at the Sunken Cove lanterns in winter?
+**N10.** The feather store at the Watch is large. What does each Keeper do in winter?
 > Each Keeper tends the Sunken Cove lanterns safely in winter. [R29]
 
-**N11.** A wraith drains the lanterns of the West Row. What happens to the thread harvest at the West Row?
-> The drained lanterns give weak mist-light, the weak mist-light attracts a handful of nightmoths, and the thread harvest at the West Row falls. [R13, R14, R3]
+**N11.** A wraith drains the lanterns of the West Row. The drained lanterns attract a handful of nightmoths. What happens to the thread harvest?
+> The drained lanterns give weak mist-light, the weak mist-light attracts only a handful of nightmoths, and the thread harvest at those lanterns falls. [R13, R14, R3]
 
-**N12.** A Keeper leaves a lantern on the Middle Row untended overnight. What happens to the lantern?
-> The lantern dies before dawn; the lantern is away from the Sunken Cove, so no wraith rises. [R11, R12]
+**N12.** A lantern on the Middle Row is untended through the night. What happens to the lantern?
+> The lantern goes out before dawn; the lantern is away from the Sunken Cove, so no wraith rises. [R11, R12]
 
 **N13.** A Keeper gathers salt-bloom at the full moon. What happens to that salt-bloom?
 > That salt-bloom turns to chalky residue. [R18]
@@ -259,8 +259,8 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **N16.** The new-moon spring tide passes uneventfully and the village fails to send a salt-bloom harvest party. What happens to that month's salt-bloom store? *(retired: no positive premise derives the answer: a missed harvest is a non-event; the residue case is N13)*
 > No salt-bloom is added to the store that month, and the season's reserves are short. The village must ration salt-bloom more strictly through the winter. [R18, R19, events Part II]
 
-**N17.** The lanterns of three Cliff Path stations burn extra mire-essence. What happens at those stations?
-> The lanterns produce strong mist-light, the strong mist-light attracts crowds of nightmoths, sky-cats descend to hunt, the sky-cats molt during the hunts, and feathers fall to the base of the cliff. [R1, R2, R6, R10, events Part VIII]
+**N17.** The lanterns of three Cliff Path stations burn extra mire-essence. What happens to the lanterns of those stations?
+> The lanterns produce strong mist-light and show it at night; the strong mist-light attracts crowds of nightmoths, sky-cats descend to hunt, the sky-cats molt during the hunts, and feathers fall to the base of the cliff. [R1, R2, R6, R10, events Part VIII]
 
 **N18.** An apprentice's solo count is large. What does the Council do?
 > The Council invests the apprentice as a Keeper. [R25, events Part VII]
@@ -274,7 +274,7 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **N21.** A second-year Keeper is assigned an apprentice. What happens during the apprentice's first six months? *(retired: the six-month rule is in no corpus file; the newcomer case is N14)*
 > The apprentice does not tend any lantern alone. They walk with the senior Keeper, carry the case, and learn the order of operations. [R24, events Part I]
 
-**N22.** The Stilllight Lantern burns wintergloss alongside mire-essence for one week. What happens to the nightmoths at the Stilllight Lantern?
+**N22.** The Stilllight Lantern burns wintergloss alongside mire-essence for one week. What does the wintergloss do?
 > The wintergloss repels nightmoths from the Stilllight Lantern, and the moth-count at the Stilllight Lantern falls. [R21]
 
 **N23.** A Keeper observes that there have been three sky-cats visible on the spires by morning for two weeks running, instead of the usual eight to twelve. What does this predict about the feather harvest? *(retired: a magnitude prediction with no law behind it (few sky-cats); the drought is Part IV's own record)*
@@ -283,8 +283,8 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 **N24.** The village experiences a thin sky-cat year followed by a winter with multiple cold snaps. What does this predict? *(retired: a narrative prediction over a season; no law derives a bad-winter classification)*
 > A difficult winter — possibly approaching a bad-winter classification: feather store small, wraith-defense weak, mire-essence production thin. The Council is likely to ration feathers and possibly deliberately dim some lanterns. [events Parts IV, V; lore §III]
 
-**N25.** A Keeper dims a lantern on the Cliff Path. The dim lantern gives weak mist-light. What happens to the thread harvest at that lantern?
-> The weak mist-light attracts a handful of nightmoths, the thread harvest at that lantern falls, and less mire-essence forms. [R14, R3, R4]
+**N25.** A Keeper dims a lantern on the Cliff Path. The dim lantern attracts a handful of nightmoths. What happens to the thread harvest?
+> The thread harvest at that lantern falls, and less mire-essence forms. [R14, R3, R4]
 
 ---
 

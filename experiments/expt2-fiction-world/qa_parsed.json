@@ -1586,28 +1586,28 @@
     "rule": "N — What-next",
     "texts": [
       "A lantern at the Sunken Cove dies before dawn.",
-      "What happens at the Sunken Cove?"
+      "What emerges from the water of the Sunken Cove?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: lantern_type (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
-          "(: cove_type (Member sunken_cove cove) (STV 1.0 0.99))",
-          "(: cove_name (Name sunken_cove \"Sunken Cove\") (STV 1.0 0.99))",
-          "(: lantern_loc (LocatedIn sk_lantern_1 sunken_cove) (STV 1.0 0.99))",
-          "(: die_ev (Member sk_die_1 die) (STV 1.0 0.99))",
-          "(: die_patient (Patient sk_die_1 sk_lantern_1) (STV 1.0 0.99))",
-          "(: die_time (TimeAtMost sk_die_1 dawn) (STV 1.0 0.99))"
+          "(: e1_lantern (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+          "(: e1_cove_name (Name sunken_cove \"Sunken Cove\") (STV 1.0 0.99))",
+          "(: e1_cove_type (Member sunken_cove cove) (STV 1.0 0.99))",
+          "(: e1_lantern_loc (LocatedIn sk_lantern_1 sunken_cove) (STV 1.0 0.99))",
+          "(: e1_die (Member sk_die_1 die) (STV 1.0 0.99))",
+          "(: e1_die_pt (Patient sk_die_1 sk_lantern_1) (STV 1.0 0.99))",
+          "(: e1_die_time (TimeAtMost sk_die_1 dawn) (STV 1.0 0.99))"
         ],
         [
-          "(: $prf (And (Member $e $verb) (Location $e sunken_cove)) $tv)"
+          "(: $prf (And (Member $w water) (PartOf $w sunken_cove) (Member $e emerge) (Agent $e $x) (Source $e $w)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. the lantern, its position at the named cove, the dying with the lantern as the thing that dies, and \"before dawn\" as an upper bound on the time are all recorded.",
-        "good. it asks exactly what the question asks, in the open-verb form the instruction set prescribes, with the cove reused as the symbol the first sentence created; note only that the first sentence attaches the cove to the lantern rather than to the dying, so this question has nothing in that context to match."
+        "good. the lantern, the Sunken Cove as a named place with its kind, the lantern's position there, the dying, and the \"before dawn\" deadline are all carried, and no tense is invented for the bare present.",
+        "good. it asks for whatever emerges, with the cove's water as what it emerges from, and it reuses the Sunken Cove from the previous sentence instead of re-identifying it. One caution rather than a rewrite: it looks for the emerging thing as the doer of the emergence, so an answering sentence that presents it as carried or pushed up rather than moving under its own power would file it in a different slot and the question would miss it."
       ]
     },
     "census": {
@@ -1622,28 +1622,28 @@
     "rule": "N — What-next",
     "texts": [
       "A lantern burns wintergloss alongside mire-essence.",
-      "What happens to the nightmoths at that lantern?"
+      "What does the wintergloss do?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: burn_ev (Member sk_burn_1 burn) (STV 1.0 0.99))",
-          "(: burn_ag (Agent sk_burn_1 sk_lantern_1) (STV 1.0 0.99))",
-          "(: burn_pat (Patient sk_burn_1 wintergloss) (STV 1.0 0.99))",
-          "(: burn_alongside (Alongside sk_burn_1 mire_essence) (STV 1.0 0.99))",
-          "(: lantern_ty (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
-          "(: wg_genus (Inheritance wintergloss gloss) (STV 1.0 0.99))",
-          "(: me_genus (Inheritance mire_essence essence) (STV 1.0 0.99))"
+          "(: q3_lantern (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+          "(: q3_burn (Member sk_burn_1 burn) (STV 1.0 0.99))",
+          "(: q3_agent (Agent sk_burn_1 sk_lantern_1) (STV 1.0 0.99))",
+          "(: q3_patient (Patient sk_burn_1 wintergloss) (STV 1.0 0.99))",
+          "(: q3_gloss_genus (Inheritance wintergloss gloss) (STV 1.0 0.99))",
+          "(: q3_alongside (Alongside sk_burn_1 mire_essence) (STV 1.0 0.99))",
+          "(: q3_essence_genus (Inheritance mire_essence essence) (STV 1.0 0.99))"
         ],
         [
-          "(: $prf (And (GroupOf $g nightmoth) (Inheritance nightmoth moth) (LocatedIn $g sk_lantern_1) (Member $e $verb) (Theme $e $g)) $tv)"
+          "(: $prf (And (Member $e $verb) (Agent $e wintergloss)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "mixed: the burning, its lantern and the wintergloss it burns are right, but \"alongside mire-essence\" survives only as an opaque preposition record — nothing says the mire-essence burns too, so a later question about what the lantern burns will not find it. If both substances burn, write \"A lantern burns wintergloss and mire-essence.\", which gives each substance its own burning. If you meant the mire-essence merely sits beside the burning, say that instead: \"A lantern burns wintergloss next to a pot of mire-essence.\"",
-        "mixed: \"that lantern\" resolves correctly to the lantern of the first sentence and every part of the question is well formed, but \"what happens to\" leaves the verb unnamed, so the moths get pinned into one single role and the question will miss any event that filed them under a different one; \"at that lantern\" is likewise recorded as where the moths stand rather than where the happening is. Ask it from the actor's side — \"What do the nightmoths at that lantern do?\" — or name the event you are really asking about, e.g. \"Does that lantern's burning draw the nightmoths?\"; either one fixes the moths' role."
+        "mixed: the lantern burning wintergloss is recorded correctly, but \"alongside mire-essence\" only lands as a loose \"alongside\" modifier on the burning, so nothing says the mire-essence is burned too and the second substance drops out of the fuel claim. Rewrite as \"A lantern burns wintergloss and mire-essence.\" — coordinated objects each get their own burning, so both substances are recorded as burned.",
+        "good. it asks what wintergloss does, and it uses the wintergloss symbol from the previous sentence directly instead of re-identifying it. One caution rather than a rewrite: the question asks for wintergloss as the doer, while your own premise stores it only as the substance being burned, so nothing will answer unless the knowledge base elsewhere has wintergloss acting."
       ]
     },
     "census": {
@@ -1914,26 +1914,26 @@
     "rule": "N — What-next",
     "texts": [
       "The feather store at the Watch is large.",
-      "What happens at the Sunken Cove lanterns in winter?"
+      "What does each Keeper do in winter?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: fs_type (Member sk_feather_store_1 feather_store) (STV 1.0 0.99))",
-          "(: fs_genus (Inheritance feather_store store) (STV 1.0 0.99))",
-          "(: watch_type (Member sk_watch_1 watch) (STV 1.0 0.99))",
-          "(: fs_loc (LocatedIn sk_feather_store_1 sk_watch_1) (STV 1.0 0.99))",
-          "(: fs_large (Member sk_feather_store_1 large) (STV 1.0 0.99))"
+          "(: q5_store (Member sk_feather_store_1 feather_store) (STV 1.0 0.99))",
+          "(: q5_store_genus (Inheritance feather_store store) (STV 1.0 0.99))",
+          "(: q5_watch (Member sk_watch_1 watch) (STV 1.0 0.99))",
+          "(: q5_loc (LocatedIn sk_feather_store_1 sk_watch_1) (STV 1.0 0.99))",
+          "(: q5_large (Member sk_feather_store_1 large) (STV 1.0 0.99))"
         ],
         [
-          "(: $prf (And (Name $sc \"Sunken Cove\") (GroupOf $g lantern) (Possession $g $sc) (Member $e $verb) (Location $e $g) (Time $e winter)) $tv)"
+          "(: $prf (And (Member $x keeper) (Member $e $verb) (Agent $e $x) (Time $e winter)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. the feather store is one thing held at the Watch, \"the Watch\" stays an ordinary capitalized common noun rather than being treated as a name, and \"large\" is recorded straight on the store.",
-        "good. \"Sunken Cove\" is bound by its name, its lanterns bind as a group belonging to it, and the open \"what happens\" is asked with those lanterns as the place and winter as the time. Word the answering facts the same way — \"the Sunken Cove lanterns\" as a group — so question and fact line up."
+        "good. the feather store, its position at the Watch, and its largeness are all carried, and \"the Watch\" stays a plain definite rather than an invented proper name.",
+        "good. it asks for the activity with a Keeper as the doer and winter as the time. Two cautions rather than a rewrite: \"each\" has no carrier in a question and is dropped, so it effectively asks what a Keeper does; and if the Keepers' winter work is stated generically it is stored as a rule about Keepers in general, so the question returns something only once some individual Keeper is in the knowledge base."
       ]
     },
     "census": {
@@ -1948,34 +1948,45 @@
     "rule": "N — What-next",
     "texts": [
       "A wraith drains the lanterns of the West Row.",
-      "What happens to the thread harvest at the West Row?"
+      "The drained lanterns attract a handful of nightmoths.",
+      "What happens to the thread harvest?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: qap89_wraith (Member sk_wraith_1 wraith) (STV 1.0 0.99))",
-          "(: qap89_drain (Member sk_drain_1 drain) (STV 1.0 0.99))",
-          "(: qap89_agent (Agent sk_drain_1 sk_wraith_1) (STV 1.0 0.99))",
-          "(: qap89_patient (Patient sk_drain_1 sk_lantern_1) (STV 1.0 0.99))",
-          "(: qap89_lanterns (GroupOf sk_lantern_1 lantern) (STV 1.0 0.99))",
-          "(: qap89_poss (Possession sk_lantern_1 west_row) (STV 1.0 0.99))",
-          "(: qap89_row_type (Member west_row row) (STV 1.0 0.99))",
-          "(: qap89_row_name (Name west_row \"West Row\") (STV 1.0 0.99))"
+          "(: q7_wraith (Member sk_wraith_1 wraith) (STV 1.0 0.99))",
+          "(: q7_drain (Member sk_drain_1 drain) (STV 1.0 0.99))",
+          "(: q7_agent (Agent sk_drain_1 sk_wraith_1) (STV 1.0 0.99))",
+          "(: q7_lantern_grp (GroupOf sk_lantern_1 lantern) (STV 1.0 0.99))",
+          "(: q7_patient (Patient sk_drain_1 sk_lantern_1) (STV 1.0 0.99))",
+          "(: q7_poss (Possession sk_lantern_1 west_row) (STV 1.0 0.99))",
+          "(: q7_row_type (Member west_row row) (STV 1.0 0.99))",
+          "(: q7_row_name (Name west_row \"West Row\") (STV 1.0 0.99))"
         ],
         [
-          "(: $prf (And (Member $h thread_harvest) (LocatedIn $h west_row) (Member $e $verb) (Patient $e $h)) $tv)",
-          "(: $prf (And (Member $h thread_harvest) (LocatedIn $h west_row) (Member $e $verb) (Theme $e $h)) $tv)"
+          "(: att_ev (Member sk_attract_1 attract) (STV 1.0 0.99))",
+          "(: att_ag (Agent sk_attract_1 sk_lantern_1) (STV 1.0 0.99))",
+          "(: att_th (Theme sk_attract_1 sk_nightmoth_1) (STV 1.0 0.99))",
+          "(: moth_grp (GroupOf sk_nightmoth_1 nightmoth) (STV 1.0 0.99))",
+          "(: moth_card (CardinalityPhrase sk_nightmoth_1 \"a handful\") (STV 1.0 0.99))",
+          "(: moth_genus (Inheritance nightmoth moth) (STV 1.0 0.99))",
+          "(: att_rule (Implication (PartOf $x sk_lantern_1) (And (Member (sk_attract $x) attract) (Agent (sk_attract $x) $x) (Theme (sk_attract $x) sk_nightmoth_1))) (STV 1.0 0.9))"
+        ],
+        [
+          "(: $prf (And (Member $e $verb) (To $e $h) (Member $h thread_harvest)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. the wraith, the draining and the West Row's lanterns are all recorded, the lanterns as one definite group in the affected slot — so the draining is stated of the group, and a single lantern named later is not itself queryable as drained.",
-        "bad: \"what happens to X?\" names no verb, so the translator has to guess which slot would hold the harvest (it emitted two guesses, one Patient line and one Theme line), and the question also makes \"at the West Row\" a separate containment fact about the harvest that has to be proved. The premise ties the West Row only to its lanterns and never mentions a thread harvest, so nothing can match. Name the consequence you are asking about and tie the harvest to the row the way the premise ties the lanterns: \"Does the wraith's draining ruin the West Row's thread harvest?\" — with whichever consequence verb you actually mean in place of \"ruin\"."
+        "good. the wraith, the draining, the lanterns as one definite set being drained, and the named West Row with its kind are all carried.",
+        "bad: two losses. \"drained\" is dropped entirely, so nothing records that the lanterns are in a drained state, and the per-lantern rule the parse adds hands every single lantern the same handful of nightmoths — claiming each lantern separately attracts the whole handful, which you say only of the lanterns as a set. Rewrite as \"The lanterns are drained, and together they attract a handful of nightmoths.\" — the separate clause gives \"drained\" somewhere to land, and \"together\" keeps the attracting collective so the count stays with the group.",
+        "bad: \"what happens to X\" has no question form the translator can build — the harvest is hung off a bare \"to\" modifier that no statement would ever fill (and which can collide with the purpose \"to\" of another sentence), so the question asks for an event aimed at the harvest rather than one that befalls it, and it binds nothing. Name the event and make the harvest its object: \"What ruins the thread harvest?\" — substitute the verb you actually mean (eat, spoil, ruin), so the harvest sits in the object slot an answering sentence would really use."
       ]
     },
     "census": {
       "texts": [
+        "ok",
         "ok",
         "ok"
       ]
@@ -1985,32 +1996,30 @@
     "id": "N12",
     "rule": "N — What-next",
     "texts": [
-      "A Keeper leaves a lantern on the Middle Row untended overnight.",
+      "A lantern on the Middle Row is untended through the night.",
       "What happens to the lantern?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: keeper_ty (Member sk_keeper_1 keeper) (STV 1.0 0.99))",
-          "(: leave_ev (Member sk_leave_1 leave) (STV 1.0 0.99))",
-          "(: leave_ag (Agent sk_leave_1 sk_keeper_1) (STV 1.0 0.99))",
-          "(: leave_th (Theme sk_leave_1 sk_lantern_1) (STV 1.0 0.99))",
-          "(: leave_time (Time sk_leave_1 night) (STV 1.0 0.99))",
-          "(: lantern_ty (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
-          "(: lantern_loc (On sk_lantern_1 middle_row) (STV 1.0 0.99))",
-          "(: mr_ty (Member middle_row row) (STV 1.0 0.99))",
-          "(: mr_name (Name middle_row \"Middle Row\") (STV 1.0 0.99))",
-          "(: lantern_untended (Member sk_lantern_1 untended) (STV 1.0 0.99))"
+          "(: e2_lantern (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+          "(: e2_row_name (Name middle_row \"Middle Row\") (STV 1.0 0.99))",
+          "(: e2_row_type (Member middle_row row) (STV 1.0 0.99))",
+          "(: e2_lantern_on (On sk_lantern_1 middle_row) (STV 1.0 0.99))",
+          "(: e2_untended_st (Member sk_untended_1 untended) (STV 1.0 0.99))",
+          "(: e2_untended_exp (Experiencer sk_untended_1 sk_lantern_1) (STV 1.0 0.99))",
+          "(: e2_untended_time (Time sk_untended_1 night) (STV 1.0 0.99))",
+          "(: e2_untended_flat (Member sk_lantern_1 untended) (STV 1.0 0.99))"
         ],
         [
-          "(: $prf (And (Member $e $verb) (Theme $e sk_lantern_1)) $tv)"
+          "(: $prf (And (Member $e $verb) (Patient $e sk_lantern_1)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "bad: \"leave X untended\" states a result — the lantern is untended because the Keeper left it — but the parse keeps only a flat \"the lantern is untended\" atom with nothing linking that state to the leaving, and it hangs \"overnight\" on the leaving rather than on the untendedness that lasts the night. Give the result its own finite clause: \"A Keeper leaves a lantern on the Middle Row, so the lantern stays untended overnight.\"",
-        "mixed: the query does reuse the premise's lantern and does match the leaving, but \"what happens to X?\" names no verb, so the slot that holds the lantern has to be guessed, and any later fact stored under a different slot returns nothing. Name the event you mean and the question parses cleanly: \"Does anyone tend the lantern overnight?\""
+        "mixed: the untended state, the lantern and the Middle Row are all recorded correctly, but \"through the night\" leaves only a day-part time stamp — the claim that the lantern stays untended for the whole span is dropped, because a definite period with no stated count has no duration carrier. Rewrite it as a counted duration: \"A lantern on the Middle Row is untended for one night.\"",
+        "mixed: the query correctly reuses the lantern's symbol and leaves the verb open, but an open \"happens to\" question forces a guess at the undergoer's role and it guesses Patient, while the premise stores the lantern only as the untended state's experiencer, so the question matches nothing; the only licensed open-verb template is the agent-side \"What does X do?\". Name the consequence you are probing for and ask it plainly, e.g. \"Does the lantern go out?\""
       ]
     },
     "census": {
@@ -2145,35 +2154,35 @@
     "rule": "N — What-next",
     "texts": [
       "The lanterns of three Cliff Path stations burn extra mire-essence.",
-      "What happens at those stations?"
+      "What happens to the lanterns of those stations?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: qap99_path_type (Member cliff_path path) (STV 1.0 0.99))",
-          "(: qap99_path_name (Name cliff_path \"Cliff Path\") (STV 1.0 0.99))",
-          "(: qap99_st_group (GroupOf sk_station_1 station) (STV 1.0 0.99))",
-          "(: qap99_st_card (Cardinality sk_station_1 3) (STV 1.0 0.99))",
-          "(: qap99_st_poss (Possession sk_station_1 cliff_path) (STV 1.0 0.99))",
-          "(: qap99_lt_group (GroupOf sk_lantern_1 lantern) (STV 1.0 0.99))",
-          "(: qap99_lt_poss (Possession sk_lantern_1 sk_station_1) (STV 1.0 0.99))",
-          "(: qap99_es_type (Member sk_essence_1 mire_essence) (STV 1.0 0.99))",
-          "(: qap99_es_extra (Member sk_essence_1 extra) (STV 1.0 0.99))",
-          "(: qap99_es_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
-          "(: qap99_burn_ev (Member sk_burn_1 burn) (STV 1.0 0.99))",
-          "(: qap99_burn_ag (Agent sk_burn_1 sk_lantern_1) (STV 1.0 0.99))",
-          "(: qap99_burn_pt (Patient sk_burn_1 sk_essence_1) (STV 1.0 0.99))",
-          "(: qap99_burn_rule (Implication (PartOf $x sk_lantern_1) (And (Member (sk_burn $x) burn) (Agent (sk_burn $x) $x) (Patient (sk_burn $x) sk_essence_1))) (STV 1.0 0.9))"
+          "(: e3_station_grp (GroupOf sk_stations_1 station) (STV 1.0 0.99))",
+          "(: e3_station_card (Cardinality sk_stations_1 3) (STV 1.0 0.99))",
+          "(: e3_station_poss (Possession sk_stations_1 cliff_path) (STV 1.0 0.99))",
+          "(: e3_cp_name (Name cliff_path \"Cliff Path\") (STV 1.0 0.99))",
+          "(: e3_cp_type (Member cliff_path path) (STV 1.0 0.99))",
+          "(: e3_lantern_grp (GroupOf sk_lanterns_1 lantern) (STV 1.0 0.99))",
+          "(: e3_lantern_poss (Possession sk_lanterns_1 sk_stations_1) (STV 1.0 0.99))",
+          "(: e3_burn_ev (Member sk_burn_1 burn) (STV 1.0 0.99))",
+          "(: e3_burn_ag (Agent sk_burn_1 sk_lanterns_1) (STV 1.0 0.99))",
+          "(: e3_burn_pt (Patient sk_burn_1 sk_mire_essence_1) (STV 1.0 0.99))",
+          "(: e3_me_type (Member sk_mire_essence_1 mire_essence) (STV 1.0 0.99))",
+          "(: e3_me_deg (Degree sk_mire_essence_1 quantity extra) (STV 1.0 0.99))",
+          "(: e3_me_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
+          "(: e3_burn_rule (Implication (PartOf $x sk_lanterns_1) (And (Member (sk_burn $x) burn) (Agent (sk_burn $x) $x) (Patient (sk_burn $x) sk_mire_essence_1))) (STV 1.0 0.9))"
         ],
         [
-          "(: $prf (And (Member $e $verb) (Location $e sk_station_1)) $tv)"
+          "(: $prf (And (Member $e $verb) (Patient $e sk_lanterns_1)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "mixed: the three stations, their lanterns and the burning all come through, but \"extra\" ends up recorded as a property of the mire-essence itself (the essence is \"extra\") rather than as a larger amount being burned, and nothing places the burning at the stations, so a follow-up question about what happens there has no event to find. Rewrite as: \"At three Cliff Path stations, the lanterns burn more mire-essence than the lanterns at the other stations do.\" — an explicit comparison with a stated standard carries the increment, and the fronted \"at three Cliff Path stations\" puts the burning at the stations.",
-        "good. the query asks for any event located at the stations and correctly reuses the earlier sentence's station group for \"those stations\", leaving the verb as the unknown."
+        "bad: the per-lantern rule hands every lantern one and the same portion of mire-essence (it reuses a single essence symbol as each lantern's object), which the sentence does not say, and \"extra\" on a mass noun has no licensed quantity carrier, so it lands on an invented marker. Rewrite so each lantern gets its own countable portion and \"extra\" can ride as an ordinary adjective: \"Each lantern of the three Cliff Path stations burns an extra ration of mire-essence.\"",
+        "mixed: the query correctly reuses the lanterns' group symbol, but with the verb left open the undergoer's role has to be guessed, and it guesses Patient while the premise stores these lanterns as the burning event's agent, so nothing binds. Either name the consequence — \"Do the lanterns of those stations burn out?\" — or, to keep the verb open, use the one licensed open template, \"What do the lanterns of those stations do?\", which binds the stored burning event."
       ]
     },
     "census": {
@@ -2317,30 +2326,30 @@
     "rule": "N — What-next",
     "texts": [
       "The Stilllight Lantern burns wintergloss alongside mire-essence for one week.",
-      "What happens to the nightmoths at the Stilllight Lantern?"
+      "What does the wintergloss do?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: sl_name (Name stilllight_lantern \"Stilllight Lantern\") (STV 1.0 0.99))",
-          "(: sl_type (Member stilllight_lantern lantern) (STV 1.0 0.99))",
-          "(: e_burn (Member sk_burn_1 burn) (STV 1.0 0.99))",
-          "(: e_agent (Agent sk_burn_1 stilllight_lantern) (STV 1.0 0.99))",
-          "(: e_pat1 (Patient sk_burn_1 wintergloss) (STV 1.0 0.99))",
-          "(: e_pat2 (Patient sk_burn_1 mire_essence) (STV 1.0 0.99))",
-          "(: e_dur (Measure sk_burn_1 duration 1 week) (STV 1.0 0.99))",
-          "(: wg_genus (Inheritance wintergloss gloss) (STV 1.0 0.99))",
-          "(: me_genus (Inheritance mire_essence essence) (STV 1.0 0.99))"
+          "(: q14_lantern_name (Name stilllight_lantern \"Stilllight Lantern\") (STV 1.0 0.99))",
+          "(: q14_lantern_type (Member stilllight_lantern lantern) (STV 1.0 0.99))",
+          "(: q14_burn (Member sk_burn_1 burn) (STV 1.0 0.99))",
+          "(: q14_agent (Agent sk_burn_1 stilllight_lantern) (STV 1.0 0.99))",
+          "(: q14_patient (Patient sk_burn_1 wintergloss) (STV 1.0 0.99))",
+          "(: q14_gloss_genus (Inheritance wintergloss gloss) (STV 1.0 0.99))",
+          "(: q14_alongside (Alongside sk_burn_1 mire_essence) (STV 1.0 0.99))",
+          "(: q14_essence_genus (Inheritance mire_essence essence) (STV 1.0 0.99))",
+          "(: q14_duration (Measure sk_burn_1 duration 1 week) (STV 1.0 0.99))"
         ],
         [
-          "(: $prf (And (GroupOf $g nightmoth) (LocatedIn $g stilllight_lantern) (Member $e $verb) (To $e $g)) $tv)"
+          "(: $prf (And (Member $e $verb) (Agent $e wintergloss)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "bad: \"alongside mire-essence\" is recorded as a second thing burned, which the preposition does not license; done correctly it becomes a bare \"alongside\" side-relation and the sentence then no longer says the mire-essence is burned at all, so that content is lost either way. Rewrite as: \"The Stilllight Lantern burns wintergloss and mire-essence for one week.\" — plain coordination gives each substance its own burning, both for the same week.",
-        "bad: \"what happens to\" leaves the nightmoths in a \"to\" relation that no statement ever writes, so the question matches nothing about them (the \"at the Stilllight Lantern\" part is fine). Rewrite as: \"What do the nightmoths do at the Stilllight Lantern?\" — an open verb with the moths as the doer is the shape the translator handles; if your answer instead has the moths acted on, name the verb, e.g. \"Does the Stilllight Lantern burn the nightmoths?\"."
+        "mixed: the lantern's name, the one-week duration and the burnt wintergloss are all right, but \"alongside mire-essence\" survives only as a bare surface oblique on the burning event — nothing records that the mire-essence is burned too, since the co-participant role is animate-only. Rewrite it as plain coordination so both substances are recorded as burnt: \"The Stilllight Lantern burns wintergloss and mire-essence for one week.\"",
+        "good. it is the licensed \"What does X do?\" template with the context's wintergloss constant in the agent slot, which is exactly what the question asks; note only that the premise records wintergloss solely as the substance burned, so as worded the question has no agent-side fact to find."
       ]
     },
     "census": {
@@ -2383,41 +2392,40 @@
     "rule": "N — What-next",
     "texts": [
       "A Keeper dims a lantern on the Cliff Path.",
-      "The dim lantern gives weak mist-light.",
-      "What happens to the thread harvest at that lantern?"
+      "The dim lantern attracts a handful of nightmoths.",
+      "What happens to the thread harvest?"
     ],
     "stmts": {
       "texts": [
         [
-          "(: k_type (Member sk_keeper_1 keeper) (STV 1.0 0.99))",
-          "(: l_type (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
-          "(: cp_type (Member cliff_path path) (STV 1.0 0.99))",
-          "(: cp_name (Name cliff_path \"Cliff Path\") (STV 1.0 0.99))",
-          "(: d_ev (Member sk_dim_1 dim) (STV 1.0 0.99))",
-          "(: d_ag (Agent sk_dim_1 sk_keeper_1) (STV 1.0 0.99))",
-          "(: d_pat (Patient sk_dim_1 sk_lantern_1) (STV 1.0 0.99))",
-          "(Interpretation r1 (: d_loc (Location sk_dim_1 cliff_path) (STV 1.0 0.99)))",
-          "(Interpretation r2 (: l_loc (On sk_lantern_1 cliff_path) (STV 1.0 0.99)))"
+          "(: e4_keeper (Member sk_keeper_1 keeper) (STV 1.0 0.99))",
+          "(: e4_dim_ev (Member sk_dim_1 dim) (STV 1.0 0.99))",
+          "(: e4_dim_ag (Agent sk_dim_1 sk_keeper_1) (STV 1.0 0.99))",
+          "(: e4_dim_pt (Patient sk_dim_1 sk_lantern_1) (STV 1.0 0.99))",
+          "(: e4_lantern (Member sk_lantern_1 lantern) (STV 1.0 0.99))",
+          "(: e4_lantern_on (On sk_lantern_1 cliff_path) (STV 1.0 0.99))",
+          "(: e4_cp_name (Name cliff_path \"Cliff Path\") (STV 1.0 0.99))",
+          "(: e4_cp_type (Member cliff_path path) (STV 1.0 0.99))"
         ],
         [
-          "(: lantern_dim (Member sk_lantern_1 dim) (STV 1.0 0.99))",
-          "(: give_ev (Member sk_give_1 give) (STV 1.0 0.99))",
-          "(: give_ag (Agent sk_give_1 sk_lantern_1) (STV 1.0 0.99))",
-          "(: give_th (Theme sk_give_1 sk_mist_light_1) (STV 1.0 0.99))",
-          "(: ml_type (Member sk_mist_light_1 mist_light) (STV 1.0 0.99))",
-          "(: ml_genus (Inheritance mist_light light) (STV 1.0 0.99))",
-          "(: ml_weak (Member sk_mist_light_1 weak) (STV 1.0 0.99))"
+          "(: e17_dim (Member sk_lantern_1 dim) (STV 1.0 0.99))",
+          "(: e17_attract (Member sk_attract_1 attract) (STV 1.0 0.99))",
+          "(: e17_attract_ag (Agent sk_attract_1 sk_lantern_1) (STV 1.0 0.99))",
+          "(: e17_group (GroupOf sk_group_1 night_moth) (STV 1.0 0.99))",
+          "(: e17_group_card (CardinalityPhrase sk_group_1 \"handful\") (STV 1.0 0.99))",
+          "(: e17_attract_th (Theme sk_attract_1 sk_group_1) (STV 1.0 0.99))",
+          "(: e17_moth_genus (Inheritance night_moth moth) (STV 1.0 0.99))"
         ],
         [
-          "(: $prf (And (Member $h thread_harvest) (Location $h sk_lantern_1) (Member $e $verb) (To $e $h)) $tv)"
+          "(: $prf (And (Member $e $verb) (To $e $h) (Member $h thread_harvest)) $tv)"
         ]
       ]
     },
     "review": {
       "texts": [
-        "good. the keeper, the lantern and the named Cliff Path are all typed and the dimming carries its doer and its object; the genuinely ambiguous \"on the Cliff Path\" (where the dimming happened, or which lantern it was) is recorded as two complete readings rather than being forced onto one.",
-        "good. \"the dim lantern\" reuses the lantern from the first sentence with \"dim\" as its own descriptive atom, and the mist-light is individuated so that the stated \"weak\" is carried rather than dropped.",
-        "bad: the query hangs the harvest off a \"to\" oblique — the slot for what an activity is aimed at — so it never asks what befalls the harvest and can match no statement in the knowledge base; an open \"what happens to X?\" has no supported form at all, because the slot an answer would store X in depends on the verb the question leaves unnamed. Name the event you are asking about and give the harvest its plain subject or object position, with no \"to\"-phrase: \"Does the weak mist-light reduce the thread harvest at that lantern?\" If you would rather keep the question open, ask it from the acting side, which is supported: \"What does the weak mist-light do?\" Hanging \"at that lantern\" off a finite clause instead (\"the thread that is harvested at that lantern\") also removes a second wobble, since a place phrase on an event-naming noun leaves the location head undecided."
+        "good. the dimming event carries its Keeper agent and its lantern patient, and \"on the Cliff Path\" correctly stays a property of the lantern rather than of the dimming.",
+        "good. it reuses the lantern from the first sentence, adds only the stated \"dim\" property, and records \"a handful\" as a vague-count phrase on the nightmoth group instead of inventing a number.",
+        "bad: the harvest is attached with a surface \"to\" oblique, so the query asks which events are directed at the harvest rather than which eventuality befalls it — a slot no ordinary statement fills — and that same shape is the purpose connective, which the engine's purpose bridge can misread as a goal; nothing about the harvest can bind, and the two premises mention no thread harvest at all. Name the focus event and put the harvest in the role a plain statement would store it in, e.g. \"Do the nightmoths damage the thread harvest?\""
       ]
     },
     "census": {
