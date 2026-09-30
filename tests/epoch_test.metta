@@ -34,9 +34,9 @@
 !(add-atom &wr (fuel O_base dq 1))
 !(set-cycle &wr 1)
 !(run-chamber &wr CH_expt1)
-!(test (foldall + (match &wr (sem-edge V3g $e ReasonFor $x $y) 1) 0) 2)   ; derived layer present
+!(test (foldall + (match &wr (sem-edge $g $e ReasonFor $x $y) 1) 0) 2)   ; derived layer present
 !(refresh-pool &wr)
-!(test (foldall + (match &wr (sem-edge V3g $e ReasonFor $x $y) 1) 0) 0)   ; derived: gone
+!(test (foldall + (match &wr (sem-edge $g $e ReasonFor $x $y) 1) 0) 0)   ; derived: gone
 !(test (foldall + (match &wr (sem-edge V3g v3_conn1 So $x $y) 1) 0) 0)    ; the task's TEXT: gone too
 !(test (foldall + (match &wr (event $c $s $r $k) 1) 0) 2)                 ; the log RIDES with the soma
 !(test (fuel-of &wr O_base sm) 4)                                        ; ...and so does the purse

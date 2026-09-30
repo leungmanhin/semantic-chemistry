@@ -134,7 +134,7 @@
 ; included. Only a completed chain mints a `(trans …)` id, so a food-fed one-hop cannot claim
 ; the success of a chain it never took part in.
 !(test (match &self (rule-lhs (worked R_trans (strat ACS_qa)) $l) $l)
-       ((sem-edge (var g) (trans (var e1) (var e2)) ReasonFor (var x) (var z))))
+       ((sem-edge (R_trans (var e1) (var e2)) (trans (var e1) (var e2)) ReasonFor (var x) (var z))))
 
 ; THE RING the chain could not form on its own: Primed → (the chain's work) → Worked → Primed,
 ; with `recall` as the way in from an arriving cue. `Worked` is the success trace Ben's notes

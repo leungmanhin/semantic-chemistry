@@ -13,8 +13,9 @@
 ; --- the hot pool: materialize the durable MOLECULE facts (the non-answer-skeleton
 ; sem-graphs) into the worker's space — the parser's SURFACE edges only, never derived
 ; products, so the worker re-derives the explanatory layer from scratch in its own space.
-; Scoped to the ADMITTED graphs: a task's text arrives WITH the task, so a run that poses one
-; task sees only that text. Earlier texts are not withdrawn (add-all is set-union), so what
+; Scoped to the ADMITTED graphs — the task's own text (task-graph) and the standing docs it
+; names (task-doc): a task's text arrives WITH the task, so a run that poses one task sees only
+; that text and its docs. Earlier texts are not withdrawn (add-all is set-union), so what
 ; arrived stays — the environment accumulates, and the chemistry is monotone. ---
 
 ; is graph $g a molecule graph (i.e. NOT an answer-skeleton)?

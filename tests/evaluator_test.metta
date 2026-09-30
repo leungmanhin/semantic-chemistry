@@ -35,7 +35,7 @@
 !(test (fuel-of &self O_base sm) 2)                                   ; O_base: R_so + R_result @ sm 1, x4
 !(test (fuel-of &self O_chain sm) 6)                                  ; O_chain: R_trans @ sm 1, x4
 !(test (fuel-of &self O_chain tr) 1)                                  ; only R_trans costs tr
-!(test (foldall + (match &self (sem-edge V3g $e ReasonFor $x $y) 1) 0) 3)  ; 2 normalized + 1 chained
+!(test (+ (foldall + (match &self (sem-edge $g (norm $p) ReasonFor $x $y) 1) 0) (foldall + (match &self (sem-edge $g (trans $a $b) ReasonFor $x $y) 1) 0)) 12)  ; derived edges: 2 normalized + 1 chained, per vignette
 
 ; --- depth is read structurally off the provenance ids ---------------------------
 !(test (id-depth (norm v3_conn2)) 1)
@@ -63,11 +63,11 @@
 
 ; --- provenance-based crediting: each grounding credits the organism whose rule DERIVED
 ; its cited answer edge — the proximate answer -> R_result -> O_base, the root -> R_trans -> O_chain
-!(test (producer-of &self (sem-edge V3g (trans (norm v3_conn1) (norm v3_conn2)) ReasonFor sk_go_out_1 sk_spoil_1)) R_trans)
+!(test (producer-of &self (sem-edge (R_trans (norm v3_conn1) (norm v3_conn2)) (trans (norm v3_conn1) (norm v3_conn2)) ReasonFor sk_go_out_1 sk_spoil_1)) R_trans)
 !(test (rule-organism R_result) O_base)
 !(test (rule-organism R_trans) O_chain)
 ; the two groundings credit the two organisms respectively
-!(test (msort (dedup (collapse (let $s (superpose (collapse (ground-skeleton &self V3_q1_as1))) (solution-earner &self $s))))) (O_base O_chain))
+!(test (msort (dedup (collapse (solution-earner &self (ground-skeleton &self V3_q1_as1))))) (O_base O_chain))
 
 ; credit the why-question under the deep clamp: proximate sm 4 -> O_base; root sm 4 + tr 2
 ; -> O_chain; 10 tokens minted in total

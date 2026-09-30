@@ -61,7 +61,7 @@
 
 ; --- W_lean HALTED at the step budget: 2 firings (R_so + R_result, no R_trans), 1 answer ---
 !(test (foldall + (match &ws_lean (event $c $s $r $k) 1) 0) 2)
-!(test (foldall + (match &ws_lean (sem-edge V3g (trans $a $b) ReasonFor $x $y) 1) 0) 0)  ; no chain edge
+!(test (foldall + (match &ws_lean (sem-edge $g (trans $a $b) ReasonFor $x $y) 1) 0) 0)  ; no chain edge
 !(test (len (collapse (ground-skeleton &ws_lean V3_q1_as1))) 1)
 
 ; --- ISOLATION: the two workers did not interfere ---

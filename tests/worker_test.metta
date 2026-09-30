@@ -38,12 +38,12 @@
 !(run-cc W_qa)
 
 ; --- ISOLATION: the run happened in the worker's space, NOT &self ---
-!(test (foldall + (match &self (sem-edge V3g $e ReasonFor $x $y) 1) 0) 0)   ; &self: NO derived edges
+!(test (foldall + (match &self (sem-edge $g (norm $p) ReasonFor $x $y) 1) 0) 0)   ; &self: NO derived edges
 !(test (foldall + (match &self (event $c $s $r $k) 1) 0) 0)                     ; &self: NO event log
 !(test (foldall + (match &self (sem-edge V3g v3_conn1 So $x $y) 1) 0) 1)    ; &self: molecule cue UNTOUCHED
 
 ; --- the worker's space holds the derivation + the append-only event log + spent fuel ---
-!(test (foldall + (match &ws_qa (sem-edge V3g $e ReasonFor $x $y) 1) 0) 3)  ; 2 normalized + 1 chained
+!(test (foldall + (match &ws_qa (sem-edge $g $e ReasonFor $x $y) 1) 0) 3)  ; 2 normalized + 1 chained
 !(test (foldall + (match &ws_qa (event $c $s $r $k) 1) 0) 3)                    ; append-only log: 3 firings
 !(test (foldall + (match &ws_qa (sem-edge V3g v3_conn1 So $x $y) 1) 0) 1)   ; molecules materialized into $ws
 !(test (fuel-of &ws_qa O_base sm) 10)                                        ; O_base: R_so + R_result @ sm 1

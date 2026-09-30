@@ -6,27 +6,35 @@
 ; molecule edge is exposed as a (var <conjunct-id>) binding — joined by the
 ; compiler's clause-join. A solution = the fully-grounded conjunct list: every
 ; element is a cited molecule sem-edge, so provenance is built in.
-; The first clause pins (var g) to a neo-davidsonian graph, which keeps the join
-; off the skeleton's own facts; (var g) otherwise ranges over ALL molecule graphs —
-; question↔graph scoping is not modeled here. Assumes util + compiler are loaded.
+; Each conjunct's graph slot is a variable of its own, pinned to a neo-davidsonian graph,
+; so one solution may span graphs — the task's own text, the docs it names, the graphs the
+; firings made — while never joining on the skeleton's own facts. Assumes util + compiler
+; are loaded.
 ; ===========================================================================
 
-; the skeleton's conjunct patterns as joinable clauses, per relation arity
-; (unary / binary / ternary); the matched molecule edge-id surfaces as (var <cid>)
+; the skeleton's conjunct patterns as joinable clauses, per relation arity (unary / binary /
+; ternary); the matched molecule edge-id surfaces as (var <cid>), its graph as (var (g <cid>))
 (= (skel-clauses-1 $gas)
-   (collapse (match &self (sem-edge $gas $c $r $a) (sem-edge (var g) (var $c) $r $a))))
+   (collapse (match &self (sem-edge $gas $c $r $a) (sem-edge (var (g $c)) (var $c) $r $a))))
 
 (= (skel-clauses-2 $gas)
-   (collapse (match &self (sem-edge $gas $c $r $a $b) (sem-edge (var g) (var $c) $r $a $b))))
+   (collapse (match &self (sem-edge $gas $c $r $a $b) (sem-edge (var (g $c)) (var $c) $r $a $b))))
 
 (= (skel-clauses-3 $gas)
-   (collapse (match &self (sem-edge $gas $c $r $a $b $d) (sem-edge (var g) (var $c) $r $a $b $d))))
+   (collapse (match &self (sem-edge $gas $c $r $a $b $d) (sem-edge (var (g $c)) (var $c) $r $a $b $d))))
 
-; all clauses: pin (var g) to a molecule graph first, then join the conjuncts
+; one kind pin per conjunct: its graph must be a molecule graph — given, or made by a firing —
+; never the skeleton's own graph or a control graph
+(= (skel-pins $gas)
+   (concat-lists (collapse (match &self (sem-edge $gas $c $r $a) (sem-graph-kind (var (g $c)) neo-davidsonian)))
+     (concat-lists (collapse (match &self (sem-edge $gas $c $r $a $b) (sem-graph-kind (var (g $c)) neo-davidsonian)))
+                   (collapse (match &self (sem-edge $gas $c $r $a $b $d) (sem-graph-kind (var (g $c)) neo-davidsonian))))))
+
+; all clauses: the conjuncts, each binding its graph, then their kind pins
 (= (skel-clauses $gas)
-   (cons-atom (sem-graph-kind (var g) neo-davidsonian)
-              (concat-lists (skel-clauses-1 $gas)
-                            (concat-lists (skel-clauses-2 $gas) (skel-clauses-3 $gas)))))
+   (concat-lists (skel-clauses-1 $gas)
+                 (concat-lists (skel-clauses-2 $gas)
+                               (concat-lists (skel-clauses-3 $gas) (skel-pins $gas)))))
 
 ; ground answer-skeleton $gas against run space $ws (the hot pool holding the molecules +
 ; derived edges): one solution per complete join — the solution IS the grounded conjunct
@@ -63,12 +71,15 @@
             (collapse (match &self (qa-question $v $q) $q))
             (collapse (match &self (qa-question $t $q) $q)))))
 
-; the molecule graphs the posed task supplies (its text) — every graph when none is posed
+; the molecule graphs the posed task supplies — its own text (task-graph) and every graph of
+; the docs it names (task-doc); every task's when none is posed
 (= (posed-graphs $ws)
    (let $t (current-task $ws)
         (if (== $t all)
-            (collapse (match &self (task-graph $v $g) $g))
-            (collapse (match &self (task-graph $t $g) $g)))))
+            (concat-lists (collapse (match &self (task-graph $v $g) $g))
+                          (collapse (match &self (task-doc $v $d) (match &self (doc-graph $d $g) $g))))
+            (concat-lists (collapse (match &self (task-graph $t $g) $g))
+                          (collapse (match &self (task-doc $t $d) (match &self (doc-graph $d $g) $g)))))))
 
 ; --- ANSWER COUNT: the system's OUTPUT in space $ws = total groundings summed over the POSED
 ; questions' answer-skeletons. The epoch loop reads it as the per-cycle fitness proxy; the

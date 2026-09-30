@@ -45,8 +45,8 @@
 !(test (fuel-of &self O_base sm) 2)                                   ; O_base: R_so + R_result @ sm 1, x4
 !(test (fuel-of &self O_chain sm) 6)                                  ; O_chain: R_trans @ sm 1, x4
 !(test (fuel-of &self O_chain tr) 1)                                  ; only R_trans costs tr
-!(test (foldall + (match &self (sem-edge V3g $e ReasonFor $x $y) 1) 0) 3)  ; 2 normalized + 1 chained
-!(test (foldall + (match &self (sem-edge V4g $e ReasonFor $x $y) 1) 0) 3)  ; and the same shape on V4
+!(test (+ (foldall + (match &self (sem-edge $g (norm $p) ReasonFor $x $y) 1) 0) (foldall + (match &self (sem-edge $g (trans $a $b) ReasonFor $x $y) 1) 0)) 12)  ; derived edges: 2 normalized + 1 chained, per vignette
+!(test (foldall + (match &self (sem-edge (R_so $p) (norm $p) ReasonFor $x $y) 1) 0) 4)  ; each in the graph its firing made
 
 ; --- grounding: each why-question grounds two ways (proximate + root) ---
 !(test (len (collapse (ground-skeleton &self V3_q1_as1))) 2)
@@ -68,8 +68,8 @@
 
 ; the proximate cause (the normalized as-a-result cue)...
 !(test (cites? (collapse (ground-skeleton &self V3_q1_as1))
-               (sem-edge V3g (norm v3_conn2) ReasonFor sk_stop_1 sk_spoil_1)) True)
+               (sem-edge (R_result v3_conn2) (norm v3_conn2) ReasonFor sk_stop_1 sk_spoil_1)) True)
 ; ...and, in the other grounding, the ROOT cause via the chained edge — the mechanism
 ; chain (go_out -> stop -> spoil) carried by that cite's provenance id, not the query shape
 !(test (cites? (collapse (ground-skeleton &self V3_q1_as1))
-               (sem-edge V3g (trans (norm v3_conn1) (norm v3_conn2)) ReasonFor sk_go_out_1 sk_spoil_1)) True)
+               (sem-edge (R_trans (norm v3_conn1) (norm v3_conn2)) (trans (norm v3_conn1) (norm v3_conn2)) ReasonFor sk_go_out_1 sk_spoil_1)) True)

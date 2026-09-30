@@ -51,4 +51,4 @@
 !(test (log-tasks &ws_ep) (V3))
 
 ; --- ISOLATION: the derivation happened in the worker's space, not &self ---
-!(test (foldall + (match &self (sem-edge V3g $e ReasonFor $x $y) 1) 0) 0)
+!(test (foldall + (match &self (sem-edge $g (norm $p) ReasonFor $x $y) 1) 0) 0)

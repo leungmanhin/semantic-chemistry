@@ -2,9 +2,12 @@
 """Experiment 2 ingestion adapter: the accepted Aelmere parse records -> the §10.1 sem-graph IR.
 
 Reads world_rules_parses.json, lore_parsed.json and events_parsed.json (sentence and passage records) and
-writes molecules.metta (one neo-davidsonian graph, `aelmere`, holding every ground fact of the three corpora)
-and rules.metta (every world-rules law, every lore law and every generic stated inside an episode as a per-match
-`rule-lhs` / `rule-rhs` rule, in the contexts aelmere / aelmere-lore / aelmere-events). The
+writes molecules.metta (one doc, `aelmere`, holding one neo-davidsonian graph per parse unit — a world-rules sentence,
+a lore sentence, an event passage — with every ground fact of the three corpora) and rules.metta (every world-rules
+law, every lore law and every generic stated inside an episode as a per-match `rule-lhs` / `rule-rhs` rule, in the
+contexts aelmere / aelmere-lore / aelmere-events; one graph variable per premise clause, so a law's premises may come
+from different parses, and the products form a graph of their own named by the firing; the synthetic edge-id and graph
+variables are uppercase, `$E1` / `$G1`, so they never collide with the parser's lowercase variables). The
 ingestion conventions of REALIGNMENT.md item 1 are applied as a deterministic pass; each convention is a
 declaration in CONVENTIONS and an edge it adds or rewrites carries (sem-edge-source G E <letter>):
   a  every sk_* witness is scoped to its unit (sentence or passage)          b/l  aliases + cardinality strings
@@ -21,7 +24,7 @@ decomposition with conjunction-elimination values (design decision D16).
 usage: python3 exp2_adapter.py [EXPERIMENT_DIR]       (default: this script's own directory)"""
 import json, os, re, sys, collections
 DIR = sys.argv[1] if len(sys.argv) > 1 else os.path.dirname(os.path.abspath(__file__))
-GRAPH = 'aelmere'
+DOC = 'aelmere'
 CONVENTIONS = set('a b c d e f g h i j k l m n o p q'.split())
 SINGLETON = {'council': 'the_council', 'watch': 'the_watch', 'village': 'aelmere', 'sea': 'cold_sea', 'moon': 'the_moon',
              'coast': 'the_coast', 'tide_pool': 'salt_bloom_tide_pools', 'cauldron': 'the_cauldron', 'feather_store': 'the_feather_store',
@@ -228,41 +231,45 @@ def rule_text(unit, rid, bd, tv, ctx, prio):
         if 'p' in CONVENTIONS and h in ATTACH and (unit.is_place(y) or (isvar(y) and typed.get(y, set()) & PLACE_KINDS)): return [('AttachedTo', x, y)]
         return [c]
     lhs = [cc for c in prem for cc in prem_conj(c)]
-    evars = [f"$e{i}" for i in range(1, len(lhs) + 1)]
-    clauses = [f"(sem-edge (var g) {show(ev)} {show(c)[1:-1]})" for ev, c in zip(evars, lhs)]
-    prods = []; cons = [unit.normalize_head(unit.rename(c)) for c in cons]
+    evars = [f"$E{i}" for i in range(1, len(lhs) + 1)]   # synthetic variables are UPPERCASE: the parser's own are lowercase ($e1 is common)
+    clauses = [f"(sem-edge (var G{i}) {show(ev)} {show(c)[1:-1]})" for i, (ev, c) in enumerate(zip(evars, lhs), 1)]
+    pg = f"({rid} {' '.join(show(v) for v in evars)})"   # the firing's own graph: its products are one new molecule, named by what made it
+    prods = [f"(sem-graph-kind {pg} neo-davidsonian)"]; cons = [unit.normalize_head(unit.rename(c)) for c in cons]
     if tv[0] < 0.5:   # a negative law's product is a denied conjunction: ONE nested And edge (interim; see the landing note)
         pid = f"({rid}_p1 {' '.join(show(v) for v in evars)})"
-        prods.append(f"(sem-edge (var g) {pid} And {' '.join(show(c) for c in cons)})")
-        prods.append(f"(sem-edge-tv (var g) {pid} (STV {tv[0]} {tv[1]}))")
+        prods.append(f"(sem-edge {pg} {pid} And {' '.join(show(c) for c in cons)})")
+        prods.append(f"(sem-edge-tv {pg} {pid} (STV {tv[0]} {tv[1]}))")
     else:
         for k, c in enumerate(cons, 1):
             pid = f"({rid}_p{k} {' '.join(show(v) for v in evars)})"
-            prods.append(f"(sem-edge (var g) {pid} {show(c)[1:-1]})")
-            prods.append(f"(sem-edge-tv (var g) {pid} (STV {tv[0]} {tv[1]}))")
+            prods.append(f"(sem-edge {pg} {pid} {show(c)[1:-1]})")
+            prods.append(f"(sem-edge-tv {pg} {pid} (STV {tv[0]} {tv[1]}))")
     L = [f"(sem-rule {rid})", f"(rule-context {rid} {ctx})", f"(rule-priority {rid} {prio})", f"(rule-tv {rid} authored {tv[0]} {tv[1]})",
          f"(rule-lhs {rid} ({' '.join(clauses)}))", f"(rule-rhs {rid} ({' '.join(prods)}))"]
     return '\n'.join(L)
 # ---- main ------------------------------------------------------------------------------------------------------
 def main():
-    mol = [f"; Experiment 2 — MOLECULES, pure portable facts in §10.1 sem-graph IR: one graph, {GRAPH}, holding every ground",
-           "; fact of the three admitted corpora (world_rules_parses.json, lore_parsed.json, events_parsed.json), landed by",
-           "; exp2_adapter.py under the ingestion conventions of REALIGNMENT.md item 1 (each adapter-added edge names its",
-           "; convention in sem-edge-source). Edge ids are unit-prefixed parser ids; witnesses are unit-scoped.",
-           f"(sem-graph {GRAPH})", f"(sem-graph-kind {GRAPH} neo-davidsonian)"]
+    mol = [f"; Experiment 2 — MOLECULES, pure portable facts in §10.1 sem-graph IR: one doc, {DOC}, holding one neo-davidsonian",
+           "; graph per parse unit — a world-rules sentence, a lore sentence, an event passage — with every ground fact of the",
+           "; three admitted corpora (world_rules_parses.json, lore_parsed.json, events_parsed.json), landed by exp2_adapter.py",
+           "; under the ingestion conventions of REALIGNMENT.md item 1 (each adapter-added edge names its convention in",
+           "; sem-edge-source). A graph is named by its unit; edge ids are unit-prefixed parser ids; witnesses are unit-scoped.",
+           f"(sem-doc {DOC})"]
     rules = ["; Experiment 2 — RULES: every world-rules law (context aelmere), every lore law (aelmere-lore) and every generic stated",
              "; inside an episode (aelmere-events) as canonical",
-             "; per-match rule-lhs / rule-rhs IR with (var Name) markers, landed by exp2_adapter.py. A product's edge id names the",
-             "; rule and the premise edges it fired on; a consequent's Skolem term is kept as a witness constructor over the premise",
-             "; variables; the authored truth value rides on rule-tv's `authored` axis and on every product edge."]
+             "; per-match rule-lhs / rule-rhs IR with (var Name) markers, landed by exp2_adapter.py. Each premise clause carries its",
+             "; own graph variable, so a law's premises may come from different parses; a firing's products form one new graph named",
+             "; by the rule and the premise edges it fired on, and a product's edge id names the same; a consequent's Skolem term is",
+             "; kept as a witness constructor over the premise variables; the authored truth value rides on rule-tv's `authored`",
+             "; axis and on every product edge."]
     stats = collections.Counter(); prio = 0; texts = {}
     for uid, kind, ss in UNITS:
         u = Unit(uid, kind, ss); u.convert()
-        if u.edges: mol.append(f"\n; --- {uid}: {TEXT[uid]}")
+        if u.edges: mol += [f"\n; --- {uid}: {TEXT[uid]}", f"(sem-graph {u.tag})", f"(sem-graph-kind {u.tag} neo-davidsonian)", f"(doc-graph {DOC} {u.tag})"]
         for eid, bd, tv in u.edges:
-            mol.append(f"(sem-edge {GRAPH} {eid} {show(bd)[1:-1]})")
-            mol.append(f"(sem-edge-tv {GRAPH} {eid} (STV {tv[0]} {tv[1]}))")
-            if eid in u.sources: mol.append(f"(sem-edge-source {GRAPH} {eid} {u.sources[eid]})")
+            mol.append(f"(sem-edge {u.tag} {eid} {show(bd)[1:-1]})")
+            mol.append(f"(sem-edge-tv {u.tag} {eid} (STV {tv[0]} {tv[1]}))")
+            if eid in u.sources: mol.append(f"(sem-edge-source {u.tag} {eid} {u.sources[eid]})")
             stats['edges'] += 1; stats['edge-' + u.sources.get(eid, 'parser')] += 1
         for sid, bd, tv in u.rules:
             rid = f"R{u.tag[1:]}" if kind == 'law' else f"{u.tag}_{sid}"   # world laws R4_1; lore / event rules by unit and parser id
