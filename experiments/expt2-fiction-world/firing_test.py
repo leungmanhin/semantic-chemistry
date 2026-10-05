@@ -21,8 +21,11 @@ Conventions applied to the pool (each is one of item 1's rules):
   date       an undated past event inherits its passage's opening (Year n) + (Day n)
   place      LocatedIn / PartOf / Possession / Of / On / At to a registry place are one attachment slot, and a place
              that HOLDS things attaches them (the corpus's containment idiom)
-Records: world_rules_parses.json + lore_parsed.json (sentence records) and events_parsed.json (passage record)."""
+Records: world_rules_parses.json + lore_parsed.json (sentence records) and events_parsed.json (passage record), read through
+parse_corrections.py so the hand corrections of parse_corrections.json apply."""
 import json, re, sys, collections, os
+sys.dont_write_bytecode = True
+from parse_corrections import load_record
 RELAX = '--no-relax' not in sys.argv
 DIAG = set(); 
 for a in sys.argv[1:]:
@@ -56,13 +59,13 @@ def body(st):
     return parse(m.group(1)) if m else None
 def load():
     units = []   # (unit id, [statements])
-    for e in json.load(open("world_rules_parses.json")):
+    for e in load_record("world_rules_parses.json"):
         for i, s in enumerate(e["stmts"]["texts"]): units.append((f"{e['id']}.{i+1}", s, "law"))
     if os.path.exists("lore_parsed.json"):
-        for e in json.load(open("lore_parsed.json")):
+        for e in load_record("lore_parsed.json"):
             for i, s in enumerate(e["stmts"]["texts"]): units.append((f"{e['id']}.{i+1}", s or [], "lore"))
     if os.path.exists("events_parsed.json"):
-        for e in json.load(open("events_parsed.json")):
+        for e in load_record("events_parsed.json"):
             units.append((e["id"], e["stmts"].get("passage") or [], "event"))
     return units
 def types_in(stmts):

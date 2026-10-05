@@ -1,0 +1,243 @@
+[
+ {
+  "record": "qa_parsed.json",
+  "id": "F20",
+  "text": 0,
+  "replace": "(: $prf (And (GroupOf $g keeper) (Cardinality $g $n) (Inheritance $g active)) $tv)",
+  "with": "(: $prf (And (GroupOf $g keeper) (Cardinality $g $n) (Member $g active)) $tv)",
+  "reason": "the group's property is a Member fact, as the lore states it (Forty-three Keepers are active) and as the parser writes properties elsewhere; Inheritance relates kinds"
+ },
+ {
+  "record": "qa_parsed.json",
+  "id": "F8",
+  "text": 0,
+  "replace": "(: $prf (Implication (Member $x sky_cat) (And (Member (sk_roost $x) roost) (Experiencer (sk_roost $x) $x) (Location (sk_roost $x) $where))) $tv)",
+  "with": "(: $prf (Implication (Member $x sky_cat) (And (Member (sk_roost $x) roost) (Agent (sk_roost $x) $x) (Location (sk_roost $x) $where))) $tv)",
+  "reason": "the one roosting is the Agent of roost in every corpus parse and in law R9.1; the question's Experiencer is role variance"
+ },
+ {
+  "record": "qa_parsed.json",
+  "id": "W11",
+  "text": 0,
+  "replace": "(: $prf (And (Member $c council) (Member $e discuss) (Agent $e $c) (Theme $e $b) (Member $b burn) (Patient $b wintergloss) (Name $l \"Stilllight Lantern\") (Location $e $l) (Time $e (Year 1)) (Past $e) (ReasonFor $r $e)) $tv)",
+  "with": "(: $prf (And (Member $c council) (Member $e discuss) (Agent $e $c) (Theme $e $b) (Member $b burn) (Patient $b wintergloss) (Name $l \"Stilllight Lantern\") (Location $b $l) (Time $e (Year 1)) (Past $e) (ReasonFor $r $e)) $tv)",
+  "reason": "'at the Stilllight Lantern' is where the burning would happen, as passage E4-04 parses it; the question attached it to the discussing"
+ },
+ {
+  "record": "qa_parsed.json",
+  "id": "W18",
+  "text": 0,
+  "replace": "(: $prf (And (Member $f fall) (Theme $f $h) (Member $h thread_harvest) (Location $h $m) (Name $m \"Middle Row\") (Past $f) (Time $f (Day 17)) (Time $f (Year 1)) (ReasonFor $r $f)) $tv)",
+  "with": "(: $prf (And (Member $f fall) (Theme $f $h) (Member $h thread_harvest) (LocatedIn $h $m) (Name $m \"Middle Row\") (Past $f) (Time $f (Day 17)) (Time $f (Year 1)) (ReasonFor $r $f)) $tv)",
+  "reason": "the thread harvest is a thing located in the row (LocatedIn), as passage E2-04 parses it; Location is the role of an event"
+ },
+ {
+  "record": "qa_parsed.json",
+  "id": "N4",
+  "text": 0,
+  "remove": [
+   "(Interpretation r1 (: e2_loc (Location sk_scatter_1 sunken_cove) (STV 1.0 0.99)))",
+   "(Interpretation r2 (: lant_loc (LocatedIn sk_lantern_1 sunken_cove) (STV 1.0 0.99)))"
+  ],
+  "add": [
+   "(: e2_loc (Location sk_scatter_1 sunken_cove) (STV 1.0 0.99))",
+   "(: lant_loc (LocatedIn sk_lantern_1 sunken_cove) (STV 1.0 0.99))"
+  ],
+  "reason": "both readings of 'at the Sunken Cove' hold — the scattering is at the cove and the lantern is at the cove — so both land as facts; the parser left them as alternatives"
+ },
+ {
+  "record": "events_parsed.json",
+  "id": "E5-05",
+  "add": [
+   "(: burn_night (Time sk_burn_1 night) (STV 1.0 0.99))"
+  ],
+  "reason": "the passage opens 'On the night of day 111' and every event in it happens that night; the parser put the night on the first two sentences only, so the dim burning lacked it"
+ },
+ {
+  "record": "world_rules_parses.json",
+  "id": "R26",
+  "text": 0,
+  "remove": [
+   "(: full_state (Member sk_full_1 full) (STV 1.0 0.99))",
+   "(: full_exp (Experiencer sk_full_1 sk_moon_1) (STV 1.0 0.99))",
+   "(: moon_full_flat (Member sk_moon_1 full) (STV 1.0 0.99))",
+   "(: convene_ev (Member sk_convene_1 convene) (STV 1.0 0.99))",
+   "(: convene_agent (Agent sk_convene_1 sk_council_1) (STV 1.0 0.99))",
+   "(: convene_loc (Location sk_convene_1 sk_watch_1) (STV 1.0 0.99))",
+   "(: convene_during (During sk_convene_1 sk_full_1) (STV 1.0 0.99))"
+  ],
+  "add": [
+   "(: when_full_convene (Implication (And (Member $x full) (Experiencer $x sk_moon_1)) (And (Member (sk_convene $x) convene) (Agent (sk_convene $x) sk_council_1) (Location (sk_convene $x) sk_watch_1) (During (sk_convene $x) $x))) (STV 1.0 0.9))"
+  ],
+  "reason": "a conditional law parsed as one situation (it asserted that the moon is full and the Council convenes); corrected to the generic its twin R26.2 has"
+ },
+ {
+  "record": "world_rules_parses.json",
+  "id": "R23",
+  "text": 2,
+  "remove": [
+   "(: keeper_type (Member sk_keeper_1 keeper) (STV 1.0 0.99))",
+   "(: family_type (Member sk_family_1 family) (STV 1.0 0.99))",
+   "(: family_poss (Possession sk_family_1 sk_keeper_1) (STV 1.0 0.99))",
+   "(: station_type (Member sk_station_1 station) (STV 1.0 0.99))",
+   "(: station_inherited (Member sk_station_1 inherited) (STV 1.0 0.99))",
+   "(: station_poss (Possession sk_station_1 sk_keeper_1) (STV 1.0 0.99))",
+   "(: keep_ev (Member sk_keep_1 keep) (STV 1.0 0.99))",
+   "(: keep_ag (Agent sk_keep_1 sk_family_1) (STV 1.0 0.99))",
+   "(: keep_th (Theme sk_keep_1 sk_station_1) (STV 1.0 0.99))"
+  ],
+  "add": [
+   "(: family_keeps_rule (Implication (And (Member $k keeper) (Member $f family) (Possession $f $k) (Member $s station) (Member $s inherited) (Possession $s $k)) (And (Member (sk_keep $k) keep) (Agent (sk_keep $k) $f) (Theme (sk_keep $k) $s))) (STV 1.0 0.9))"
+  ],
+  "reason": "a generic over Keepers ('A Keeper's family keeps that Keeper's inherited station') parsed as one keeper, one family and one station; corrected to the generic"
+ },
+ {
+  "record": "world_rules_parses.json",
+  "id": "R24",
+  "text": 3,
+  "remove": [
+   "(: e_apprentice (Member sk_apprentice_1 apprentice) (STV 1.0 0.99))",
+   "(: e_permit (Member sk_permit_1 permit) (STV 1.0 0.99))",
+   "(: e_permit_ag (Agent sk_permit_1 sk_council_1) (STV 1.0 0.99))",
+   "(: e_permit_th (Theme sk_permit_1 sk_begin_1) (STV 1.0 0.99))",
+   "(: e_begin (Member sk_begin_1 begin) (STV 1.0 0.99))",
+   "(: e_begin_ag (Agent sk_begin_1 sk_apprentice_1) (STV 1.0 0.99))",
+   "(: e_begin_th (Theme sk_begin_1 sk_tend_1) (STV 1.0 0.99))",
+   "(: e_tend (Member sk_tend_1 tend) (STV 1.0 0.99))",
+   "(: e_tend_ag (Agent sk_tend_1 sk_apprentice_1) (STV 1.0 0.99))",
+   "(: e_tend_ongoing (Ongoing sk_tend_1) (STV 1.0 0.99))",
+   "(: e_tend_manner (Manner sk_tend_1 solo) (STV 1.0 0.99))"
+  ],
+  "add": [
+   "(: permit_solo_rule (Implication (Member $a apprentice) (And (Member (sk_permit $a) permit) (Agent (sk_permit $a) sk_council_1) (Theme (sk_permit $a) (sk_begin $a)) (Member (sk_begin $a) begin) (Agent (sk_begin $a) $a) (Theme (sk_begin $a) (sk_tend $a)) (Member (sk_tend $a) tend) (Agent (sk_tend $a) $a) (Manner (sk_tend $a) solo))) (STV 1.0 0.9))"
+  ],
+  "reason": "a generic over apprentices ('The Council permits an apprentice to begin solo tending') parsed as one apprentice and one permission; corrected to the generic (the Council's standing permission for an apprentice)"
+ },
+ {
+  "record": "world_rules_parses.json",
+  "id": "R27",
+  "text": 4,
+  "remove": [
+   "(: redist_type (Member sk_redistribution_1 redistribution) (STV 1.0 0.99))",
+   "(: e_record (Member sk_record_1 record) (STV 1.0 0.99))",
+   "(: e_agent (Agent sk_record_1 sk_keepers_1) (STV 1.0 0.99))",
+   "(: e_theme (Theme sk_record_1 sk_redistribution_1) (STV 1.0 0.99))",
+   "(: e_loc (Location sk_record_1 sk_ledgers_1) (STV 1.0 0.99))"
+  ],
+  "add": [
+   "(: record_redistribution_rule (Implication (Member $r redistribute) (And (Member (sk_record $r) record) (Agent (sk_record $r) sk_keepers_1) (Theme (sk_record $r) $r) (Location (sk_record $r) sk_ledgers_1))) (STV 1.0 0.9))"
+  ],
+  "reason": "'the redistribution' is the event of R27.1 and R27.2; the sentence is a generic about every such event, parsed as one recording; corrected to the generic over redistribute events"
+ },
+ {
+  "record": "world_rules_parses.json",
+  "id": "R29",
+  "text": 1,
+  "remove": [
+   "(: issue_ev (Member sk_issue_1 issue) (STV 1.0 0.99))",
+   "(: issue_ag (Agent sk_issue_1 sk_council_1) (STV 1.0 0.99))",
+   "(: issue_th (Theme sk_issue_1 feather_ration) (STV 1.0 0.99))",
+   "(: issue_rec (Recipient sk_issue_1 sk_station_1) (STV 1.0 0.99))",
+   "(: issue_time (Time sk_issue_1 winter) (STV 1.0 0.99))"
+  ],
+  "add": [
+   "(: issue_rations_rule (Implication (Member $w winter) (And (Member (sk_issue $w) issue) (Agent (sk_issue $w) sk_council_1) (Theme (sk_issue $w) feather_ration) (Recipient (sk_issue $w) sk_station_1) (During (sk_issue $w) $w) (Time (sk_issue $w) winter))) (STV 1.0 0.9))"
+  ],
+  "reason": "'in winter' makes this a generic over winters ('The Council issues feather rations … in winter'), parsed as one issuing; corrected to the generic"
+ },
+ {
+  "record": "world_rules_parses.json",
+  "id": "R30",
+  "text": 2,
+  "remove": [
+   "(: weigh_ev (Member sk_weigh_1 weigh) (STV 1.0 0.99))",
+   "(: weigh_ag (Agent sk_weigh_1 sk_council_1) (STV 1.0 0.99))",
+   "(: requests_grp (GroupOf sk_requests_1 request) (STV 1.0 0.99))",
+   "(: weigh_th (Theme sk_weigh_1 sk_requests_1) (STV 1.0 0.99))",
+   "(: weigh_against (Against sk_weigh_1 sk_store_1) (STV 1.0 0.99))"
+  ],
+  "add": [
+   "(: weigh_requests_rule (Implication (Member $q request) (And (Member (sk_weigh $q) weigh) (Agent (sk_weigh $q) sk_council_1) (Theme (sk_weigh $q) $q) (Against (sk_weigh $q) sk_store_1))) (STV 1.0 0.9))"
+  ],
+  "reason": "'the requests' are the events of R30.1 and R30.2; the sentence is a generic about every such request, parsed as one weighing; corrected to the generic over request events"
+ },
+ {
+  "record": "qa_parsed.json",
+  "id": "W25",
+  "text": 0,
+  "replace": "(: $prf (And (Member $w write) (Experiencer $w $c) (Name $c \"Coraline Ash\") (Member $lg log) (Possession $lg $c) (Location $w $lg) (Past $w) (Theme $w (And (Member $cr crowd) (GroupOf $cr night_moth) (Member $bd bring_down) (Agent $bd $cr) (Theme $bd sky_cat) (Source $bd $sp))) (Inheritance night_moth moth) (GroupOf $sp cliff_spire) (Inheritance cliff_spire spire) (Inheritance sky_cat cat) (ReasonFor $r $w)) $tv)",
+  "with": "(: $prf (And (Member $w write) (Experiencer $w $c) (Name $c \"Coraline Ash\") (Member $lg log) (Possession $lg $c) (Location $w $lg) (Past $w) (Theme $w (And (Member $cr crowd) (GroupOf $cr nightmoth) (Member $bd bring) (Agent $bd $cr) (Theme $bd $sc) (GroupOf $sc sky_cat) (Source $bd $sp) (GroupOf $sp cliff_spire))) (Inheritance night_moth moth) (Inheritance cliff_spire spire) (Inheritance sky_cat cat) (ReasonFor $r $w)) $tv)",
+  "reason": "the quoted log entry, word for word the passage's second entry in E8-05, is rendered by the passage with the sky-cats and the cliff-spires as typed witnesses inside the quotation; the question's parse used a bare kind and typed the cliff-spires outside it, so the two quotations could not match; the question now carries the passage's rendering"
+ },
+ {
+  "record": "qa_parsed.json",
+  "id": "W34",
+  "text": 0,
+  "replace": "(: $prf (And (Member $e say) (Experiencer $e $b) (Name $b \"Brindle Coombe\") (Location $e $c) (Member $c council) (Theme $e (And (Member $w winter) (Member $w hard) (Member $f force) (Agent $f $w) (Theme $f $d) (Future $f) (Member $d dim) (Agent $d $v) (Theme $d $l) (GroupOf $l lantern))) (Member $v village) (Past $e) (ReasonFor $r $e)) $tv)",
+  "with": "(: $prf (And (Member $e say) (Experiencer $e $b) (Name $b \"Brindle Coombe\") (Location $e $c) (Member $c council) (Theme $e (And (Member $w winter) (Member $w hard) (Member $f force) (Agent $f $w) (Theme $f $d) (Future $f) (Member $d dim) (Agent $d $v) (Patient $d $l) (GroupOf $l lantern))) (Member $v village) (Past $e) (ReasonFor $r $e)) $tv)",
+  "reason": "the quoted words, word for word the passage's third saying in E5-03, give the dimmed lanterns the Patient role inside the quotation; the question's parse used Theme there, and inside a quotation the one-Object-slot convention does not apply, so the quotations could not match"
+ },
+ {
+  "record": "world_rules_parses.json",
+  "id": "R9",
+  "text": 2,
+  "identify": {
+   "keepers": "the_keepers"
+  },
+  "reason": "'The Keepers tolerate sky-cats.' refers to the Keepers as a body — the collective every Keeper belongs to, `the_keepers`, as the Council is `the_council`; the parser gave it a group witness of its own"
+ },
+ {
+  "record": "world_rules_parses.json",
+  "id": "R21",
+  "text": 2,
+  "identify": {
+   "sk_keepers_1": "the_keepers"
+  },
+  "reason": "'The Keepers rarely burn wintergloss.' refers to the Keepers as a body — the collective every Keeper belongs to, `the_keepers`, as the Council is `the_council`; the parser gave it a group witness of its own"
+ },
+ {
+  "record": "world_rules_parses.json",
+  "id": "R21",
+  "text": 3,
+  "identify": {
+   "sk_keepers_1": "the_keepers"
+  },
+  "reason": "'The Keepers sometimes burn wintergloss at the Stilllight Lantern.' refers to the Keepers as a body — the collective every Keeper belongs to, `the_keepers`, as the Council is `the_council`; the parser gave it a group witness of its own"
+ },
+ {
+  "record": "world_rules_parses.json",
+  "id": "R27",
+  "text": 4,
+  "identify": {
+   "sk_keepers_1": "the_keepers"
+  },
+  "reason": "'The Keepers record the redistribution in the Watch ledgers.' refers to the Keepers as a body — the collective every Keeper belongs to, `the_keepers`, as the Council is `the_council`; the parser gave it a group witness of its own"
+ },
+ {
+  "record": "lore_parsed.json",
+  "id": "L2-01",
+  "text": 0,
+  "identify": {
+   "sk_group_1": "the_keepers"
+  },
+  "reason": "'Forty-three Keepers are active in the present generation.' refers to the Keepers as a body — the collective every Keeper belongs to, `the_keepers`, as the Council is `the_council`; the parser gave it a group witness of its own"
+ },
+ {
+  "record": "lore_parsed.json",
+  "id": "L6-03",
+  "text": 4,
+  "identify": {
+   "sk_group_1": "the_keepers"
+  },
+  "reason": "'The keepers cannot count the sky-cats exactly.' refers to the Keepers as a body — the collective every Keeper belongs to, `the_keepers`, as the Council is `the_council`; the parser gave it a group witness of its own"
+ },
+ {
+  "record": "lore_parsed.json",
+  "id": "L7-02",
+  "text": 4,
+  "identify": {
+   "sk_group_1": "the_keepers"
+  },
+  "reason": "'The keepers cannot explain the moon-phase rule.' refers to the Keepers as a body — the collective every Keeper belongs to, `the_keepers`, as the Council is `the_council`; the parser gave it a group witness of its own"
+ }
+]

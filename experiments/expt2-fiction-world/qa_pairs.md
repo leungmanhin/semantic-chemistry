@@ -151,7 +151,7 @@ Categories: **F** = factual recall (anchor); **W** = why-questions (causal chain
 > Because Bevin Coombe had scattered ground feathers around the Stilllight's base, which ward off wraiths. [R15, events Part V]
 
 **W17.** Why did the thread harvest at the West Row fall in Year 1?
-> Because wraith-drained lanterns burn with weak mist-light, and weak mist-light attracts only a small fraction of the usual nightmoth count. [R13, R14]
+> Because wraith-drained lanterns burn with weak mist-light, and weak mist-light attracts only a small fraction of the usual nightmoth count. [R13, R14, events Part V]
 
 **W18.** Why did the thread harvest at the Middle Row fall on day 17 of Year 1?
 > Because the eleven relit lanterns of the Middle Row burned dimly and gave weak mist-light, and the weak mist-light attracted only a handful of nightmoths. [R14, R3, events Part II]

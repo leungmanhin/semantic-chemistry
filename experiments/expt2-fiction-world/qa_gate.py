@@ -24,6 +24,7 @@ in CONTEXT names the premise's witnesses directly. Per text, by its mode (from q
 usage: python3 qa_gate.py [--mock] [--no-relax]
 """
 import json, re, sys, collections, os
+sys.dont_write_bytecode = True
 MOCK = '--mock' in sys.argv
 LIMIT = next((int(a.split('=')[1]) for a in sys.argv if a.startswith('--limit=')), None)
 ONLY = next((set(a.split('=')[1].split(',')) for a in sys.argv if a.startswith('--only=')), None)
@@ -33,7 +34,8 @@ ns = {'noprint': lambda *a, **k: None}
 exec(compile(src, 'firing_test.py', 'exec'), ns)
 facts, laws, by_head, kinds_of, unify, cands, match, order, canon, types_in, body, parse, RELAX, ATTACH, state_witnesses = (
     ns[k] for k in 'facts laws by_head kinds_of unify cands match order canon types_in body parse RELAX ATTACH state_witnesses'.split())
-wr = json.load(open('world_rules_parses.json')); lore = json.load(open('lore_parsed.json')) if os.path.exists('lore_parsed.json') else []
+from parse_corrections import load_record
+wr = load_record('world_rules_parses.json'); lore = load_record('lore_parsed.json') if os.path.exists('lore_parsed.json') else []
 DERIVED = {'ReasonFor', 'PurposeOf'}
 ROLES = ['Object', 'Agent', 'Experiencer', 'Recipient', 'Stimulus', 'Beneficiary', 'Goal', 'Source', 'Location']
 TEMPORAL = ['Time', 'BeforeBy', 'TimeAtMost', 'During', 'Start', 'End', 'Before', 'After']
@@ -384,5 +386,5 @@ MOCK_REC = [
 if __name__ == '__main__':
     qa = json.load(open('qa.json'))
     if MOCK: print("== MOCK records (mocked from the parser's perspective; not real parses)"); gate(qa, MOCK_REC)
-    elif os.path.exists('qa_parsed.json'): gate(qa, json.load(open('qa_parsed.json')))
+    elif os.path.exists('qa_parsed.json'): gate(qa, load_record('qa_parsed.json'))
     else: print('no qa_parsed.json yet; run with --mock to exercise the gate')

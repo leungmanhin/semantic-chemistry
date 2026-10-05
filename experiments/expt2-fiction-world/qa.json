@@ -1106,10 +1106,11 @@
   ],
   "question_mode": "query",
   "answer": "Because wraith-drained lanterns burn with weak mist-light, and weak mist-light attracts only a small fraction of the usual nightmoth count.",
-  "cites_raw": "R13, R14",
+  "cites_raw": "R13, R14, events Part V",
   "cites": [
    "R13",
-   "R14"
+   "R14",
+   "events Part V"
   ]
  },
  {
